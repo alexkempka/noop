@@ -7,6 +7,7 @@ import com.noop.analytics.ChargeDriver
 import com.noop.analytics.RecoveryDrivers
 import com.noop.analytics.RestScorer
 import com.noop.analytics.ScoreConfidence
+import com.noop.analytics.SkinTempDisplay
 import com.noop.data.DailyMetric
 import java.time.LocalDate
 import java.time.Instant
@@ -94,8 +95,38 @@ internal fun recoveryChargeDrivers(
         rhrBaseline = rhrBase,
         respBaseline = respBase,
         sleepPerf = sleepPerf,
-        skinTempDev = day.skinTempDevC,
+        skinTempDev = skinTempDeviation(day, ordered),
     )
+}
+
+/**
+ * The displayed day's skin-temperature DEVIATION, whatever scale the stored column happens to be on.
+ *
+ * `skinTempDevC` is bimodal and this repo says so in several places: a CSV import writes ABSOLUTE °C
+ * into it while the computed pipeline writes a baseline deviation (#622/#1705). `WhoopRepository` and
+ * `HealthVitalsLogic` both guard for that. [RecoveryDrivers.chargeDrivers] does not, and this call site
+ * handed it the raw column — so on an import-only install the driver read a wrist temperature of about
+ * 33 °C as "33 degrees above your own baseline" and took the maximum penalty off Charge. The
+ * "What shaped it" sheet printed it back as "+33.3 C vs baseline" and a recovery score of 37 was, for
+ * the most part, that one mistake.
+ *
+ * Nothing here converts between the scales for display; it establishes which scale the number is on and
+ * then produces the deviation the driver's own parameter documentation asks for:
+ *
+ *  - already a deviation → passed through untouched, so a strap-only install is unaffected;
+ *  - an absolute → the deviation against a baseline folded from the OTHER absolute nights, which is the
+ *    same quantity by a different route (the ABSOLUTE config from [Baselines], never the deviation one);
+ *  - an absolute with too little history to fold → null. A driver that abstains is honest; one scoring
+ *    against an unusable baseline is not.
+ */
+internal fun skinTempDeviation(day: DailyMetric, ordered: List<DailyMetric>): Double? {
+    val raw = day.skinTempDevC ?: return null
+    if (SkinTempDisplay.kind(raw) == SkinTempDisplay.Kind.DEVIATION) return raw
+    val absolutes = ordered.map { row ->
+        row.skinTempDevC?.takeIf { SkinTempDisplay.kind(it) == SkinTempDisplay.Kind.ABSOLUTE }
+    }
+    val base = Baselines.foldHistory(absolutes, Baselines.metricCfg.getValue("skin_temp"))
+    return if (base.usable) raw - base.baseline else null
 }
 
 /**

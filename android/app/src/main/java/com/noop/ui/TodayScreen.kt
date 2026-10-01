@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -1390,7 +1391,16 @@ fun TodayScreen(
         // the iOS `dateLine` (EEEE, d MMMM). Mirrors iOS's date-under-title block.
         val humanDate = run {
             val keyDate = runCatching { LocalDate.parse(selectedDayKey) }.getOrNull() ?: selectedDay
-            keyDate.format(DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.getDefault()))
+            // "EEEE, d MMM", not "EEEE, d MMMM". The comment on the header cluster below already works
+            // out why there is no room: the title column is weight(1f) with maxLines = 1, Android
+            // carries a sync chip iOS has no equivalent of, and iOS can fade its title under a MEASURED
+            // cluster width where Android has no such reserve. The result on a 393dp phone was
+            // "Thursday, 1 …" — the month, the one part of a date nobody can infer, cut off.
+            //
+            // The WEEKDAY stays spelled out because it is what the line is for; the month abbreviates
+            // because "Oct" loses nothing next to a day picker that opens on tap. The same pattern is
+            // already used for the carried-night caption and the day-picker label.
+            keyDate.format(DateTimeFormatter.ofPattern("EEEE, d MMM", Locale.getDefault()))
         }
         // #486: header + wordmark + Arrange fold into ONE compact top cluster. Previously the decorative
         // "N O O P" wordmark and the pinned "Arrange" affordance were each their own full-width list item,
@@ -5550,15 +5560,28 @@ private fun DriverRow(driver: ChargeDriver) {
             String.format(Locale.getDefault(), "%+.1f", driver.value),
         )
     }
-    val baselineText = driver.baseline?.let { baseline -> when (driver.unit) {
-        ChargeDriverUnit.MILLISECONDS -> uiString(R.string.today_driver_baseline_ms, baseline.roundToInt())
-        ChargeDriverUnit.BEATS_PER_MINUTE -> uiString(R.string.today_driver_baseline_bpm, baseline.roundToInt())
-        ChargeDriverUnit.BREATHS_PER_MINUTE -> uiString(
-            R.string.today_driver_baseline_br_min,
-            String.format(Locale.getDefault(), "%.1f", RecoveryDrivers.displayRounded(baseline, 1)),
-        )
-        ChargeDriverUnit.PERCENT, ChargeDriverUnit.CELSIUS_DEVIATION -> ""
-    } } ?: ""
+    val baselineText = if (driver.unit == ChargeDriverUnit.CELSIUS_DEVIATION) {
+        // The deviation row carries no baseline NUMBER — zero drift IS the neutral, so the driver sets
+        // `baseline = null` — but it still needs the note saying what the value is measured against.
+        // That note used to ride inside the value itself ("+0.3 C vs baseline"), which made the
+        // right-hand column wide enough to squeeze the label column beside it down to a few dp and
+        // print "Skin temperature" one character per line. On the second line it costs no width, and
+        // it is where every other unit already puts its baseline note.
+        //
+        // The value's unit is Δ°C rather than a bare C for the reason #622 gives: a deviation that
+        // reads like a wrist temperature is the confusion this column keeps causing.
+        uiString(R.string.today_driver_baseline_deviation)
+    } else {
+        driver.baseline?.let { baseline -> when (driver.unit) {
+            ChargeDriverUnit.MILLISECONDS -> uiString(R.string.today_driver_baseline_ms, baseline.roundToInt())
+            ChargeDriverUnit.BEATS_PER_MINUTE -> uiString(R.string.today_driver_baseline_bpm, baseline.roundToInt())
+            ChargeDriverUnit.BREATHS_PER_MINUTE -> uiString(
+                R.string.today_driver_baseline_br_min,
+                String.format(Locale.getDefault(), "%.1f", RecoveryDrivers.displayRounded(baseline, 1)),
+            )
+            ChargeDriverUnit.PERCENT, ChargeDriverUnit.CELSIUS_DEVIATION -> ""
+        } } ?: ""
+    }
     val verdict = when (driver.verdict) {
         ChargeDriverVerdict.ABOVE_BASELINE_SUPPORTING -> uiString(R.string.today_driver_above_supporting)
         ChargeDriverVerdict.BELOW_BASELINE_SUPPORTING -> uiString(R.string.today_driver_below_supporting)
@@ -5612,9 +5635,28 @@ private fun DriverRow(driver: ChargeDriver) {
             Text(label, style = NoopType.headline, color = Palette.textPrimary)
             Text(verdict, style = NoopType.footnote, color = Palette.textSecondary)
         }
-        Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(valueText, style = NoopType.captionNumber, color = Palette.textPrimary)
-            Text(baselineText, style = NoopType.footnote, color = Palette.textTertiary)
+        // Bounded, because only the middle column is weighted: without a cap this one is measured
+        // first at whatever its text wants and the label column gets the remainder, which is how
+        // "Skin temperature" and "warmer than baseline, limiting recovery" ended up stacked one
+        // character per line. The cap is generous enough for "15.7 br/min" and its baseline note,
+        // the widest pair any driver produces.
+        Column(
+            modifier = Modifier.widthIn(max = 132.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                valueText,
+                style = NoopType.captionNumber,
+                color = Palette.textPrimary,
+                textAlign = TextAlign.End,
+            )
+            Text(
+                baselineText,
+                style = NoopType.footnote,
+                color = Palette.textTertiary,
+                textAlign = TextAlign.End,
+            )
         }
     }
 }

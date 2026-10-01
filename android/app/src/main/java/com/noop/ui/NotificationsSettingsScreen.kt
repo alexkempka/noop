@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -562,7 +563,10 @@ private fun CallsCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    // heightIn for the same reason as [FormToggleRow]: the second line here is a whole
+                    // sentence, and a fixed height cuts it off without saying so.
+                    .heightIn(min = 48.dp)
+                    .padding(vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
@@ -989,7 +993,13 @@ private fun FormToggleRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp),
+            // heightIn, not height. A FIXED 48 dp decides how tall the text is before anyone asks the
+            // text, and `help` is a full sentence that wraps to two or three lines on a phone. Every
+            // line past the 48th dp was simply cut off, with no ellipsis to admit it — the screen read
+            // "Skip alerts when the strap is" above a sliced half-row of letters. A MINIMUM keeps the
+            // row's 48 dp touch target and lets the sentence finish.
+            .heightIn(min = 48.dp)
+            .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {

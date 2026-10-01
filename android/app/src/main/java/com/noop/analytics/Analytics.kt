@@ -132,7 +132,14 @@ object IllnessWatch {
         }
 
         run {
-            val r = rm { it.skinTempDevC }
+            // DEVIATION nights only. `skinTempDevC` is bimodal — a CSV import writes ABSOLUTE °C into
+            // it while the computed pipeline writes a baseline deviation (#622/#1705) — and a worn
+            // wrist sits around 33 °C, which clears a 0.6 °C threshold every single night. On an
+            // import-only install this flag therefore fired permanently, and since the banner needs
+            // only two flags it read "Your body looks strained - HRV -33%, skin temp +33.2°C" as a
+            // standing statement about the wearer's health. A flag that cannot not fire carries no
+            // information; printed next to a temperature nobody has, it carries worse than none.
+            val r = rm { d -> d.skinTempDevC?.takeIf { !VitalBands.isAbsoluteSkinTemp(it) } }
             if (r != null && r >= 0.6) {
                 flags.add("skin temp +${formatOneDp(r)}°C")
             }
