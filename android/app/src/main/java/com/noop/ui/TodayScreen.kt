@@ -3232,6 +3232,20 @@ private fun HeroRingColumn(
             DomainTheme.Stress -> R.string.today_card_stress
         },
     )
+    // The badge under the ring gets the SHORT form of the name; every spoken and written use above and
+    // below keeps the full one. The same pairing the app already makes between the "HRV" tile and the
+    // "Heart rate variability" driver row, and here it is a hard constraint rather than a preference:
+    // this label is one line inside a fixed third of the screen, and the notes further down record it
+    // cutting the eight-letter German "ERHOLUNG" to "R…". "Sleep quality" is thirteen letters and
+    // "Schlafqualität" fourteen, so the full name could only ever have arrived here truncated.
+    val domainLabelShort = uiString(
+        when (domain) {
+            DomainTheme.Charge -> R.string.today_metric_charge
+            DomainTheme.Effort -> R.string.today_metric_effort
+            DomainTheme.Rest -> R.string.today_metric_rest_short
+            DomainTheme.Stress -> R.string.today_card_stress
+        },
+    )
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -3278,7 +3292,7 @@ private fun HeroRingColumn(
             // the complete fixed score-column width prevents longer translations (for example ERHOLUNG)
             // from pushing the third column right or being clipped at the screen edge.
             AutoSizeValue(
-                text = domainLabel.uppercase(),
+                text = domainLabelShort.uppercase(),
                 style = NoopType.overline,
                 color = Palette.textSecondary,
                 modifier = Modifier
