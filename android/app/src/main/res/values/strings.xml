@@ -2882,7 +2882,7 @@
     <string name="raw_diag_ecg_probe_running">A capture may still be running on this strap. The verdict goes to the strap log.</string>
     <string name="raw_diag_ecg_probe_wrist">Set which wrist you wear it on…</string>
     <string name="raw_diag_ecg_probe_wrist_title">Which wrist do you wear it on?</string>
-    <string name="raw_diag_ecg_probe_wrist_body">This writes a setting on the strap itself. Unlike Start and Stop it survives a disconnect, an app restart and a reboot, which is why it is asked separately.\n\nIt is reversible: pick the other wrist and the strap is told the other value.\n\nThe strap\'s reply is not proof — on this firmware it answers SUCCESS for a setting that was already correct and FAILURE for one it actually changed. The result goes to the strap log either way.</string>
+    <string name="raw_diag_ecg_probe_wrist_body">This writes a setting on the strap itself. Unlike Start and Stop it may outlive the session — surviving a disconnect, an app restart and a reboot. How long it really lasts is not established, so it is asked separately rather than assumed harmless.\n\nIt is reversible either way: pick the other wrist and the strap is told the other value.\n\nThe strap\'s reply is not proof — on this firmware it answers SUCCESS for a setting that was already correct and FAILURE for one it actually changed. The result goes to the strap log either way.</string>
     <string name="raw_diag_ecg_probe_wrist_right">Right wrist</string>
     <string name="raw_diag_ecg_probe_wrist_left">Left wrist</string>
 </resources>

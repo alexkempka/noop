@@ -5171,6 +5171,20 @@ class WhoopBleClient(
     private val ECG_PROBE_TAIL_CANDIDATES = 10
 
     /**
+     * Gap between the commands of one ECG sequence (see [ecgRunSteps]).
+     *
+     * The spec calls these ordered session transitions — *"these controls write shared session requests
+     * in event order"* — not a set of independent switches, and handing four writes to the stack inside
+     * one millisecond gives the strap no gap to act in. It is also what the write channel was visibly
+     * complaining about: a burst logged 23 to 48 BUSY retries.
+     *
+     * 120 ms is the same order as the 80 ms the R22 flag sequence already uses for the same reason, with
+     * headroom because these writes carry a session transition rather than a config value. The whole
+     * seven-step start costs well under a second, against a reading that runs for about 38.
+     */
+    private val ECG_COMMAND_GAP_MS = 120L
+
+    /**
      * Guards every probe accumulator below. [noteEcgProbeCandidate] runs on the BINDER thread (the
      * notify handler), while the verdict reads on the main looper, so `toList()` against a concurrent
      * `add()` is a real ConcurrentModificationException and `+= 1` is not atomic. The established
@@ -5215,11 +5229,11 @@ class WhoopBleClient(
     @Volatile private var ecgProbeArmed = false
 
     /**
-     * The same idea as [ecgProbeArmed], for the ONE opcode that writes persistent strap state.
+     * The same idea as [ecgProbeArmed], for the ONE opcode whose effect may outlive the session.
      *
      * Set only for the duration of [ecgSelectWrist]'s single send. Separate from [ecgProbeArmed] so the
-     * start/stop burst — which the wearer consented to as a SESSION action — can never carry a
-     * persistent write with it.
+     * start/stop burst — which the wearer consented to as a SESSION action — can never carry a write
+     * with it that the session does not undo.
      */
     @Volatile private var ecgWristWriteArmed = false
 
@@ -5295,21 +5309,103 @@ class WhoopBleClient(
     }
 
     /** One command, recorded at send time. `requestsRealtimeData` is knowable ONLY here: the reply
-     *  carries neither opcode nor argument, and every verdict that reads silence as evidence needs it. */
-    private fun sendEcgCommand(cmd: CommandNumber, arg: Int) {
+     *  carries neither opcode nor argument, and every verdict that reads silence as evidence needs it.
+     *
+     *  `recordStep = false` for the teardown that OPENS a run (see [ecgResolvePreviousSession]): those
+     *  sends are housekeeping, and a FAILURE from one of them — which is the EXPECTED answer when there
+     *  was no session to resolve — would classify the whole run as `commandRefused` and mask the ECG
+     *  outcome the run exists to establish. Same reasoning as [ecgSendAbortHistorical]. */
+    private fun sendEcgCommand(cmd: CommandNumber, arg: Int, recordStep: Boolean = true) {
         val label = "${CommandNames.label(cmd.rawValue)}(${cmd.rawValue})"
-        synchronized(ecgProbeLock) {
-            ecgProbeSteps.add(
-                Whoop5EcgProbe.Step(
-                    label = label,
-                    outcome = Whoop5EcgProbe.CommandOutcome.NoReply,
-                    requestsRealtimeData = Whoop5Ecg.requestsRealtimeData(cmd.rawValue, arg),
-                ),
-            )
+        if (recordStep) {
+            synchronized(ecgProbeLock) {
+                ecgProbeSteps.add(
+                    Whoop5EcgProbe.Step(
+                        label = label,
+                        outcome = Whoop5EcgProbe.CommandOutcome.NoReply,
+                        requestsRealtimeData = Whoop5Ecg.requestsRealtimeData(cmd.rawValue, arg),
+                    ),
+                )
+            }
         }
         log("ECG probe: → $label payload=${Whoop5Ecg.commandPayload(arg).joinToString("") { "%02x".format(it) }}")
         send(cmd, Whoop5Ecg.commandPayload(arg).map { it.toByte() }.toByteArray())
     }
+
+    /**
+     * Run an ECG command sequence SPACED OUT instead of as one synchronous burst, and disarm once the
+     * last step has gone out.
+     *
+     * Two reasons the burst was wrong:
+     *
+     *  - The spec treats these as ordered session transitions, not a set of independent switches:
+     *    *"these controls write shared session requests in event order"*. Four writes handed to the
+     *    stack in the same millisecond arrive in order but give the strap no gap to act in.
+     *  - The write channel measurably could not keep up. Before the IMU fail-safe was silenced a run
+     *    logged 23 to 48 BUSY retries; the gap removes the remaining contention rather than relying on
+     *    the retry path.
+     *
+     * [ecgProbeArmed] therefore stays true across the whole sequence rather than for one synchronous
+     * call. That is still "a run is in flight" and nothing weaker — the window is under two seconds, it
+     * is opened only by the three entry points, and it is closed by a post that is scheduled
+     * unconditionally, so a throwing step cannot leave the opcodes admissible.
+     *
+     * Each step is wrapped: one failing send must not take the rest of the sequence with it, least of
+     * all a teardown step on the way to a stop.
+     */
+    private fun ecgRunSteps(steps: List<() -> Unit>, onFinished: () -> Unit) {
+        ecgProbeArmed = true
+        steps.forEachIndexed { i, step ->
+            handler.postDelayed({
+                try {
+                    step()
+                } catch (t: Throwable) {
+                    log("ECG probe: step ${i + 1}/${steps.size} failed — ${t.javaClass.simpleName}: ${t.message}")
+                }
+            }, ECG_COMMAND_GAP_MS * i)
+        }
+        handler.postDelayed({
+            ecgProbeArmed = false
+            onFinished()
+        }, ECG_COMMAND_GAP_MS * steps.size)
+    }
+
+    /**
+     * The missing "Abschluss": resolve whatever session the strap is still holding BEFORE opening a new
+     * one. Sent as the first three steps of every start, and the one thing `docs/PROTOCOL_ECG.md` states
+     * outright rather than leaves open:
+     *
+     * > *"Serialize ECG session transitions and **resolve the previous session before starting
+     * > another**. […] Neither is an idempotent ensure-running operation."*
+     *
+     * > *"When accompanying optical/IMU collection was enabled by an earlier successful ECG start,
+     * > another start can cause a later ECG stop to omit the companion-off requests."*
+     *
+     * NOOP has always started cold. On a strap that is still holding a half-open session that is a
+     * REPEATED START, which is exactly the case the spec names as the one that loses the companion-off
+     * requests — and it matches the observation this was written for: on one MG the first run after a
+     * reading finished in the official app measured, and every later run returned empty packets.
+     *
+     * Deliberately the same three OFFs the stop path sends, in the same order, and deliberately not
+     * conditional on [ecgMayBeRunning]: that latch only knows about sessions THIS app opened. It cannot
+     * know about one the official app left behind, which is the case that matters here.
+     *
+     * None of this is recorded as a probe step — see [sendEcgCommand]. A FAILURE here is the expected
+     * answer when there was nothing to resolve, and it says nothing about the run that follows.
+     *
+     * What this does NOT claim: that it reproduces what the official app sends at the end of a reading.
+     * Nobody here has seen those bytes. This is the documented teardown, applied where the spec says to
+     * apply it.
+     */
+    private fun ecgResolvePreviousSession(): List<() -> Unit> = listOf(
+        {
+            log("ECG probe: resolving any previous session before starting a new one (PROTOCOL_ECG.md: " +
+                "\"resolve the previous session before starting another\")")
+            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION, Whoop5Ecg.ControlSignal.STOP.raw, recordStep = false)
+        },
+        { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_RAW_SAVE, 0, recordStep = false) },
+        { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_FILTERED, 0, recordStep = false) },
+    )
 
     private fun beginEcgProbeRun() {
         synchronized(ecgProbeLock) {
@@ -5380,12 +5476,19 @@ class WhoopBleClient(
      * PREPARE list Android could not send, because Android had no wrist-selection surface.
      *
      * Deliberately its OWN entry point, never folded into [ecgStartCapture]. This is the only command in
-     * the family whose effect outlives the session, so the wearer picks the wrist explicitly and confirms
-     * it on its own — and [ecgWristWriteArmed] rather than [ecgProbeArmed] keeps it off the wire during
-     * the start/stop burst.
+     * the family whose effect may outlive the session, so the wearer picks the wrist explicitly and
+     * confirms it on its own — and [ecgWristWriteArmed] rather than [ecgProbeArmed] keeps it off the
+     * wire during the start/stop burst.
+     *
+     * HOW PERSISTENT, exactly: unknown, and the two sources in this repo disagree. [Whoop5Ecg] calls it
+     * persistent device config that survives a disconnect; `docs/PROTOCOL_ECG.md` says the opposite in
+     * as many words — *"It updates the current selection; persistence is not established. […] Do not
+     * […] promise a persistent selection."* Treated here as the more cautious of the two: a wearer is
+     * warned it may stay, because warning about a write that turns out to be temporary costs nothing
+     * and the reverse does not. Nothing in the app tells the wearer it definitely persists.
      *
      * Raw values are right=1/left=2 (see [Whoop5Ecg.WristSelection]). Re-sending with the other wrist is
-     * the whole remedy if a strap disagrees, so the write is reversible.
+     * the whole remedy if a strap disagrees, so the write is reversible either way.
      *
      * The reply proves nothing: on this firmware SELECT_WRIST answers SUCCESS for a no-op and FAILURE for
      * a real change (#907/#891), which is why the verdict is scheduled like any other probe run rather
@@ -5429,19 +5532,18 @@ class WhoopBleClient(
         ecgMayBeRunning = true   // latched BEFORE the sends, so a mid-sequence drop still offers Stop
         beginEcgProbeRun()
         log("ECG probe: starting the ECG turn-on sequence on an MG (experimental, unvalidated instrumentation)")
-        ecgProbeArmed = true
-        try {
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_FILTERED, 1)
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_RAW_SAVE, 1)
-            ecgSendAbortHistorical()
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION, Whoop5Ecg.ControlSignal.START.raw)
-        } finally {
-            ecgProbeArmed = false
-            // Scheduled in the finally, because it is what CLOSES the listen window. If a send threw,
-            // an early return would leave `ecgProbeListening` true forever and the triage running on
-            // every frame for the life of the process.
-            scheduleEcgProbeVerdict()
-        }
+        ecgRunSteps(
+            ecgResolvePreviousSession() + listOf(
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_FILTERED, 1) },
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_RAW_SAVE, 1) },
+                { ecgSendAbortHistorical() },
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION, Whoop5Ecg.ControlSignal.START.raw) },
+            ),
+            // Scheduled by ecgRunSteps' own unconditional post, because it is what CLOSES the listen
+            // window: a throwing step must not leave `ecgProbeListening` true for the life of the
+            // process, with the triage then running on every frame that arrives.
+            onFinished = { scheduleEcgProbeVerdict() },
+        )
     }
 
     /**
@@ -5451,7 +5553,7 @@ class WhoopBleClient(
      * off mid-capture could never stop the strap. All three OFFs are attempted unconditionally, because
      * a partial startup leaves components enabled and there is no auto-rollback on the strap.
      */
-    fun ecgStopCapture(reportsResult: Boolean = true) {
+    fun ecgStopCapture(reportsResult: Boolean = true, onSettled: (() -> Unit)? = null) {
         if (!ecgGatesAllow(requiresOptIn = false)) {
             if (ecgMayBeRunning) {
                 log("ECG probe: stop could not be sent (needs a connected MG) — the strap may still be " +
@@ -5461,21 +5563,26 @@ class WhoopBleClient(
         }
         if (reportsResult) beginEcgProbeRun() else synchronized(ecgProbeLock) { ecgProbeSteps.clear() }
         log("ECG probe: stopping ECG data generation and both streams")
-        ecgProbeArmed = true
-        try {
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION, Whoop5Ecg.ControlSignal.STOP.raw)
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_RAW_SAVE, 0)
-            sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_FILTERED, 0)
-            // Cleared only once all three OFFs have gone out. If a send threw, the strap may still be
-            // generating and the latch must stay true so Stop keeps being offered.
-            ecgMayBeRunning = false
-        } finally {
-            ecgProbeArmed = false
-            // In the finally for the same reason as the start path: with `reportsResult` this already
-            // opened the listen window, so a throwing send would otherwise leave it open for the life
-            // of the process.
-            if (reportsResult) scheduleEcgProbeVerdict()
-        }
+        ecgRunSteps(
+            listOf(
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION, Whoop5Ecg.ControlSignal.STOP.raw) },
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_RAW_SAVE, 0) },
+                { sendEcgCommand(CommandNumber.TOGGLE_LABRADOR_FILTERED, 0) },
+            ),
+            onFinished = {
+                // Cleared only once all three OFFs have actually gone out — which is now a point in
+                // time rather than the end of a synchronous block. Each step catches its own failure,
+                // so reaching here means all three were attempted.
+                ecgMayBeRunning = false
+                // The latch now clears a few hundred ms after the tap instead of inside it, so a caller
+                // that reads the property straight after this returns would still see the OLD value —
+                // and on the Test Centre screen that means a Stop that visibly does nothing and a Start
+                // that stays greyed out: the dead end this screen already had once. The callback runs on
+                // the main looper, so a Compose state write in it is safe.
+                onSettled?.invoke()
+                if (reportsResult) scheduleEcgProbeVerdict()
+            },
+        )
     }
 
     /**

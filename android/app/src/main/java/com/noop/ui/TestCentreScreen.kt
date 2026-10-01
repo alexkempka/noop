@@ -415,7 +415,14 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
                                 text = stringResource(R.string.raw_diag_ecg_probe_stop),
                                 kind = NoopButtonKind.Secondary,
                                 enabled = live.bonded && ecgVariant.isMG,
-                                onClick = { vm.ble.ecgStopCapture(); ecgMayBeRunning = vm.ble.ecgMayBeRunning },
+                                // Der Merker faellt erst, wenn alle drei Aus-Befehle raus sind — das
+                                // ist jetzt ein spaeterer Zeitpunkt und nicht mehr das Ende des
+                                // Aufrufs. Ohne den Rueckruf bliebe der Startknopf gesperrt.
+                                onClick = {
+                                    vm.ble.ecgStopCapture(
+                                        onSettled = { ecgMayBeRunning = vm.ble.ecgMayBeRunning },
+                                    )
+                                },
                             )
                             // Die Handgelenkswahl ist bewusst ein eigener Knopf mit eigener
                             // Rueckfrage und nicht Teil des Startablaufs: SELECT_WRIST schreibt
