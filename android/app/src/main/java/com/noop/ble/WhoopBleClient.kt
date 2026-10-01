@@ -5212,7 +5212,10 @@ class WhoopBleClient(
     private fun ecgProbeReportLines(): List<String> {
         if (ecgProbeTail.isEmpty()) return ecgProbeCandidates.toList()
         val gap = if (ecgProbeOmitted > 0) {
-            listOf("… ${'$'}ecgProbeOmitted further packet(s) not shown …")
+            // Not ${'$'}: that escapes the dollar and prints the VARIABLE NAME, which is what the
+            // 17:49 report did — "… $ecgProbeOmitted further packet(s) not shown …" with no number
+            // in it, in the one line whose whole job is to say how many packets are missing.
+            listOf("… $ecgProbeOmitted further packet(s) not shown …")
         } else {
             emptyList()
         }
@@ -5418,15 +5421,44 @@ class WhoopBleClient(
         ecgProbeListening = true
     }
 
-    private fun scheduleEcgProbeVerdict() {
-        handler.postDelayed({
-            ecgProbeListening = false
-            val (steps, packets, candidates) = synchronized(ecgProbeLock) {
-                Triple(ecgProbeSteps.toList(), ecgProbePacketsSeen, ecgProbeReportLines())
+    /**
+     * Close the listen window after [afterSeconds] and write the report.
+     *
+     * CANCELS a verdict still pending from an earlier run, because runs share one set of accumulators.
+     * Without that, two taps a few seconds apart produced TWO verdicts — and since the second run had
+     * already cleared and refilled the accumulators, both printed the SECOND run's packets under the
+     * first run's heading. The 17:49 strap log carries three such reports of the same 53 packets, two
+     * of them belonging to wrist writes that sent no data command at all. A report that is wrong about
+     * which run it describes is worse than no report.
+     */
+    private fun scheduleEcgProbeVerdict(afterSeconds: Int = ECG_PROBE_WINDOW_SECONDS) {
+        ecgProbeVerdictPending?.let { handler.removeCallbacks(it) }
+        val verdict = object : Runnable {
+            override fun run() {
+                ecgProbeVerdictPending = null
+                ecgProbeListening = false
+                val (steps, packets, candidates) = synchronized(ecgProbeLock) {
+                    Triple(ecgProbeSteps.toList(), ecgProbePacketsSeen, ecgProbeReportLines())
+                }
+                log(Whoop5EcgProbe.report(steps, packets, candidates, afterSeconds))
             }
-            log(Whoop5EcgProbe.report(steps, packets, candidates, ECG_PROBE_WINDOW_SECONDS))
-        }, ECG_PROBE_WINDOW_SECONDS * 1000L)
+        }
+        ecgProbeVerdictPending = verdict
+        handler.postDelayed(verdict, afterSeconds * 1000L)
     }
+
+    /** The verdict post still waiting to fire, so a newer run can cancel it. */
+    private var ecgProbeVerdictPending: Runnable? = null
+
+    /**
+     * The wrist write's own, much shorter window.
+     *
+     * A full minute is the right wait for a READING. SELECT_WRIST requests no data — the probe's own
+     * rule set says so (`requestsRealtimeData` is false for 123 on either argument) — so a minute spent
+     * listening after it only buys an empty report, and, worse, a window still open when the wearer taps
+     * Start a few seconds later.
+     */
+    private val ECG_WRIST_VERDICT_SECONDS = 5
 
     /**
      * The START list's first member: ABORT_HISTORICAL_TRANSMITS (20), immediately ahead of `124`.
@@ -5511,7 +5543,7 @@ class WhoopBleClient(
             ecgWristWriteArmed = false
             // In the finally for the same reason as the start/stop paths: the listen window is already
             // open, and a throwing send would otherwise leave it open for the life of the process.
-            scheduleEcgProbeVerdict()
+            scheduleEcgProbeVerdict(ECG_WRIST_VERDICT_SECONDS)
         }
     }
 
