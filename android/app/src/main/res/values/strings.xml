@@ -2887,4 +2887,10 @@
     <string name="raw_diag_ecg_probe_wrist_body">This writes a setting on the strap itself. Unlike Start and Stop it may outlive the session — surviving a disconnect, an app restart and a reboot. How long it really lasts is not established, so it is asked separately rather than assumed harmless.\n\nIt is reversible either way: pick the other wrist and the strap is told the other value.\n\nThe strap\'s reply is not proof — on this firmware it answers SUCCESS for a setting that was already correct and FAILURE for one it actually changed. The result goes to the strap log either way.</string>
     <string name="raw_diag_ecg_probe_wrist_right">Right wrist</string>
     <string name="raw_diag_ecg_probe_wrist_left">Left wrist</string>
+    <string name="live_session_notif_title">Live session running</string>
+    <string name="live_session_notif_body">Guarding %1$d–%2$d bpm. Your strap taps when you drift off the band.</string>
+    <string name="live_session_notif_body_cues">Guarding %1$d–%2$d bpm · %3$d taps so far. Your strap taps when you drift off the band.</string>
+    <string name="live_session_notif_stop">Stop</string>
+    <string name="live_session_channel_name">Live session</string>
+    <string name="live_session_channel_desc">Shows while a Live Session is running, so you can stop it from anywhere.</string>
 </resources>

@@ -2871,4 +2871,10 @@
     <string name="raw_diag_ecg_probe_wrist_body">Das schreibt eine Einstellung auf den Strap selbst. Anders als Starten und Stoppen kann sie die Sitzung überdauern — also das Trennen, einen Neustart der App und einen Neustart des Straps. Wie lange sie wirklich bleibt, ist nicht belegt; deshalb wird sie getrennt abgefragt statt stillschweigend mitgeschickt.\n\nUmkehrbar ist sie in jedem Fall: Wähle das andere Handgelenk, dann bekommt der Strap den anderen Wert.\n\nDie Antwort des Straps ist kein Beweis — diese Firmware meldet ERFOLG, wenn die Einstellung ohnehin schon stimmte, und FEHLER, wenn sie wirklich geändert wurde. Das Ergebnis steht in beiden Fällen im Strap-Log.</string>
     <string name="raw_diag_ecg_probe_wrist_right">Rechtes Handgelenk</string>
     <string name="raw_diag_ecg_probe_wrist_left">Linkes Handgelenk</string>
+    <string name="live_session_notif_title">Live-Sitzung läuft</string>
+    <string name="live_session_notif_body">Zielbereich %1$d–%2$d bpm. Dein Band tippt dich an, wenn du daneben liegst.</string>
+    <string name="live_session_notif_body_cues">Zielbereich %1$d–%2$d bpm · bisher %3$d Mal angetippt. Dein Band tippt dich an, wenn du daneben liegst.</string>
+    <string name="live_session_notif_stop">Beenden</string>
+    <string name="live_session_channel_name">Live-Sitzung</string>
+    <string name="live_session_channel_desc">Wird angezeigt, solange eine Live-Sitzung läuft, damit du sie von überall beenden kannst.</string>
 </resources>

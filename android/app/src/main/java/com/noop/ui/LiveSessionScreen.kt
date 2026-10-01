@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.noop.analytics.LiveSessionEngine
+import com.noop.notif.LiveSessionNotifier
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate
@@ -103,18 +104,40 @@ fun startOrResumeLiveSession(vm: AppViewModel, context: Context): LiveSessionRun
         ?: vm.recentDays.value.lastOrNull { it.restingHr != null }?.restingHr
         ?: 60
     val profile = ProfileStore.from(context.applicationContext)
+    val config = LiveSessionEngine.Config(
+        restingHR = restingHr.toDouble(),
+        hrMax = profile.hrMax.toDouble(),
+        charge = today?.recovery,
+    )
+    // The band is computed here rather than read off the runner because the notification closure below
+    // is a constructor argument — it cannot reach the object it is being handed to. Same pure function
+    // the runner calls, so the two can never name different numbers.
+    val band = LiveSessionEngine.band(config)
+    val app = context.applicationContext
     val runner = LiveSessionRunner(
-        config = LiveSessionEngine.Config(
-            restingHR = restingHr.toDouble(),
-            hrMax = profile.hrMax.toDouble(),
-            charge = today?.recovery,
-        ),
+        config = config,
         deviceId = vm.activeStrapId,
         scope = vm.viewModelScope,
         readBpm = { vm.live.value.heartRate },
         buzz = { loops -> vm.buzz(loops, HapticPrefs.LIVE_SESSION) },
         persist = { row -> vm.repo.upsertLiveSession(row) },
         realtimeHr = { arm -> if (arm) vm.requestRealtimeHr() else vm.releaseRealtimeHr() },
+        // The ongoing notification, so a session that outlives this dialog stays findable and
+        // stoppable. applicationContext, never a screen's: the session belongs to the app and
+        // routinely outlives whatever opened it.
+        onVisibleChange = { snap ->
+            if (snap.ended) {
+                LiveSessionNotifier.hide(app)
+            } else {
+                LiveSessionNotifier.showRunning(
+                    app,
+                    floorBpm = band.floorBpm.roundToInt(),
+                    ceilingBpm = band.ceilingBpm.roundToInt(),
+                    pushCount = snap.pushCount,
+                    easeCount = snap.easeCount,
+                )
+            }
+        },
     )
     // begin() is replace-guarded: an in-flight session is returned as-is and the fresh runner (which has
     // no side effects until started) is simply dropped, so a double-tap can never fork two sessions.

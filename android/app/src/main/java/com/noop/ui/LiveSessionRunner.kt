@@ -47,6 +47,14 @@ class LiveSessionRunner(
     private val realtimeHr: (Boolean) -> Unit,
     /** Provenance token stored on the row (which live source fed the session). */
     private val hrSource: String = "whoop",
+    /**
+     * Called when the session's VISIBLE state changes — at start, after each cue, and at end — so a
+     * surface outside this class can follow a session that outlives the dialog which opened it. A
+     * closure, like every other side effect here, so the runner stays constructible in a JVM test with
+     * no Android framework. NOT called per tick: the only thing that changes every second is the
+     * elapsed count, and re-posting a notification once a second for that is noise.
+     */
+    private val onVisibleChange: (Snapshot) -> Unit = {},
     /** Injectable clock (epoch seconds) so the tick/accrual/auto-end logic is testable. */
     private val nowEpochSec: () -> Long = { System.currentTimeMillis() / 1000L },
 ) {
@@ -98,11 +106,19 @@ class LiveSessionRunner(
     // the guardian has nothing honest to guard). Any accepted sample resets it.
     private var staleRunSec = 0
 
+    // Cues sent since the wearer was last IN the band. The stale auto-end only covers a strap that went
+    // away; this covers the opposite case, which is the one a real wearer hit: strap on, stream fine,
+    // sitting still, so every cue lands and none of them is acted on. One session sent 162 buzzes over
+    // 72 minutes that way, every 50 seconds, and would not have stopped on its own. Any second spent in
+    // the band resets this — a session being followed is never cut short.
+    private var unansweredCues = 0
+
     /** Begin the session: arm the realtime HR stream, bank the start row (endTs null), start the tick. */
     fun start() {
         if (tickJob != null || ended) return
         realtimeHr(true)
         scope.launch { runCatching { persist(openRow()) } }
+        onVisibleChange(_snapshot.value)
         tickJob = scope.launch {
             while (isActive) {
                 tick()
@@ -124,6 +140,7 @@ class LiveSessionRunner(
         realtimeHr(false)
         endTs = nowEpochSec()
         publish()
+        onVisibleChange(_snapshot.value)
         scope.launch { runCatching { persist(closedRow()) } }
     }
 
@@ -147,14 +164,27 @@ class LiveSessionRunner(
             when (out.position) {
                 LiveSessionEngine.Position.BELOW -> belowSec += accrual
                 LiveSessionEngine.Position.ABOVE -> aboveSec += accrual
-                LiveSessionEngine.Position.IN_BAND -> Unit // the engine accrues in-band time itself
+                LiveSessionEngine.Position.IN_BAND -> {
+                    unansweredCues = 0  // the coaching landed; the session has earned its keep
+                    // the engine accrues in-band time itself
+                }
             }
         }
 
         out.cue?.let { fireCue(it) }
         publish(out)
 
-        if (staleRunSec >= AUTO_END_AFTER_STALE_SEC) end(auto = true)
+        when {
+            // The strap went away: nothing honest left to guard.
+            staleRunSec >= AUTO_END_AFTER_STALE_SEC -> end(auto = true)
+            // The strap is here and the nudges are not landing. Ten of them is roughly eight minutes at
+            // the engine's 50-second cooldown — long enough that a wearer who meant to answer has, and
+            // short enough that one who did not is left alone.
+            unansweredCues >= AUTO_END_AFTER_UNANSWERED_CUES -> end(auto = true)
+            // The backstop, for a session that straddles the band often enough never to trip the two
+            // rules above. Nothing about this feature needs to run for half a day.
+            now - startTs >= AUTO_END_AFTER_SEC -> end(auto = true)
+        }
     }
 
     /**
@@ -174,6 +204,10 @@ class LiveSessionRunner(
             LiveSessionEngine.Cue.PUSH_NUDGE -> pushCount += 1
             LiveSessionEngine.Cue.EASE_OFF -> easeCount += 1
         }
+        unansweredCues += 1
+        // After the counters, so the notification carries the cue that just went out rather than the
+        // one before it.
+        onVisibleChange(_snapshot.value.copy(pushCount = pushCount, easeCount = easeCount))
         walkJob = scope.launch {
             for (pulse in LiveSessionHaptics.pulses(signal)) {
                 buzz(if (pulse.isLong) 2 else 1)
@@ -216,6 +250,20 @@ class LiveSessionRunner(
     companion object {
         /** 10 minutes of continuous STALE and the guardian bows out (nothing honest left to guard). */
         const val AUTO_END_AFTER_STALE_SEC = 600
+
+        /**
+         * Cues sent with no second spent in the band between them before the session ends itself.
+         *
+         * At the engine's 50-second cooldown this is roughly eight minutes of nudging that is not being
+         * answered. The number exists because the stale rule above covers only a strap that LEFT: a
+         * wearer sitting still with the strap on keeps the stream healthy, so the session read as
+         * perfectly alive while it buzzed every 50 seconds. A real one ran 72 minutes and 162 buzzes
+         * that way and would not have stopped on its own.
+         */
+        const val AUTO_END_AFTER_UNANSWERED_CUES = 10
+
+        /** The outer backstop: no live session runs longer than this, however well it is going. */
+        const val AUTO_END_AFTER_SEC = 4 * 60 * 60
 
         // The single in-flight (or just-ended, awaiting its summary "Done") session, process-visible so
         // Today's entry card and a re-opened dialog find the SAME session after a dismissal — mirroring

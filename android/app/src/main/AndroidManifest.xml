@@ -265,6 +265,16 @@
         <!-- Home-screen widget (today's recovery + live HR + strap battery). exported=true is
              required so the launcher can deliver APPWIDGET_UPDATE; it renders only from our own
              SharedPreferences snapshot. -->
+        <!-- The Stop button on the Live Session notification. NOT exported: only NOOP's own
+             PendingIntent reaches it, so nothing outside the app can end a session. -->
+        <receiver
+            android:name="com.noop.notif.LiveSessionNotifier$StopReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.noop.action.LIVE_SESSION_STOP" />
+            </intent-filter>
+        </receiver>
+
         <receiver
             android:name="com.noop.widget.NoopWidgetReceiver"
             android:exported="true"
