@@ -5,6 +5,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -79,6 +81,7 @@ import kotlin.math.roundToInt
  * from TestCentreLayout.visibleModes; sections 2 to 4 re-host the same strap-log / recalibrate /
  * scheduled-export / experimental controls on the same bindings the Settings cards use. No em-dash.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = {}) {
     val context = LocalContext.current
@@ -342,7 +345,16 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
                         },
                     )
                     if (ecgRawData) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        // FlowRow, nicht Row: Die Beschriftungen sind in mehreren Sprachen zu
+                        // breit fuer eine Zeile, und NoopButton kuerzt seinen Text nicht um,
+                        // sondern wird aus dem Bild geschoben. Ein deutscher Nutzer kam so an
+                        // den Stopp-Knopf nur im Querformat — und weil ecgMayBeRunning das
+                        // Starten sperrt, bis ein Stopp durchgelaufen ist, war das eine
+                        // Sackgasse: weder starten noch stoppen.
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
                             NoopButton(
                                 text = stringResource(R.string.raw_diag_ecg_on),
                                 kind = NoopButtonKind.Secondary,
@@ -376,7 +388,16 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
                         },
                     )
                     if (ecgProbe || ecgMayBeRunning) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        // FlowRow, nicht Row: Die Beschriftungen sind in mehreren Sprachen zu
+                        // breit fuer eine Zeile, und NoopButton kuerzt seinen Text nicht um,
+                        // sondern wird aus dem Bild geschoben. Ein deutscher Nutzer kam so an
+                        // den Stopp-Knopf nur im Querformat — und weil ecgMayBeRunning das
+                        // Starten sperrt, bis ein Stopp durchgelaufen ist, war das eine
+                        // Sackgasse: weder starten noch stoppen.
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
                             NoopButton(
                                 text = stringResource(R.string.raw_diag_ecg_probe_start),
                                 kind = NoopButtonKind.Secondary,

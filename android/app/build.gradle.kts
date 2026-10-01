@@ -26,8 +26,12 @@ android {
         applicationId = "com.noop.whoop"
         minSdk = 26
         targetSdk = 34
-        versionCode = 548
-        versionName = "11.8.0"
+        // 549/"11.8.0-mg" marks this fork's own build: the upstream staging APK the wearer already
+        // has is 548/"11.8.0-staging", and two installs that differ only in what is inside them are
+        // the one thing a tester cannot check. Same applicationId and the same committed signing key,
+        // so this still installs straight over it and keeps the imported history.
+        versionCode = 549
+        versionName = "11.8.0-mg"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

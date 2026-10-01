@@ -2673,6 +2673,16 @@ class WhoopBleClient(
         val type = frame[8].toInt() and 0xFF
         if (type != 43 && type != 51) return
         if (groundTruthImuSessionId != null || PuffinExperiment.from(context).isCaptureEnabled) return
+        // An ECG session produces type-43 packets too, so during one this fail-safe fires on the very
+        // thing the session exists to collect — and its STOP_RAW_DATA / TOGGLE_IMU_MODE writes land in
+        // the middle of the measurement. Observed on an MG (fw 50.42.1.0): the stop went out in the
+        // SAME SECOND as the turn-on burst, and twice more while the strap was still streaming.
+        //
+        // Both flags, not one. [ecgProbeListening] covers the 30s verdict window, but a wearer holding
+        // the electrodes for a full reading outlasts it; [ecgMayBeRunning] is this app's own record
+        // that the strap may still be generating, which is exactly when a type-43 packet is expected
+        // rather than unexpected. It clears on a completed stop, so the fail-safe comes back with it.
+        if (ecgProbeListening || ecgMayBeRunning) return
         val now = System.currentTimeMillis()
         if (now - groundTruthImuStoppedAtMs < 3_000L || now - unexpectedImuStopAtMs < 30_000L) return
         if (gatt == null || cmdCharacteristic == null) return
@@ -5147,11 +5157,20 @@ class WhoopBleClient(
     // ---- WHOOP MG ECG ("Labrador") turn-on probe — twin of macOS BLEManager.ecg* ----------------
 
     /** Listen window after the turn-on burst, matching macOS `ecgProbeWindow`. */
-    private val ECG_PROBE_WINDOW_SECONDS = 30
+    // 60, not 30: a wearer holding both clasp electrodes for a real reading outlasts half a minute,
+    // and the window is what ENDS THE REPORT, not the measurement. At 30 the report was written while
+    // the progress counter was still climbing, so a run that may have completed read as one that
+    // stalled. The report carries this number, so raising it stays self-describing.
+    private val ECG_PROBE_WINDOW_SECONDS = 60
 
     /** Detailed candidate lines are capped; the PACKET COUNT is not, so the verdict stays complete
      *  while a chatty stream cannot grow the strap log without bound. Matches macOS. */
-    private val ECG_PROBE_MAX_CANDIDATES = 12
+    // Head AND tail, not a hard stop at 12. At roughly one packet a second the old cap showed the
+    // first eleven seconds of a reading and nothing else — which is exactly where a run is still
+    // settling and every field still reads zero. The interesting part, the progress counter moving,
+    // starts after it. Keeping both ends bounds the log and still shows how the run ENDED.
+    private val ECG_PROBE_HEAD_CANDIDATES = 10
+    private val ECG_PROBE_TAIL_CANDIDATES = 10
 
     /**
      * Guards every probe accumulator below. [noteEcgProbeCandidate] runs on the BINDER thread (the
@@ -5167,6 +5186,26 @@ class WhoopBleClient(
 
     /** Structural-triage hits: the empirical search for the packet TYPE these records arrive under. */
     private val ecgProbeCandidates = mutableListOf<String>()
+
+    /** The most recent packets, so the report shows how a run ended and not only how it began. */
+    private val ecgProbeTail = ArrayDeque<String>()
+
+    /** How many packets fell between head and tail, for the omission marker in the report. */
+    private var ecgProbeOmitted = 0
+
+    /** The last packet's moving fields, so an unchanged repeat does not get its own log line. */
+    private var ecgProbeLastSignature: String? = null
+
+    /** Head, an omission marker when packets fell out, then the tail. Caller holds [ecgProbeLock]. */
+    private fun ecgProbeReportLines(): List<String> {
+        if (ecgProbeTail.isEmpty()) return ecgProbeCandidates.toList()
+        val gap = if (ecgProbeOmitted > 0) {
+            listOf("… ${'$'}ecgProbeOmitted further packet(s) not shown …")
+        } else {
+            emptyList()
+        }
+        return ecgProbeCandidates.toList() + gap + ecgProbeTail.toList()
+    }
 
     private var ecgProbePacketsSeen = 0
 
@@ -5246,6 +5285,8 @@ class WhoopBleClient(
         synchronized(ecgProbeLock) {
             ecgProbeSteps.clear()
             ecgProbeCandidates.clear()
+            ecgProbeTail.clear()
+            ecgProbeOmitted = 0
             ecgProbePacketsSeen = 0
         }
         ecgProbeListening = true
@@ -5255,7 +5296,7 @@ class WhoopBleClient(
         handler.postDelayed({
             ecgProbeListening = false
             val (steps, packets, candidates) = synchronized(ecgProbeLock) {
-                Triple(ecgProbeSteps.toList(), ecgProbePacketsSeen, ecgProbeCandidates.toList())
+                Triple(ecgProbeSteps.toList(), ecgProbePacketsSeen, ecgProbeReportLines())
             }
             log(Whoop5EcgProbe.report(steps, packets, candidates, ECG_PROBE_WINDOW_SECONDS))
         }, ECG_PROBE_WINDOW_SECONDS * 1000L)
@@ -5379,10 +5420,7 @@ class WhoopBleClient(
     private fun noteEcgProbeCandidate(frame: ByteArray) {
         if (frame.size < 12) return
         val packet = Whoop5Ecg.r17FromFrame(frame) ?: return
-        synchronized(ecgProbeLock) {
-            ecgProbePacketsSeen += 1
-            if (ecgProbeCandidates.size >= ECG_PROBE_MAX_CANDIDATES) return
-        }
+        synchronized(ecgProbeLock) { ecgProbePacketsSeen += 1 }
         // The classifier byte is logged as a NUMBER, never as its token name: a strap log is a shareable
         // artefact, and no line in it should read like a clinical finding.
         //
@@ -5407,8 +5445,27 @@ class WhoopBleClient(
         }
         val notes = (packet.flags.tokens + packet.unreadable.reasons + state).joinToString(",")
         val reported = if (notes.isEmpty()) line else "$line [$notes]"
-        synchronized(ecgProbeLock) { ecgProbeCandidates.add(reported) }
-        log("ECG probe: ← candidate $reported (unvalidated instrumentation, not a diagnosis)")
+        val speak = synchronized(ecgProbeLock) {
+            if (ecgProbeCandidates.size < ECG_PROBE_HEAD_CANDIDATES) {
+                ecgProbeCandidates.add(reported)
+            } else {
+                if (ecgProbeTail.size == ECG_PROBE_TAIL_CANDIDATES) {
+                    ecgProbeTail.removeFirst()
+                    ecgProbeOmitted += 1
+                }
+                ecgProbeTail.addLast(reported)
+            }
+            // A live line for every packet of the head, and after that only when something CHANGED.
+            // The fields that move are the whole point — a run where progress climbs and one where it
+            // sits at zero are the same wall of identical lines otherwise, and the old cap hid the
+            // difference by stopping before either could show itself.
+            val signature = "${'$'}{packet.progress.raw}/${'$'}{packet.classifierState}/" +
+                "${'$'}{if (packet.presence) 1 else 0}/${'$'}{packet.signalQualityRaw}/${'$'}{packet.sampleCount}"
+            val changed = signature != ecgProbeLastSignature
+            ecgProbeLastSignature = signature
+            ecgProbeCandidates.size <= ECG_PROBE_HEAD_CANDIDATES || changed
+        }
+        if (speak) log("ECG probe: ← candidate $reported (unvalidated instrumentation, not a diagnosis)")
     }
 
     fun probeFeatureFlags() {
