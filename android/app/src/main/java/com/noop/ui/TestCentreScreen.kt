@@ -57,6 +57,7 @@ import com.noop.data.DailyMetric
 import com.noop.data.GravitySample
 import com.noop.data.HrSample
 import com.noop.polar.PolarModel
+import com.noop.protocol.Whoop5Ecg
 import com.noop.testcentre.CaptureAccumulator
 import com.noop.testcentre.CaptureKind
 import com.noop.testcentre.DisplayPerformanceMonitor
@@ -115,6 +116,9 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
     // publishes nothing, so Stop would not become available after Start until some unrelated state
     // changed. Seeded once and updated on the two actions that move it.
     var ecgMayBeRunning by remember { mutableStateOf(vm.ble.ecgMayBeRunning) }
+    // Die Rueckfrage zur Handgelenkswahl. Eigener Zustand, weil SELECT_WRIST als einziger Befehl
+    // dieser Familie eine bleibende Einstellung auf dem Strap schreibt.
+    var ecgWristAsk by remember { mutableStateOf(false) }
     val r22DisableReport by vm.ble.r22DisableReport.collectAsStateWithLifecycle()
     val ecgGateReport by vm.ble.ecgRawDataGate.collectAsStateWithLifecycle()
     val ecgVariant by vm.ble.whoop5VariantFlow.collectAsStateWithLifecycle()
@@ -378,7 +382,7 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
                     // consent given for a session probe.
                     DeveloperToggleRow(
                         title = stringResource(R.string.raw_diag_ecg_probe),
-                        detail = "Sends the three MG ECG session toggles and listens for 30 s. Hold both " +
+                        detail = "Sends the three MG ECG session toggles and listens for 60 s. Hold both " +
                             "clasp electrodes with your other hand for the whole window, or the trace is " +
                             "flat by design. Instrumentation, not a medical ECG feature.",
                         checked = ecgProbe,
@@ -412,6 +416,16 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
                                 kind = NoopButtonKind.Secondary,
                                 enabled = live.bonded && ecgVariant.isMG,
                                 onClick = { vm.ble.ecgStopCapture(); ecgMayBeRunning = vm.ble.ecgMayBeRunning },
+                            )
+                            // Die Handgelenkswahl ist bewusst ein eigener Knopf mit eigener
+                            // Rueckfrage und nicht Teil des Startablaufs: SELECT_WRIST schreibt
+                            // eine Einstellung, die das Trennen ueberlebt. Zwilling von macOS
+                            // (EcgProbeSheets, "a second, independent confirmation").
+                            NoopButton(
+                                text = stringResource(R.string.raw_diag_ecg_probe_wrist),
+                                kind = NoopButtonKind.Secondary,
+                                enabled = live.bonded && ecgVariant.isMG,
+                                onClick = { ecgWristAsk = true },
                             )
                         }
                         if (ecgMayBeRunning) {
@@ -516,6 +530,79 @@ fun TestCentreScreen(vm: AppViewModel, onOpenGroundTruthCollector: () -> Unit = 
             },
         )
     }
+
+    if (ecgWristAsk) {
+        EcgWristDialog(
+            onPick = { wrist ->
+                vm.ble.ecgSelectWrist(wrist)
+                ecgWristAsk = false
+            },
+            onCancel = { ecgWristAsk = false },
+        )
+    }
+}
+
+/**
+ * Die zweite, eigenstaendige Rueckfrage vor SELECT_WRIST (123).
+ *
+ * Bewusst ein eigener Dialog und kein Knopf im Startablauf: Dieser Befehl schreibt als einziger der
+ * EKG-Familie eine Einstellung, die das Trennen ueberlebt. Zwilling von macOS `EcgWristSheet`.
+ *
+ * Beide Handgelenke stehen als bestaetigende Knoepfe nebeneinander — es gibt keine Vorauswahl, weil
+ * NOOP nicht weiss, an welchem Handgelenk der Strap sitzt, und ein voreingestellter Wert hier eine
+ * bleibende Falschangabe waere.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun EcgWristDialog(
+    onPick: (Whoop5Ecg.WristSelection) -> Unit,
+    onCancel: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onCancel,
+        containerColor = Palette.surfaceOverlay,
+        title = {
+            Text(
+                stringResource(R.string.raw_diag_ecg_probe_wrist_title),
+                style = NoopType.title2, color = Palette.textPrimary,
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    stringResource(R.string.raw_diag_ecg_probe_wrist_body),
+                    style = NoopType.subhead, color = Palette.textSecondary,
+                )
+                // Die beiden Handgelenke stehen im Textbereich, nicht auf den Dialogplaetzen:
+                // Dort liegt "Abbrechen", und ein Abbrechen darf nie die Stelle eines
+                // schreibenden Knopfes einnehmen. FlowRow aus demselben Grund wie oben — die
+                // Beschriftungen sind in mehreren Sprachen zu breit fuer eine Zeile.
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    NoopButton(
+                        text = stringResource(R.string.raw_diag_ecg_probe_wrist_right),
+                        kind = NoopButtonKind.Secondary,
+                        onClick = { onPick(Whoop5Ecg.WristSelection.RIGHT) },
+                    )
+                    NoopButton(
+                        text = stringResource(R.string.raw_diag_ecg_probe_wrist_left),
+                        kind = NoopButtonKind.Secondary,
+                        onClick = { onPick(Whoop5Ecg.WristSelection.LEFT) },
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onCancel) {
+                Text(
+                    uiString(R.string.l10n_test_centre_screen_cancel_77dfd213),
+                    style = NoopType.body, color = Palette.textSecondary,
+                )
+            }
+        },
+    )
 }
 
 @Composable

@@ -53,6 +53,7 @@ import com.noop.protocol.DeviceConfigReadProbeReport
 import com.noop.protocol.DeviceConfigWriteGate
 import com.noop.protocol.BroadcastHrGateReport
 import com.noop.protocol.EcgRawDataGateReport
+import com.noop.protocol.EcgResearchAllowList
 import com.noop.protocol.FeatureFlagProbe
 import com.noop.protocol.FeatureFlagProbeReport
 import com.noop.protocol.Framing
@@ -4471,14 +4472,11 @@ class WhoopBleClient(
                 // those read probes these are WRITES that change strap state, and a strap left generating
                 // is a battery cost the wearer did not ask for.
                 //
-                // `ecgProbeArmed` is set by ecgStartCapture/ecgStopCapture for the duration of the send
-                // burst only. The opt-in and MG checks live in ecgGatesAllow at the call site, the same
-                // split Apple uses: this clause answers "is a run in flight", not "is it permitted".
-                !(cmd in setOf(
-                    CommandNumber.TOGGLE_LABRADOR_DATA_GENERATION,
-                    CommandNumber.TOGGLE_LABRADOR_RAW_SAVE,
-                    CommandNumber.TOGGLE_LABRADOR_FILTERED,
-                ) && ecgProbeArmed) &&
+                // The arming flags are set by ecgStartCapture/ecgStopCapture/ecgSelectWrist for the
+                // duration of their send burst only. The opt-in and MG checks live in ecgGatesAllow at
+                // the call site, the same split Apple uses: this clause answers "is a run in flight",
+                // not "is it permitted". See [ecgSendAdmitted].
+                !ecgSendAdmitted(cmd) &&
                 cmd != CommandNumber.SET_CLOCK && cmd != CommandNumber.GET_CLOCK &&
                 cmd != CommandNumber.GET_DATA_RANGE &&
                 cmd != CommandNumber.SET_ALARM_TIME && cmd != CommandNumber.DISABLE_ALARM &&
@@ -5217,6 +5215,15 @@ class WhoopBleClient(
     @Volatile private var ecgProbeArmed = false
 
     /**
+     * The same idea as [ecgProbeArmed], for the ONE opcode that writes persistent strap state.
+     *
+     * Set only for the duration of [ecgSelectWrist]'s single send. Separate from [ecgProbeArmed] so the
+     * start/stop burst — which the wearer consented to as a SESSION action — can never carry a
+     * persistent write with it.
+     */
+    @Volatile private var ecgWristWriteArmed = false
+
+    /**
      * True for the listen window, which is a LONGER span than [ecgProbeArmed]. The triage in
      * [noteEcgProbeCandidate] runs only while this is set, so a frame on the ordinary path pays nothing
      * for a probe nobody started.
@@ -5238,6 +5245,29 @@ class WhoopBleClient(
         context.getSharedPreferences(PuffinExperiment.KEY, android.content.Context.MODE_PRIVATE)
 
     private fun ecgRunningKey(deviceId: String) = "noopEcgMayBeRunning.$deviceId"
+
+    /**
+     * Whether an ECG-family opcode may reach the wire right now. The predicate the 5/MG send allow-list
+     * consults — and the function [EcgResearchAllowList]'s own documentation has always named.
+     *
+     * Two questions, in order, and both must answer yes:
+     *
+     *  1. Is this one of the four ECG ("Labrador") opcodes at all? Asked through
+     *     [EcgResearchAllowList.isProbeOpcode], so the set lives in ONE place and the unit tests that
+     *     assert what it refuses are asserting it about the real wire path rather than a copy of the
+     *     rule. That file names 142/143/144 — the firmware-load family three codes above 139 — as the
+     *     reason the set is a literal and not a range.
+     *  2. Is the matching run actually in flight? SELECT_WRIST reads its OWN flag, because it is the
+     *     one member of the family that writes PERSISTENT strap state and [ecgProbeArmed] is true for
+     *     the whole start/stop burst. Sharing one flag would let a persistent write ride in on consent
+     *     given for a session probe — the same split the UI makes with a second, separate confirmation.
+     *
+     * So a default install cannot form these bytes at all, with or without the opt-in.
+     */
+    private fun ecgSendAdmitted(cmd: CommandNumber): Boolean {
+        if (!EcgResearchAllowList.isProbeOpcode(cmd.rawValue)) return false
+        return if (cmd == CommandNumber.SELECT_WRIST) ecgWristWriteArmed else ecgProbeArmed
+    }
 
     /**
      * Every gate the probe must clear. Twin of macOS `ecgGatesAllow`, including the #1635/#269 bond
@@ -5324,9 +5354,9 @@ class WhoopBleClient(
      * firmware declines) would classify the run as `commandRefused` and mask the ECG outcome the run
      * exists to establish. Its own log line carries the diagnostic instead.
      *
-     * PARITY NOTE: opcode 123 SELECT_WRIST is the one member of the official PREPARE list Android does
-     * not send, because Android has no wrist-selection surface. It writes PERSISTENT strap state and so
-     * needs its own confirmation UI, which macOS has and this platform does not yet.
+     * PARITY NOTE: opcode 123 SELECT_WRIST is still not part of THIS sequence. It writes PERSISTENT strap
+     * state, so it is a separate, separately confirmed action — [ecgSelectWrist] — on both platforms, run
+     * once by the wearer rather than on every capture.
      */
     private fun ecgSendAbortHistorical() {
         if (backfilling) {
@@ -5345,14 +5375,52 @@ class WhoopBleClient(
     }
 
     /**
+     * Write the PERSISTENT wrist selection. Twin of macOS `ecgSelectWrist`, and the close of the parity
+     * gap the note on [ecgSendAbortHistorical] used to record: 123 is the one member of the official
+     * PREPARE list Android could not send, because Android had no wrist-selection surface.
+     *
+     * Deliberately its OWN entry point, never folded into [ecgStartCapture]. This is the only command in
+     * the family whose effect outlives the session, so the wearer picks the wrist explicitly and confirms
+     * it on its own — and [ecgWristWriteArmed] rather than [ecgProbeArmed] keeps it off the wire during
+     * the start/stop burst.
+     *
+     * Raw values are right=1/left=2 (see [Whoop5Ecg.WristSelection]). Re-sending with the other wrist is
+     * the whole remedy if a strap disagrees, so the write is reversible.
+     *
+     * The reply proves nothing: on this firmware SELECT_WRIST answers SUCCESS for a no-op and FAILURE for
+     * a real change (#907/#891), which is why the verdict is scheduled like any other probe run rather
+     * than read off the ack.
+     *
+     * WHY this is worth sending at all: `docs/PROTOCOL_ECG.md` records that wrist selection has a separate
+     * subsystem-state condition, and that a client should select and acknowledge the intended wrist before
+     * starting. On this strap the probe only ever measured directly after a reading completed in the
+     * official app — which sends 123. That is a correlation on ONE device, not a proven cause, and this
+     * change is the experiment that tests it, not the claim that it is fixed.
+     */
+    fun ecgSelectWrist(wrist: Whoop5Ecg.WristSelection) {
+        if (!ecgGatesAllow()) return
+        beginEcgProbeRun()
+        log("ECG probe: SELECT_WRIST=${wrist.token} (raw ${wrist.raw}) — PERSISTENT strap write")
+        ecgWristWriteArmed = true
+        try {
+            sendEcgCommand(CommandNumber.SELECT_WRIST, wrist.raw)
+        } finally {
+            ecgWristWriteArmed = false
+            // In the finally for the same reason as the start/stop paths: the listen window is already
+            // open, and a throwing send would otherwise leave it open for the life of the process.
+            scheduleEcgProbeVerdict()
+        }
+    }
+
+    /**
      * Turn ECG generation ON. Twin of macOS `ecgStartCapture`.
      *
      * Order is load-bearing: 139 (filtered) is the master gate, 125 enables the raw save, and 124 takes
      * an OPERATION byte where `start` is 2. A caller sending 1 here would STOP a session it just armed,
      * which is the shape of every SUCCESS-and-silence report in #891.
      *
-     * Two lists, in the official order. PREPARE is `139 ON` then `125 ON` (`123` is not on Android's
-     * surface at all — see the parity note on [ecgSendAbortHistorical]). START is `20` then
+     * Two lists, in the official order. PREPARE is `139 ON` then `125 ON` (`123` having been sent on its
+     * own, by [ecgSelectWrist]). START is `20` then
      * `124 = start`: opcode 20 belongs to START, immediately ahead of the generation command, and it is
      * sent on EVERY run rather than only when an offload happens to be draining.
      */

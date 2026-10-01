@@ -2864,4 +2864,9 @@
     <string name="raw_diag_ecg_probe_start">EKG-Aufzeichnung starten</string>
     <string name="raw_diag_ecg_probe_stop">EKG-Aufzeichnung stoppen</string>
     <string name="raw_diag_ecg_probe_running">Auf diesem Strap läuft möglicherweise noch eine Aufzeichnung. Das Ergebnis steht im Strap-Log.</string>
+    <string name="raw_diag_ecg_probe_wrist">Handgelenk festlegen …</string>
+    <string name="raw_diag_ecg_probe_wrist_title">An welchem Handgelenk trägst du es?</string>
+    <string name="raw_diag_ecg_probe_wrist_body">Das schreibt eine Einstellung auf den Strap selbst. Anders als Starten und Stoppen bleibt sie nach dem Trennen, nach einem Neustart der App und nach einem Neustart des Straps erhalten — deshalb wird sie getrennt abgefragt.\n\nSie ist umkehrbar: Wähle das andere Handgelenk, dann bekommt der Strap den anderen Wert.\n\nDie Antwort des Straps ist kein Beweis — diese Firmware meldet ERFOLG, wenn die Einstellung ohnehin schon stimmte, und FEHLER, wenn sie wirklich geändert wurde. Das Ergebnis steht in beiden Fällen im Strap-Log.</string>
+    <string name="raw_diag_ecg_probe_wrist_right">Rechtes Handgelenk</string>
+    <string name="raw_diag_ecg_probe_wrist_left">Linkes Handgelenk</string>
 </resources>
