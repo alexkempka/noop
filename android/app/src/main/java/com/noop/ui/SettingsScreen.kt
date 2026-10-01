@@ -25,6 +25,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -502,6 +504,7 @@ class ProfileStore(private val prefs: SharedPreferences) {
 
 // MARK: - Screen
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     vm: AppViewModel,
@@ -3591,18 +3594,25 @@ fun SettingsScreen(
             blurb = "Move all your NOOP data to another phone. Export saves everything (history, sleeps, workouts, settings) to a single file you can copy across; import replaces this phone's data with a backup.",
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                // Three equal-width buttons share the row (each takes a third via weight) — mirrors the
-                // iOS Backup card's three fullWidth NoopButtonStyle buttons. The busy spinner sits BELOW
-                // the row (not inside it) so it never steals a button's share of the width.
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                // Natural widths that wrap, NOT three equal thirds.
+                //
+                // Each button used to carry `Modifier.weight(1f)`, so on a phone each got about a third
+                // of the card — under 100 dp. NoopButton's label is maxLines = 1 with an ellipsis, so
+                // the row read "Ex… Im… Ex…": three buttons, two letters each, two of them identical
+                // and none of them nameable. A third of a phone's width cannot hold "Export CSV" in
+                // English, let alone in the seven other languages shipped here.
+                //
+                // Without the weights each button measures to its own label, and the FlowRow moves the
+                // ones that no longer fit onto the next line — a long label costs a line break instead
+                // of its own name. The busy spinner still sits BELOW the row, never inside it.
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     NoopButton(
                         text = uiString(R.string.l10n_settings_screen_export_0a116345),
                         kind = NoopButtonKind.Primary,
                         enabled = !backupBusy,
-                        modifier = Modifier.weight(1f),
                         onClick = {
                             backupBusy = true
                             exportLauncher.launch("noop-backup-${java.time.LocalDate.now()}.noopbak")
@@ -3613,7 +3623,6 @@ fun SettingsScreen(
                         text = uiString(R.string.l10n_settings_screen_import_4834caf8),
                         kind = NoopButtonKind.Secondary,
                         enabled = !backupBusy,
-                        modifier = Modifier.weight(1f),
                         onClick = {
                             backupBusy = true
                             importLauncher.launch(arrayOf("*/*"))
@@ -3624,7 +3633,6 @@ fun SettingsScreen(
                         text = uiString(R.string.l10n_settings_screen_export_csv_6bce63a3),
                         kind = NoopButtonKind.Secondary,
                         enabled = !backupBusy,
-                        modifier = Modifier.weight(1f),
                         onClick = {
                             backupBusy = true
                             csvExportLauncher.launch("noop-export-${java.time.LocalDate.now()}.zip")
@@ -3699,6 +3707,20 @@ fun SettingsScreen(
                     Text("NOOP", style = NoopType.title2, color = Palette.textPrimary)
                     StatePill("v${BuildConfig.VERSION_NAME}", tone = StrandTone.Neutral, showsDot = false)
                 }
+
+                // The build number, on its own line rather than inside the pill.
+                //
+                // The version NAME alone cannot identify a build: two installs can carry the same name
+                // and different code, which is the one thing a tester cannot check from the screen —
+                // and the number is what the strap log's header prints, so a report and the About
+                // screen can now be compared directly. Its own line because the pill is already the
+                // width of half a phone on a staging build; appending to it would only move the
+                // truncation somewhere else.
+                Text(
+                    "Build ${BuildConfig.VERSION_CODE}",
+                    style = NoopType.caption,
+                    color = Palette.textTertiary,
+                )
 
                 // Project home — NOOP's code, releases, issues and wiki live on GitHub.
                 val projectHomeInteraction = remember { MutableInteractionSource() }

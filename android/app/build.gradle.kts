@@ -30,9 +30,9 @@ android {
         // staging APK the wearer already has is 548/"11.8.0-staging", and two installs that differ only
         // in what is inside them are the one thing a tester cannot check. Same applicationId and the
         // same committed signing key, so each still installs straight over the last and keeps the
-        // imported history. 549 = the first three repairs, 550 = the wrist selection, 551 = the session teardown, 552 = report fixes.
-        versionCode = 552
-        versionName = "11.8.0-mg4"
+        // imported history. 549 = the first three repairs, 550 = the wrist selection, 551 = the session teardown, 552 = report fixes, 553 = layout fixes.
+        versionCode = 553
+        versionName = "11.8.0-mg5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

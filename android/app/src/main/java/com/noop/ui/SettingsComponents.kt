@@ -7,6 +7,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.noop.R
 
@@ -166,33 +169,47 @@ internal fun SettingsToggleRow(
 // MARK: - Two-column form row (ports SettingsView's private FormRow)
 
 /**
- * Label on the left, control on the right — the two-column form feel.
+ * Label on the left, control on the right — the two-column form feel, with the control dropping to its
+ * own line when the two cannot share one.
  *
- * KEEP THE CONTROL NARROW. Only the label is weighted, so Compose measures [control] FIRST against the
- * full row width and the label gets whatever is left. A control that wants the whole width (e.g. a
- * full-sentence helper text stacked under a stepper) starves the label to ~0 width, where it wraps one
- * character per line — rendering blank while inflating the row into a screen of dead space. Put
- * sentence-length copy in a sibling `Text` BELOW the row instead (see the Step-calibration and Waist
- * rows in SettingsScreen); a SHORT right-aligned sub-value under the control (e.g. "Auto · 173 bpm") is
- * fine.
+ * This used to be a plain [Row] with the label weighted, which measured the control FIRST at its full
+ * desired width and left the label whatever remained. The failure mode was documented right here, as a
+ * rule for callers to obey — and callers could not obey it. The Skin-temperature row's control carries
+ * two word-length labels ("Temperature" / "vs baseline"), so on a phone the label was squeezed to a few
+ * dp and rendered ONE CHARACTER PER LINE: "Sk / in / te / m / pe / ra / tu / re" down the screen. No
+ * caller had done anything wrong; the layout simply had no second option.
+ *
+ * A [FlowRow] gives it one. Both children are measured at their natural width: when they fit, the
+ * arrangement puts the label at the start and the control at the end and nothing looks different. When
+ * they do not, the control wraps onto the next line fully readable instead of starving the label. That
+ * also covers the eight languages this app ships, where the same label can be half again as long.
+ *
+ * Sentence-length copy still belongs in a sibling `Text` BELOW the row (see the Step-calibration and
+ * Waist rows in SettingsScreen) — wrapping makes a wide control survivable, not desirable.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun SettingsFormRow(label: String, control: @Composable () -> Unit) {
-    Row(
+    FlowRow(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
             .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             label,
             style = NoopType.body,
             color = Palette.textPrimary,
-            modifier = Modifier.weight(1f),
+            // Two lines then ellipsis, as a backstop for a label longer than the row itself. The old
+            // single-character column was this bound being effectively absent against a width of
+            // almost nothing.
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.align(Alignment.CenterVertically),
         )
-        control()
+        Box(modifier = Modifier.align(Alignment.CenterVertically)) { control() }
     }
 }
 

@@ -3443,16 +3443,22 @@ private fun SynthesisHeroCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // The greeting yields/ellipsises first; the pill keeps its full width (#527).
+            // The greeting yields/ellipsises first; the pills keep their full width (#527).
+            //
+            // ONE weight, and it belongs to the greeting. This was `weight(1f, fill = false)` plus a
+            // `Spacer(Modifier.weight(1f))`, which is two springs of equal strength: the leftover width
+            // was split down the middle and the greeting got half of what was free, however much of it
+            // the pills had actually left unused. On a phone with both pills showing, "Good evening"
+            // came out as "Good ev…" beside a gap wide enough to print it twice. The spacer is also
+            // redundant — a single weighted child already pushes the unweighted ones to the end.
             Text(
                 greetingWord(),
                 style = NoopType.subhead,
                 color = Palette.textSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false),
+                modifier = Modifier.weight(1f),
             )
-            Spacer(Modifier.weight(1f))
             // S4 (#205): the one-word readiness read kept on the hero now the full Readiness card folded
             // into the Charge-ring tap. Push / Maintain / Rest; hidden when there isn't enough history.
             // Tapping it opens the Charge breakdown, where the full Readiness card now lives.
