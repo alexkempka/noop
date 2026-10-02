@@ -2106,7 +2106,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             // No strain: a leaner summary that still tells the user the session landed.
             val pieces = buildList {
                 add(ScheduledReportPolicy.durationLabel(durMin))
-                row.avgHr?.let { add("avg $it bpm") }
+                row.avgHr?.let { add(uiText("avg %1\$s bpm", it)) }
             }
             "Workout logged: ${WorkoutEditing.displaySport(row.sport)}" to
                 (pieces.joinToString(" · ") + ". Summarised after your strap synced.")
@@ -3214,11 +3214,11 @@ enum class DoubleTapAction {
     /** The picker label, mirroring the iOS `MacActionKind.label` wording for the same cases. */
     val label: String
         get() = when (this) {
-            NONE -> "Nothing"
-            BUZZ_BACK -> "Buzz back (confirm)"
-            MARK_MOMENT -> "Mark a moment"
-            SLEEP_MARK -> "Log a sleep mark"
-            HAPTIC_CLOCK -> "Buzz the time"
+            NONE -> uiText("Nothing")
+            BUZZ_BACK -> uiText("Buzz back (confirm)")
+            MARK_MOMENT -> uiText("Mark a moment")
+            SLEEP_MARK -> uiText("Log a sleep mark")
+            HAPTIC_CLOCK -> uiText("Buzz the time")
         }
 
     companion object {

@@ -310,10 +310,10 @@ private fun GuardianRing(
     val breathing = !stale && settled && position == LiveSessionEngine.Position.IN_BAND && !renderStill
 
     val stateLabel = when {
-        stale -> "Signal lost, coaching paused"
-        position == LiveSessionEngine.Position.ABOVE -> "Above today's band"
-        position == LiveSessionEngine.Position.BELOW -> "Below today's band"
-        else -> "In today's band"
+        stale -> uiText("Signal lost, coaching paused")
+        position == LiveSessionEngine.Position.ABOVE -> uiText("Above today's band")
+        position == LiveSessionEngine.Position.BELOW -> uiText("Below today's band")
+        else -> uiText("In today's band")
     }
     Box(
         modifier = Modifier
@@ -437,7 +437,7 @@ private fun LiveSessionSummary(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline("Live Session", color = teal)
+                Overline(uiText("Live Session"), color = teal)
                 Text(uiString(R.string.l10n_live_session_screen_session_summary_f9418e16), style = NoopType.title1, color = Palette.textPrimary)
             }
             StatePill("BETA", tone = StrandTone.Accent, showsDot = false)
@@ -490,7 +490,7 @@ private fun LiveSessionSummary(
         // The streak line — only once the rows have loaded (no placeholder number, ever).
         guardedCount?.let { n ->
             val sessions = "$n session${if (n == 1) "" else "s"} guarded"
-            val run = if (streakDays >= 2) " · $streakDays days in a row" else ""
+            val run = if (streakDays >= 2) uiText(" · %1\$s days in a row", streakDays) else ""
             Text(sessions + run, style = NoopType.subhead, color = teal)
         }
 
@@ -515,18 +515,18 @@ private fun LiveSessionSummary(
  * engine coaches to its middle-of-the-road default band, and we never invent a percentage.
  */
 internal fun liveSessionChargeSentence(charge: Double?): String {
-    if (charge == null) return "No Charge yet today — guarding a middle-of-the-road band."
+    if (charge == null) return uiText("No Charge yet today — guarding a middle-of-the-road band.")
     val pct = charge.roundToInt()
     return when {
-        pct < 34 -> "Today's ceiling is lower — Charge is $pct%."
-        pct < 67 -> "A middling day — Charge is $pct%, so the band sits mid-range."
-        else -> "Plenty in the tank — Charge is $pct%, so today's ceiling is higher."
+        pct < 34 -> uiText("Today's ceiling is lower — Charge is %1\$s%%.", pct)
+        pct < 67 -> uiText("A middling day — Charge is %1\$s%%, so the band sits mid-range.", pct)
+        else -> uiText("Plenty in the tank — Charge is %1\$s%%, so today's ceiling is higher.", pct)
     }
 }
 
 /** The summary's cue-count line. Zero cues is the headline case (silence IS the coaching). */
 internal fun liveSessionCueLine(pushCount: Int, easeCount: Int): String {
-    if (pushCount == 0 && easeCount == 0) return "No buzzes sent."
+    if (pushCount == 0 && easeCount == 0) return uiText("No buzzes sent.")
     val push = "$pushCount push nudge${if (pushCount == 1) "" else "s"}"
     val ease = "$easeCount ease-off${if (easeCount == 1) "" else "s"}"
     return "$push · $ease"

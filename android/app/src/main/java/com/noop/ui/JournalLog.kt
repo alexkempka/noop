@@ -138,10 +138,10 @@ internal const val JOURNAL_BACKFILL_DAYS = 6
 /** Short chip label for a journal day-picker [offset] (daysBack; -1 = Tomorrow). Hardcoded English to
  *  match the sibling Yesterday/Today/Tomorrow chips. */
 internal fun journalDayChipLabel(offset: Long): String = when (offset) {
-    -1L -> "Tomorrow"
-    0L -> "Today"
-    1L -> "Yesterday"
-    else -> "$offset days ago"
+    -1L -> uiText("Tomorrow")
+    0L -> uiText("Today")
+    1L -> uiText("Yesterday")
+    else -> uiText("%1\$s days ago", offset)
 }
 
 // MARK: - Custom-question persistence
@@ -209,7 +209,7 @@ fun JournalLogCard(
         // Header: title/overline on the left, the Tomorrow/Today/Yesterday toggle (or Edit/Done) on the right.
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                Overline("Log")
+                Overline(uiText("Log"))
                 Text(
                     uiString(R.string.l10n_journal_log_journal_57d7f743),
                     style = NoopType.title2,
@@ -220,9 +220,9 @@ fun JournalLogCard(
                 )
             }
             if (editing) {
-                JournalChip("Done", selected = true) { editing = false }
+                JournalChip(uiText("Done"), selected = true) { editing = false }
             } else {
-                JournalChip("Edit", selected = false) { editing = true }
+                JournalChip(uiText("Edit"), selected = false) { editing = true }
             }
         }
         // Day picker (#656): a bounded, scrollable range — Tomorrow back through the last 7 days — so any
@@ -321,7 +321,7 @@ private fun JournalGroupBlock(
             modifier = Modifier.fillMaxWidth().clickable { collapsed = !collapsed },
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(group.title.uppercase(), style = NoopType.overline, color = Palette.textTertiary)
+            Text(uiText(group.title).uppercase(), style = NoopType.overline, color = Palette.textTertiary)
             Spacer(Modifier.width(6.dp))
             Text(uiString(R.string.l10n_journal_log_items_size_f76ab912, items.size), style = NoopType.caption, color = Palette.textTertiary)
             Spacer(Modifier.weight(1f))
@@ -334,13 +334,13 @@ private fun JournalGroupBlock(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        item.display,   // display = rename ?? canonical; data, not a UI literal
+                        uiText(item.display),   // display = rename ?? canonical; data, translated only for display
                         style = NoopType.body,
                         color = if (item.hidden) Palette.textTertiary else Palette.textPrimary,
                         modifier = Modifier.weight(1f),
                     )
                     when {
-                        item.hidden -> JournalChip("Restore", selected = false) { onRestoreQuestion(item.canonical) }
+                        item.hidden -> JournalChip(uiText("Restore"), selected = false) { onRestoreQuestion(item.canonical) }
                         editing -> JournalItemEditControls(
                             item = item,
                             onStartRename = { onStartRename(item) },
@@ -355,11 +355,11 @@ private fun JournalGroupBlock(
                             onClear = { onClear(item.canonical) },
                         )
                         else -> {
-                            JournalChip("Yes", selected = answers[item.canonical] == true) {
+                            JournalChip(uiText("Yes"), selected = answers[item.canonical] == true) {
                                 if (answers[item.canonical] == true) onClear(item.canonical) else onAnswer(item.canonical, true)
                             }
                             Spacer(Modifier.width(6.dp))
-                            JournalChip("No", selected = answers[item.canonical] == false) {
+                            JournalChip(uiText("No"), selected = answers[item.canonical] == false) {
                                 if (answers[item.canonical] == false) onClear(item.canonical) else onAnswer(item.canonical, false)
                             }
                         }
@@ -446,7 +446,7 @@ private fun JournalItemEditControls(
             androidx.compose.material3.DropdownMenu(expanded = groupMenuOpen, onDismissRequest = { groupMenuOpen = false }) {
                 JournalGroup.displayOrder.forEach { g ->
                     androidx.compose.material3.DropdownMenuItem(
-                        text = { Text(g.title) },
+                        text = { Text(uiText(g.title)) },
                         onClick = { groupMenuOpen = false; onSetGroup(g) },
                     )
                 }
@@ -508,9 +508,9 @@ private fun JournalAddRow(onAddCustom: (String, JournalKind, JournalGroup) -> Un
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.width(8.dp))
-            JournalChip(if (numeric) "Number" else "Yes/No", selected = numeric) { numeric = !numeric }
+            JournalChip(if (numeric) uiText("Number") else uiText("Yes/No"), selected = numeric) { numeric = !numeric }
             Spacer(Modifier.width(8.dp))
-            JournalChip("Add", selected = draft.isNotBlank()) {
+            JournalChip(uiText("Add"), selected = draft.isNotBlank()) {
                 val t = draft.trim()
                 if (t.isNotEmpty()) {
                     onAddCustom(t, if (numeric) JournalKind.Numeric(null) else JournalKind.Bool, group)
@@ -524,7 +524,7 @@ private fun JournalAddRow(onAddCustom: (String, JournalKind, JournalGroup) -> Un
             androidx.compose.material3.DropdownMenu(expanded = groupMenu, onDismissRequest = { groupMenu = false }) {
                 JournalGroup.displayOrder.forEach { g ->
                     androidx.compose.material3.DropdownMenuItem(
-                        text = { Text(g.title) },
+                        text = { Text(uiText(g.title)) },
                         onClick = { groupMenu = false; group = g },
                     )
                 }

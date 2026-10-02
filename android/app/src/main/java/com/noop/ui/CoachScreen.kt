@@ -149,7 +149,7 @@ private fun CoachSetup(vm: CoachViewModel) {
 
             // Provider choice.
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Overline("Provider")
+                Overline(uiText("Provider"))
                 SegmentedPillControl(
                     items = AiProvider.entries,
                     selection = provider,
@@ -161,7 +161,7 @@ private fun CoachSetup(vm: CoachViewModel) {
             // Server URL, Custom (local LLM) only.
             if (isCustom) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Overline("Server URL")
+                    Overline(uiText("Server URL"))
                     OutlinedTextField(
                         value = customBaseUrl,
                         onValueChange = { vm.setCustomBaseUrl(context, it) },
@@ -196,7 +196,7 @@ private fun CoachSetup(vm: CoachViewModel) {
             // Model dropdown + live-list refresh.
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Overline("Model")
+                    Overline(uiText("Model"))
                     Spacer(Modifier.weight(1f))
                     RefreshModelsButton(
                         refreshing = refreshingModels,
@@ -214,7 +214,7 @@ private fun CoachSetup(vm: CoachViewModel) {
 
             // Masked key field, optional for a local Custom server.
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Overline(if (isCustom) "API Key (optional)" else "API Key")
+                Overline(if (isCustom) uiText("API Key (optional)") else uiText("API Key"))
                 CoachKeyField(
                     value = keyInput,
                     onValueChange = { keyInput = it },
@@ -577,7 +577,7 @@ private fun ChatBubble(msg: ChatMsg, vm: CoachViewModel) {
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Overline(
-                    if (isUser) "You" else "Coach",
+                    if (isUser) uiText("You") else "Coach",
                     color = if (isUser) Palette.accentHover else Palette.textTertiary,
                 )
                 if (isUser) {
@@ -607,7 +607,7 @@ private fun ChatBubble(msg: ChatMsg, vm: CoachViewModel) {
                             putExtra(android.content.Intent.EXTRA_TEXT, msg.text)
                         }
                         context.startActivity(
-                            android.content.Intent.createChooser(sendIntent, "Share Coach advice")
+                            android.content.Intent.createChooser(sendIntent, uiText("Share Coach advice"))
                         )
                         showMenu = false
                     },
@@ -659,7 +659,7 @@ internal val SUGGESTED_PROMPTS: List<String> get() = CoachPrompts.SUGGESTIONS
 @Composable
 private fun SuggestedPrompts(prompts: List<String>, onPick: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Overline("Try asking")
+        Overline(uiText("Try asking"))
         // Simple wrapped column of chips (one per row keeps long prompts readable).
         prompts.forEach { prompt ->
             val shape = RoundedCornerShape(50)
@@ -1040,7 +1040,7 @@ private fun MicButton(
     val bg = if (isRecording) Palette.statusCritical.copy(alpha = 0.15f) else Palette.surfaceInset
     val tint = if (isRecording) Palette.statusCritical else Palette.textSecondary
     val interaction = remember { MutableInteractionSource() }
-    val desc = if (isRecording) "Stop voice input" else "Voice input"
+    val desc = if (isRecording) uiText("Stop voice input") else uiText("Voice input")
     val statusSuffix = statusMessage?.let { stringResource(R.string.coach_status_suffix, it) } ?: ""
     Box(
         modifier = Modifier

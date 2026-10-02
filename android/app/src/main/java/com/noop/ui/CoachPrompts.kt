@@ -12,10 +12,10 @@ package com.noop.ui
  */
 object CoachPrompts {
     val SUGGESTIONS: List<String> = listOf(
-        "How's my recovery trending this week?",
-        "Should I train hard or take it easy today?",
-        "Why might my HRV be low lately?",
-        "How can I improve my sleep?",
+        uiText("How's my recovery trending this week?"),
+        uiText("Should I train hard or take it easy today?"),
+        uiText("Why might my HRV be low lately?"),
+        uiText("How can I improve my sleep?"),
     )
 }
 

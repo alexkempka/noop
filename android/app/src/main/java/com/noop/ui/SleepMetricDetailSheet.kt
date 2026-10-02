@@ -60,7 +60,7 @@ internal fun SleepMetricDetailSheetContent(
         } else if (filteredPoints.size < 2) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Overline("Sleep")
+                    Overline(uiText("Sleep"))
                     Text(spec.title, style = NoopType.title2, color = Palette.textPrimary)
                 }
             }
@@ -82,7 +82,7 @@ internal fun SleepMetricDetailSheetContent(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Overline("Sleep · ${filteredPoints.size} nights")
+                    Overline(uiText("Sleep · %1\$s nights", filteredPoints.size))
                     Text(spec.title, style = NoopType.title2, color = Palette.textPrimary)
                     Text(uiString(R.string.l10n_sleep_screen_as_of_latest_first_726f20bb, latest.first), style = NoopType.footnote, color = Palette.textTertiary)
                 }

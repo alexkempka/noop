@@ -79,64 +79,64 @@ internal object TestCentreLiveReadouts {
             require(id in mappedIds) { "Unmapped Test Centre liveReadout id: $id" }
             when (id) {
                 "hrDensityNow" -> LiveReadoutRow(
-                    id, "HR density (per min)",
-                    if (snapshot.hrSamples.isEmpty()) "no live HR yet"
+                    id, uiText("HR density (per min)"),
+                    if (snapshot.hrSamples.isEmpty()) uiText("no live HR yet")
                     else String.format(Locale.US, "%.1f", SleepReadout.hrDensityPerMinute(snapshot.hrSamples)),
                 )
                 "gravityCoverageNow" -> LiveReadoutRow(
-                    id, "Gravity coverage",
-                    if (snapshot.gravitySamples.isEmpty()) "no live gravity yet"
+                    id, uiText("Gravity coverage"),
+                    if (snapshot.gravitySamples.isEmpty()) uiText("no live gravity yet")
                     else String.format(
                         Locale.US, "%.0f%%",
                         SleepReadout.gravityCoverageFraction(snapshot.gravitySamples, snapshot.hrSamples) * 100,
                     ),
                 )
                 "lastNightGateFired" -> LiveReadoutRow(
-                    id, "Last gate fired", SleepReadout.lastGateFired(tail) ?: "no night yet",
+                    id, uiText("Last gate fired"), SleepReadout.lastGateFired(tail) ?: uiText("no night yet"),
                 )
                 "connectionUptime" -> LiveReadoutRow(
-                    id, "Connection uptime",
+                    id, uiText("Connection uptime"),
                     if (snapshot.connected) ConnectionReadout.uptimeLabel(tail, snapshot.nowUnix)
-                    else "not connected",
+                    else uiText("not connected"),
                 )
                 "reconnectCount" -> LiveReadoutRow(
-                    id, "Reconnects this run", ConnectionReadout.reconnectCount(tail).toString(),
+                    id, uiText("Reconnects this run"), ConnectionReadout.reconnectCount(tail).toString(),
                 )
                 "lastOffloadResult" -> LiveReadoutRow(
-                    id, "Last offload result", ConnectionReadout.lastOffloadResult(tail) ?: "no offload yet",
+                    id, uiText("Last offload result"), ConnectionReadout.lastOffloadResult(tail) ?: uiText("no offload yet"),
                 )
                 "lastSessionSummary" -> LiveReadoutRow(
-                    id, "Last session", WorkoutsReadout.lastSessionSummary(tail) ?: "no session yet",
+                    id, uiText("Last session"), WorkoutsReadout.lastSessionSummary(tail) ?: uiText("no session yet"),
                 )
                 "deviceMetricsNow" -> LiveReadoutRow(
-                    id, "Device metrics", DisplayReadout.deviceMetricsNow(tail) ?: "reading...",
+                    id, uiText("Device metrics"), DisplayReadout.deviceMetricsNow(tail) ?: "reading...",
                 )
                 "lastImportSummary" -> LiveReadoutRow(
-                    id, "Last import", ImportReadout.lastImportSummary(tail) ?: "no import yet",
+                    id, uiText("Last import"), ImportReadout.lastImportSummary(tail) ?: uiText("no import yet"),
                 )
                 "stepsToday" -> LiveReadoutRow(
-                    id, "Steps today", StepsReadout.stepsToday(tail)?.toString() ?: "no estimate yet",
+                    id, uiText("Steps today"), StepsReadout.stepsToday(tail)?.toString() ?: uiText("no estimate yet"),
                 )
                 "calibrationState" -> LiveReadoutRow(
-                    id, "Calibration", StepsReadout.calibrationState(tail) ?: "no calibration yet",
+                    id, uiText("Calibration"), StepsReadout.calibrationState(tail) ?: uiText("no calibration yet"),
                 )
                 "currentSoc" -> LiveReadoutRow(
-                    id, "Current charge", snapshot.batteryPct?.let { "${it.roundToInt()}%" } ?: "--",
+                    id, uiText("Current charge"), snapshot.batteryPct?.let { "${it.roundToInt()}%" } ?: "--",
                 )
                 "estimateDaysLeft" -> LiveReadoutRow(
-                    id, "Estimated runtime left",
+                    id, uiText("Estimated runtime left"),
                     snapshot.batteryEstimate?.let { BatteryEstimator.label(it.remainingHours) } ?: "--",
                 )
                 "slopeSource" -> LiveReadoutRow(
-                    id, "Slope source",
+                    id, uiText("Slope source"),
                     snapshot.batteryEstimate?.source?.name?.lowercase(Locale.US) ?: "--",
                 )
                 "lastChargeBreakdown" -> LiveReadoutRow(
-                    id, "Last Charge breakdown",
-                    TestReadout.lastChargeBreakdown(tail) ?: "no night scored yet",
+                    id, uiText("Last Charge breakdown"),
+                    TestReadout.lastChargeBreakdown(tail) ?: uiText("no night scored yet"),
                 )
                 "lastHrvComputation" -> LiveReadoutRow(
-                    id, "Last HRV reading", TestReadout.lastHrvComputation(tail) ?: "no reading yet",
+                    id, uiText("Last HRV reading"), TestReadout.lastHrvComputation(tail) ?: uiText("no reading yet"),
                 )
                 else -> error("mapped id has no renderer: $id")
             }

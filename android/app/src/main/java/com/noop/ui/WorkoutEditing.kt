@@ -55,6 +55,9 @@ object WorkoutEditing {
      * unbreakable word and truncates badly — split it into words on the lower→Upper boundary so it
      * renders "Traditional Strength Training". Already-spaced labels (manual/edited) pass through. (#175)
      */
+    /** [displaySport] translated for the screen. Never store this: the English name stays the data. */
+    fun sportLabel(sport: String): String = uiSport(displaySport(sport))
+
     fun displaySport(sport: String): String {
         if (sport == "detected") return "Activity"
         if (sport.isEmpty() || sport.contains(" ")) return sport

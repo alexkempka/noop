@@ -43,10 +43,10 @@ private enum class LimitState { FULL, PARTIAL, NONE }
 private data class LimitRow(val feature: String, val whoop4: LimitState, val whoop5: LimitState)
 
 private val LIMIT_ROWS: List<LimitRow> = listOf(
-    LimitRow("Live heart rate", LimitState.FULL, LimitState.FULL),
+    LimitRow(uiText("Live heart rate"), LimitState.FULL, LimitState.FULL),
     LimitRow("HRV (rMSSD)", LimitState.FULL, LimitState.FULL),
-    LimitRow("Sleep staging", LimitState.FULL, LimitState.FULL),
-    LimitRow("Recovery & strain", LimitState.FULL, LimitState.FULL),
+    LimitRow(uiText("Sleep staging"), LimitState.FULL, LimitState.FULL),
+    LimitRow(uiText("Recovery & strain"), LimitState.FULL, LimitState.FULL),
     // PARTIAL on BOTH generations: the displayed respiratory rate is always SleepStager.respRateFromRR
     // — an on-device RSA estimate off the R-R stream, which is what PARTIAL means — computed with NO
     // family branch (AnalyticsEngine respRateDaily). The 5.0/MG v18 wire carries no respiratory channel
@@ -54,14 +54,14 @@ private val LIMIT_ROWS: List<LimitRow> = listOf(
     // but it is a raw ADC stored unconverted (schema: "resp rate computed server-side") and never shown.
     // Neither is "read live off the strap" (FULL) — also why an over-counted-R-R 4.0 night (#1331) blanks
     // it. Twin of the Swift NoopLimitationsView row.
-    LimitRow("Respiratory rate", LimitState.PARTIAL, LimitState.PARTIAL),
-    LimitRow("Stress (on-device)", LimitState.FULL, LimitState.FULL),
-    LimitRow("Workout detection", LimitState.FULL, LimitState.FULL),
-    LimitRow("Skin temperature", LimitState.PARTIAL, LimitState.FULL),
-    LimitRow("Steps", LimitState.PARTIAL, LimitState.FULL),
-    LimitRow("Blood oxygen (SpO₂ %)", LimitState.NONE, LimitState.NONE),
-    LimitRow("ECG", LimitState.NONE, LimitState.PARTIAL),
-    LimitRow("Blood pressure", LimitState.NONE, LimitState.NONE),
+    LimitRow(uiText("Respiratory rate"), LimitState.PARTIAL, LimitState.PARTIAL),
+    LimitRow(uiText("Stress (on-device)"), LimitState.FULL, LimitState.FULL),
+    LimitRow(uiText("Workout detection"), LimitState.FULL, LimitState.FULL),
+    LimitRow(uiText("Skin temperature"), LimitState.PARTIAL, LimitState.FULL),
+    LimitRow(uiText("Steps"), LimitState.PARTIAL, LimitState.FULL),
+    LimitRow(uiText("Blood oxygen (SpO₂ %)"), LimitState.NONE, LimitState.NONE),
+    LimitRow(uiText("ECG"), LimitState.NONE, LimitState.PARTIAL),
+    LimitRow(uiText("Blood pressure"), LimitState.NONE, LimitState.NONE),
 )
 
 @Composable
@@ -79,7 +79,7 @@ fun NoopLimitationsScreen() {
 private fun LimitTableCard() {
     NoopCard(padding = 20.dp) {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Overline("What NOOP reads")
+            Overline(uiText("What NOOP reads"))
             // Column header.
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(uiString(R.string.l10n_noop_limitations_screen_feature_ad565d9d), style = NoopType.caption, color = Palette.textTertiary, modifier = Modifier.weight(1f))
@@ -107,10 +107,10 @@ private fun LimitTableCard() {
 private fun LegendCard() {
     NoopCard(padding = 20.dp) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Overline("Legend")
-            LegendRow(LimitState.FULL, "Read live off the strap")
-            LegendRow(LimitState.PARTIAL, "On-device estimate, or experimental / firmware-gated")
-            LegendRow(LimitState.NONE, "Not from the strap. SpO₂ can be filled by importing a WHOOP or Health export.")
+            Overline(uiText("Legend"))
+            LegendRow(LimitState.FULL, uiText("Read live off the strap"))
+            LegendRow(LimitState.PARTIAL, uiText("On-device estimate, or experimental / firmware-gated"))
+            LegendRow(LimitState.NONE, uiText("Not from the strap. SpO₂ can be filled by importing a WHOOP or Health export."))
         }
     }
 }

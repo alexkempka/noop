@@ -125,7 +125,7 @@ fun IntelligenceScreen(vm: AppViewModel) {
                     horizontalArrangement = Arrangement.spacedBy(Metrics.gap),
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Overline("Recent")
+                        Overline(uiText("Recent"))
                         Text(uiString(R.string.l10n_intelligence_screen_by_day_2e5d14ca), style = NoopType.title2, color = Palette.textPrimary)
                     }
                     SegmentedPillControl(
@@ -179,7 +179,7 @@ private fun ForecastCard(f: RecoveryForecast) {
     val charge = f.charge.roundToInt()
     val band = f.band.roundToInt()
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Tomorrow's Charge", overline = "Evening forecast", trailing = "Estimate")
+        SectionHeader(uiText("Tomorrow's Charge"), overline = uiText("Evening forecast"), trailing = uiText("Estimate"))
         NoopCard(padding = 20.dp) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -296,12 +296,12 @@ private fun EmptyNote() {
 private fun ModelBreakdownCard(effortScale: EffortScale) {
     NoopCard(padding = 20.dp, tint = Palette.chargeColor) {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Overline("Charge model")
-            WeightRow("Heart-rate variability", "~55%", 0.55f, Palette.metricPurple)
-            WeightRow("Resting heart rate", "~20%", 0.20f, Palette.metricRose)
-            WeightRow("Rest quality", "~15%", 0.15f, Palette.metricCyan)
-            WeightRow("Respiration", "~5%", 0.05f, Palette.accent)
-            WeightRow("Skin-temperature deviation", "~5%", 0.05f, Palette.metricAmber)
+            Overline(uiText("Charge model"))
+            WeightRow(uiText("Heart-rate variability"), "~55%", 0.55f, Palette.metricPurple)
+            WeightRow(uiText("Resting heart rate"), "~20%", 0.20f, Palette.metricRose)
+            WeightRow(uiText("Rest quality"), "~15%", 0.15f, Palette.metricCyan)
+            WeightRow(uiText("Respiration"), "~5%", 0.05f, Palette.accent)
+            WeightRow(uiText("Skin-temperature deviation"), "~5%", 0.05f, Palette.metricAmber)
 
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
@@ -388,19 +388,19 @@ private fun DayCard(d: DailyMetric, effortScale: EffortScale) {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 DayStat(
-                    "Charge",
+                    uiText("Charge"),
                     d.recovery?.let { "${it.roundToInt()}%" } ?: "—",
                     d.recovery?.let { Palette.recoveryColor(it) } ?: Palette.textSecondary,
                     Modifier.weight(1f),
                 )
                 DayStat(
-                    "Effort",
+                    uiText("Effort"),
                     d.strain?.let { UnitFormatter.effortDisplay(it, effortScale) } ?: "—",
                     d.strain?.let { Palette.strainColor(it) } ?: Palette.textSecondary,
                     Modifier.weight(1f),
                 )
                 DayStat(
-                    "Rest",
+                    uiText("Rest"),
                     sleepValue(d.totalSleepMin),
                     Palette.restColor,
                     Modifier.weight(1f),
@@ -412,7 +412,7 @@ private fun DayCard(d: DailyMetric, effortScale: EffortScale) {
                     Modifier.weight(1f),
                 )
                 DayStat(
-                    "RHR",
+                    uiText("RHR"),
                     d.restingHr?.toString() ?: "—",
                     Palette.metricRose,
                     Modifier.weight(1f),
@@ -467,20 +467,20 @@ private fun sleepValue(totalMin: Double?): String {
  * "Apple Health"); imports use the accent tint, computed rows the charge tint. (Sleep overhaul §2.6.)
  */
 internal fun daySourceBadge(deviceId: String): Pair<String, Color> = when {
-    deviceId.endsWith("-noop") -> "On-device" to Palette.chargeColor
+    deviceId.endsWith("-noop") -> uiText("On-device") to Palette.chargeColor
     deviceId == com.noop.data.WhoopRepository.APPLE_HEALTH_SOURCE ||
         deviceId == com.noop.data.WhoopRepository.HEALTH_CONNECT_SOURCE -> "Apple Health" to Palette.accent
     // An Oura night is persisted under the ring's "oura-<uuid>" id (the ring PROVIDES its own SleepNet
     // hypnogram, banked as the merge-winning session) — name it "Oura", not the generic "Whoop" the
     // else-branch would give a non-"-noop" id. Resolved off the canonical brand table, not an "oura" literal.
     com.noop.data.DeviceBrandCatalog.isOura(deviceId) -> "Oura" to Palette.restColor
-    else -> "Whoop" to Palette.accent
+    else -> uiText("Whoop") to Palette.accent
 }
 
 /** Recent-window options for the By Day list. `days == null` means show everything. */
 private enum class IntelRange(val days: Int?, val label: String) {
     Week(7, "W"), Month(30, "M"), Quarter(90, "3M"),
-    Half(180, "6M"), Year(365, "1Y"), All(null, "ALL"),
+    Half(180, "6M"), Year(365, "1Y"), All(null, uiText("ALL")),
 }
 
 /** "YYYY-MM-DD" → "Mon 5 Jun"; falls back to the raw key if it doesn't parse. */
@@ -491,12 +491,12 @@ private fun prettyDay(day: String): String {
         val mo = parts[1].toInt()
         val da = parts[2].toInt()
         val cal = Calendar.getInstance().apply { set(y, mo - 1, da) }
-        val dow = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")[
+        val dow = arrayOf(uiText("Sun"), uiText("Mon"), uiText("Tue"), uiText("Wed"), uiText("Thu"), uiText("Fri"), uiText("Sat"))[
             cal.get(Calendar.DAY_OF_WEEK) - 1,
         ]
         val month = arrayOf(
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+            "Jan", "Feb", uiText("Mar"), "Apr", uiText("May"), "Jun",
+            "Jul", "Aug", "Sep", uiText("Oct"), "Nov", uiText("Dec"),
         )[mo - 1]
         "$dow $da $month"
     } catch (_: Exception) {

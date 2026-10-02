@@ -45,48 +45,48 @@ enum class HostedCard(
 ) {
     /** Sleep tab · "Sleep marks" — the tap-to-log going-to-sleep / awake card. Self-contained (logging
      *  only, no model), the first card wired end-to-end. */
-    SLEEP_MARKS("sleep.sleepMarks", "Sleep marks", "Sleep", Icons.Filled.Bedtime),
+    SLEEP_MARKS("sleep.sleepMarks", uiText("Sleep marks"), uiText("Sleep"), Icons.Filled.Bedtime),
     /** Sleep tab · "Asleep duration" — trailing-14-night sleep-hours trend (#today-hosted-cards P1). */
-    ASLEEP_DURATION("sleep.asleepDuration", "Asleep duration", "Sleep", Icons.Filled.BarChart),
+    ASLEEP_DURATION("sleep.asleepDuration", uiText("Asleep duration"), uiText("Sleep"), Icons.Filled.BarChart),
     /** Sleep tab · "Stages vs typical" — last night's Deep/REM/Light vs the wearer's personal per-stage
      *  means (#today-hosted-cards). First of the SleepModel-backed sleep cards hosted in Today. */
-    STAGES_VS_TYPICAL("sleep.stagesVsTypical", "Stages vs typical", "Sleep", Icons.Filled.StackedBarChart),
+    STAGES_VS_TYPICAL("sleep.stagesVsTypical", uiText("Stages vs typical"), uiText("Sleep"), Icons.Filled.StackedBarChart),
     /** Sleep tab · "Night detail" — the metric grid (Rest/Efficiency/Consistency/Hours vs Needed/
      *  Restorative/Respiratory/Sleep Debt) from the wearer's SleepModel (#today-hosted-cards). Second of
      *  the SleepModel-backed sleep cards hosted in Today. */
-    NIGHT_DETAIL("sleep.nightDetail", "Night detail", "Sleep", Icons.Filled.GridView),
+    NIGHT_DETAIL("sleep.nightDetail", uiText("Night detail"), uiText("Sleep"), Icons.Filled.GridView),
     /** Sleep tab · "Sleep-debt ledger" — the rolling 14-night running balance of (slept − personal need)
      *  from the wearer's SleepModel (#today-hosted-cards). Third of the SleepModel-backed sleep cards
      *  hosted in Today. */
-    SLEEP_DEBT("sleep.sleepDebt", "Sleep-debt ledger", "Sleep", Icons.Filled.Balance),
+    SLEEP_DEBT("sleep.sleepDebt", uiText("Sleep-debt ledger"), uiText("Sleep"), Icons.Filled.Balance),
     /** Sleep tab · "Stages" — a READ-ONLY latest-night stage chart + breakdown from the wearer's
      *  SleepModel (#today-hosted-cards). Unlike the interactive Sleep tab hero (night nav, wake edit, nap
      *  add/edit/delete), the Today host mirrors ONLY the display. Fourth of the SleepModel-backed cards. */
-    STAGES("sleep.stages", "Stages", "Sleep", Icons.Filled.Timeline),
+    STAGES("sleep.stages", uiText("Stages"), uiText("Sleep"), Icons.Filled.Timeline),
     /** Sleep tab · "Hours vs Needed" — the wearer's latest hours-slept-vs-personal-need percentage from the
      *  wearer's SleepModel (#today-hosted-cards). The Sleep tab surfaces this metric only as a StatTile in
      *  the Night-detail grid; the Today host gives it a standalone card (HoursVsNeededCard) reading the SAME
      *  metric, so the value can't diverge. */
-    HOURS_VS_NEEDED("sleep.hoursVsNeeded", "Hours vs Needed", "Sleep", Icons.Filled.Speed),
+    HOURS_VS_NEEDED("sleep.hoursVsNeeded", uiText("Hours vs Needed"), uiText("Sleep"), Icons.Filled.Speed),
     /** Sleep tab · "Consistency" — the wearer's latest sleep-consistency percentage (bedtime-onset spread,
      *  honouring the imported-consistency preference) from the wearer's SleepModel (#today-hosted-cards). The
      *  Sleep tab surfaces this metric only as a StatTile in the Night-detail grid; the Today host gives it a
      *  standalone card (ConsistencyHostCard) reading the SAME metric, so the value can't diverge. */
-    CONSISTENCY("sleep.consistency", "Consistency", "Sleep", Icons.Filled.Repeat),
+    CONSISTENCY("sleep.consistency", uiText("Consistency"), uiText("Sleep"), Icons.Filled.Repeat),
     /** Stress tab · "Stress" — today's hour-by-hour autonomic-load curve (#2040 follow-up). The FIRST
      *  card hosted from a tab other than Sleep, so [localizedOrigin] gains a branch for it. Read-only,
      *  like the hosted Stages card: the Stress tab keeps the interactive timeline with its scrubbing and
      *  tooltips, and the Today host mirrors only the display. */
-    STRESS_TODAY("stress.today", "Stress through the day", "Stress", Icons.Filled.ShowChart),
+    STRESS_TODAY("stress.today", uiText("Stress through the day"), "Stress", Icons.Filled.ShowChart),
     /** Trends tab · "HRV" — the trailing-month HRV trend (#today-hosted-cards). The first of the
      *  Trends-origin cards, all three of which render the SAME `MetricTrendCard` the Trends tab draws,
      *  parameterised by which `DailyMetric` field they read. */
     TREND_HRV("trends.hrv", "HRV", "Trends", Icons.Filled.MonitorHeart),
     /** Trends tab · "Resting heart rate" — the trailing-month resting-HR trend. */
-    TREND_RESTING_HR("trends.restingHr", "Resting heart rate", "Trends", Icons.Filled.Favorite),
+    TREND_RESTING_HR("trends.restingHr", uiText("Resting heart rate"), "Trends", Icons.Filled.Favorite),
     /** Trends tab · "Effort" — the trailing-month Effort trend, displayed on the wearer's chosen
      *  Effort scale exactly as the Trends tab shows it (#268). */
-    TREND_EFFORT("trends.effort", "Effort", "Trends", Icons.Filled.Bolt);
+    TREND_EFFORT("trends.effort", uiText("Effort"), "Trends", Icons.Filled.Bolt);
 
     companion object {
         fun fromRaw(raw: String?): HostedCard? = entries.firstOrNull { it.raw == raw }

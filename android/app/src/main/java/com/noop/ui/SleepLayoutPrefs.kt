@@ -25,13 +25,13 @@ import com.noop.R
  * macOS `SleepSection` enum so a backup/restore reads the same layout on either OS.
  */
 enum class SleepSection(val raw: String, val title: String) {
-    SLEEP_MARKS("sleepMarks", "Sleep marks"),
-    STAGES("stages", "Stages"),
-    BODY_CLOCK("bodyClock", "Body clock"),
-    NIGHT_DETAIL("nightDetail", "Night detail"),
-    SLEEP_DEBT("sleepDebt", "Sleep-debt ledger"),
-    STAGES_VS_TYPICAL("stagesVsTypical", "Stages vs typical"),
-    ASLEEP_DURATION("asleepDuration", "Asleep duration"),
+    SLEEP_MARKS("sleepMarks", uiText("Sleep marks")),
+    STAGES("stages", uiText("Stages")),
+    BODY_CLOCK("bodyClock", uiText("Body clock")),
+    NIGHT_DETAIL("nightDetail", uiText("Night detail")),
+    SLEEP_DEBT("sleepDebt", uiText("Sleep-debt ledger")),
+    STAGES_VS_TYPICAL("stagesVsTypical", uiText("Stages vs typical")),
+    ASLEEP_DURATION("asleepDuration", uiText("Asleep duration")),
 
     /** #sleep-layout: two ANDROID-ONLY detail cards (Hours-vs-Needed + Consistency, richer than the
      *  Night-detail grid tiles) — previously pinned below the arrange region, now first-class arrangeable
@@ -39,8 +39,8 @@ enum class SleepSection(val raw: String, val title: String) {
      *  so these two rawValues are Android-only — the macOS `SleepSection` stops at `asleepDuration`. Safe to
      *  diverge here: `sleep.sectionOrder` is not in the .noopbak whitelist, so a cross-OS restore never
      *  reads them. (Consistency's underlying score also differs across platforms — a separate parity item.) */
-    HOURS_VS_NEEDED("hoursVsNeeded", "Hours vs Needed"),
-    CONSISTENCY("consistency", "Consistency");
+    HOURS_VS_NEEDED("hoursVsNeeded", uiText("Hours vs Needed")),
+    CONSISTENCY("consistency", uiText("Consistency"));
 
     companion object {
         fun fromRaw(raw: String?): SleepSection? = entries.firstOrNull { it.raw == raw }

@@ -163,8 +163,8 @@ val LightTokens = PaletteTokens(
 // MARK: - Chart style (data-viz colour mode) + the Classic throwback ramps
 
 enum class ChartStyle(val storageValue: String, val label: String) {
-    TITANIUM("titanium", "Titanium"),
-    CLASSIC("classic", "Classic");
+    TITANIUM("titanium", uiText("Titanium")),
+    CLASSIC("classic", uiText("Classic"));
 
     companion object {
         fun fromStorage(raw: String?): ChartStyle = entries.firstOrNull { it.storageValue == raw } ?: TITANIUM
@@ -257,8 +257,8 @@ val ClassicLight = ClassicRamp(
 
 enum class AppearanceMode(val storageValue: String, val label: String) {
     SYSTEM("system", "System"),
-    LIGHT("light", "Light"),
-    DARK("dark", "Dark");
+    LIGHT("light", uiText("Light")),
+    DARK("dark", uiText("Dark"));
 
     companion object {
         fun fromStorage(raw: String?): AppearanceMode =
@@ -329,8 +329,8 @@ object AppearancePrefs {
  *  sleep DATA colour worlds are never themed by this. Twin of macOS `AccentColor` (StrandDesign). */
 enum class AccentColor(val storageValue: String, val label: String) {
     MINT("mint", "Mint"),
-    WHOOP_BLUE("whoopBlue", "WHOOP Blue"),
-    CUSTOM("custom", "Custom");
+    WHOOP_BLUE("whoopBlue", uiText("WHOOP Blue")),
+    CUSTOM("custom", uiText("Custom"));
 
     companion object {
         /** Seeds the custom picker (mint) so a fresh Custom selection is not black. */
@@ -402,11 +402,11 @@ enum class ThemePreset(
     val cardOpacity: Int,       // percent, 100 = solid
 ) {
     MINT("mint", "Mint", AccentColor.MINT, ChartStyle.TITANIUM, true, 100),
-    OCEAN("ocean", "Ocean", AccentColor.WHOOP_BLUE, ChartStyle.TITANIUM, true, 100),
-    CLASSIC("classic", "Classic", AccentColor.WHOOP_BLUE, ChartStyle.CLASSIC, true, 100),
-    MIDNIGHT("midnight", "Midnight", AccentColor.MINT, ChartStyle.TITANIUM, false, 100),
-    FROSTED("frosted", "Frosted", AccentColor.MINT, ChartStyle.TITANIUM, true, 85),
-    CUSTOM("custom", "Custom", null, null, true, 100);
+    OCEAN("ocean", uiText("Ocean"), AccentColor.WHOOP_BLUE, ChartStyle.TITANIUM, true, 100),
+    CLASSIC("classic", uiText("Classic"), AccentColor.WHOOP_BLUE, ChartStyle.CLASSIC, true, 100),
+    MIDNIGHT("midnight", uiText("Midnight"), AccentColor.MINT, ChartStyle.TITANIUM, false, 100),
+    FROSTED("frosted", uiText("Frosted"), AccentColor.MINT, ChartStyle.TITANIUM, true, 85),
+    CUSTOM("custom", uiText("Custom"), null, null, true, 100);
 
     companion object {
         /** The presets a user can pick (everything but the derived CUSTOM sentinel). */

@@ -256,8 +256,8 @@ internal fun vitalReadingDateLabel(day: String): String {
     val date = runCatching { LocalDate.parse(day) }.getOrNull() ?: return day
     val today = LocalDate.now()
     return when (date) {
-        today -> "Today"
-        today.minusDays(1) -> "Yesterday"
+        today -> uiText("Today")
+        today.minusDays(1) -> uiText("Yesterday")
         else -> date.format(DateTimeFormatter.ofPattern("d MMM", Locale.US))
     }
 }
@@ -270,7 +270,7 @@ internal enum class VitalDetailRange(val label: String, val days: Long?) {
     THREE_MONTH("3M", 90),
     SIX_MONTH("6M", 180),
     YEAR("1Y", 365),
-    ALL("ALL", null),
+    ALL(uiText("ALL"), null),
 }
 
 /** Android-facing view of the shared steps projection. Every chart-facing surface consumes this one

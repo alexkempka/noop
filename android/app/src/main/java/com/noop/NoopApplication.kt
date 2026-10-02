@@ -227,5 +227,37 @@ class NoopApplication : Application() {
             val app = checkNotNull(instance) { "NoopApplication is not attached" }
             return app.resources.getQuantityString(id, count, *formatArgs)
         }
+
+        private val literalIds = java.util.concurrent.ConcurrentHashMap<String, Int>()
+
+        /**
+         * Translation for UI copy that lives as an English literal in shared presentation code (catalogs,
+         * formatting helpers that unit tests pin to English). The English text itself is the lookup key:
+         * its resource is `l10n_lit_` + the first 10 hex digits of its SHA-1. With no Application attached
+         * (JVM unit tests) or no resource for the text, the English is returned unchanged, so the
+         * literal stays the source of truth and is never stored translated.
+         */
+        fun localizedText(english: String, vararg formatArgs: Any?): String =
+            localizedTextIn("", english, *formatArgs)
+
+        /** [localizedText] in a named [domain], for words whose meaning depends on where they appear
+         *  ("Running" the sport vs. "Running" the timer state). */
+        fun localizedTextIn(domain: String, english: String, vararg formatArgs: Any?): String {
+            val app = instance
+            val lookup = if (domain.isEmpty()) english else domain + "\u0000" + english
+            val id = if (app == null) 0 else literalIds.getOrPut(lookup) {
+                @Suppress("DiscouragedApi")
+                app.resources.getIdentifier(literalKey(lookup), "string", app.packageName)
+            }
+            if (app == null || id == 0) {
+                return if (formatArgs.isEmpty()) english else String.format(english, *formatArgs)
+            }
+            return if (formatArgs.isEmpty()) app.getString(id) else app.getString(id, *formatArgs)
+        }
+
+        internal fun literalKey(english: String): String {
+            val digest = java.security.MessageDigest.getInstance("SHA-1").digest(english.toByteArray(Charsets.UTF_8))
+            return "l10n_lit_" + digest.joinToString("") { "%02x".format(it) }.take(10)
+        }
     }
 }

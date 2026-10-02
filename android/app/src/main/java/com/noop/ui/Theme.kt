@@ -267,11 +267,11 @@ object Palette {
 
     /** The state word for a recovery score, per spec §9.3. */
     fun recoveryState(score: Double): String = when {
-        score < 25 -> "DEPLETED"
-        score < 50 -> "LOW"
-        score < 70 -> "MODERATE"
-        score < 88 -> "PRIMED"
-        else -> "PEAK"
+        score < 25 -> uiText("DEPLETED")
+        score < 50 -> uiText("LOW")
+        score < 70 -> uiText("MODERATE")
+        score < 88 -> uiText("PRIMED")
+        else -> uiText("PEAK")
     }
 
     /** HR-zone color for a 1..5 zone index (clamped). */

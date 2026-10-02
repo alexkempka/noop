@@ -51,9 +51,9 @@ internal fun ThreeDaySelectorBar(
             val day = base.minusDays(offset.toLong())
             val selected = selectedOffset == offset
             val label = when (offset) {
-                0 -> "Today"
-                1 -> "Yesterday"
-                else -> "2 days ago"
+                0 -> uiText("Today")
+                1 -> uiText("Yesterday")
+                else -> uiText("2 days ago")
             }
             val date = day.format(DateTimeFormatter.ofPattern("d MMM", Locale.US))
             Column(
@@ -142,8 +142,8 @@ internal fun DayNavBar(
 
     val canGoNewer = selectedOffset > 0
     val label = when (selectedOffset) {
-        0 -> "Today"
-        1 -> "Yesterday"
+        0 -> uiText("Today")
+        1 -> uiText("Yesterday")
         else -> selectedDay.format(DateTimeFormatter.ofPattern("EEE d MMM", Locale.US))
     }
     val date = selectedDay.format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US))

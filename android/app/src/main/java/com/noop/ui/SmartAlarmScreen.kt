@@ -176,7 +176,7 @@ fun SmartAlarmScreen(vm: AppViewModel) {
                     Spacer(Modifier.width(16.dp))
                     TimeChip(
                         minutes = targetMinutes,
-                        accessibilityLabel = "Earliest wake time",
+                        accessibilityLabel = uiText("Earliest wake time"),
                         onPicked = { vm.setPhoneAlarmTargetMinutes(it) },
                     )
                 }
@@ -229,9 +229,9 @@ fun SmartAlarmScreen(vm: AppViewModel) {
             ToggleRowLocal(
                 label = uiString(R.string.l10n_smart_alarm_screen_buzz_strapname_813772f4, strapName),
                 help = if (bonded)
-                    "Also arms your $strapName to buzz at your earliest wake time, so the strap wakes you first and the phone alarm is the guaranteed backup."
+                    uiText("Also arms your %1\$s to buzz at your earliest wake time, so the strap wakes you first and the phone alarm is the guaranteed backup.", strapName)
                 else
-                    "Connect your strap to use this. It arms the strap to buzz at your earliest wake time as a gentler first wake-up.",
+                    uiText("Connect your strap to use this. It arms the strap to buzz at your earliest wake time as a gentler first wake-up."),
                 checked = buzzWhoop4,
                 onChange = { vm.setBuzzWhoop4Enabled(it) },
             )
@@ -275,7 +275,7 @@ private fun StrapAlarmCard(vm: AppViewModel) {
     NoopCard(padding = 20.dp, tint = if (smartAlarm) Palette.accent else null) {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline("Morning")
+                Overline(uiText("Morning"))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.Alarm, contentDescription = null, tint = Palette.accent)
                     Spacer(Modifier.width(10.dp))
@@ -298,7 +298,7 @@ private fun StrapAlarmCard(vm: AppViewModel) {
                     Spacer(Modifier.weight(1f))
                     TimeChip(
                         minutes = alarmMinutes,
-                        accessibilityLabel = "Strap alarm wake time",
+                        accessibilityLabel = uiText("Strap alarm wake time"),
                         onPicked = { vm.setSmartAlarmMinutes(it) },
                     )
                 }
@@ -390,7 +390,7 @@ private fun WindowCard(
             Icon(Icons.Filled.Shield, contentDescription = null, tint = DomainTheme.Rest.color)
             Spacer(Modifier.width(12.dp))
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Overline("Guaranteed wake")
+                Overline(uiText("Guaranteed wake"))
                 if (enabled) {
                     Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(hhmm(targetMinutes), style = NoopType.number(28f), color = DomainTheme.Rest.color)
@@ -505,7 +505,7 @@ private fun WindDownCard(vm: AppViewModel) {
     NoopCard(padding = 20.dp, tint = if (enabled) DomainTheme.Rest.color else null) {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline("Evening")
+                Overline(uiText("Evening"))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.Bedtime, contentDescription = null, tint = DomainTheme.Rest.color)
                     Spacer(Modifier.width(10.dp))

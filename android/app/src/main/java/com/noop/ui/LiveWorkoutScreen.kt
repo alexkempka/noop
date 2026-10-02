@@ -163,7 +163,7 @@ fun LiveWorkoutScreen(vm: AppViewModel, onClose: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-                Overline("Time", color = Palette.textSecondary)
+                Overline(uiText("Time"), color = Palette.textSecondary)
                 Text(
                     // elapsedClock, not a local %d:%02d — that one had no hour roll-over, so this hero
                     // read "90:00" for a 90-minute session while every card that opens this screen read
@@ -336,7 +336,7 @@ private fun EffortGauge(liveStrain: Double, effortScale: EffortScale) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Overline("Effort building", color = Palette.effortColor)
+        Overline(uiText("Effort building"), color = Palette.effortColor)
         CountUpText(
             value = value,
             format = { v ->
@@ -367,7 +367,7 @@ private fun HeroHeartRate(bpm: Int?, zone: Int) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Overline("Heart rate", color = Palette.textSecondary)
+        Overline(uiText("Heart rate"), color = Palette.textSecondary)
         Text(bpm?.toString() ?: "—", style = NoopType.number(72f), color = tint)
         Text("bpm", style = NoopType.subhead, color = Palette.textSecondary)
     }
@@ -378,7 +378,7 @@ private fun ZoneRail(zone: Int, zoneSet: com.noop.analytics.HrZoneSet) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // Header row: the section label with the current-zone capsule on the right (moved off the HR hero).
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            Overline("HR zone")
+            Overline(uiText("HR zone"))
             Spacer(Modifier.weight(1f))
             val capsuleTint = if (zone >= 1) Palette.hrZoneColor(zone) else Palette.effortColor
             Text(

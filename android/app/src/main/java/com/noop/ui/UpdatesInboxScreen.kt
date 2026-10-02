@@ -103,7 +103,7 @@ fun UpdatesInboxScreen(
     ) {
         // Header — "INBOX" overline + "Updates" title + a live subtitle.
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Overline("Inbox", color = Palette.textTertiary)
+            Overline(uiText("Inbox"), color = Palette.textTertiary)
             Text(uiString(R.string.l10n_updates_inbox_screen_updates_c76d1807), style = NoopType.title1, color = Palette.textPrimary)
             Text(subtitle(store), style = NoopType.caption, color = Palette.textSecondary)
         }
@@ -179,9 +179,9 @@ fun UpdatesInboxScreen(
 }
 
 private fun subtitle(store: UpdateStore): String {
-    if (store.items.isEmpty()) return "What's new in the app and your data"
+    if (store.items.isEmpty()) return uiText("What's new in the app and your data")
     val n = store.unreadCount
-    return if (n == 0) "All caught up" else "$n unread"
+    return if (n == 0) uiText("All caught up") else "$n unread"
 }
 
 @Composable

@@ -24,3 +24,23 @@ internal fun uiString(@StringRes id: Int, vararg formatArgs: Any): String =
  */
 internal fun uiPlural(@PluralsRes id: Int, count: Int, vararg formatArgs: Any): String =
     NoopApplication.localizedPlural(id, count, *formatArgs)
+
+/**
+ * Lookup by English text for copy that stays an English literal in code (catalog entries, helpers whose
+ * unit tests pin the English). Resolves `l10n_lit_<sha1>` for the active locale; falls back to the
+ * English, formatted with [formatArgs] when given (the template then uses `%1$s`-style placeholders).
+ */
+/** Display name for a sleep stage. The English names ("Awake", "REM", "Light", "Deep") stay the keys for
+ *  colours, shares and row order; only the label on screen is translated. */
+internal fun sleepStageLabel(stage: String): String = when (stage) {
+    "Awake" -> uiString(com.noop.R.string.sleep_stage_label_awake)
+    "Light" -> uiString(com.noop.R.string.sleep_stage_label_light)
+    "Deep" -> uiString(com.noop.R.string.sleep_stage_label_deep)
+    else -> stage
+}
+
+internal fun uiText(english: String, vararg formatArgs: Any?): String =
+    NoopApplication.localizedText(english, *formatArgs)
+
+/** A sport name for the screen ("Running" → "Laufen"); the English name stays the stored value. */
+internal fun uiSport(english: String): String = NoopApplication.localizedTextIn("sport", english)

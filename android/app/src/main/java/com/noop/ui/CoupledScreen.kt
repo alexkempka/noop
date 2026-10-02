@@ -484,9 +484,9 @@ private fun StrainCard(dayStrain21: Double?, recovery: Double?, calories: Double
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                HeroStat("Day Strain", dayStrain21?.let { String.format(Locale.US, "%.1f", it) } ?: COUPLED_NO_DATA, Palette.effortColor)
+                HeroStat(uiText("Day Strain"), dayStrain21?.let { String.format(Locale.US, "%.1f", it) } ?: COUPLED_NO_DATA, Palette.effortColor)
                 OptimalStat("Optimal", recovery)
-                HeroStat("Calories", calories?.let { "${it.roundToInt()} kcal" } ?: COUPLED_NO_DATA, Palette.metricAmber)
+                HeroStat(uiText("Calories"), calories?.let { "${it.roundToInt()} kcal" } ?: COUPLED_NO_DATA, Palette.metricAmber)
                 HeroStat("Workouts", workouts.toString(), Palette.textPrimary)
             }
         }
@@ -642,11 +642,11 @@ internal fun hoursMinutes(minutes: Double): String {
  * word, so the coupled strain card computes it for the overline.
  */
 internal fun strainBandWord(fraction: Double): String = when {
-    fraction < 6.0 / 21 -> "LIGHT"
-    fraction < 10.0 / 21 -> "MODERATE"
-    fraction < 14.0 / 21 -> "STRENUOUS"
-    fraction < 18.0 / 21 -> "HIGH"
-    else -> "ALL-OUT"
+    fraction < 6.0 / 21 -> uiText("LIGHT")
+    fraction < 10.0 / 21 -> uiText("MODERATE")
+    fraction < 14.0 / 21 -> uiText("STRENUOUS")
+    fraction < 18.0 / 21 -> uiText("HIGH")
+    else -> uiText("ALL-OUT")
 }
 
 /**

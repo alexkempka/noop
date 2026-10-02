@@ -58,25 +58,22 @@ private enum class Support { YES, NO, PARTIAL }
 
 private val CAPABILITIES: List<CapabilityRow> = listOf(
     CapabilityRow(
-        "Live heart rate",
+        uiText("Live heart rate"),
         Support.YES, Support.YES,
-        "Both stream live HR to NOOP over Bluetooth.",
+        uiText("Both stream live HR to NOOP over Bluetooth."),
     ),
     CapabilityRow(
-        "Sleep, recovery & strain history",
+        uiText("Sleep, recovery & strain history"),
         Support.YES, Support.PARTIAL,
-        "The 4.0's history is fully decoded. On a 5/MG, history decoding is experimental: live HR works, " +
-            "deeper history is still being mapped.",
+        uiText("The 4.0's history is fully decoded. On a 5/MG, history decoding is experimental: live HR works, deeper history is still being mapped."),
     ),
     CapabilityRow(
-        "NOOP re-broadcasts your HR (gym / Zwift / Garmin)",
+        uiText("NOOP re-broadcasts your HR (gym / Zwift / Garmin)"),
         Support.YES, Support.YES,
-        "Data Sources → \"Broadcast heart rate\" turns your PHONE into a standard BLE HR sensor using " +
-            "whatever HR NOOP is reading, so this works on a 4.0 too. It's local Bluetooth; nothing leaves " +
-            "your phone.",
+        uiText("Data Sources → \"Broadcast heart rate\" turns your PHONE into a standard BLE HR sensor using whatever HR NOOP is reading, so this works on a 4.0 too. It's local Bluetooth; nothing leaves your phone."),
     ),
     CapabilityRow(
-        "Strap broadcasts its own HR",
+        uiText("Strap broadcasts its own HR"),
         Support.PARTIAL, Support.YES,
         // PARTIAL on the 4.0, not YES: the strap is asked over TOGGLE_GENERIC_HR_PROFILE (14) and
         // answers, but nothing reads back whether it actually advertises 0x180D, and the opcode was
@@ -84,23 +81,20 @@ private val CAPABILITIES: List<CapabilityRow> = listOf(
         // confirmed" for the same reason, and this row is where a 4.0 owner decides whether to rely on
         // it, so it must not claim more than the code does. The 5/MG column keeps YES: its
         // device-config write is read back on opcode 121.
-        "A 4.0 is asked over its own broadcast command and answers, but nothing can read back whether " +
-            "it really advertises, and it has been confirmed on one strap on one firmware. A 5/MG uses " +
-            "the whoop_live_hr_in_adv_ind_pkt firmware setting, which NOOP reads back.",
+        uiText("A 4.0 is asked over its own broadcast command and answers, but nothing can read back whether it really advertises, and it has been confirmed on one strap on one firmware. A 5/MG uses the whoop_live_hr_in_adv_ind_pkt firmware setting, which NOOP reads back."),
     ),
     CapabilityRow(
-        "Steps",
+        uiText("Steps"),
         Support.PARTIAL, Support.YES,
-        "A 4.0 sends no step count, so NOOP ESTIMATES steps from motion, calibrated to your phone " +
-            "(Settings → Profile → Steps estimate). A 5/MG reports a motion counter NOOP reads directly.",
+        uiText("A 4.0 sends no step count, so NOOP ESTIMATES steps from motion, calibrated to your phone (Settings → Profile → Steps estimate). A 5/MG reports a motion counter NOOP reads directly."),
     ),
     CapabilityRow(
-        "Rename the strap's Bluetooth name",
+        uiText("Rename the strap's Bluetooth name"),
         Support.YES, Support.NO,
-        "Renaming works over the 4.0's firmware command; the 5/MG path isn't supported.",
+        uiText("Renaming works over the 4.0's firmware command; the 5/MG path isn't supported."),
     ),
     CapabilityRow(
-        "Buzz the strap (alarms, haptics, time)",
+        uiText("Buzz the strap (alarms, haptics, time)"),
         Support.YES, Support.YES,
     ),
 )
@@ -148,7 +142,7 @@ private fun IntroCard() {
 private fun CapabilityTableCard() {
     NoopCard(padding = 20.dp) {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Overline("Feature by strap")
+            Overline(uiText("Feature by strap"))
             // Column header.
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(uiString(R.string.l10n_whoop_model_comparison_screen_feature_ad565d9d), style = NoopType.caption, color = Palette.textTertiary, modifier = Modifier.weight(1f))
@@ -182,9 +176,9 @@ private fun CapabilityTableCard() {
 private fun SupportCell(support: Support) {
     Box(modifier = Modifier.width(48.dp), contentAlignment = Alignment.Center) {
         when (support) {
-            Support.YES -> SupportGlyph(Icons.Filled.Check, Palette.statusPositive, "Yes")
+            Support.YES -> SupportGlyph(Icons.Filled.Check, Palette.statusPositive, uiText("Yes"))
             Support.NO -> SupportGlyph(Icons.Filled.Close, Palette.textTertiary, "No")
-            Support.PARTIAL -> SupportGlyph(Icons.Filled.Remove, Palette.statusWarning, "Partly")
+            Support.PARTIAL -> SupportGlyph(Icons.Filled.Remove, Palette.statusWarning, uiText("Partly"))
         }
     }
 }
@@ -218,7 +212,7 @@ private fun Header(onClose: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Overline("Your strap", color = Palette.textTertiary)
+            Overline(uiText("Your strap"), color = Palette.textTertiary)
             Text(uiString(R.string.l10n_whoop_model_comparison_screen_4_0_vs_5_0_mg_56099a02), style = NoopType.display(26f), color = Palette.textPrimary)
             Text(uiString(R.string.l10n_whoop_model_comparison_screen_what_each_can_read_and_why_4348bd67), style = NoopType.caption, color = Palette.textSecondary)
         }

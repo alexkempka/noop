@@ -70,7 +70,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
     val tiles = listOf<@Composable (Modifier) -> Unit>(
         { mod ->
             SparkTile(
-                mod, "Rest",
+                mod, uiText("Rest"),
                 value = pctValue(m.performance.latest),
                 caption = tileCaption(m.performance.latestDay, m.performance.latest, m.performance.typical, "%"),
                 accent = m.performance.latest?.let { Palette.recoveryColor(it) } ?: Palette.textPrimary,
@@ -80,7 +80,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         },
         { mod ->
             SparkTile(
-                mod, "Efficiency",
+                mod, uiText("Efficiency"),
                 value = pctValue(m.efficiency.latest),
                 caption = tileCaption(m.efficiency.latestDay, m.efficiency.latest, m.efficiency.typical, "%"),
                 accent = Palette.statusPositive,
@@ -90,7 +90,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         },
         { mod ->
             SparkTile(
-                mod, "Consistency",
+                mod, uiText("Consistency"),
                 value = pctValue(m.consistency.latest),
                 caption = tileCaption(m.consistency.latestDay, m.consistency.latest, m.consistency.typical, "%"),
                 accent = m.consistency.latest?.let { Palette.recoveryColor(it) } ?: Palette.textPrimary,
@@ -100,7 +100,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         },
         { mod ->
             SparkTile(
-                mod, "Hours vs Needed",
+                mod, uiText("Hours vs Needed"),
                 value = pctValue(m.hoursVsNeeded.latest),
                 caption = tileCaption(m.hoursVsNeeded.latestDay, m.hoursVsNeeded.latest, m.hoursVsNeeded.typical, "%"),
                 accent = m.hoursVsNeeded.latest?.let { Palette.recoveryColor(minOf(100.0, it)) } ?: Palette.textPrimary,
@@ -110,7 +110,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         },
         { mod ->
             SparkTile(
-                mod, "Restorative",
+                mod, uiText("Restorative"),
                 value = pctValue(m.restorative.latest),
                 caption = tileCaption(m.restorative.latestDay, m.restorative.latest, m.restorative.typical, "%"),
                 accent = Palette.sleepREM,
@@ -120,7 +120,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         },
         { mod ->
             SparkTile(
-                mod, "Respiratory",
+                mod, uiText("Respiratory"),
                 value = m.respiratory.latest?.let { String.format(Locale.US, "%.1f", it) } ?: "—",
                 caption = tileCaption(m.respiratory.latestDay, m.respiratory.latest, m.respiratory.typical, " rpm", decimals = 1),
                 accent = Palette.metricPurple,
@@ -131,12 +131,12 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Night detail", overline = "Metrics", trailing = "vs typical")
+        SectionHeader(uiText("Night detail"), overline = uiText("Metrics"), trailing = uiText("vs typical"))
 
         // Sleep Debt is the actionable summary for the section, so it leads at the full
         // two-column width. The remaining six peer metrics keep the established 2 × 3 grid.
         SparkTile(
-            Modifier.fillMaxWidth(), "Sleep Debt",
+            Modifier.fillMaxWidth(), uiText("Sleep Debt"),
             value = m.sleepDebt.latest?.let { durationText(it) } ?: "—",
             caption = debtCaption(m.sleepDebt.latest),
             accent = debtColor(m.sleepDebt.latest),
@@ -172,7 +172,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
 internal fun SleepDebtLedgerHostCard(m: SleepModel) {
     val ledger = m.sleepDebtLedger
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Sleep-debt ledger", overline = "Last 14 nights", trailing = "tonight's target")
+        SectionHeader(uiText("Sleep-debt ledger"), overline = uiText("Last 14 nights"), trailing = uiText("tonight's target"))
         NoopCard(padding = Metrics.cardPadding, tint = Palette.restColor) {
             if (ledger.nightCount == 0) {
                 Text(
@@ -290,11 +290,11 @@ internal fun StagesHostCard(m: SleepModel) {
     val s = m.stages
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
         // Read-only header: the night's span label in the trailing slot — NO ◀/▶ nav controls.
-        SectionHeader("Stages", overline = "Last night", trailing = m.clockLabel)
+        SectionHeader(uiText("Stages"), overline = uiText("Last night"), trailing = m.clockLabel)
         // Verbatim of the Sleep tab Hero's stage-chart block, read from the shared model with a null
         // session window (no clock axis) and no motion strip — the fractions/segments are identical.
         val subtitle = "${durationText(s.total)} in bed · ${m.efficiencyText} efficiency" +
-            (if (m.realSegments != null) " · approx. stages (on-device)" else "")
+            (if (m.realSegments != null) uiText(" · approx. stages (on-device)") else "")
         val real = m.realSegments?.takeIf { it.size >= 2 }
         if (real != null) {
             val chartStyle = UnitPrefs.sleepChartStyle(LocalContext.current)
@@ -374,7 +374,7 @@ internal fun StagesHostCard(m: SleepModel) {
 internal fun StagesVsTypicalHostCard(m: SleepModel) {
     val s = m.stages
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Stages vs typical", overline = "Selected night", trailing = "marker = your mean")
+        SectionHeader(uiText("Stages vs typical"), overline = uiText("Selected night"), trailing = uiText("marker = your mean"))
         NoopCard(tint = Palette.restColor) {
             Column(verticalArrangement = Arrangement.spacedBy(Metrics.space14)) {
                 StageRow("Deep", last = s.deep, typical = m.typicalDeepMin, color = Palette.sleepDeep)
@@ -403,12 +403,12 @@ private fun StageRow(label: String, last: Double, typical: Double?, color: Color
         } else {
             val diff = last - typical
             val sign = if (diff >= 0) "+" else "−"
-            "$sign${durationText(abs(diff))} vs typ"
+            uiText("%1\$s%2\$s vs typ", sign, durationText(abs(diff)))
         }
     }
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.space6)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Overline(label, modifier = Modifier.weight(1f))
+            Overline(sleepStageLabel(label), modifier = Modifier.weight(1f))
             Text(durationText(last), style = NoopType.captionNumber, color = Palette.textPrimary)
             if (deltaText.isNotEmpty()) {
                 Text(
@@ -472,7 +472,7 @@ private fun DrawScope.drawRoundRectFill(color: Color, frac: Float) {
 internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
     val avg = hours.sleepAverageOrNull()
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Asleep duration", overline = "Sleep", trailing = "Last 14 days")
+        SectionHeader(uiText("Asleep duration"), overline = uiText("Sleep"), trailing = uiText("Last 14 days"))
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
             subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
@@ -515,7 +515,7 @@ internal fun DurationTrend(m: SleepModel) {
     val pts = m.trendHours
     val avg = pts.sleepAverageOrNull()
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Trend", overline = "Sleep", trailing = "Last 14 days")
+        SectionHeader("Trend", overline = uiText("Sleep"), trailing = uiText("Last 14 days"))
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
             subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
@@ -825,7 +825,7 @@ internal fun HoursVsNeededCard(m: SleepModel) {
         Column(verticalArrangement = Arrangement.spacedBy(Metrics.space14)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Overline("Sleep")
+                    Overline(uiText("Sleep"))
                     Text(uiString(R.string.l10n_sleep_screen_hours_vs_needed_500a0aca), style = NoopType.headline, color = Palette.textPrimary)
                 }
                 Text(trendArrow, style = NoopType.title2, color = arrowColor)
@@ -862,9 +862,9 @@ internal fun HoursVsNeededCard(m: SleepModel) {
                 if (debtRepay > 0) Box(modifier = Modifier.weight((debtRepay / totalBar).toFloat()).fillMaxHeight().background(Palette.statusCritical))
             }
             Row(horizontalArrangement = Arrangement.spacedBy(Metrics.space14)) {
-                SleepLegendDot("Healthy Min", Palette.metricPurple)
-                SleepLegendDot("Strain", Palette.strain066)
-                SleepLegendDot("Debt", Palette.statusCritical)
+                SleepLegendDot(uiText("Healthy Min"), Palette.metricPurple)
+                SleepLegendDot(uiText("Strain"), Palette.strain066)
+                SleepLegendDot(uiText("Debt"), Palette.statusCritical)
             }
 
             SleepHairline()
@@ -872,7 +872,7 @@ internal fun HoursVsNeededCard(m: SleepModel) {
                 listOf(
                     "Slept" to String.format(Locale.US, "%.1f h", sleptH),
                     "Needed" to String.format(Locale.US, "%.1f h", neededH),
-                    "Debt" to if (debtH > 0.05) durationText(debtH * 60.0) else "None",   // #691: h+m, not "0.6 h"
+                    "Debt" to if (debtH > 0.05) durationText(debtH * 60.0) else uiText("None"),   // #691: h+m, not "0.6 h"
                 ).forEach { (lbl, v) ->
                     Column(modifier = Modifier.weight(1f)) {
                         Overline(lbl, color = Palette.textTertiary)
@@ -927,7 +927,7 @@ internal fun ConsistencyHostCard(m: SleepModel) {
         Column(verticalArrangement = Arrangement.spacedBy(Metrics.space14)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Overline("Sleep")
+                    Overline(uiText("Sleep"))
                     Text(uiString(R.string.l10n_sleep_screen_consistency_0ea7b95e), style = NoopType.headline, color = Palette.textPrimary)
                 }
                 Text(trendArrow, style = NoopType.title2, color = arrowColor)
@@ -1016,7 +1016,7 @@ internal fun SleepConsistencyCard(
             // Header: title + trend-score.
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Overline("Schedule")
+                    Overline(uiText("Schedule"))
                     Text(uiString(R.string.l10n_sleep_screen_bedtime_wake_time_b2a22c32), style = NoopType.headline, color = Palette.textPrimary)
                     Text(uiString(R.string.l10n_sleep_screen_sleep_window_over_recent_nights_cc5fd9b8), style = NoopType.footnote, color = Palette.textSecondary)
                 }
@@ -1108,8 +1108,8 @@ internal fun SleepConsistencyCard(
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(Metrics.space14)) {
-                SleepLegendDot("Typical bedtime  $typicalBedLabel", Palette.metricPurple)
-                SleepLegendDot("Wake  $typicalWakeLabel", Palette.restColor)
+                SleepLegendDot(uiText("Typical bedtime  %1\$s", typicalBedLabel), Palette.metricPurple)
+                SleepLegendDot(uiText("Wake  %1\$s", typicalWakeLabel), Palette.restColor)
             }
 
             SleepHairline()

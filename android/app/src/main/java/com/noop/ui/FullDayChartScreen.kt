@@ -498,9 +498,9 @@ fun downsampleTimeline(points: List<TimelinePoint>, bucketSeconds: Long): List<T
 
 private fun resolutionSubtitle(points: List<TimelinePoint>, isRaw: Boolean, bucketSeconds: Long): String {
     if (points.isEmpty()) return "—"
-    if (isRaw) return "Raw · per second"
+    if (isRaw) return uiText("Raw · per second")
     val m = bucketSeconds / 60
-    return if (m >= 1) "$m-minute average" else "${bucketSeconds}-second average"
+    return if (m >= 1) uiText("%1\$s-minute average", m) else uiText("%1\$s-second average", bucketSeconds)
 }
 
 private fun metricColor(metric: TimelineMetric): Color = when (metric) {
@@ -580,8 +580,8 @@ internal fun landTargetDayStart(
 
 /** "Today" / "Yesterday" / "Wed 18 Jun" label for the Deep Timeline day stepper (#597). */
 private fun dayLabel(dayStartSec: Long, todayStart: Long): String = when (dayStartSec) {
-    todayStart -> "Today"
-    todayStart - 86_400 -> "Yesterday"
+    todayStart -> uiText("Today")
+    todayStart - 86_400 -> uiText("Yesterday")
     else -> java.text.SimpleDateFormat("EEE d MMM", Locale.US).format(java.util.Date(dayStartSec * 1000))
 }
 

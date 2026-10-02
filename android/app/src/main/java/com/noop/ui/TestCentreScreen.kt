@@ -1136,7 +1136,7 @@ private fun ExportCard(vm: AppViewModel, onReport: () -> Unit) {
                     }
                     TimeChip(
                         minutes = minutes,
-                        accessibilityLabel = "Daily export time",
+                        accessibilityLabel = uiText("Daily export time"),
                         onPicked = {
                             minutes = it
                             settings.timeMinutes = it
@@ -1300,7 +1300,7 @@ private fun HrvReadinessReadoutTC(days: List<DailyMetric>) {
             val base = result.baseline7Ms.roundToInt()
             val lo = result.normalLowMs.roundToInt()
             val hi = result.normalHighMs.roundToInt()
-            val watch = if (result.overreachingWatch) ", overreaching watch" else ""
+            val watch = if (result.overreachingWatch) uiText(", overreaching watch") else ""
             Text(
                 uiString(R.string.l10n_test_centre_screen_7_night_baseline_base_ms_normal_43d9cfa6, base, lo, hi, watch),
                 style = NoopType.footnote, color = Palette.textTertiary,
@@ -1369,7 +1369,7 @@ private fun ReportReviewDialog(
                     style = NoopType.subhead, color = Palette.textSecondary,
                 )
                 Text(
-                    previewText.ifBlank { "(nothing to share yet)" },
+                    previewText.ifBlank { uiText("(nothing to share yet)") },
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                     modifier = Modifier
@@ -1401,7 +1401,7 @@ private fun SettingsSectionTC(
     NoopCard(padding = 20.dp, tint = Palette.accent) {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline("Test Centre")
+                Overline(uiText("Test Centre"))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),

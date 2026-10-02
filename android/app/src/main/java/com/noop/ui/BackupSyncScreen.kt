@@ -108,7 +108,7 @@ fun BackupSyncScreen() {
                         // would still ack and trim the strap PAST records we can't store, discarding real history.
                         // Relaunching the process re-opens Room against the restored file. Do it automatically
                         // rather than trust the user to read a toast (which is exactly how #57 happened).
-                        Toast.makeText(context, "Backup restored — restarting NOOP…", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, uiText("Backup restored — restarting NOOP…"), Toast.LENGTH_LONG).show()
                         // NonCancellable: this coroutine runs in the screen's scope, which is cancelled the
                         // instant the user navigates away. The restart is a data-safety guarantee (the DB is
                         // already swapped), so it must complete even if the composition leaves — otherwise the
@@ -298,7 +298,7 @@ fun BackupSyncScreen() {
                         Spacer(Modifier.width(16.dp))
                         TimeChip(
                             minutes = backupMinute,
-                            accessibilityLabel = "Daily backup time",
+                            accessibilityLabel = uiText("Daily backup time"),
                             onPicked = { m ->
                                 backupMinute = m
                                 BackupSyncPrefs.setBackupMinute(context, m)
@@ -354,9 +354,9 @@ fun BackupSyncScreen() {
                                     Toast.makeText(
                                         context,
                                         if (ok) {
-                                            "Backed up to your folder."
+                                            uiText("Backed up to your folder.")
                                         } else {
-                                            "Backup failed - re-pick the folder and try again."
+                                            uiText("Backup failed - re-pick the folder and try again.")
                                         },
                                         Toast.LENGTH_LONG,
                                     ).show()
@@ -444,7 +444,7 @@ fun BackupSyncScreen() {
                                 .clickable {
                                     showSnapshotPicker = false
                                     pendingRestore = if (snap.timeMs > 0L) {
-                                        "the backup from $whenLabel"
+                                        uiText("the backup from %1\$s", whenLabel)
                                     } else {
                                         snap.name
                                     } to snap.uri
@@ -515,6 +515,6 @@ private val RESTORE_MIME_TYPES = arrayOf(
 
 /** A short, human label for a SAF tree Uri (the part after the volume colon). */
 private fun folderLabel(treeUri: Uri): String {
-    val seg = treeUri.lastPathSegment ?: return "selected folder"
+    val seg = treeUri.lastPathSegment ?: return uiText("selected folder")
     return seg.substringAfterLast(':').ifBlank { seg }
 }

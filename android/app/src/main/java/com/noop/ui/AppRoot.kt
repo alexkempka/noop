@@ -233,7 +233,7 @@ internal data class DrawerGroup(
 // are NOT listed (they're bottom-bar tabs, exactly as on iOS). Android-only screens (Vital Signs, Wake
 // Window, Notifications, Devices) are slotted into the matching iOS group.
 internal val drawerGroups: List<DrawerGroup> = listOf(
-    DrawerGroup("Insights", R.string.more_group_insights, listOf(
+    DrawerGroup(uiText("Insights"), R.string.more_group_insights, listOf(
         // Coach is a bottom-bar tab now and is deliberately absent here, matching iOS: "K3: Coach
         // promoted to a top-level tab — no longer listed under More." Leaving it would have put the
         // same destination in two places at once, which is the duplication the note above says this
@@ -241,12 +241,12 @@ internal val drawerGroups: List<DrawerGroup> = listOf(
         Destination.InsightsHub, Destination.Intelligence,
         Destination.Insights, Destination.Explore, Destination.Compare,
     ), defaultExpanded = true),
-    DrawerGroup("Body", R.string.more_group_body, listOf(
+    DrawerGroup(uiText("Body"), R.string.more_group_body, listOf(
         Destination.Live, Destination.Workouts, Destination.Health, Destination.VitalSigns,
         Destination.LabBook, Destination.Stress, Destination.Breathe, Destination.Intervals,
         Destination.Rhythm,
     ), defaultExpanded = true),
-    DrawerGroup("Data", R.string.more_group_data, listOf(
+    DrawerGroup(uiText("Data"), R.string.more_group_data, listOf(
         Destination.FusedRecord, Destination.AppleHealth, Destination.DataSources,
         Destination.BackupSync, Destination.Devices, Destination.NoopLimitations,
     ), defaultExpanded = false),
@@ -821,7 +821,7 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                         .padding(bottom = 24.dp),
                 ) {
                     Overline(
-                        "Quick actions",
+                        uiText("Quick actions"),
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 6.dp),
                         color = Palette.textTertiary,
                     )
@@ -1382,7 +1382,7 @@ fun ComingSoon(text: String, modifier: Modifier = Modifier) {
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(text, style = NoopType.title2, color = Palette.textPrimary, textAlign = TextAlign.Center)
-                Overline("Coming soon", color = Palette.textSecondary)
+                Overline(uiText("Coming soon"), color = Palette.textSecondary)
                 Text(
                     uiString(R.string.l10n_app_root_this_section_is_on_the_way_ca7c4a32),
                     style = NoopType.footnote,

@@ -283,7 +283,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
                     vm.registerDevice(
                         PairedDeviceRow(
                             id = ActivityFileImporter.SOURCE_ID,
-                            brand = "Workout files",
+                            brand = uiText("Workout files"),
                             model = "",
                             nickname = null,
                             peripheralId = null,
@@ -308,7 +308,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
         if (granted.any { it in selectedPermissions }) {
             runImport { HealthConnectImporter.import(context, vm.repo, ProfileStore.from(context).heightCm) }
         } else {
-            Toast.makeText(context, "Health Connect access not granted.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, uiText("Health Connect access not granted."), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -359,7 +359,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
             vm.writebackHealthConnectNow()
         } else {
             vm.setHcWriteback(false)
-            Toast.makeText(context, "Health Connect write access not granted.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, uiText("Health Connect write access not granted."), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -436,7 +436,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
             )
             CountLine(
                 primary = whoopDays?.let { "$it days" } ?: "—",
-                secondary = whoopWorkouts?.let { "$it workouts stored" } ?: "Counting…",
+                secondary = whoopWorkouts?.let { uiText("%1\$s workouts stored", it) } ?: uiText("Counting…"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_whoop_export_zip_16f4176b),
@@ -463,7 +463,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
             )
             CountLine(
                 primary = appleDays?.let { "$it days" } ?: "—",
-                secondary = appleWorkouts?.let { "$it workouts" } ?: "Counting…",
+                secondary = appleWorkouts?.let { "$it workouts" } ?: uiText("Counting…"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_apple_health_export_533fca27),
@@ -499,7 +499,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
                 StatePill(title = uiString(R.string.l10n_data_sources_screen_imported_434eb26f), tone = StrandTone.Accent, showsDot = true)
                 CountLine(
                     primary = hcDays?.let { "$it days" } ?: "—",
-                    secondary = hcWorkouts?.let { "$it workouts" } ?: "Counting…",
+                    secondary = hcWorkouts?.let { "$it workouts" } ?: uiText("Counting…"),
                 )
             }
             if (healthConnectAvailable) {
@@ -636,7 +636,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
                     }
                 }
             } else {
-                RoadmapNote("Health Connect isn't set up on this device. Install it from Google Play, then return here to import.")
+                RoadmapNote(uiText("Health Connect isn't set up on this device. Install it from Google Play, then return here to import."))
             }
         }
         }
@@ -656,8 +656,8 @@ fun DataSourcesScreen(vm: AppViewModel) {
                 showsDot = true,
             )
             CountLine(
-                primary = nutritionDays?.let { "$it days logged" } ?: "—",
-                secondary = nutritionWeighIns?.let { "$it weigh-ins" } ?: "Counting…",
+                primary = nutritionDays?.let { uiText("%1\$s days logged", it) } ?: "—",
+                secondary = nutritionWeighIns?.let { "$it weigh-ins" } ?: uiText("Counting…"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_nutrition_csv_2c748273),
@@ -683,8 +683,8 @@ fun DataSourcesScreen(vm: AppViewModel) {
                 showsDot = true,
             )
             CountLine(
-                primary = xiaomiDays?.let { "$it days imported" } ?: "—",
-                secondary = if (xiaomiDays == null) "Counting…" else "Mi Band / Smart Band 8 · 9 · 10",
+                primary = xiaomiDays?.let { uiText("%1\$s days imported", it) } ?: "—",
+                secondary = if (xiaomiDays == null) uiText("Counting…") else "Mi Band / Smart Band 8 · 9 · 10",
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_mi_band_export_e587801c),
@@ -711,7 +711,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
             )
             CountLine(
                 primary = liftingWorkouts?.let { "$it workouts" } ?: "—",
-                secondary = "volume load shown per session",
+                secondary = uiText("volume load shown per session"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_lifting_log_8fac7b68),
@@ -738,7 +738,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
             )
             CountLine(
                 primary = activityFiles?.let { "$it workouts" } ?: "—",
-                secondary = "GPX · TCX · FIT (one workout per file)",
+                secondary = uiText("GPX · TCX · FIT (one workout per file)"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_workout_file_a3a28e06),
@@ -764,8 +764,8 @@ fun DataSourcesScreen(vm: AppViewModel) {
                 showsDot = true,
             )
             CountLine(
-                primary = wearableDays?.let { "$it day metrics" } ?: "—",
-                secondary = "Oura JSON · Fitbit Takeout · Garmin GDPR (daily metrics + sleep)",
+                primary = wearableDays?.let { uiText("%1\$s day metrics", it) } ?: "—",
+                secondary = uiText("Oura JSON · Fitbit Takeout · Garmin GDPR (daily metrics + sleep)"),
             )
             BackupButton(
                 label = uiString(R.string.l10n_data_sources_screen_import_wearable_export_0545c430),
@@ -787,15 +787,15 @@ fun DataSourcesScreen(vm: AppViewModel) {
             if (hrBroadcast) {
                 val (label, tone) =
                     if (hrBroadcastAdvertising) "Broadcasting" to StrandTone.Positive
-                    else "Starting…" to StrandTone.Warning
+                    else uiText("Starting…") to StrandTone.Warning
                 StatePill(title = label, tone = tone, showsDot = true, pulsing = !hrBroadcastAdvertising)
                 CountLine(
-                    primary = if (hrBroadcastAdvertising) "Standard HR sensor (0x180D)" else "—",
+                    primary = if (hrBroadcastAdvertising) uiText("Standard HR sensor (0x180D)") else "—",
                     secondary = when {
                         hrBroadcastSubscribers > 0 ->
                             "$hrBroadcastSubscribers ${if (hrBroadcastSubscribers == 1) "device" else "devices"} reading"
-                        live.heartRate != null -> "Sharing ${live.heartRate} bpm · waiting for a device"
-                        else -> "No live heart rate yet · open Live to pair your strap"
+                        live.heartRate != null -> uiText("Sharing %1\$s bpm · waiting for a device", live.heartRate)
+                        else -> uiText("No live heart rate yet · open Live to pair your strap")
                     },
                 )
             } else {
@@ -882,10 +882,10 @@ fun DataSourcesScreen(vm: AppViewModel) {
                 // unbonded offload probe is a second way in — it sets bonded on a strap that answered a
                 // command without ever having sent an HR reading. Both are the same state: reachable over
                 // the open profile, never encrypted.
-                live.encryptedBond -> "Bonded, streaming." to StrandTone.Positive
-                live.bonded -> "Live HR (not fully paired)" to StrandTone.Warning
-                live.connected -> "Connected, pairing…" to StrandTone.Warning
-                else -> "Not connected. Open Live to pair." to StrandTone.Critical
+                live.encryptedBond -> uiText("Bonded, streaming.") to StrandTone.Positive
+                live.bonded -> uiText("Live HR (not fully paired)") to StrandTone.Warning
+                live.connected -> uiText("Connected, pairing…") to StrandTone.Warning
+                else -> uiText("Not connected. Open Live to pair.") to StrandTone.Critical
             }
             StatePill(title = label, tone = tone, showsDot = true, pulsing = live.connected && !live.bonded)
             val strapBroadcastTitle = uiString(R.string.raw_diag_broadcast_hr)
@@ -959,7 +959,7 @@ fun DataSourcesScreen(vm: AppViewModel) {
                         refreshCounts()
                         vm.loadWorkouts()
                         busy = false
-                        Toast.makeText(context, "Removed Apple Health imported data.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, uiText("Removed Apple Health imported data."), Toast.LENGTH_LONG).show()
                     }
                 }) {
                     Text(uiString(R.string.l10n_data_sources_screen_remove_e963907d), style = NoopType.body, color = Palette.statusCritical)

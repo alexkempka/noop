@@ -774,10 +774,9 @@ fun SettingsScreen(
                     // during a restore, which is the one moment the original is gone. The second
                     // sentence is the refusal's own wording, reused so this adds no untranslated copy.
                     val note = if (outcome.overRestoreCeiling) {
-                        "Backup exported. The backup archive is too large to restore safely — " +
-                            "restoring it will ask you to confirm."
+                        uiText("Backup exported. The backup archive is too large to restore safely — restoring it will ask you to confirm.")
                     } else {
-                        "Backup exported. Copy this file to your new phone and use Import there to restore everything."
+                        uiText("Backup exported. Copy this file to your new phone and use Import there to restore everything.")
                     }
                     Toast.makeText(context, note, Toast.LENGTH_LONG).show()
                 },
@@ -785,7 +784,7 @@ fun SettingsScreen(
                     // The EXPORT-side integrity refusal lands here (#1014): a corrupt store is caught
                     // before it is archived, and the message names the CSV route that still works. That
                     // is a next step, so it needs the dialog for the same reason the import failures do.
-                    backupFailure = "Backup problem: ${e.message}"
+                    backupFailure = uiText("Backup problem: %1\$s", e.message)
                 },
             )
         }
@@ -807,12 +806,12 @@ fun SettingsScreen(
                 onSuccess = { msg ->
                     Toast.makeText(
                         context,
-                        "$msg Re-import it via Data sources → WHOOP import, on Android or Mac.",
+                        uiText("%1\$s Re-import it via Data sources → WHOOP import, on Android or Mac.", msg),
                         Toast.LENGTH_LONG,
                     ).show()
                 },
                 onFailure = { e ->
-                    Toast.makeText(context, "CSV export problem: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, uiText("CSV export problem: %1\$s", e.message), Toast.LENGTH_LONG).show()
                 },
             )
         }
@@ -830,7 +829,7 @@ fun SettingsScreen(
             when (result) {
                 is DataBackup.ImportResult.NeedsRestart -> Toast.makeText(
                     context,
-                    "Backup imported. Fully close and reopen NOOP for it to take effect.",
+                    uiText("Backup imported. Fully close and reopen NOOP for it to take effect."),
                     Toast.LENGTH_LONG,
                 ).show()
                 is DataBackup.ImportResult.Failed -> backupFailure = result.message
@@ -855,7 +854,7 @@ fun SettingsScreen(
                 ProfileAvatarStore.setAvatarFromUri(context, uri)
             }
             if (!ok) {
-                Toast.makeText(context, "Couldn't use that photo. Try another.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, uiText("Couldn't use that photo. Try another."), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -868,7 +867,7 @@ fun SettingsScreen(
         scope.launch {
             val ok = withContext(Dispatchers.IO) { BackgroundImageStore.setImageFromUri(context, uri) }
             if (!ok) {
-                Toast.makeText(context, "Couldn't use that image. Try another.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, uiText("Couldn't use that image. Try another."), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -968,7 +967,7 @@ fun SettingsScreen(
                 SettingsFormRow(label = uiString(R.string.l10n_settings_screen_age_ff9f1ff3)) {
                     StepperField(
                         value = profile.age.toString(),
-                        accessibility = "Age, ${profile.age} years",
+                        accessibility = uiText("Age, %1\$s years", profile.age),
                         // #146: age is derived from a stored date of birth, so it advances on its own. The
                         // stepper re-anchors the DOB via setAge (which clamps to 13..100 — age feeds the
                         // Fitness Age + Vitality engines that gate on age > 0, so it must never go 0/negative).
@@ -994,7 +993,7 @@ fun SettingsScreen(
                         StepperField(
                             value = "%.0f".format(lb),
                             unit = "lb",
-                            accessibility = "Weight, ${lb.roundToInt()} pounds",
+                            accessibility = uiText("Weight, %1\$s pounds", lb.roundToInt()),
                             onMinus = { mutate { profile.weightKg = (lb - 1) / UnitFormatter.POUNDS_PER_KILOGRAM } },
                             onPlus = { mutate { profile.weightKg = (lb + 1) / UnitFormatter.POUNDS_PER_KILOGRAM } },
                         )
@@ -1002,7 +1001,7 @@ fun SettingsScreen(
                         StepperField(
                             value = "%.1f".format(profile.weightKg),
                             unit = "kg",
-                            accessibility = "Weight in kilograms",
+                            accessibility = uiText("Weight in kilograms"),
                             onMinus = { mutate { profile.weightKg -= 0.5 } },
                             onPlus = { mutate { profile.weightKg += 0.5 } },
                         )
@@ -1016,7 +1015,7 @@ fun SettingsScreen(
                         val totalInches = UnitFormatter.cmToInches(profile.heightCm).roundToInt()
                         StepperField(
                             value = "$ft′ $inch″",
-                            accessibility = "Height, $ft feet $inch inches",
+                            accessibility = uiText("Height, %1\$s feet %2\$s inches", ft, inch),
                             onMinus = { mutate { profile.heightCm = (totalInches - 1) * UnitFormatter.CENTIMETERS_PER_INCH } },
                             onPlus = { mutate { profile.heightCm = (totalInches + 1) * UnitFormatter.CENTIMETERS_PER_INCH } },
                         )
@@ -1024,7 +1023,7 @@ fun SettingsScreen(
                         StepperField(
                             value = "%.0f".format(profile.heightCm),
                             unit = "cm",
-                            accessibility = "Height in centimetres",
+                            accessibility = uiText("Height in centimetres"),
                             onMinus = { mutate { profile.heightCm -= 1 } },
                             onPlus = { mutate { profile.heightCm += 1 } },
                         )
@@ -1045,14 +1044,14 @@ fun SettingsScreen(
                         if (unitSystem == UnitSystem.IMPERIAL) {
                             val totalInches = UnitFormatter.cmToInches(profile.waistCm).roundToInt()
                             StepperField(
-                                value = if (hasWaist) "%d″".format(totalInches) else "Add",
+                                value = if (hasWaist) "%d″".format(totalInches) else uiText("Add"),
                                 accessibility = if (hasWaist) {
-                                    "Waist, $totalInches inches"
+                                    uiText("Waist, %1\$s inches", totalInches)
                                 } else {
                                     // #1391: a waist does NOT unlock VO₂max (the Uth HR-ratio fallback
                                     // needs none) — it upgrades it. The visible footnote was corrected
                                     // for this; this screen-reader copy had been left behind.
-                                    "Waist, not set. Optional: your VO₂max is more accurate with it"
+                                    uiText("Waist, not set. Optional: your VO₂max is more accurate with it")
                                 },
                                 valueColor = if (hasWaist) Palette.textPrimary else Palette.textTertiary,
                                 onMinus = { mutate { profile.waistCm = waistInchesStep(profile.waistCm, up = false) } },
@@ -1060,15 +1059,15 @@ fun SettingsScreen(
                             )
                         } else {
                             StepperField(
-                                value = if (hasWaist) "%.0f".format(profile.waistCm) else "Add",
+                                value = if (hasWaist) "%.0f".format(profile.waistCm) else uiText("Add"),
                                 unit = if (hasWaist) "cm" else null,
                                 accessibility = if (hasWaist) {
-                                    "Waist in centimetres"
+                                    uiText("Waist in centimetres")
                                 } else {
                                     // #1391: a waist does NOT unlock VO₂max (the Uth HR-ratio fallback
                                     // needs none) — it upgrades it. The visible footnote was corrected
                                     // for this; this screen-reader copy had been left behind.
-                                    "Waist, not set. Optional: your VO₂max is more accurate with it"
+                                    uiText("Waist, not set. Optional: your VO₂max is more accurate with it")
                                 },
                                 valueColor = if (hasWaist) Palette.textPrimary else Palette.textTertiary,
                                 onMinus = { mutate { profile.waistCm = waistCmStep(profile.waistCm, up = false) } },
@@ -1098,9 +1097,9 @@ fun SettingsScreen(
                             value = if (profile.hrMaxOverride > 0) profile.hrMaxOverride.toString() else "Auto",
                             unit = "bpm",
                             accessibility = if (profile.hrMaxOverride == 0) {
-                                "Max heart rate override, automatic"
+                                uiText("Max heart rate override, automatic")
                             } else {
-                                "Max heart rate override, ${profile.hrMaxOverride} bpm"
+                                uiText("Max heart rate override, %1\$s bpm", profile.hrMaxOverride)
                             },
                             valueColor = if (profile.hrMaxOverride > 0) Palette.textPrimary else Palette.textTertiary,
                             onMinus = { mutate { profile.hrMaxOverride -= 1 } },
@@ -1147,7 +1146,7 @@ fun SettingsScreen(
                             StepperField(
                                 value = value.toString(),
                                 unit = "bpm",
-                                accessibility = "Zone ${index + 1} starts at $value bpm",
+                                accessibility = uiText("Zone %1\$s starts at %2\$s bpm", index + 1, value),
                                 onMinus = { mutate { profile.stepHrZoneThreshold(index, up = false) } },
                                 onPlus = { mutate { profile.stepHrZoneThreshold(index, up = true) } },
                             )
@@ -1162,7 +1161,7 @@ fun SettingsScreen(
                 SettingsFormRow(label = uiString(R.string.l10n_settings_screen_step_calibration_351c09bf)) {
                     StepperField(
                         value = "%.1f".format(profile.stepTicksPerStep),
-                        accessibility = "Step calibration, %.1f counter ticks per step"
+                        accessibility = uiText("Step calibration, %.1f counter ticks per step")
                             .format(profile.stepTicksPerStep),
                         onMinus = { mutate { profile.stepTicksPerStep = ProfileStore.steppedStepScale(profile.stepTicksPerStep, up = false) } },
                         onPlus = { mutate { profile.stepTicksPerStep = ProfileStore.steppedStepScale(profile.stepTicksPerStep, up = true) } },
@@ -1179,10 +1178,10 @@ fun SettingsScreen(
                 // motion and calibrates that to the phone. Opens the explainer + fit + comparison + manual
                 // override screen. Mirrors the macOS Profile "Steps estimate" row.
                 val stepsSummary = when {
-                    profile.stepsManualCoefficient > 0 -> "Manual"
+                    profile.stepsManualCoefficient > 0 -> uiText("Manual")
                     profile.stepsCalibrationCoefficient > 0 ->
-                        "Auto · ${StepsCalibrationFormat.confidenceLabel(profile.stepsCalibrationConfidence)} confidence"
-                    else -> "Not calibrated"
+                        uiText("Auto · %1\$s confidence", StepsCalibrationFormat.confidenceLabel(profile.stepsCalibrationConfidence))
+                    else -> uiText("Not calibrated")
                 }
                 val stepsRowInteraction = remember { MutableInteractionSource() }
                 Row(
@@ -1269,7 +1268,7 @@ fun SettingsScreen(
                     SegmentedPillControl(
                         items = listOf(UnitSystem.METRIC, UnitSystem.IMPERIAL),
                         selection = unitSystem,
-                        label = { if (it == UnitSystem.METRIC) "Metric" else "Imperial" },
+                        label = { if (it == UnitSystem.METRIC) uiText("Metric") else "Imperial" },
                         onSelect = {
                             unitSystem = it
                             NoopPrefs.setUnitSystem(context, it)
@@ -1593,12 +1592,12 @@ fun SettingsScreen(
                     selection = sleepChartStyle,
                     label = {
                         when (it) {
-                            SleepChartStyle.FILLED -> "Fill"
+                            SleepChartStyle.FILLED -> uiText("Fill")
                             // "Garmin" not "Garmin Fill": four equal-width segments ellipsis-truncate a long
                             // label on a normal-width phone (iOS keeps "Garmin Fill" — it's a menu, not a pill).
                             SleepChartStyle.GARMIN_FILLED -> "Garmin"
-                            SleepChartStyle.RIBBON -> "Ribbon"
-                            else -> "Classic"
+                            SleepChartStyle.RIBBON -> uiText("Ribbon")
+                            else -> uiText("Classic")
                         }
                     },
                     onSelect = { style ->
@@ -1981,10 +1980,10 @@ fun SettingsScreen(
                         selection = BackgroundImageStore.fillMode,
                         label = { mode ->
                             when (mode) {
-                                BackgroundFillMode.FILL -> "Fill"
-                                BackgroundFillMode.FIT -> "Fit"
-                                BackgroundFillMode.STRETCH -> "Stretch"
-                                BackgroundFillMode.TILE -> "Tile"
+                                BackgroundFillMode.FILL -> uiText("Fill")
+                                BackgroundFillMode.FIT -> uiText("Fit")
+                                BackgroundFillMode.STRETCH -> uiText("Stretch")
+                                BackgroundFillMode.TILE -> uiText("Tile")
                             }
                         },
                         onSelect = { BackgroundImageStore.setFillMode(context, it) },
@@ -2016,7 +2015,7 @@ fun SettingsScreen(
                 SegmentedPillControl(
                     items = listOf(false, true),
                     selection = appIconNavy,
-                    label = { if (it) "Blue Titanium" else "Titanium" },
+                    label = { if (it) uiText("Blue Titanium") else uiText("Titanium") },
                     onSelect = { navy ->
                         appIconNavy = navy
                         setAppIcon(context, navy)
@@ -2504,7 +2503,7 @@ fun SettingsScreen(
                         selection = hrvWindow,
                         // #153: "Night" (not "Whole night") so the two-segment pill reads the same as the iOS
                         // picker and stays short — keeps the label consistent across platforms.
-                        label = { if (it == HrvWindow.DEEP_SLEEP) "Deep sleep" else "Night" },
+                        label = { if (it == HrvWindow.DEEP_SLEEP) uiText("Deep sleep") else uiText("Night") },
                         onSelect = {
                             hrvWindow = it
                             UnitPrefs.setHrvWindow(context, it)
@@ -3461,7 +3460,7 @@ fun SettingsScreen(
                             when (again) {
                                 is DataBackup.ImportResult.NeedsRestart -> Toast.makeText(
                                     context,
-                                    "Backup imported. Fully close and reopen NOOP for it to take effect.",
+                                    uiText("Backup imported. Fully close and reopen NOOP for it to take effect."),
                                     Toast.LENGTH_LONG,
                                 ).show()
                                 // Same reason as the first attempt: these carry a next step, and a Toast
@@ -3563,7 +3562,7 @@ fun SettingsScreen(
                             vm.syncNow()
                             Toast.makeText(
                                 context,
-                                "Charge baseline reset. NOOP will re-learn it from tonight. Your history stays, and it takes a few nights to settle.",
+                                uiText("Charge baseline reset. NOOP will re-learn it from tonight. Your history stays, and it takes a few nights to settle."),
                                 Toast.LENGTH_LONG,
                             ).show()
                         },
@@ -4033,7 +4032,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
 
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Overline("Built on")
+                    Overline(uiText("Built on"))
                     SettingsAttributionRow(repo = "my-whoop", note = uiString(R.string.l10n_settings_screen_whoop_4_0_protocol_87af84d3))
                     SettingsAttributionRow(repo = "goose", note = uiString(R.string.l10n_settings_screen_whoop_5_0_protocol_ca55847b))
                 }
@@ -4061,12 +4060,12 @@ fun SettingsScreen(
                         ) {
                             val intent = Intent(Intent.ACTION_SENDTO).apply {
                                 data = Uri.parse("mailto:$SUPPORT_EMAIL")
-                                putExtra(Intent.EXTRA_SUBJECT, "NOOP support")
+                                putExtra(Intent.EXTRA_SUBJECT, uiText("NOOP support"))
                             }
                             try {
                                 context.startActivity(intent)
                             } catch (_: ActivityNotFoundException) {
-                                Toast.makeText(context, "Email us at $SUPPORT_EMAIL", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, uiText("Email us at %1\$s", SUPPORT_EMAIL), Toast.LENGTH_LONG).show()
                             }
                         }
                         .padding(horizontal = 14.dp, vertical = 12.dp)

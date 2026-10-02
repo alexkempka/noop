@@ -311,13 +311,13 @@ object LiveSessionPrefs {
  */
 internal fun liveSessionVerdict(inBandSec: Double, belowSec: Double, aboveSec: Double): String {
     val total = inBandSec + belowSec + aboveSec
-    if (total < 60.0) return "Too short to judge."
+    if (total < 60.0) return uiText("Too short to judge.")
     val share = inBandSec / total
     return when {
-        share >= 0.70 -> "On track. You matched what today could pay for."
-        share >= 0.45 -> "Mixed. In the band about half the time."
-        belowSec >= aboveSec -> "Easy day. You sat under the band most of the way."
-        else -> "Hot. You ran above today's ceiling most of the way."
+        share >= 0.70 -> uiText("On track. You matched what today could pay for.")
+        share >= 0.45 -> uiText("Mixed. In the band about half the time.")
+        belowSec >= aboveSec -> uiText("Easy day. You sat under the band most of the way.")
+        else -> uiText("Hot. You ran above today's ceiling most of the way.")
     }
 }
 

@@ -60,12 +60,12 @@ object RecapShare {
             val send = Intent(Intent.ACTION_SEND).apply {
                 type = "image/png"
                 putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "NOOP weekly recap")
+                putExtra(Intent.EXTRA_SUBJECT, uiText("NOOP weekly recap"))
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            context.startActivity(Intent.createChooser(send, "Share recap"))
+            context.startActivity(Intent.createChooser(send, uiText("Share recap")))
         }.onFailure {
-            Toast.makeText(context, "Couldn't share the recap: ${it.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, uiText("Couldn't share the recap: %1\$s", it.message), Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -142,7 +142,7 @@ fun WeeklyDigestScreen(vm: AppViewModel) {
 // MARK: - Shared content
 
 private val MONTHS = arrayOf(
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    "Jan", "Feb", uiText("Mar"), "Apr", uiText("May"), "Jun", "Jul", "Aug", "Sep", uiText("Oct"), "Nov", uiText("Dec"),
 )
 
 private val DISPLAY_ORDER = listOf(
@@ -166,7 +166,7 @@ fun WeeklyDigestContent(digest: WeeklyDigest, compact: Boolean = false) {
             verticalAlignment = Alignment.Top,
         ) {
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline("Week in review")
+                Overline(uiText("Week in review"))
                 Text(weekRangeLabel(digest), style = NoopType.title2, color = Palette.textPrimary)
             }
             Text(
@@ -329,17 +329,17 @@ private fun chipTone(s: WeeklyMetricSummary): Color = when {
 private fun rowAccessibility(s: WeeklyMetricSummary, effortScale: EffortScale): String {
     val mean = meanText(s, effortScale)
     if (s.weekOverWeek.current.n == 0 || s.weekOverWeek.previous.n == 0) {
-        return "${s.metric.label}: $mean this week, no comparison."
+        return uiText("%1\$s: %2\$s this week, no comparison.", s.metric.label, mean)
     }
     val dir = if (s.wowDelta > 0) "up" else if (s.wowDelta < 0) "down" else "unchanged"
     // A rough comparison drops the verdict framing too, so VoiceOver/TalkBack matches the neutral chip.
     val frame = when {
         s.isRoughComparison -> ""
-        s.wowGoodness == 1 -> ", a good sign"
-        s.wowGoodness == -1 -> ", worth a look"
+        s.wowGoodness == 1 -> uiText(", a good sign")
+        s.wowGoodness == -1 -> uiText(", worth a look")
         else -> ""
     }
-    return "${s.metric.label}: $mean this week, $dir ${deltaText(s)} week over week$frame."
+    return uiText("%1\$s: %2\$s this week, %3\$s %4\$s week over week%5\$s.", s.metric.label, mean, dir, deltaText(s), frame)
 }
 
 private fun fmt1(x: Double): String = ((x * 10).roundToInt() / 10.0).toString()

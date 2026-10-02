@@ -79,9 +79,9 @@ private enum class ExploreRange(val days: Int?, val label: String, val windowNam
     Week(7, "W", "week"),
     Month(30, "M", "month"),
     Quarter(90, "3M", "quarter"),
-    Half(180, "6M", "6 months"),
+    Half(180, "6M", uiText("6 months")),
     Year(365, "1Y", "year"),
-    All(null, "ALL", "all time");
+    All(null, uiText("ALL"), uiText("all time"));
 
     /** This range plus every larger range, ascending , the auto-widen search order. */
     val widening: List<ExploreRange>
@@ -297,7 +297,7 @@ fun TrendsExploreScreen(vm: AppViewModel) {
                     key = k,
                     title = k.replace('_', ' ').replaceFirstChar { c -> c.uppercase() },
                     unit = "",
-                    category = "Other",
+                    category = uiText("Other"),
                     accent = Palette.metricCyan,
                     higherIsBetter = null,
                     decimals = 1,
@@ -612,13 +612,13 @@ private fun HeroChartCard(
     fellBack: Boolean,
 ) {
     val heroValue = latest?.let { metric.format(it.value) } ?: ","
-    val asOf = latest?.let { "as of ${it.day}" } ?: "no readings yet"
+    val asOf = latest?.let { "as of ${it.day}" } ?: uiText("no readings yet")
     // The range bar above already prints the authoritative reading-count caption; the hero only
     // names its window so the count isn't doubled in one card height.
     val subtitle = if (fellBack) {
-        "Trailing ${effectiveRange.windowName}"
+        uiText("Trailing %1\$s", effectiveRange.windowName)
     } else {
-        "Trailing ${range.windowName}"
+        uiText("Trailing %1\$s", range.windowName)
     }
     // Wash the hero card in the metric's domain world (Charge green / Effort amber / Rest indigo).
     NoopCard(tint = domainTint(metric.category)) {
@@ -880,6 +880,6 @@ private fun rangeCaption(
     if (series.isEmpty()) return ","
     val n = windowed.size
     val unit = if (n == 1) "reading" else "readings"
-    return if (fellBack) "$n $unit · sparse , widened to ${effectiveRange.windowName}"
+    return if (fellBack) uiText("%1\$s %2\$s · sparse , widened to %3\$s", n, unit, effectiveRange.windowName)
     else "$n $unit · ${range.windowName}"
 }

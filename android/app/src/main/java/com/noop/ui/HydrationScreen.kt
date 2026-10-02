@@ -315,7 +315,7 @@ fun HydrationScreen(viewModel: AppViewModel) {
         item {
             NoopCard(padding = 18.dp) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Overline("Last 7 days")
+                    Overline(uiText("Last 7 days"))
                     HydrationHistoryBars(history = history, goalMl = goalMl, accent = accent)
                 }
             }
@@ -326,7 +326,7 @@ fun HydrationScreen(viewModel: AppViewModel) {
         item {
             NoopCard(padding = 18.dp) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Overline("Today")
+                    Overline(uiText("Today"))
                     if (totalMl <= 0.0) {
                         Text(
                             uiString(R.string.l10n_hydration_screen_no_drinks_logged_yet_tap_sip_cc0d2f72),

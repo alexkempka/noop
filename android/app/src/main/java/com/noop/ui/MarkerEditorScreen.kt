@@ -156,18 +156,18 @@ fun MarkerEditorScreen(
             )
 
             // --- Marker picker ---
-            SectionHeader("Marker", overline = "what are you logging?")
+            SectionHeader("Marker", overline = uiText("what are you logging?"))
             NoopCard {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     when {
                         addingCustom -> {
                             EditorField("Name") {
-                                EditorTextField(customName, { customName = it }, "e.g. Magnesium")
+                                EditorTextField(customName, { customName = it }, uiText("e.g. Magnesium"))
                             }
-                            EditorField("Unit") {
-                                EditorTextField(customUnit, { customUnit = it }, "e.g. mmol/L")
+                            EditorField(uiText("Unit")) {
+                                EditorTextField(customUnit, { customUnit = it }, uiText("e.g. mmol/L"))
                             }
-                            LinkText("Back to the marker list") { addingCustom = false }
+                            LinkText(uiText("Back to the marker list")) { addingCustom = false }
                         }
                         selection != null -> {
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -175,7 +175,7 @@ fun MarkerEditorScreen(
                                     Text(selection!!.displayName, style = NoopType.headline, color = Palette.textPrimary)
                                     Text(selection!!.category.displayName, style = NoopType.footnote, color = Palette.textTertiary)
                                 }
-                                LinkText("Change") {
+                                LinkText(uiText("Change")) {
                                     selection = null; valueText = ""; diastolicText = ""; unitChoice = 0; search = ""
                                 }
                             }
@@ -193,7 +193,7 @@ fun MarkerEditorScreen(
                             CatalogList(search) { def ->
                                 selection = def; unitChoice = 0
                             }
-                            LinkText("+ Add a custom marker") { addingCustom = true }
+                            LinkText(uiText("+ Add a custom marker")) { addingCustom = true }
                         }
                     }
                 }
@@ -201,15 +201,15 @@ fun MarkerEditorScreen(
 
             // --- Reading inputs ---
             if (selection != null || addingCustom) {
-                SectionHeader("Reading", overline = "your number, date and any note")
+                SectionHeader(uiText("Reading"), overline = uiText("your number, date and any note"))
                 NoopCard {
                     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                         if (isBloodPressure) {
                             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                                EditorField("Systolic", modifier = Modifier.weight(1f)) {
+                                EditorField(uiText("Systolic"), modifier = Modifier.weight(1f)) {
                                     NumberBox(valueText, { valueText = it }, "e.g. 120", "mmHg")
                                 }
-                                EditorField("Diastolic", modifier = Modifier.weight(1f)) {
+                                EditorField(uiText("Diastolic"), modifier = Modifier.weight(1f)) {
                                     NumberBox(diastolicText, { diastolicText = it }, "e.g. 80", "mmHg")
                                 }
                             }
@@ -219,7 +219,7 @@ fun MarkerEditorScreen(
                                 color = Palette.textTertiary,
                             )
                         } else {
-                            EditorField("Value") {
+                            EditorField(uiText("Value")) {
                                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                     if (unitOptions.size > 1) {
                                         SegmentedPillControl(
@@ -240,14 +240,14 @@ fun MarkerEditorScreen(
                                 }
                             }
                         }
-                        EditorField("Date taken") {
+                        EditorField(uiText("Date taken")) {
                             DateRow(takenAtMillis) { picked -> takenAtMillis = picked }
                         }
-                        EditorField("Note (optional)") {
-                            EditorTextField(note, { note = it }, "e.g. fasting, morning draw")
+                        EditorField(uiText("Note (optional)")) {
+                            EditorTextField(note, { note = it }, uiText("e.g. fasting, morning draw"))
                         }
-                        EditorField("Reference range from my report (optional)") {
-                            EditorTextField(referenceText, { referenceText = it }, "e.g. 2.0-5.0 (your report's own range)")
+                        EditorField(uiText("Reference range from my report (optional)")) {
+                            EditorTextField(referenceText, { referenceText = it }, uiText("e.g. 2.0-5.0 (your report's own range)"))
                         }
                         Text(
                             uiString(R.string.l10n_marker_editor_screen_noop_never_fills_this_in_it_7be9653b),
@@ -265,10 +265,10 @@ fun MarkerEditorScreen(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                LinkText("Cancel", color = Palette.textSecondary) { onDismiss() }
+                LinkText(uiText("Cancel"), color = Palette.textSecondary) { onDismiss() }
                 Spacer(Modifier.weight(1f))
                 Box(modifier = Modifier.width(160.dp)) {
-                    PrimaryActionButton("Save", Icons.Filled.Add, enabled = drafts.isNotEmpty()) {
+                    PrimaryActionButton(uiText("Save"), Icons.Filled.Add, enabled = drafts.isNotEmpty()) {
                         if (drafts.isNotEmpty()) onSave(drafts)
                     }
                 }

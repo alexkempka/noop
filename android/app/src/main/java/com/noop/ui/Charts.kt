@@ -70,12 +70,11 @@ import kotlin.math.roundToInt
 /** One-line spoken summary of a numeric series: count + latest + low/high. Empty → "No data". */
 private fun seriesSummary(values: List<Double>, noun: String): String {
     val clean = values.filter { it.isFinite() }
-    if (clean.isEmpty()) return "$noun, no data"
+    if (clean.isEmpty()) return uiText("%1\$s, no data", noun)
     val last = clean.last()
     val lo = clean.min()
     val hi = clean.max()
-    return "$noun, ${clean.size} points, latest ${formatLineValue(last)}, " +
-        "low ${formatLineValue(lo)}, high ${formatLineValue(hi)}"
+    return uiText("%1\$s, %2\$s points, latest %3\$s, low %4\$s, high %5\$s", noun, clean.size, formatLineValue(last), formatLineValue(lo), formatLineValue(hi))
 }
 
 /**
@@ -87,10 +86,10 @@ private fun seriesSummary(values: List<Double>, noun: String): String {
  * `internal` only so the order and the apportionment can be pinned by a test; nothing else calls it.
  */
 internal fun hypnogramSummary(stages: List<Pair<String, Float>>): String {
-    if (stages.isEmpty()) return "Sleep stages, no data"
+    if (stages.isEmpty()) return uiText("Sleep stages, no data")
     // Weights are relative widths, not minutes, so report the share of the night in each stage.
     val total = stages.map { if (it.second.isFinite() && it.second > 0f) it.second else 0f }.sum()
-    if (total <= 0f) return "Sleep stages, no data"
+    if (total <= 0f) return uiText("Sleep stages, no data")
     // TWO orders, deliberately separate, because they answer different questions.
     //
     // `spoken` is what a screen-reader user hears, and it matches the visible row stacks (#2534).
@@ -122,7 +121,7 @@ internal fun hypnogramSummary(stages: List<Pair<String, Float>>): String {
             "${shares[apportion.indexOf(key)]} percent $label"
         }
     }
-    return if (parts.isEmpty()) "Sleep stages, no data" else "Sleep stages, " + parts.joinToString(", ")
+    return if (parts.isEmpty()) uiText("Sleep stages, no data") else "Sleep stages, " + parts.joinToString(", ")
 }
 
 // MARK: - Shared geometry helpers
@@ -629,8 +628,8 @@ fun MultiLineChart(
     // the a11y delegate reads a single line rather than walking the canvas. Changes no drawing.
     val axSummary = run {
         val all = cleanSeries.flatMap { it.values }
-        if (all.isEmpty()) "Trends, no data"
-        else "Trends, ${cleanSeries.size} series, low ${formatLineValue(all.min())}, high ${formatLineValue(all.max())}"
+        if (all.isEmpty()) uiText("Trends, no data")
+        else uiText("Trends, %1\$s series, low %2\$s, high %3\$s", cleanSeries.size, formatLineValue(all.min()), formatLineValue(all.max()))
     }
 
     Canvas(modifier = modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = axSummary }) {

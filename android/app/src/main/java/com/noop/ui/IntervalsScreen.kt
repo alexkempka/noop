@@ -62,9 +62,9 @@ import kotlin.math.min
 // With no strap bonded it still works as a big glanceable visual timer (no haptics).
 
 private enum class IntervalPhase(val label: String) {
-    Work("WORK"),
-    Rest("REST"),
-    Done("DONE"),
+    Work(uiText("WORK")),
+    Rest(uiText("REST")),
+    Done(uiText("DONE")),
 }
 
 /**
@@ -212,15 +212,15 @@ fun IntervalsScreen(vm: AppViewModel) {
         item {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             if (live.bonded) {
-                StatePill("Buzz cues on", tone = StrandTone.Positive)
+                StatePill(uiText("Buzz cues on"), tone = StrandTone.Positive)
             } else {
-                StatePill("Connect strap for buzz cues", tone = StrandTone.Warning)
+                StatePill(uiText("Connect strap for buzz cues"), tone = StrandTone.Warning)
             }
             Spacer(Modifier.weight(1f))
             when {
-                running -> StatePill("Running", tone = StrandTone.Accent, pulsing = true)
-                isFinished -> StatePill("Complete", tone = StrandTone.Positive)
-                else -> StatePill("Paused", tone = StrandTone.Neutral, showsDot = false)
+                running -> StatePill(uiText("Running"), tone = StrandTone.Accent, pulsing = true)
+                isFinished -> StatePill(uiText("Complete"), tone = StrandTone.Positive)
+                else -> StatePill(uiText("Paused"), tone = StrandTone.Neutral, showsDot = false)
             }
         }
         }
@@ -258,7 +258,7 @@ fun IntervalsScreen(vm: AppViewModel) {
                             stops = phaseStops,
                             tipColor = phaseColor,
                             numberText = if (isFinished) "✓" else remaining.toString(),
-                            captionText = if (isFinished) "SESSION DONE" else "SECONDS",
+                            captionText = if (isFinished) uiText("SESSION DONE") else uiText("SECONDS"),
                             diameter = 240.dp,
                             lineWidth = 18.dp,
                         )
@@ -344,7 +344,7 @@ fun IntervalsScreen(vm: AppViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom,
                 ) {
-                    Overline("Session")
+                    Overline(uiText("Session"))
                     Spacer(Modifier.weight(1f))
                     Text(
                         uiString(R.string.l10n_intervals_screen_timestring_elapsed_timestring_totalplanned_7b68f8d7, timeString(elapsed), timeString(totalPlanned)),
@@ -380,11 +380,11 @@ fun IntervalsScreen(vm: AppViewModel) {
                 }
 
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    OverviewStat(Modifier.weight(1f), "Work", "${workSeconds}s", Palette.effortColor)
-                    OverviewStat(Modifier.weight(1f), "Rest", "${restSeconds}s", Palette.restColor)
-                    OverviewStat(Modifier.weight(1f), "Rounds", rounds.toString(), Palette.textPrimary)
+                    OverviewStat(Modifier.weight(1f), uiText("Work"), "${workSeconds}s", Palette.effortColor)
+                    OverviewStat(Modifier.weight(1f), uiText("Rest"), "${restSeconds}s", Palette.restColor)
+                    OverviewStat(Modifier.weight(1f), uiText("Rounds"), rounds.toString(), Palette.textPrimary)
                     OverviewStat(
-                        Modifier.weight(1f), "Remaining",
+                        Modifier.weight(1f), uiText("Remaining"),
                         timeString(max(0, totalPlanned - elapsed)), Palette.textSecondary,
                     )
                 }
@@ -396,7 +396,7 @@ fun IntervalsScreen(vm: AppViewModel) {
         item {
         NoopCard {
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                Overline("Configure")
+                Overline(uiText("Configure"))
                 ConfigStepper(
                     title = uiString(R.string.l10n_intervals_screen_work_00040bab), unit = "sec", value = workSeconds,
                     range = 5..600, step = 5, tint = Palette.effortColor, enabled = !running,
@@ -458,7 +458,7 @@ private fun RoundChip(currentRound: Int, rounds: Int) {
             .border(1.dp, Palette.hairline, shape)
             .padding(horizontal = 12.dp, vertical = 7.dp),
     ) {
-        Overline("Round")
+        Overline(uiText("Round"))
         Spacer(Modifier.width(6.dp))
         Text(currentRound.toString(), style = NoopType.number(18f), color = Palette.textPrimary)
         Spacer(Modifier.width(2.dp))

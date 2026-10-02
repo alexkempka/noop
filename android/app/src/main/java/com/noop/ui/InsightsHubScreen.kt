@@ -123,7 +123,7 @@ fun InsightsHubScreen(vm: AppViewModel) {
         item {
         NoopCard {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Overline("How to read this", color = Palette.textTertiary)
+                Overline(uiText("How to read this"), color = Palette.textTertiary)
                 Text(
                     uiString(R.string.l10n_insights_hub_screen_everything_here_is_a_pattern_in_ed2162a6),
                     style = NoopType.footnote,
@@ -147,8 +147,8 @@ private fun MoversSection(
         // Header then the outcome selector on its own row below it — on a ~360dp phone the pill
         // control can't share a row with the weighted header without compressing (matches macOS).
         SectionHeader(
-            "What moves your ${outcome.outcomeName.lowercase(Locale.US)}",
-            overline = "Ranked · your data",
+            uiText("What moves your %1\$s", outcome.outcomeName.lowercase(Locale.US)),
+            overline = uiText("Ranked · your data"),
         )
         SegmentedPillControl(
             items = InsightsOutcome.entries.toList(),
@@ -244,7 +244,7 @@ private fun MoverCard(r: RankedEffect, outcome: InsightsOutcome) {
             HorizontalDivider(color = Palette.hairline)
 
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Overline("Effect size", modifier = Modifier.weight(1f))
+                Overline(uiText("Effect size"), modifier = Modifier.weight(1f))
                 Text(
                     String.format(Locale.US, "d = %.2f", e.cohensD),
                     style = NoopType.captionNumber,
@@ -262,7 +262,7 @@ private fun MoverCard(r: RankedEffect, outcome: InsightsOutcome) {
 @Composable
 private fun DoseSection(cards: List<DoseCardData>) {
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader("Dose-response", overline = "Personal curve · prior-shrunk")
+        SectionHeader(uiText("Dose-response"), overline = uiText("Personal curve · prior-shrunk"))
         if (cards.isEmpty()) {
             NoopCard {
                 Text(
@@ -311,13 +311,12 @@ private fun DoseResponseCard(card: DoseCardData) {
 
             if (r.priorDominated) {
                 HonestyBanner(
-                    "Based mostly on typical patterns, not yet yours. Log a few more " +
-                        "${card.unitLabel.lowercase(Locale.US)} days and this becomes yours.",
+                    uiText("Based mostly on typical patterns, not yet yours. Log a few more %1\$s days and this becomes yours.", card.unitLabel.lowercase(Locale.US)),
                     accent = Palette.textTertiary,
                 )
             } else if (r.contradictsPrior) {
                 HonestyBanner(
-                    "In your data so far, this doesn’t move your ${card.outcomeName} the way it typically does.",
+                    uiText("In your data so far, this doesn’t move your %1\$s the way it typically does.", card.outcomeName),
                     accent = Palette.statusPositive,
                 )
             }
@@ -348,7 +347,7 @@ private fun DamageForecast(
     val fromDose = 1
     val delta = r.delta(fromDose, previewDose)
     val projected = card.latestOutcome?.let { max(0.0, min(card.outcomeCeiling, it + delta)) }
-    val stepLabel = if (previewDose <= 1) "no extra" else "$previewDose${card.dosePlusSuffix(previewDose)}"
+    val stepLabel = if (previewDose <= 1) uiText("no extra") else "$previewDose${card.dosePlusSuffix(previewDose)}"
 
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
         // Overline then the dose stepper on its own row — the choices (0…max+) overflow a ~360dp
@@ -372,14 +371,14 @@ private fun DamageForecast(
                 modifier = Modifier.weight(1f),
                 label = uiString(R.string.l10n_insights_hub_screen_per_extra_card_unitnoun_a92a5e91, card.unitNoun),
                 value = signed(r.perUnit, card.outcomeSuffix),
-                caption = if (r.priorDominated) "typical" else "your data",
+                caption = if (r.priorDominated) "typical" else uiText("your data"),
                 accent = if (r.perUnit < 0) Palette.statusCritical else Palette.statusPositive,
             )
             StatTile(
                 modifier = Modifier.weight(1f),
                 label = uiString(R.string.l10n_insights_hub_screen_tomorrow_s_card_outcomename_ad70b7f9, card.outcomeName),
                 value = projected?.let { "${it.roundToInt()}${card.outcomeSuffix}" } ?: "—",
-                caption = if (projected != null) "projected · $stepLabel" else "needs a recent day",
+                caption = if (projected != null) uiText("projected · %1\$s", stepLabel) else uiText("needs a recent day"),
                 accent = domain.color,
             )
         }
@@ -406,9 +405,9 @@ private fun HonestyBanner(text: String, accent: Color) {
 @Composable
 private fun ConfidencePill(c: ScoreConfidence) {
     val (label, tone) = when (c) {
-        ScoreConfidence.SOLID -> "Solid" to StrandTone.Positive
-        ScoreConfidence.BUILDING -> "Building" to StrandTone.Accent
-        ScoreConfidence.CALIBRATING -> "Calibrating" to StrandTone.Neutral
+        ScoreConfidence.SOLID -> uiText("Solid") to StrandTone.Positive
+        ScoreConfidence.BUILDING -> uiText("Building") to StrandTone.Accent
+        ScoreConfidence.CALIBRATING -> uiText("Calibrating") to StrandTone.Neutral
     }
     StatePill(label, tone = tone, showsDot = false)
 }
@@ -484,10 +483,10 @@ internal enum class InsightsOutcome(
     val pick: (DailyMetric) -> Double?,
     val format: (Double) -> String,
 ) {
-    Recovery("Charge", "Charge", "recovery", true, DomainTheme.Charge, { it.recovery }, { "${it.roundToInt()}%" }),
+    Recovery(uiText("Charge"), uiText("Charge"), "recovery", true, DomainTheme.Charge, { it.recovery }, { "${it.roundToInt()}%" }),
     Hrv("HRV", "HRV", "hrv", true, DomainTheme.Rest, { it.avgHrv }, { "${it.roundToInt()} ms" }),
-    Sleep("Rest", "Rest", "sleep_performance", true, DomainTheme.Rest, { it.efficiency }, { "${it.roundToInt()}%" }),
-    Rhr("RHR", "Resting HR", "rhr", false, DomainTheme.Stress, { it.restingHr?.toDouble() }, { "${it.roundToInt()} bpm" }),
+    Sleep(uiText("Rest"), uiText("Rest"), "sleep_performance", true, DomainTheme.Rest, { it.efficiency }, { "${it.roundToInt()}%" }),
+    Rhr(uiText("RHR"), uiText("Resting HR"), "rhr", false, DomainTheme.Stress, { it.restingHr?.toDouble() }, { "${it.roundToInt()} bpm" }),
 }
 
 // MARK: - Dose card view-data
@@ -499,15 +498,15 @@ internal data class DoseCardData(
 ) {
     val id: String get() = behavior.raw
     val outcomeName: String get() = response.outcome
-    val title: String get() = if (behavior == DosedBehavior.ALCOHOL) "Alcohol" else "Caffeine"
+    val title: String get() = if (behavior == DosedBehavior.ALCOHOL) uiText("Alcohol") else uiText("Caffeine")
     val icon get() = if (behavior == DosedBehavior.ALCOHOL) Icons.Filled.LocalBar else Icons.Filled.Coffee
-    val unitNoun: String get() = if (behavior == DosedBehavior.ALCOHOL) "drink" else "later step"
+    val unitNoun: String get() = if (behavior == DosedBehavior.ALCOHOL) "drink" else uiText("later step")
     val unitLabel: String get() = if (behavior == DosedBehavior.ALCOHOL) "drink" else "late-caffeine"
     val timingProxy: Boolean get() = behavior == DosedBehavior.CAFFEINE
     val outcomeSuffix: String get() = if (outcomeName == "HRV") " ms" else "%"
     val outcomeCeiling: Double get() = if (outcomeName == "HRV") 400.0 else 100.0
     val forecastOverline: String
-        get() = if (behavior == DosedBehavior.ALCOHOL) "Tonight’s forecast" else "Timing forecast"
+        get() = if (behavior == DosedBehavior.ALCOHOL) uiText("Tonight’s forecast") else uiText("Timing forecast")
 
     val doseChoices: List<Int> get() = (0..DoseResponseEngine.maxCurveDose).toList()
 
@@ -515,15 +514,15 @@ internal data class DoseCardData(
         DosedBehavior.ALCOHOL -> if (d >= DoseResponseEngine.maxCurveDose) "$d+" else "$d"
         DosedBehavior.CAFFEINE -> when (d) {
             0 -> "AM"
-            1 -> "Noon"
+            1 -> uiText("Noon")
             2 -> "2pm+"
-            else -> "Eve"
+            else -> uiText("Eve")
         }
     }
 
     fun dosePlusSuffix(d: Int): String =
         if (behavior == DosedBehavior.ALCOHOL) {
-            if (d >= DoseResponseEngine.maxCurveDose) "+ drinks" else " drinks"
+            if (d >= DoseResponseEngine.maxCurveDose) uiText("+ drinks") else " drinks"
         } else ""
 }
 
@@ -636,23 +635,22 @@ internal class InsightsHubViewModel {
 
 private fun forecastSentence(card: DoseCardData, previewDose: Int, delta: Double, stepLabel: String): String {
     if (previewDose <= 1) {
-        return "No extra tonight. Your ${card.outcomeName.lowercase(Locale.US)} forecast stays where it is."
+        return uiText("No extra tonight. Your %1\$s forecast stays where it is.", card.outcomeName.lowercase(Locale.US))
     }
     val mag = abs(delta).roundToInt()
     val dir = if (delta <= 0) "lower" else "higher"
     val basis = if (card.response.priorDominated) {
-        "based on typical patterns"
+        uiText("based on typical patterns")
     } else {
-        "based on ${card.response.nUser} of your ${card.unitLabel.lowercase(Locale.US)} days"
+        uiText("based on %1\$s of your %2\$s days", card.response.nUser, card.unitLabel.lowercase(Locale.US))
     }
-    return "A $stepLabel tonight tends to line up with about $mag${card.outcomeSuffix} $dir on " +
-        "tomorrow’s ${card.outcomeName.lowercase(Locale.US)} for you, $basis."
+    return uiText("A %1\$s tonight tends to line up with about %2\$s%3\$s %4\$s on tomorrow’s %5\$s for you, %6\$s.", stepLabel, mag, card.outcomeSuffix, dir, card.outcomeName.lowercase(Locale.US), basis)
 }
 
 private fun curveDescription(card: DoseCardData, r: DoseResponse): String =
     "Dose-response curve. Each extra ${card.unitNoun} lines up with about " +
         "${signed(r.perUnit, card.outcomeSuffix)} on ${card.outcomeName}, " +
-        if (r.priorDominated) "typical patterns." else "your own data."
+        if (r.priorDominated) uiText("typical patterns.") else uiText("your own data.")
 
 private fun signed(v: Double, suffix: String): String {
     val mag = abs(v)

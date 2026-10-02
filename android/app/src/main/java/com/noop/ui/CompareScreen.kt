@@ -152,52 +152,52 @@ private object CompareCatalog {
 
     val all: List<CompareMetric> = listOf(
         // Heart
-        CompareMetric("avg_hr", "Average Heart Rate", "Heart", "bpm", "my-whoop", 0),
-        CompareMetric("max_hr", "Max Heart Rate", "Heart", "bpm", "my-whoop", 0),
-        CompareMetric("energy_kcal", "Calories", "Heart", "kcal", "my-whoop", 0),
+        CompareMetric("avg_hr", uiText("Average Heart Rate"), "Heart", "bpm", "my-whoop", 0),
+        CompareMetric("max_hr", uiText("Max Heart Rate"), "Heart", "bpm", "my-whoop", 0),
+        CompareMetric("energy_kcal", uiText("Calories"), "Heart", "kcal", "my-whoop", 0),
         CompareMetric("vo2max", "VO₂ Max", "Heart", "", "apple-health", 1),
-        CompareMetric("fitness_age", "Fitness Age", "Heart", "yrs", "my-whoop", 0),
-        CompareMetric("vo2max_est", "VO₂ Max (estimated)", "Heart", "", "my-whoop", 1),
-        CompareMetric("vitality", "Vitality", "Heart", "", "my-whoop", 0),
-        CompareMetric("body_age", "Body Age", "Heart", "yrs", "my-whoop", 0),
+        CompareMetric("fitness_age", uiText("Fitness Age"), "Heart", "yrs", "my-whoop", 0),
+        CompareMetric("vo2max_est", uiText("VO₂ Max (estimated)"), "Heart", "", "my-whoop", 1),
+        CompareMetric("vitality", uiText("Vitality"), "Heart", "", "my-whoop", 0),
+        CompareMetric("body_age", uiText("Body Age"), "Heart", "yrs", "my-whoop", 0),
         // Charge (was Recovery)
-        CompareMetric("recovery", "Charge", "Charge", "%", "my-whoop", 0),
-        CompareMetric("hrv", "Heart Rate Variability", "Charge", "ms", "my-whoop", 0),
-        CompareMetric("rhr", "Resting Heart Rate", "Charge", "bpm", "my-whoop", 0),
-        CompareMetric("resp_rate", "Respiratory Rate", "Charge", "rpm", "my-whoop", 1),
-        CompareMetric("spo2", "Blood Oxygen", "Charge", "%", "my-whoop", 0),
-        CompareMetric("skin_temp", "Skin Temperature", "Charge", "°C", "my-whoop", 1),
+        CompareMetric("recovery", uiText("Charge"), "Charge", "%", "my-whoop", 0),
+        CompareMetric("hrv", uiText("Heart Rate Variability"), "Charge", "ms", "my-whoop", 0),
+        CompareMetric("rhr", uiText("Resting Heart Rate"), "Charge", "bpm", "my-whoop", 0),
+        CompareMetric("resp_rate", uiText("Respiratory Rate"), "Charge", "rpm", "my-whoop", 1),
+        CompareMetric("spo2", uiText("Blood Oxygen"), "Charge", "%", "my-whoop", 0),
+        CompareMetric("skin_temp", uiText("Skin Temperature"), "Charge", "°C", "my-whoop", 1),
         // Rest (was Sleep)
-        CompareMetric("sleep_performance", "Rest", "Rest", "%", "my-whoop", 0),
-        CompareMetric("sleep_total_min", "Asleep Time", "Rest", "min", "my-whoop", 0),
-        CompareMetric("sleep_efficiency", "Sleep Efficiency", "Rest", "%", "my-whoop", 0),
-        CompareMetric("sleep_deep_min", "Deep (SWS) Sleep", "Rest", "min", "my-whoop", 0),
-        CompareMetric("sleep_rem_min", "REM Sleep", "Rest", "min", "my-whoop", 0),
-        CompareMetric("sleep_light_min", "Light Sleep", "Rest", "min", "my-whoop", 0),
+        CompareMetric("sleep_performance", uiText("Rest"), "Rest", "%", "my-whoop", 0),
+        CompareMetric("sleep_total_min", uiText("Asleep Time"), "Rest", "min", "my-whoop", 0),
+        CompareMetric("sleep_efficiency", uiText("Sleep Efficiency"), "Rest", "%", "my-whoop", 0),
+        CompareMetric("sleep_deep_min", uiText("Deep (SWS) Sleep"), "Rest", "min", "my-whoop", 0),
+        CompareMetric("sleep_rem_min", uiText("REM Sleep"), "Rest", "min", "my-whoop", 0),
+        CompareMetric("sleep_light_min", uiText("Light Sleep"), "Rest", "min", "my-whoop", 0),
         // Effort (was Strain)
-        CompareMetric("strain", "Effort", "Effort", "/100", "my-whoop", 1),
-        CompareMetric("steps", "Steps", "Effort", "", "apple-health", 0),
+        CompareMetric("strain", uiText("Effort"), "Effort", "/100", "my-whoop", 1),
+        CompareMetric("steps", uiText("Steps"), "Effort", "", "apple-health", 0),
         // On-device steps ESTIMATE for a WHOOP 4.0 (no real step count over BLE): the strap's daily
         // motion volume scaled by a personal calibration, stored under the computed "-noop" source.
         // Distinct from the real "steps" above — labelled "(estimated)" so it never reads as measured.
-        CompareMetric("steps_est", "Steps (estimated)", "Effort", "steps", "my-whoop", 0),
-        CompareMetric("active_kcal", "Active Energy", "Effort", "kcal", "apple-health", 0),
+        CompareMetric("steps_est", uiText("Steps (estimated)"), "Effort", "steps", "my-whoop", 0),
+        CompareMetric("active_kcal", uiText("Active Energy"), "Effort", "kcal", "apple-health", 0),
         // Health / Body
-        CompareMetric("weight", "Weight", "Health", "kg", "apple-health", 1),
-        CompareMetric("body_fat", "Body Fat", "Health", "%", "apple-health", 1),
-        CompareMetric("lean_mass", "Lean Body Mass", "Health", "kg", "apple-health", 1),
+        CompareMetric("weight", uiText("Weight"), "Health", "kg", "apple-health", 1),
+        CompareMetric("body_fat", uiText("Body Fat"), "Health", "%", "apple-health", 1),
+        CompareMetric("lean_mass", uiText("Lean Body Mass"), "Health", "kg", "apple-health", 1),
         CompareMetric(
-            "bmi", "BMI", "Health", "", "apple-health", 1,
-            note = "From Health Connect this is derived from your weight and profile height.",
+            "bmi", "BMI", uiText("Health"), "", "apple-health", 1,
+            note = uiText("From Health Connect this is derived from your weight and profile height."),
         ),
         // Nutrition (imported from a food-tracker CSV — calories-in next to calories-out).
         // Mirrors the macOS MetricCatalog entries exactly (same keys + sources, v2.2.0 parity).
-        CompareMetric("calories_in", "Calories In", "Nutrition", "kcal", NutritionCsvImporter.SOURCE_ID, 0),
+        CompareMetric("calories_in", uiText("Calories In"), "Nutrition", "kcal", NutritionCsvImporter.SOURCE_ID, 0),
         CompareMetric("protein_g", "Protein", "Nutrition", "g", NutritionCsvImporter.SOURCE_ID, 0),
-        CompareMetric("carbs_g", "Carbs", "Nutrition", "g", NutritionCsvImporter.SOURCE_ID, 0),
-        CompareMetric("fat_g", "Fat", "Nutrition", "g", NutritionCsvImporter.SOURCE_ID, 0),
+        CompareMetric("carbs_g", uiText("Carbs"), "Nutrition", "g", NutritionCsvImporter.SOURCE_ID, 0),
+        CompareMetric("fat_g", uiText("Fat"), "Nutrition", "g", NutritionCsvImporter.SOURCE_ID, 0),
         // Mind (daily mood check-in, 1–5; non-clinical self-tracking).
-        CompareMetric("mood", "Mood", "Mind", "/5", MoodStore.MOOD_DEVICE_ID, 0),
+        CompareMetric("mood", uiText("Mood"), "Mind", "/5", MoodStore.MOOD_DEVICE_ID, 0),
     )
 
     fun inCategory(c: String): List<CompareMetric> = all.filter { it.category == c }
@@ -242,12 +242,12 @@ private fun CompareRange.localizedPhrase(): String = when (this) {
 }
 
 private enum class CompareRange(val label: String, val days: Int?, val phrase: String) {
-    Week("W", 7, "the last 7 days"),
-    Month("M", 30, "30 days"),
-    Quarter("3M", 90, "3 months"),
-    Half("6M", 180, "6 months"),
-    Year("1Y", 365, "1 year"),
-    All("ALL", null, "all history");
+    Week("W", 7, uiText("the last 7 days")),
+    Month("M", 30, uiText("30 days")),
+    Quarter("3M", 90, uiText("3 months")),
+    Half("6M", 180, uiText("6 months")),
+    Year("1Y", 365, uiText("1 year")),
+    All(uiText("ALL"), null, uiText("all history"));
 
     /** This range plus every LARGER range, ascending — the auto-expand search order. */
     val widening: List<CompareRange>
@@ -484,8 +484,8 @@ fun CompareScreen(vm: AppViewModel) {
     val rangeCaption: String = run {
         val total = activeSeries.sumOf { it.rows.size }
         val unit = if (total == 1) "reading" else "readings"
-        val base = "$total $unit across ${activeSeries.size} · ${range.phrase}"
-        if (anyWidened) "$base · sparse widened" else base
+        val base = uiText("%1\$s %2\$s across %3\$s · %4\$s", total, unit, activeSeries.size, range.phrase)
+        if (anyWidened) uiText("%1\$s · sparse widened", base) else base
     }
 
     LazyScreenScaffold(
@@ -502,7 +502,7 @@ fun CompareScreen(vm: AppViewModel) {
         // ── Metric picker section (chips + range control)
         item {
         Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-            SectionHeader("Metrics", overline = "Overlay 2-4 signals")
+            SectionHeader(uiText("Metrics"), overline = uiText("Overlay 2-4 signals"))
             NoopCard {
                 Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
                     SegmentedPillControl(
@@ -573,7 +573,7 @@ fun CompareScreen(vm: AppViewModel) {
 
         if (selected.size < minSelection) {
             item {
-                EmptyNote("Pick at least two metrics above to overlay them and read how they move together.")
+                EmptyNote(uiText("Pick at least two metrics above to overlay them and read how they move together."))
             }
         } else {
             val nonEmpty = activeSeries.filter { it.rows.isNotEmpty() }
@@ -586,7 +586,7 @@ fun CompareScreen(vm: AppViewModel) {
                         )
                     }
                 } else {
-                    item { EmptyNote("Reading your history…") }
+                    item { EmptyNote(uiText("Reading your history…")) }
                 }
             } else {
                 item { OverlaySection(nonEmpty, range, anyWidened) }
@@ -674,7 +674,7 @@ private fun AddMetricMenu(
                 val metrics = CompareCatalog.inCategory(category)
                 if (metrics.isNotEmpty()) {
                     Text(
-                        category.uppercase(),
+                        compareCategoryLabel(category).uppercase(),
                         style = NoopType.overline,
                         color = Palette.textTertiary,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -815,7 +815,7 @@ private fun OverlaySection(
         // series colour so the overlaid lines stay distinguishable against the wash.
         NoopCard(tint = Palette.accent) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Overline("Normalized overlay")
+                Overline(uiText("Normalized overlay"))
                 Text(
                     if (anyWidened) {
                         uiString(R.string.l10n_compare_screen_each_line_min_max_normalized_sparse_98c4cb04, range.localizedPhrase())
@@ -1269,7 +1269,7 @@ private fun CorrelationSection(series: List<CompareSeries>, range: CompareRange)
 
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
         SectionHeader(
-            "How They Move Together",
+            uiText("How They Move Together"),
             overline = "Pearson r · ${range.phrase}",
             trailing = if (pairs.isEmpty()) null else "${pairs.size} pairs",
         )
@@ -1350,16 +1350,15 @@ private fun PairCard(p: PairResult) {
 // MARK: - Insight language (ported from CompareView)
 
 private fun insightSentence(p: PairResult): String {
-    val head = ("${p.a.metric.title} ↔ ${p.b.metric.title}: r = ${signedR(p.r)} " +
-        "(${strengthWord(p.r)} ${directionWord(p.r)}) over ${p.n} shared days.")
+    val head = (uiText("%1\$s ↔ %2\$s: r = %3\$s (%4\$s %5\$s) over %6\$s shared days.", p.a.metric.title, p.b.metric.title, signedR(p.r), strengthWord(p.r), directionWord(p.r), p.n))
         .replace("  ", " ").replace(" )", ")")
     if (abs(p.r) < 0.3) {
-        return "$head No clear relationship - they move largely independently."
+        return uiText("%1\$s No clear relationship - they move largely independently.", head)
     }
     val aT = p.a.metric.title.lowercase()
     val bT = p.b.metric.title.lowercase()
-    val verb = if (p.r < 0) "tends to fall" else "tends to rise"
-    return "$head When $aT rises, $bT $verb - a ${strengthWord(p.r)} ${directionWord(p.r)} link."
+    val verb = if (p.r < 0) uiText("tends to fall") else uiText("tends to rise")
+    return uiText("%1\$s When %2\$s rises, %3\$s %4\$s - a %5\$s %6\$s link.", head, aT, bT, verb, strengthWord(p.r), directionWord(p.r))
 }
 
 private fun signedR(r: Double): String {
@@ -1374,7 +1373,7 @@ private fun strengthWord(r: Double): String {
         a < 0.3 -> "weak"
         a < 0.5 -> "moderate"
         a < 0.7 -> "strong"
-        else -> "very strong"
+        else -> uiText("very strong")
     }
 }
 
@@ -1415,4 +1414,16 @@ private fun Modifier.clickableNoRippleLocal(enabled: Boolean, onClick: () -> Uni
             onClick = onClick,
         ),
     )
+}
+
+/** On-screen name of a Compare category; the English category stays the catalog key. */
+private fun compareCategoryLabel(category: String): String = when (category) {
+    "Heart" -> uiString(R.string.explore_category_heart)
+    "Charge" -> uiString(R.string.explore_category_charge)
+    "Rest" -> uiString(R.string.explore_category_rest)
+    "Effort" -> uiString(R.string.explore_category_effort)
+    "Health" -> uiString(R.string.explore_category_health)
+    "Nutrition" -> uiString(R.string.explore_category_nutrition)
+    "Mind" -> uiString(R.string.explore_category_mind)
+    else -> category
 }

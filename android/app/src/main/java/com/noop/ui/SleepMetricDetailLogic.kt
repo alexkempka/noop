@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
 
 internal enum class SleepMetricRange(val label: String, val days: Long?) {
     WEEK("W", 7), MONTH("M", 30), THREE_MONTH("3M", 90),
-    SIX_MONTH("6M", 180), YEAR("1Y", 365), ALL("ALL", null),
+    SIX_MONTH("6M", 180), YEAR("1Y", 365), ALL(uiText("ALL"), null),
 }
 
 internal data class SleepMetricSpec(
@@ -22,13 +22,13 @@ internal data class SleepMetricSpec(
 )
 
 internal fun sleepMetricSpec(key: String): SleepMetricSpec = when (key) {
-    "performance"     -> SleepMetricSpec("Rest", "%", Palette.restColor) { "${it.roundToInt()}" }
-    "efficiency"      -> SleepMetricSpec("Sleep Efficiency", "%", Palette.statusPositive) { "${it.roundToInt()}" }
-    "consistency"     -> SleepMetricSpec("Consistency", "%", Palette.metricCyan) { "${it.roundToInt()}" }
-    "hours_vs_needed" -> SleepMetricSpec("Hours vs Needed", "%", Palette.restColor) { "${it.roundToInt()}" }
-    "restorative"     -> SleepMetricSpec("Restorative", "%", Palette.sleepREM) { "${it.roundToInt()}" }
-    "respiratory"     -> SleepMetricSpec("Respiratory Rate", "rpm", Palette.metricPurple) { String.format(Locale.US, "%.1f", it) }
-    "sleep_debt"      -> SleepMetricSpec("Sleep Debt", "min", Palette.metricRose) { "${it.roundToInt()}" }   // #691: minutes, not decimal hours
+    "performance"     -> SleepMetricSpec(uiText("Rest"), "%", Palette.restColor) { "${it.roundToInt()}" }
+    "efficiency"      -> SleepMetricSpec(uiText("Sleep Efficiency"), "%", Palette.statusPositive) { "${it.roundToInt()}" }
+    "consistency"     -> SleepMetricSpec(uiText("Consistency"), "%", Palette.metricCyan) { "${it.roundToInt()}" }
+    "hours_vs_needed" -> SleepMetricSpec(uiText("Hours vs Needed"), "%", Palette.restColor) { "${it.roundToInt()}" }
+    "restorative"     -> SleepMetricSpec(uiText("Restorative"), "%", Palette.sleepREM) { "${it.roundToInt()}" }
+    "respiratory"     -> SleepMetricSpec(uiText("Respiratory Rate"), "rpm", Palette.metricPurple) { String.format(Locale.US, "%.1f", it) }
+    "sleep_debt"      -> SleepMetricSpec(uiText("Sleep Debt"), "min", Palette.metricRose) { "${it.roundToInt()}" }   // #691: minutes, not decimal hours
     else              -> SleepMetricSpec(key, "", Palette.accent) { "${it.roundToInt()}" }
 }
 

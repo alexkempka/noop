@@ -191,7 +191,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 }
                 Spacer(Modifier.weight(1f))
                 StatePill(
-                    if (live.bonded) "Strap bonded" else "Not connected",
+                    if (live.bonded) uiText("Strap bonded") else uiText("Not connected"),
                     tone = if (live.bonded) StrandTone.Positive else StrandTone.Warning,
                 )
             }
@@ -300,7 +300,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                         Spacer(Modifier.weight(1f))
                         TimeChip(
                             minutes = inactivityActiveStart,
-                            accessibilityLabel = "Active hours start",
+                            accessibilityLabel = uiText("Active hours start"),
                             onPicked = {
                                 inactivityActiveStart = it
                                 InactivityPrefs.setInt(ctx, InactivityPrefs.ACTIVE_START_MIN, it)
@@ -311,7 +311,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                         Spacer(Modifier.width(8.dp))
                         TimeChip(
                             minutes = inactivityActiveEnd,
-                            accessibilityLabel = "Active hours end",
+                            accessibilityLabel = uiText("Active hours end"),
                             onPicked = {
                                 inactivityActiveEnd = it
                                 InactivityPrefs.setInt(ctx, InactivityPrefs.ACTIVE_END_MIN, it)
@@ -434,9 +434,9 @@ private fun NapReviewRow(nap: NapCandidate, onAccept: () -> Unit, onDismiss: () 
             Text(napDetailLabel(nap), style = NoopType.footnote, color = Palette.textTertiary)
         }
         Spacer(Modifier.width(8.dp))
-        NapActionButton(Icons.Filled.Check, "Keep this nap", Palette.statusPositive, onAccept)
+        NapActionButton(Icons.Filled.Check, uiText("Keep this nap"), Palette.statusPositive, onAccept)
         Spacer(Modifier.width(8.dp))
-        NapActionButton(Icons.Filled.Close, "Skip this nap", Palette.textTertiary, onDismiss)
+        NapActionButton(Icons.Filled.Close, uiText("Skip this nap"), Palette.textTertiary, onDismiss)
     }
 }
 
@@ -467,7 +467,7 @@ private fun napWindowLabel(nap: NapCandidate, ctx: android.content.Context): Str
 }
 
 private fun napDetailLabel(nap: NapCandidate): String =
-    if (nap.meanHr != null) "Quiet and settled, mean HR ~${nap.meanHr} bpm." else "Quiet and settled."
+    if (nap.meanHr != null) "Quiet and settled, mean HR ~${nap.meanHr} bpm." else uiText("Quiet and settled.")
 
 // MARK: - Per-weekday wake-time overrides (PR #554 reimpl under NoopApp)
 
@@ -509,7 +509,7 @@ internal fun AlarmDayOverridePicker(
                 }
                 TimeChip(
                     minutes = effective,
-                    accessibilityLabel = "${smartAlarmWeekdayName(dow)} wake time",
+                    accessibilityLabel = uiText("%1\$s wake time", smartAlarmWeekdayName(dow)),
                     onPicked = { onSetOverride(dow, it) },
                 )
             }
@@ -694,9 +694,9 @@ internal fun toggledSmartAlarmWeekday(dow: Int, days: Set<Int>): Set<Int> {
 
 /** Human-readable summary of the selection. Pure for tests. Mirrors macOS `weekdaySummary`. */
 internal fun smartAlarmWeekdaySummary(days: Set<Int>): String = when {
-    days.isEmpty() || days.size == 7 -> "Every day"
-    days == setOf(2, 3, 4, 5, 6) -> "Weekdays"
-    days == setOf(1, 7) -> "Weekends"
+    days.isEmpty() || days.size == 7 -> uiText("Every day")
+    days == setOf(2, 3, 4, 5, 6) -> uiText("Weekdays")
+    days == setOf(1, 7) -> uiText("Weekends")
     else -> SMART_ALARM_WEEKDAY_ORDER.filter { days.contains(it) }
         .joinToString(", ") { smartAlarmWeekdayName(it) }
 }
@@ -706,7 +706,7 @@ private fun smartAlarmWeekdayInitial(dow: Int): String = when (dow) {
 }
 
 private fun smartAlarmWeekdayName(dow: Int): String = when (dow) {
-    1 -> "Sun"; 2 -> "Mon"; 3 -> "Tue"; 4 -> "Wed"; 5 -> "Thu"; 6 -> "Fri"; 7 -> "Sat"; else -> "?"
+    1 -> uiText("Sun"); 2 -> uiText("Mon"); 3 -> uiText("Tue"); 4 -> uiText("Wed"); 5 -> uiText("Thu"); 6 -> uiText("Fri"); 7 -> uiText("Sat"); else -> "?"
 }
 
 /** A label/help row with a −[value]+ stepper, clamped to [range] and moved by [step]. */
@@ -726,7 +726,7 @@ private fun StepperRow(
             Text(help, style = NoopType.footnote, color = Palette.textTertiary)
         }
         Spacer(Modifier.width(12.dp))
-        StepButton(Icons.Filled.Remove, "Decrease $label", enabled = value > range.first) {
+        StepButton(Icons.Filled.Remove, uiText("Decrease %1\$s", label), enabled = value > range.first) {
             onChange((value - step).coerceAtLeast(range.first))
         }
         Text(
@@ -736,7 +736,7 @@ private fun StepperRow(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 8.dp).widthIn(min = 56.dp),
         )
-        StepButton(Icons.Filled.Add, "Increase $label", enabled = value < range.last) {
+        StepButton(Icons.Filled.Add, uiText("Increase %1\$s", label), enabled = value < range.last) {
             onChange((value + step).coerceAtMost(range.last))
         }
     }

@@ -556,10 +556,10 @@ private fun PipScoreRow(
 private enum class TrendsRange(val days: Int?, val label: String, val longName: String) {
     Week(7, "W", "week"),
     Month(30, "M", "month"),
-    Quarter(90, "3M", "3 months"),
-    Half(180, "6M", "6 months"),
+    Quarter(90, "3M", uiText("3 months")),
+    Half(180, "6M", uiText("6 months")),
     Year(365, "1Y", "year"),
-    All(null, "ALL", "all history");
+    All(null, uiText("ALL"), uiText("all history"));
 
     /** This range plus every LARGER range, ascending , the auto-expand search order. */
     val widening: List<TrendsRange>
@@ -663,7 +663,7 @@ private fun windowPoints(
 private fun caption(count: Int, eff: TrendsRange, selected: TrendsRange): String {
     val unit = if (count == 1) "reading" else "readings"
     return if (eff != selected) {
-        "$count $unit · sparse , widened to ${eff.longName}"
+        uiText("%1\$s %2\$s · sparse , widened to %3\$s", count, unit, eff.longName)
     } else {
         "$count $unit · ${selected.longName}"
     }
@@ -1089,9 +1089,9 @@ private fun RecoveryHistoryCard(days: List<DailyMetric>, range: TrendsRange) {
         days.takeLast(span).mapNotNull { it.recovery }
     }
     val title = if (range == TrendsRange.All && days.size > 365) {
-        "Charge , all history"
+        uiText("Charge , all history")
     } else {
-        "Charge , past year"
+        uiText("Charge , past year")
     }
 
     NoopCard {

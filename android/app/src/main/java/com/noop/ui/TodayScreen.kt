@@ -7318,7 +7318,7 @@ private fun TodayWorkoutsSection(workouts: List<WorkoutRow>, onSelect: (WorkoutR
                         onClickLabel = uiString(R.string.today_action_show_workout),
                         onClick = { onSelect(workout) },
                     ),
-                label = WorkoutEditing.displaySport(workout.sport),
+                label = WorkoutEditing.sportLabel(workout.sport),
                 value = localizedMetricValue(workoutDuration(workout)),
                 caption = workoutCaption(workout),
                 accent = workout.strain?.let { Palette.effortTint(it / StrainScorer.maxStrain) } ?: Palette.textPrimary,

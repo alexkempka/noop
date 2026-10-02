@@ -25,15 +25,15 @@ object FusionDayAdapter {
     private data class MetricSpec(val key: String, val label: String)
 
     private val METRICS: List<MetricSpec> = listOf(
-        MetricSpec("rhr", "Resting HR"),
+        MetricSpec("rhr", uiText("Resting HR")),
         MetricSpec("hrv", "HRV"),
-        MetricSpec("skin_temp", "Skin temperature"),
-        MetricSpec("spo2", "Blood O₂"),
-        MetricSpec("steps", "Steps"),
-        MetricSpec("active_kcal", "Active energy"),
-        MetricSpec("sleep_total_min", "Asleep time"),
-        MetricSpec("sleep_deep_min", "Deep sleep"),
-        MetricSpec("sleep_rem_min", "REM sleep"),
+        MetricSpec("skin_temp", uiText("Skin temperature")),
+        MetricSpec("spo2", uiText("Blood O₂")),
+        MetricSpec("steps", uiText("Steps")),
+        MetricSpec("active_kcal", uiText("Active energy")),
+        MetricSpec("sleep_total_min", uiText("Asleep time")),
+        MetricSpec("sleep_deep_min", uiText("Deep sleep")),
+        MetricSpec("sleep_rem_min", uiText("REM sleep")),
     )
 
     /**

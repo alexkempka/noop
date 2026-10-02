@@ -85,15 +85,15 @@ fun ConnectionHelp(viewModel: AppViewModel, modifier: Modifier = Modifier) {
                 done = !whoopInstalled,
                 title = uiString(R.string.l10n_connection_help_close_the_official_whoop_app_768d7d17),
                 body = uiString(R.string.l10n_connection_help_your_strap_only_pairs_with_one_9a37cbb5),
-                actionLabel = if (whoopInstalled) "Open WHOOP app, then Force stop" else "WHOOP app isn't installed",
+                actionLabel = if (whoopInstalled) uiText("Open WHOOP app, then Force stop") else uiText("WHOOP app isn't installed"),
                 enabled = whoopInstalled,
                 onAction = { openAppInfo(context, WHOOP_PACKAGE) },
             )
             HelpStep(
                 done = btOn,
                 title = uiString(R.string.l10n_connection_help_turn_bluetooth_on_75868e97),
-                body = if (btOn) "Bluetooth is on." else "Bluetooth is currently off.",
-                actionLabel = if (!btOn) "Turn on Bluetooth" else null,
+                body = if (btOn) uiText("Bluetooth is on.") else uiText("Bluetooth is currently off."),
+                actionLabel = if (!btOn) uiText("Turn on Bluetooth") else null,
                 enabled = !btOn,
                 onAction = {
                     runCatching { enableBtLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)) }
@@ -102,9 +102,9 @@ fun ConnectionHelp(viewModel: AppViewModel, modifier: Modifier = Modifier) {
             HelpStep(
                 done = permGranted,
                 title = uiString(R.string.l10n_connection_help_allow_nearby_devices_f7c74880),
-                body = if (permGranted) "Permission granted."
-                else "On Android 12+, \"Nearby devices\" is the Bluetooth permission. NOOP needs it to find your strap.",
-                actionLabel = if (!permGranted) "Grant permission" else null,
+                body = if (permGranted) uiText("Permission granted.")
+                else uiText("On Android 12+, \"Nearby devices\" is the Bluetooth permission. NOOP needs it to find your strap."),
+                actionLabel = if (!permGranted) uiText("Grant permission") else null,
                 enabled = !permGranted,
                 onAction = { permLauncher.launch(perms) },
             )

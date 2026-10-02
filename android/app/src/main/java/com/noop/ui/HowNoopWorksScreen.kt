@@ -160,7 +160,7 @@ private fun Header(onClose: () -> Unit) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Overline("The basics", color = Palette.textTertiary)
+            Overline(uiText("The basics"), color = Palette.textTertiary)
             Text(uiString(R.string.l10n_how_noop_works_screen_how_noop_works_3396b27a), style = NoopType.display(26f), color = Palette.textPrimary)
             Text(
                 uiString(R.string.l10n_how_noop_works_screen_sleep_scores_recording_where_your_numbers_1b3e981f),
@@ -185,7 +185,7 @@ private fun Header(onClose: () -> Unit) {
 private fun IntroCard() {
     NoopCard(padding = 20.dp) {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Overline("The one rule")
+            Overline(uiText("The one rule"))
             Text(
                 uiString(R.string.l10n_how_noop_works_screen_noop_never_shows_you_a_number_d1db9958),
                 style = NoopType.subhead,

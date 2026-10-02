@@ -73,7 +73,7 @@ private fun StageBreakdownRow(stage: String, minutes: Double, total: Double, col
             .fillMaxWidth()
             .semantics {
                 contentDescription =
-                    uiString(R.string.l10n_sleep_screen_stage_durationtext_minutes_percent_percent_of_477dbf14, stage, durationText(minutes), percent)
+                    uiString(R.string.l10n_sleep_screen_stage_durationtext_minutes_percent_percent_of_477dbf14, sleepStageLabel(stage), durationText(minutes), percent)
             },
     ) {
         Box(
@@ -83,7 +83,7 @@ private fun StageBreakdownRow(stage: String, minutes: Double, total: Double, col
                 .background(color),
         )
         Text(
-            stage.uppercase(Locale.getDefault()),
+            sleepStageLabel(stage).uppercase(Locale.getDefault()),
             style = NoopType.overline,
             color = Palette.textPrimary,
             maxLines = 1,
@@ -425,7 +425,7 @@ internal fun SleepStageLegend(palette: SleepStagePalette) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(stageColorForRamp(label, palette)))
-                Text(label, style = NoopType.caption, color = Palette.textSecondary, maxLines = 1)
+                Text(sleepStageLabel(label), style = NoopType.caption, color = Palette.textSecondary, maxLines = 1)
             }
         }
     }
@@ -507,7 +507,7 @@ private fun HypnogramTimeAxis(ticks: List<Pair<Float, String>>) {
 
 /** One-line a11y summary of the smoothed hypnogram (stage count) — the collapsed node for [FilledHypnogram]. */
 private fun hypnogramSummaryFor(intervals: List<StageInterval>): String =
-    if (intervals.isEmpty()) "Sleep stages, no data" else "Sleep stage timeline, ${intervals.size} segments"
+    if (intervals.isEmpty()) uiText("Sleep stages, no data") else "Sleep stage timeline, ${intervals.size} segments"
 
 /**
  * The onset · midpoint · wake clock-label row under a night timeline. Extracted from

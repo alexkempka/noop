@@ -88,10 +88,10 @@ import java.util.Calendar
 
 /** Haptic pattern fired on the strap; only the repeat count varies. */
 internal enum class BuzzPattern(val label: String, val loops: Int) {
-    Single("Single", 1),
-    Double("Double", 2),
-    Triple("Triple", 3),
-    Long("Long", 5),
+    Single(uiText("Single"), 1),
+    Double(uiText("Double"), 2),
+    Triple(uiText("Triple"), 3),
+    Long(uiText("Long"), 5),
 }
 
 /** Grouping for the settings screen, with its header icon + default pattern. */
@@ -100,10 +100,10 @@ internal enum class NotifCategory(
     val icon: ImageVector,
     val defaultPattern: BuzzPattern,
 ) {
-    Email("Email", Icons.Filled.Email, BuzzPattern.Double),
-    Messaging("Messaging", Icons.AutoMirrored.Filled.Chat, BuzzPattern.Single),
+    Email(uiText("Email"), Icons.Filled.Email, BuzzPattern.Double),
+    Messaging(uiText("Messaging"), Icons.AutoMirrored.Filled.Chat, BuzzPattern.Single),
     Meetings("Meetings", Icons.Filled.Videocam, BuzzPattern.Triple),
-    Calendar("Calendar & Reminders", Icons.Filled.CalendarMonth, BuzzPattern.Double),
+    Calendar(uiText("Calendar & Reminders"), Icons.Filled.CalendarMonth, BuzzPattern.Double),
 }
 
 /** A notification-capable app NOOP can mirror to the wrist. `id` is the persistence key. */
@@ -131,7 +131,7 @@ private val notifCatalog: List<NotifApp> = listOf(
     // posts), which read as messages, so it lives under Messaging with the chat glyph.
     NotifApp("com.microsoft.teams", "Microsoft Teams", NotifCategory.Messaging, Icons.AutoMirrored.Filled.Chat),
     NotifApp("us.zoom.videomeetings", "Zoom", NotifCategory.Meetings, Icons.Filled.Videocam),
-    NotifApp("com.google.android.calendar", "Calendar", NotifCategory.Calendar, Icons.Filled.CalendarMonth),
+    NotifApp("com.google.android.calendar", uiText("Calendar"), NotifCategory.Calendar, Icons.Filled.CalendarMonth),
 )
 
 private fun appsIn(category: NotifCategory): List<NotifApp> =
@@ -453,7 +453,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
                     Text(uiString(R.string.l10n_notifications_settings_screen_from_3f66052a), style = NoopType.body, color = Palette.textPrimary)
                     TimeChip(
                         minutes = quietStartMinutes,
-                        accessibilityLabel = "Quiet hours start",
+                        accessibilityLabel = uiText("Quiet hours start"),
                         onPicked = {
                             quietStartMinutes = it
                             NotifPrefs.setInt(context, NotifPrefs.QUIET_START, it)
@@ -462,7 +462,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
                     Text("to", style = NoopType.body, color = Palette.textSecondary)
                     TimeChip(
                         minutes = quietEndMinutes,
-                        accessibilityLabel = "Quiet hours end",
+                        accessibilityLabel = uiText("Quiet hours end"),
                         onPicked = {
                             quietEndMinutes = it
                             NotifPrefs.setInt(context, NotifPrefs.QUIET_END, it)
@@ -519,9 +519,9 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
 // MARK: - Strap status (mirrors the three-state mapping from the Mac screen)
 
 private fun strapPillTitle(live: com.noop.ble.LiveState): String = when {
-    live.connected -> "Strap connected"
-    live.bonded -> "Strap idle"
-    else -> "Strap not connected"
+    live.connected -> uiText("Strap connected")
+    live.bonded -> uiText("Strap idle")
+    else -> uiText("Strap not connected")
 }
 
 private fun strapPillTone(live: com.noop.ble.LiveState): StrandTone = when {
@@ -952,7 +952,7 @@ private fun AlertSection(
     icon: ImageVector,
     title: String,
     blurb: String? = null,
-    overline: String = "Alerts",
+    overline: String = uiText("Alerts"),
     content: @Composable () -> Unit,
 ) {
     NoopCard(padding = 20.dp, tint = Palette.accent) {

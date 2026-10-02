@@ -56,11 +56,11 @@ import kotlin.math.roundToInt
 
 /** The export window choices: trailing N days, or all history. */
 enum class ReportRange(val days: Int?, val label: String, val longName: String) {
-    Days30(30, "30d", "Last 30 days"),
-    Days90(90, "90d", "Last 90 days"),
-    Days180(180, "6M", "Last 6 months"),
-    Days365(365, "1Y", "Last year"),
-    All(null, "All", "All history"),
+    Days30(30, "30d", uiText("Last 30 days")),
+    Days90(90, "90d", uiText("Last 90 days")),
+    Days180(180, "6M", uiText("Last 6 months")),
+    Days365(365, "1Y", uiText("Last year")),
+    All(null, uiText("All"), uiText("All history")),
 }
 
 /** [ReportRange.longName] for on-screen copy. The PDF header keeps the English `longName`. */
@@ -314,7 +314,7 @@ object TrendsReportRenderer {
         text(canvas, "NOOP", left, ty, 11f, sansBold, ACCENT, letterSpacing = 0.12f)
         textRight(canvas, range.longName.uppercase(), PAGE_W - MARGIN - 16f, ty, 10f, sansBold, TEXT_TERTIARY)
         ty += 30f
-        text(canvas, "Trends report", left, ty, 26f, sansBold, TEXT_PRIMARY)
+        text(canvas, uiText("Trends report"), left, ty, 26f, sansBold, TEXT_PRIMARY)
         ty += 22f
         val span = report.totalDays
         val dayWord = if (span == 1) "day" else "days"
@@ -337,9 +337,9 @@ object TrendsReportRenderer {
 
         val left = MARGIN + 16f
         var ty = top + 22f
-        text(canvas, "SUMMARY", left, ty, 10f, sansBold, ACCENT, letterSpacing = 0.1f)
+        text(canvas, uiText("SUMMARY"), left, ty, 10f, sansBold, ACCENT, letterSpacing = 0.1f)
         ty += 8f
-        text(canvas, "What changed", left, ty + 10f, 16f, sansBold, TEXT_PRIMARY)
+        text(canvas, uiText("What changed"), left, ty + 10f, 16f, sansBold, TEXT_PRIMARY)
         ty += 28f
         for (line in report.headlines) {
             text(canvas, "•  $line", left, ty, 12f, sans, TEXT_PRIMARY, maxWidth = PAGE_W - MARGIN - left - 16f)
@@ -358,9 +358,9 @@ object TrendsReportRenderer {
         units: ReportDisplayUnits,
     ): Float {
         var y = top
-        text(canvas, "BY THE NUMBERS", MARGIN, y + 4f, 10f, sansBold, TEXT_TERTIARY, letterSpacing = 0.1f)
+        text(canvas, uiText("BY THE NUMBERS"), MARGIN, y + 4f, 10f, sansBold, TEXT_TERTIARY, letterSpacing = 0.1f)
         y += 10f
-        text(canvas, "Metrics", MARGIN, y + 14f, 16f, sansBold, TEXT_PRIMARY)
+        text(canvas, uiText("Metrics"), MARGIN, y + 14f, 16f, sansBold, TEXT_PRIMARY)
         y += 26f
 
         for (stat in report.metrics) {
@@ -396,7 +396,7 @@ object TrendsReportRenderer {
         if (spark.size >= 2) {
             drawSparkline(canvas, spark, left, sparkTop, right - 8f, sparkBottom, accent)
         } else {
-            text(canvas, "Single reading in range", left, sparkTop + 16f, 11f, sans, TEXT_TERTIARY)
+            text(canvas, uiText("Single reading in range"), left, sparkTop + 16f, 11f, sans, TEXT_TERTIARY)
         }
 
         // Divider.
@@ -478,7 +478,7 @@ object TrendsReportRenderer {
         val cardH = 110f
         drawCard(canvas, MARGIN, top, PAGE_W - MARGIN, top + cardH, null)
         val left = MARGIN + 16f
-        text(canvas, "Not enough data in this range yet", left, top + 30f, 16f, sansBold, TEXT_PRIMARY)
+        text(canvas, uiText("Not enough data in this range yet"), left, top + 30f, 16f, sansBold, TEXT_PRIMARY)
         val body = uiString(R.string.l10n_trends_report_no_workout_stress_recovery_sleep_hrv_78e17114, range.localizedLongName())
         drawWrapped(canvas, body, left, top + 52f, PAGE_W - MARGIN - left - 16f, 16f, 12f, sans, TEXT_SECONDARY)
     }
@@ -490,20 +490,15 @@ object TrendsReportRenderer {
         // Provenance legend (#457): make clear which numbers are measured vs. NOOP's own derived scores,
         // so a clinician reading the PDF isn't misled into treating Recovery/Strain as clinical measures.
         // Sits above the hairline; wraps to the page width (~4 lines at this size).
-        val legend = "How to read this: HRV, Resting HR, Sleep duration, Respiratory rate and Skin " +
-            "temperature are measured from the strap (skin temp is shown as the deviation from your own " +
-            "baseline). Workouts is the count of activities you logged or that were detected. Recovery, " +
-            "Strain and Stress are NOOP's own on-device scores, not clinical measures - Recovery is a daily " +
-            "readiness composite (HRV, resting HR, sleep and skin-temp trend), Strain is cardiovascular load " +
-            "derived from heart rate, and Stress is a 0-3 autonomic-load index from resting HR and HRV."
+        val legend = uiText("How to read this: HRV, Resting HR, Sleep duration, Respiratory rate and Skin temperature are measured from the strap (skin temp is shown as the deviation from your own baseline). Workouts is the count of activities you logged or that were detected. Recovery, Strain and Stress are NOOP's own on-device scores, not clinical measures - Recovery is a daily readiness composite (HRV, resting HR, sleep and skin-temp trend), Strain is cardiovascular load derived from heart rate, and Stress is a 0-3 autonomic-load index from resting HR and HRV.")
         drawWrapped(canvas, legend, MARGIN, y - 52f, PAGE_W - 2 * MARGIN, 11f, 9f, sans, TEXT_TERTIARY)
         line(canvas, MARGIN, y - 14f, PAGE_W - MARGIN, y - 14f, HAIRLINE)
         text(
             canvas,
-            "Generated by NOOP on $generatedOn · all on-device, no account, no cloud.",
+            uiText("Generated by NOOP on %1\$s · all on-device, no account, no cloud.", generatedOn),
             MARGIN, y, 10f, sans, TEXT_TERTIARY,
         )
-        text(canvas, "Informational only - not medical advice.", MARGIN, y + 12f, 10f, sans, TEXT_TERTIARY)
+        text(canvas, uiText("Informational only - not medical advice."), MARGIN, y + 12f, 10f, sans, TEXT_TERTIARY)
     }
 
     // --- Primitives ---
@@ -626,7 +621,7 @@ object TrendsReportRenderer {
     /** "Jun 15" from "2026-06-15" via the engine's pure parse (no Calendar/locale). */
     private fun prettyDate(ymd: String): String {
         val p = RangeReportEngine.parseYMD(ymd) ?: return ymd
-        val months = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+        val months = arrayOf("Jan", "Feb", uiText("Mar"), "Apr", uiText("May"), "Jun", "Jul", "Aug", "Sep", uiText("Oct"), "Nov", uiText("Dec"))
         val name = if (p.second in 1..12) months[p.second - 1] else "${p.second}"
         return "$name ${p.third}"
     }
@@ -666,19 +661,19 @@ object TrendsReportShare {
             val generatedOn = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.US))
             val file = TrendsReportRenderer.renderPdf(context, report, range, series, generatedOn, units)
                 ?: run {
-                    Toast.makeText(context, "Couldn't build the report.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, uiText("Couldn't build the report."), Toast.LENGTH_LONG).show()
                     return
                 }
             val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             val send = Intent(Intent.ACTION_SEND).apply {
                 type = "application/pdf"
                 putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "NOOP trends report")
+                putExtra(Intent.EXTRA_SUBJECT, uiText("NOOP trends report"))
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            context.startActivity(Intent.createChooser(send, "Share trends report"))
+            context.startActivity(Intent.createChooser(send, uiText("Share trends report")))
         }.onFailure {
-            Toast.makeText(context, "Couldn't share the report: ${it.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, uiText("Couldn't share the report: %1\$s", it.message), Toast.LENGTH_LONG).show()
         }
     }
 }
@@ -708,7 +703,7 @@ fun TrendsReportExportSection(vm: AppViewModel, modifier: Modifier = Modifier) {
 
     NoopCard(modifier = modifier, tint = Palette.accent) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Overline("Export")
+            Overline(uiText("Export"))
             Text(uiString(R.string.l10n_trends_report_trends_report_pdf_481e8a5f), style = NoopType.title2, color = Palette.textPrimary)
             Text(
                 uiString(R.string.l10n_trends_report_a_clean_shareable_one_page_pdf_a3c4f889),
@@ -716,7 +711,7 @@ fun TrendsReportExportSection(vm: AppViewModel, modifier: Modifier = Modifier) {
                 color = Palette.textSecondary,
             )
 
-            Overline("Range", color = Palette.textTertiary)
+            Overline(uiText("Range"), color = Palette.textTertiary)
             SegmentedPillControl(
                 items = ReportRange.entries.toList(),
                 selection = range,
