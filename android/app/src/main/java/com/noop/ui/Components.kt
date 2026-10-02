@@ -1,5 +1,10 @@
 package com.noop.ui
 
+import androidx.compose.ui.unit.isSpecified
+import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.foundation.layout.BoxWithConstraints
 import com.noop.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.RepeatMode
@@ -495,28 +500,45 @@ internal fun AutoSizeValue(
     minScale: Float = 0.6f,
     textAlign: TextAlign = TextAlign.Start,
 ) {
-    var scale by remember(text, style) { mutableStateOf(1f) }
-    Text(
-        text = text,
-        color = color,
-        style = style,
-        fontSize = style.fontSize * scale,
-        maxLines = 1,
-        softWrap = false,
-        overflow = TextOverflow.Ellipsis,
-        textAlign = textAlign,
-        modifier = modifier,
-        onTextLayout = { result ->
-            // `lineCount > 0` before asking: isLineEllipsized carries a range precondition, and this
-            // composable is reached from every StatTile on every screen with a computed value, so the
-            // cost of a layout that reports no lines would be an app-wide crash rather than a wrong font
-            // size. One comparison buys the question away.
-            val ellipsized = result.lineCount > 0 && result.isLineEllipsized(0)
-            if (shouldShrinkValue(result.didOverflowWidth, ellipsized, scale, minScale)) {
-                scale = maxOf(minScale, scale - 0.08f)
+    // Measured, not stepped: the earlier loop shrank only when a layout REPORTED an ellipsis, and with
+    // hyphenation on the label styles that report did not come, so German labels stayed at full size and
+    // read "BELAST…". Measuring the one-line width against the space actually given picks the scale once.
+    val measurer = rememberTextMeasurer()
+    val contentAlignment = when (textAlign) {
+        TextAlign.Center -> Alignment.Center
+        TextAlign.End, TextAlign.Right -> Alignment.CenterEnd
+        else -> Alignment.CenterStart
+    }
+    BoxWithConstraints(modifier = modifier, contentAlignment = contentAlignment) {
+        val maxWidth = constraints.maxWidth
+        val bounded = constraints.hasBoundedWidth
+        val scale = remember(text, style, maxWidth, bounded) {
+            if (!bounded || maxWidth <= 0) {
+                1f
+            } else {
+                val natural = measurer.measure(
+                    text,
+                    style.copy(hyphens = Hyphens.None, lineBreak = LineBreak.Simple),
+                    softWrap = false,
+                    maxLines = 1,
+                ).size.width
+                if (natural > maxWidth) (maxWidth.toFloat() / natural * 0.98f).coerceIn(minScale, 1f) else 1f
             }
-        },
-    )
+        }
+        Text(
+            text = text,
+            color = color,
+            style = style.copy(
+                fontSize = style.fontSize * scale,
+                letterSpacing = if (style.letterSpacing.isSpecified) style.letterSpacing * scale else style.letterSpacing,
+                hyphens = Hyphens.None,
+            ),
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = textAlign,
+        )
+    }
 }
 
 /**

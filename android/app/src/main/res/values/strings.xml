@@ -3309,6 +3309,7 @@
     <string name="l10n_lit_0247ce357c">STREAMING</string>
     <string name="l10n_lit_0299370d30">Beat-to-beat timing varies for many ordinary reasons: breathing, movement, an imperfect optical reading, or the occasional extra or skipped beat that most healthy people have.</string>
     <string name="l10n_lit_02aa71c69b">Trends, no data</string>
+    <string name="l10n_lit_02ac03bed2">Effort and Charge tracked together this week: a sustainable load.</string>
     <string name="l10n_lit_02bc1e5f95">the last 7 days</string>
     <string name="l10n_lit_0303eb16ba">Plenty in the tank — Charge is %1$s%%, so today\'s ceiling is higher.</string>
     <string name="l10n_lit_032cb3699e">On wrist</string>
@@ -3322,11 +3323,13 @@
     <string name="l10n_lit_05029bb059">Manual (you set this by hand)</string>
     <string name="l10n_lit_0563ca3ac6">Last session</string>
     <string name="l10n_lit_061e4d70bb">Eligible for live physiology</string>
+    <string name="l10n_lit_06beb3946c">%1$s is %2$s %3$s week over week (avg %4$s vs %5$s)%6$s.</string>
     <string name="l10n_lit_06e21f2c6e">No completed offload yet</string>
     <string name="l10n_lit_0758de1fb8">Calories (kcal, optional)</string>
     <string name="l10n_lit_07f0810ac0">What are you adding?</string>
     <string name="l10n_lit_081ae3fdc4">Custom</string>
     <string name="l10n_lit_082699b773">Couldn\'t export the route: %1$s</string>
+    <string name="l10n_lit_08848cfb3a">You carried more Charge than you spent this week: there\'s room to push if you want it.</string>
     <string name="l10n_lit_0890005d1d">Last import</string>
     <string name="l10n_lit_09663c14cd">Should I train hard or take it easy today?</string>
     <string name="l10n_lit_096e3a699b">Backup failed - re-pick the folder and try again.</string>
@@ -3367,6 +3370,7 @@
     <string name="l10n_lit_10e221f443">no session yet</string>
     <string name="l10n_lit_1154f3c547">Couldn\'t share the recap: %1$s</string>
     <string name="l10n_lit_1156bd96dc">Sleep staging</string>
+    <string name="l10n_lit_11c8d229a8">Your Effort outpaced your Charge this week: you leaned into the red. Watch for a recovery dip.</string>
     <string name="l10n_lit_11e8ca97ca">Lab Book CSV</string>
     <string name="l10n_lit_11eda67f9b">Long</string>
     <string name="l10n_lit_1206a44261">You\'ve met your current sleep target across %1$s. No extra debt needs carrying into tonight.</string>
@@ -3428,6 +3432,7 @@
     <string name="l10n_lit_1f11750f8c">Caffeine logged.</string>
     <string name="l10n_lit_1f5a1abf2f">Complete</string>
     <string name="l10n_lit_1f90068a8d">Yoga</string>
+    <string name="l10n_lit_1fc42e1885">Only %1$s day(s) into this week so far, too early to call a week-over-week trend yet.</string>
     <string name="l10n_lit_1fe271db59">Heart-rate variability as the engine behind your charge score.</string>
     <string name="l10n_lit_20715bf618">What moves you ›</string>
     <string name="l10n_lit_20a70c1515">Over your readings, %1$s and %2$s move largely independently. No clear relationship.</string>
@@ -3762,6 +3767,7 @@
     <string name="l10n_lit_6d879a212b">Make sure it\'s NOT connected to the official WHOOP app right now.</string>
     <string name="l10n_lit_6d942bfeed">vs need</string>
     <string name="l10n_lit_6da13addb0">Source</string>
+    <string name="l10n_lit_6e55b2ca53">Not enough Effort and Charge days this week to read your balance.</string>
     <string name="l10n_lit_6e6a6f2086">Other</string>
     <string name="l10n_lit_6eaba4dd91">Last night</string>
     <string name="l10n_lit_6ec9b453c0">%1$s, %2$s points, latest %3$s, low %4$s, high %5$s</string>
@@ -3808,6 +3814,7 @@
     <string name="l10n_lit_76eec760c9">Recent</string>
     <string name="l10n_lit_7704b2c71b">Did you feel sick or ill?</string>
     <string name="l10n_lit_771e05f27b">Disconnected</string>
+    <string name="l10n_lit_77346d0447">down</string>
     <string name="l10n_lit_77385403c0">Age, %1$s years</string>
     <string name="l10n_lit_773ba1b336">Settling</string>
     <string name="l10n_lit_7741f3c70c">%1$s in bed · %2$s efficiency</string>
@@ -3834,6 +3841,7 @@
     <string name="l10n_lit_7bcba9cd99">Incl. Helio. Live heart rate where the band exposes it. Help us test.</string>
     <string name="l10n_lit_7bd4a0375a">More varied</string>
     <string name="l10n_lit_7be37c5012">Searching for your WHOOP… make sure it\'s charged, on your wrist, and the official WHOOP app isn\'t connected to it.</string>
+    <string name="l10n_lit_7c0a25c06e">up</string>
     <string name="l10n_lit_7c123543ca">How They Move Together</string>
     <string name="l10n_lit_7c63edf9a1">Supplements</string>
     <string name="l10n_lit_7ca44f2a16">Pulling your strap\'s stored history. This drains oldest-first; a deep backlog now continues automatically across passes instead of waiting between syncs.</string>
@@ -3857,6 +3865,7 @@
     <string name="l10n_lit_7fadc4face">Timing forecast</string>
     <string name="l10n_lit_7fcc0cd0fd">We didn\'t get today\'s data</string>
     <string name="l10n_lit_7ff11239a0">NOOP workout route</string>
+    <string name="l10n_lit_8012ff51a0">unchanged</string>
     <string name="l10n_lit_8020ed2255">Softball</string>
     <string name="l10n_lit_802eb19213">Reset it in the Oura app first.</string>
     <string name="l10n_lit_80ba791261">Easy day. You sat under the band most of the way.</string>
@@ -3920,6 +3929,7 @@
     <string name="l10n_lit_8cd84528f3">Blood oxygen</string>
     <string name="l10n_lit_8ce14357a9">Body fat</string>
     <string name="l10n_lit_8d2274e37a">Hiking/Rucking</string>
+    <string name="l10n_lit_8d343fef58">A steady week: no metric moved meaningfully from last week.</string>
     <string name="l10n_lit_8dce170de2">Value</string>
     <string name="l10n_lit_8dd577158b">Raw · per second</string>
     <string name="l10n_lit_8e5c632e5d">Removed Apple Health imported data.</string>
@@ -3962,6 +3972,7 @@
     <string name="l10n_lit_9700f4d831">Resting Heart Rate</string>
     <string name="l10n_lit_98b87f727e">Latest reading</string>
     <string name="l10n_lit_98ead1a858">Stress monitor</string>
+    <string name="l10n_lit_9958e2f9b7">Last week only had %1$s day(s) of data, so week-over-week changes are rough, not a trend.</string>
     <string name="l10n_lit_997f59bc99">Dec</string>
     <string name="l10n_lit_99cd009ee5">as of yesterday</string>
     <string name="l10n_lit_9a018ecc48">Eve</string>
@@ -3985,6 +3996,7 @@
     <string name="l10n_lit_9ee3b53ab5">No intraday stress data yet today.</string>
     <string name="l10n_lit_9f48a30977">Turn on Bluetooth</string>
     <string name="l10n_lit_9f628b61ae">Yes/No</string>
+    <string name="l10n_lit_9fb6ae0420">Sleep quality</string>
     <string name="l10n_lit_9fc28659c2">%1$ss left · %2$s beats</string>
     <string name="l10n_lit_9fe97b35d4">based on %1$s of your %2$s days</string>
     <string name="l10n_lit_9ff96255b1">Hockey</string>
@@ -4005,6 +4017,7 @@
     <string name="l10n_lit_a1bdabd213">Why might my HRV be low lately?</string>
     <string name="l10n_lit_a1ca4ecb02">logged today</string>
     <string name="l10n_lit_a20d753b74">Did you drink any alcohol?</string>
+    <string name="l10n_lit_a242f346bc">%1$s pts</string>
     <string name="l10n_lit_a2696b7d37">Bedtime for the caffeine cutoff</string>
     <string name="l10n_lit_a29750d8e6">Likely your Oura warranty and support, because the ring is no longer paired to Oura. Treat this as permanent.</string>
     <string name="l10n_lit_a36ef8aba2">Light</string>
@@ -4025,6 +4038,7 @@
     <string name="l10n_lit_a66f79a083">Pilates</string>
     <string name="l10n_lit_a67d1a158e">Meditation</string>
     <string name="l10n_lit_a725020675">State</string>
+    <string name="l10n_lit_a72e0f9ee4">MMM d</string>
     <string name="l10n_lit_a733b809d2">Active</string>
     <string name="l10n_lit_a7378877d9">Sauna</string>
     <string name="l10n_lit_a7494b5df2">Lean Mass</string>
@@ -4077,6 +4091,7 @@
     <string name="l10n_lit_b25928c699">Total</string>
     <string name="l10n_lit_b2a67887c6">STRENUOUS</string>
     <string name="l10n_lit_b2bb7604c8">Metric</string>
+    <string name="l10n_lit_b2de92cf43">%1$s days</string>
     <string name="l10n_lit_b3012de005">Steady</string>
     <string name="l10n_lit_b3636e3ccd" formatted="false">RMSSD %.0f ms now vs your ~%.0f ms baseline (estimate from PPG-derived R-R).</string>
     <string name="l10n_lit_b36d9bc4a7">projected · %1$s</string>
@@ -4119,6 +4134,7 @@
     <string name="l10n_lit_b9692bbece">Asleep</string>
     <string name="l10n_lit_b98be38bd9">Tomorrow\'s Charge</string>
     <string name="l10n_lit_b992eb8650">Share route</string>
+    <string name="l10n_lit_b9c7b42de2">flat</string>
     <string name="l10n_lit_b9ceacd3b3">Health Connect write access not granted.</string>
     <string name="l10n_lit_b9e4e6ff3f">3 months</string>
     <string name="l10n_lit_b9fca2f8e9">Kayaking</string>
@@ -4393,6 +4409,7 @@
     <string name="l10n_lit_f1ecac31bf">Heart rate · HRV · Skin temp* · Resp rate* · Sleep · Strain · Battery</string>
     <string name="l10n_lit_f1f0989994">30 DAYS</string>
     <string name="l10n_lit_f1f6d6482e">Assault Bike</string>
+    <string name="l10n_lit_f23438c236">A steady week: Rest held even (±%1$s pts) and nothing moved much.</string>
     <string name="l10n_lit_f26fb5784d">Calisthenics</string>
     <string name="l10n_lit_f2c26588a4">Get your ring ready</string>
     <string name="l10n_lit_f2cef74b52">Not connected. Open Live to pair.</string>

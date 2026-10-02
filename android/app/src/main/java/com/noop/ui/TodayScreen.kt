@@ -2295,7 +2295,15 @@ private fun LiveSessionEntryCard(onOpen: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Metrics.space8),
                 ) {
-                    Text(title, style = NoopType.headline, color = Palette.textPrimary)
+                    // The title yields width, not the pill: "BETA" was being squeezed to "BE…".
+                    Text(
+                        title,
+                        style = NoopType.headline,
+                        color = Palette.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
                     StatePill(uiString(R.string.today_beta), tone = StrandTone.Accent, showsDot = false)
                 }
                 Text(detail, style = NoopType.footnote, color = Palette.textTertiary)
@@ -5659,32 +5667,21 @@ private fun DriverRow(driver: ChargeDriver) {
             }
             Text(uiString(R.string.l10n_today_screen_signed_pts_5ea85678, signed), style = NoopType.captionNumber, color = tone)
         }
+        // Name and value share the first line; the verdict and the baseline each get the full width
+        // below. Three side-by-side columns left the German name a few letters wide ("Ru-he-puls").
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(label, style = NoopType.headline, color = Palette.textPrimary)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(label, style = NoopType.headline, color = Palette.textPrimary, modifier = Modifier.weight(1f))
+                Text(
+                    valueText,
+                    style = NoopType.captionNumber,
+                    color = Palette.textPrimary,
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                )
+            }
             Text(verdict, style = NoopType.footnote, color = Palette.textSecondary)
-        }
-        // Bounded, because only the middle column is weighted: without a cap this one is measured
-        // first at whatever its text wants and the label column gets the remainder, which is how
-        // "Skin temperature" and "warmer than baseline, limiting recovery" ended up stacked one
-        // character per line. The cap is generous enough for "15.7 br/min" and its baseline note,
-        // the widest pair any driver produces.
-        Column(
-            modifier = Modifier.widthIn(max = 132.dp),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                valueText,
-                style = NoopType.captionNumber,
-                color = Palette.textPrimary,
-                textAlign = TextAlign.End,
-            )
-            Text(
-                baselineText,
-                style = NoopType.footnote,
-                color = Palette.textTertiary,
-                textAlign = TextAlign.End,
-            )
+            Text(baselineText, style = NoopType.footnote, color = Palette.textTertiary)
         }
     }
 }
@@ -6383,7 +6380,7 @@ private fun LiquidKeyTile(
                 text = data.label.uppercase(),
                 style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 0.5.sp),
                 color = Palette.textTertiary,
-                minScale = 0.8f,
+                minScale = 0.7f,
                 modifier = Modifier.weight(1f),
             )
         }

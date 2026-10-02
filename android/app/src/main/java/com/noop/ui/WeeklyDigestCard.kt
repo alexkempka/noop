@@ -182,7 +182,7 @@ fun WeeklyDigestContent(digest: WeeklyDigest, compact: Boolean = false) {
         // Focal points — the plain-English read, most salient first.
         if (digest.focalPoints.isNotEmpty()) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                digest.focalPoints.forEach { FocalRow(it) }
+                digest.focalPoints.forEach { FocalRow(localizedDigestLine(it)) }
             }
         }
 
@@ -205,7 +205,7 @@ fun WeeklyDigestContent(digest: WeeklyDigest, compact: Boolean = false) {
                         color = Palette.textTertiary,
                     )
                 }
-                Text(digest.balance.sentence, style = NoopType.footnote, color = Palette.textTertiary)
+                Text(uiText(digest.balance.sentence), style = NoopType.footnote, color = Palette.textTertiary)
                 Text(
                     uiString(R.string.l10n_weekly_digest_card_informational_only_not_medical_advice_593feb77),
                     style = NoopType.footnote,
@@ -243,10 +243,11 @@ private fun MetricRow(s: WeeklyMetricSummary, effortScale: EffortScale) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
-            s.metric.label,
+            weeklyMetricLabel(s.metric),
             style = NoopType.subhead,
             color = Palette.textSecondary,
-            modifier = Modifier.width(92.dp),
+            maxLines = 1,
+            modifier = Modifier.width(112.dp),
         )
         Text(
             meanText(s, effortScale),
@@ -283,8 +284,48 @@ private fun DeltaChip(s: WeeklyMetricSummary) {
 
 // MARK: - Formatting
 
-private fun weekRangeLabel(digest: WeeklyDigest): String =
-    "${shortDate(digest.weekStart)}-${shortDate(digest.weekEnd)}"
+private fun weekRangeLabel(digest: WeeklyDigest): String {
+    // In the app language ("28. Sept. – 4. Okt."); the English month table below only as a fallback.
+    val fmt = java.time.format.DateTimeFormatter.ofPattern(uiText("MMM d"), java.util.Locale.getDefault())
+    val a = runCatching { java.time.LocalDate.parse(digest.weekStart).format(fmt) }.getOrNull()
+    val b = runCatching { java.time.LocalDate.parse(digest.weekEnd).format(fmt) }.getOrNull()
+    return if (a != null && b != null) "$a – $b" else "${shortDate(digest.weekStart)}-${shortDate(digest.weekEnd)}"
+}
+
+/** On-screen name of a digest metric; the engine's English label stays its key and test value. */
+internal fun weeklyMetricLabel(metric: WeeklyMetric): String = when (metric) {
+    WeeklyMetric.CHARGE -> uiText("Charge")
+    WeeklyMetric.EFFORT -> uiText("Effort")
+    WeeklyMetric.REST -> uiText("Sleep quality")
+    WeeklyMetric.RHR -> uiText("Resting HR")
+    WeeklyMetric.HRV -> "HRV"
+}
+
+/**
+ * The engine's focal sentences (pure Kotlin, byte-identical to the Swift twin and tested in English)
+ * re-read for the screen: each known sentence shape is matched and rebuilt from the language's own
+ * template. An unknown shape is shown as it came.
+ */
+internal fun localizedDigestLine(line: String): String {
+    val labelOf = { english: String -> WeeklyMetric.values().firstOrNull { it.label == english }?.let(::weeklyMetricLabel) ?: english }
+    Regex("""^(.+) is (up|down|flat) (\S+?)( pts| bpm| ms)? week over week \(avg (-?\d+) vs (-?\d+)\)(, a good sign|, worth a look)?\.$""")
+        .matchEntire(line)?.let { m ->
+            val (label, dir, mag, pts, a, b, frame) = m.destructured
+            val magnitude = if (pts == " pts") uiText("%1\$s pts", mag) else mag + pts
+            val frameText = if (frame.isEmpty()) "" else uiText(frame)
+            return uiText("%1\$s is %2\$s %3\$s week over week (avg %4\$s vs %5\$s)%6\$s.", labelOf(label), uiText(dir), magnitude, a, b, frameText)
+        }
+    Regex("""^Only (\d+) (day|days) into this week so far, too early to call a week-over-week trend yet\.$""").matchEntire(line)?.let { m ->
+        return uiText("Only %1\$s day(s) into this week so far, too early to call a week-over-week trend yet.", m.groupValues[1])
+    }
+    Regex("""^Last week only had (\d+) (day|days) of data, so week-over-week changes are rough, not a trend\.$""").matchEntire(line)?.let { m ->
+        return uiText("Last week only had %1\$s day(s) of data, so week-over-week changes are rough, not a trend.", m.groupValues[1])
+    }
+    Regex("""^A steady week: Rest held even \(±([\d.]+) pts\) and nothing moved much\.$""").matchEntire(line)?.let { m ->
+        return uiText("A steady week: Rest held even (±%1\$s pts) and nothing moved much.", m.groupValues[1])
+    }
+    return uiText(line)
+}
 
 /** "Jun 8" from "2026-06-08", via the engine's own pure parse (no Calendar). */
 private fun shortDate(ymd: String): String {
@@ -329,9 +370,9 @@ private fun chipTone(s: WeeklyMetricSummary): Color = when {
 private fun rowAccessibility(s: WeeklyMetricSummary, effortScale: EffortScale): String {
     val mean = meanText(s, effortScale)
     if (s.weekOverWeek.current.n == 0 || s.weekOverWeek.previous.n == 0) {
-        return uiText("%1\$s: %2\$s this week, no comparison.", s.metric.label, mean)
+        return uiText("%1\$s: %2\$s this week, no comparison.", weeklyMetricLabel(s.metric), mean)
     }
-    val dir = if (s.wowDelta > 0) "up" else if (s.wowDelta < 0) "down" else "unchanged"
+    val dir = if (s.wowDelta > 0) uiText("up") else if (s.wowDelta < 0) uiText("down") else uiText("unchanged")
     // A rough comparison drops the verdict framing too, so VoiceOver/TalkBack matches the neutral chip.
     val frame = when {
         s.isRoughComparison -> ""
@@ -339,7 +380,7 @@ private fun rowAccessibility(s: WeeklyMetricSummary, effortScale: EffortScale): 
         s.wowGoodness == -1 -> uiText(", worth a look")
         else -> ""
     }
-    return uiText("%1\$s: %2\$s this week, %3\$s %4\$s week over week%5\$s.", s.metric.label, mean, dir, deltaText(s), frame)
+    return uiText("%1\$s: %2\$s this week, %3\$s %4\$s week over week%5\$s.", weeklyMetricLabel(s.metric), mean, dir, deltaText(s), frame)
 }
 
 private fun fmt1(x: Double): String = ((x * 10).roundToInt() / 10.0).toString()

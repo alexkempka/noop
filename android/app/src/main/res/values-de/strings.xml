@@ -132,7 +132,7 @@
     <string name="trends_peak">Spitze</string>
     <string name="trends_low">Niedrig</string>
     <string name="trends_days">Tage</string>
-    <string name="trends_mean">Mittelwert</string>
+    <string name="trends_mean">Schnitt</string>
     <string name="trends_min">Min</string>
     <string name="trends_max">Max</string>
     <string name="trends_calendar_footnote">Jeder Balken ist der Energie-Wert eines Tages, von niedrig bis hoch. Das 53-Wochen-Kalenderraster gibt es in der Desktop-App.</string>
@@ -3293,6 +3293,7 @@
     <string name="l10n_lit_0247ce357c">LIVE</string>
     <string name="l10n_lit_0299370d30">Schlagabstände schwanken aus vielen alltäglichen Gründen: Atmung, Bewegung, eine unsaubere optische Messung oder gelegentliche Extra- oder ausgelassene Schläge, wie sie die meisten Gesunden haben.</string>
     <string name="l10n_lit_02aa71c69b">Trends, keine Daten</string>
+    <string name="l10n_lit_02ac03bed2">Belastung und Energie liefen diese Woche im Gleichschritt – eine Last, die du halten kannst.</string>
     <string name="l10n_lit_02bc1e5f95">die letzten 7 Tage</string>
     <string name="l10n_lit_0303eb16ba">Tank ist voll – Energie bei %1$s%%, die Obergrenze liegt heute höher.</string>
     <string name="l10n_lit_032cb3699e">Am Handgelenk</string>
@@ -3306,11 +3307,13 @@
     <string name="l10n_lit_05029bb059">Manuell (das stellst du von Hand ein)</string>
     <string name="l10n_lit_0563ca3ac6">Letzte Sitzung</string>
     <string name="l10n_lit_061e4d70bb">Bereit für Live-Körperwerte</string>
+    <string name="l10n_lit_06beb3946c">%1$s ist gegenüber der Vorwoche um %3$s %2$s (Ø %4$s statt %5$s)%6$s.</string>
     <string name="l10n_lit_06e21f2c6e">Noch keine vollständige Übertragung</string>
     <string name="l10n_lit_0758de1fb8">Kalorien (kcal, optional)</string>
     <string name="l10n_lit_07f0810ac0">Was fügst du hinzu?</string>
     <string name="l10n_lit_081ae3fdc4">Eigene</string>
     <string name="l10n_lit_082699b773">Route konnte nicht exportiert werden: %1$s</string>
+    <string name="l10n_lit_08848cfb3a">Du hattest diese Woche mehr Energie, als du verbraucht hast – da ist Luft nach oben, wenn du willst.</string>
     <string name="l10n_lit_0890005d1d">Letzter Import</string>
     <string name="l10n_lit_09663c14cd">Soll ich heute hart trainieren oder es ruhig angehen lassen?</string>
     <string name="l10n_lit_096e3a699b">Backup fehlgeschlagen – wähl den Ordner neu und versuch es noch mal.</string>
@@ -3351,6 +3354,7 @@
     <string name="l10n_lit_10e221f443">noch keine Sitzung</string>
     <string name="l10n_lit_1154f3c547">Rückblick konnte nicht geteilt werden: %1$s</string>
     <string name="l10n_lit_1156bd96dc">Schlafphasen</string>
+    <string name="l10n_lit_11c8d229a8">Deine Belastung lag diese Woche über deiner Energie – du warst im roten Bereich. Achte auf einen Einbruch bei der Erholung.</string>
     <string name="l10n_lit_11e8ca97ca">Laborbuch CSV</string>
     <string name="l10n_lit_11eda67f9b">Lang</string>
     <string name="l10n_lit_1206a44261">Du hast dein aktuelles Schlafziel über %1$s erreicht. Du nimmst keine zusätzliche Schlafdefizit in die Nacht mit.</string>
@@ -3412,6 +3416,7 @@
     <string name="l10n_lit_1f11750f8c">Koffein erfasst.</string>
     <string name="l10n_lit_1f5a1abf2f">Fertig</string>
     <string name="l10n_lit_1f90068a8d">Yoga</string>
+    <string name="l10n_lit_1fc42e1885">Diese Woche liegen erst %1$s Tag(e) vor – zu früh für einen Vergleich mit der Vorwoche.</string>
     <string name="l10n_lit_1fe271db59">HRV als Motor hinter deinem Energie-Wert.</string>
     <string name="l10n_lit_20715bf618">Was bewegt dich ›</string>
     <string name="l10n_lit_20a70c1515">Über deine Messwerte bewegen sich %1$s und %2$s weitgehend unabhängig. Kein klarer Zusammenhang.</string>
@@ -3546,7 +3551,7 @@
     <string name="l10n_lit_3fbb532f33">Atemfrequenz</string>
     <string name="l10n_lit_3fbe810b61">In deinen bisherigen Daten bewegt das deine %1$s nicht so, wie es typischerweise der Fall ist.</string>
     <string name="l10n_lit_40107ebc87">Ultimate Frisbee</string>
-    <string name="l10n_lit_4073e6e539">, einen Blick wert</string>
+    <string name="l10n_lit_4073e6e539">, schau es dir an</string>
     <string name="l10n_lit_40a8c2fa06">Ø Puls</string>
     <string name="l10n_lit_40b577472f">ungeprüft · zählt zu viele R-R</string>
     <string name="l10n_lit_40d69e6eaf">Was dein Fitnessalter noch braucht.</string>
@@ -3746,6 +3751,7 @@
     <string name="l10n_lit_6d879a212b">Stell sicher, dass es gerade NICHT mit der offiziellen WHOOP-App verbunden ist.</string>
     <string name="l10n_lit_6d942bfeed">vs. Bedarf</string>
     <string name="l10n_lit_6da13addb0">Quelle</string>
+    <string name="l10n_lit_6e55b2ca53">Diese Woche gibt es zu wenige Tage mit Belastung und Energie, um die Balance zu beurteilen.</string>
     <string name="l10n_lit_6e6a6f2086">Sonstiges</string>
     <string name="l10n_lit_6eaba4dd91">Letzte Nacht</string>
     <string name="l10n_lit_6ec9b453c0">%1$s, %2$s Punkte, zuletzt %3$s, Minimum %4$s, Maximum %5$s</string>
@@ -3792,6 +3798,7 @@
     <string name="l10n_lit_76eec760c9">Zuletzt</string>
     <string name="l10n_lit_7704b2c71b">Hast du dich unwohl oder krank gefühlt?</string>
     <string name="l10n_lit_771e05f27b">Getrennt</string>
+    <string name="l10n_lit_77346d0447">gefallen</string>
     <string name="l10n_lit_77385403c0">Alter, %1$s Jahre</string>
     <string name="l10n_lit_773ba1b336">Pendelt sich ein</string>
     <string name="l10n_lit_7741f3c70c">%1$s im Bett · %2$s Effizienz</string>
@@ -3818,6 +3825,7 @@
     <string name="l10n_lit_7bcba9cd99">Inkl. Helio. Live-Puls, sofern das Band ihn bereitstellt. Hilf uns beim Testen.</string>
     <string name="l10n_lit_7bd4a0375a">Stärker schwankend</string>
     <string name="l10n_lit_7be37c5012">Suche dein WHOOP … Stell sicher, dass es geladen ist, am Handgelenk sitzt und nicht mit der offiziellen WHOOP-App verbunden ist.</string>
+    <string name="l10n_lit_7c0a25c06e">gestiegen</string>
     <string name="l10n_lit_7c123543ca">Wie sie zusammenhängen</string>
     <string name="l10n_lit_7c63edf9a1">Nahrungsergänzung</string>
     <string name="l10n_lit_7ca44f2a16">Holt den gespeicherten Verlauf deines Bands – die ältesten Daten zuerst. Ein großer Rückstand läuft jetzt automatisch über mehrere Durchgänge weiter, statt zwischen den Syncs zu warten.</string>
@@ -3841,6 +3849,7 @@
     <string name="l10n_lit_7fadc4face">Timing-Prognose</string>
     <string name="l10n_lit_7fcc0cd0fd">Heutige Daten sind nicht angekommen</string>
     <string name="l10n_lit_7ff11239a0">NOOP-Workout-Route</string>
+    <string name="l10n_lit_8012ff51a0">unverändert</string>
     <string name="l10n_lit_8020ed2255">Softball</string>
     <string name="l10n_lit_802eb19213">Setz ihn zuerst in der Oura-App zurück.</string>
     <string name="l10n_lit_80ba791261">Lockerer Tag. Du warst die meiste Zeit unter dem Zielbereich.</string>
@@ -3904,6 +3913,7 @@
     <string name="l10n_lit_8cd84528f3">Blutsauerstoff</string>
     <string name="l10n_lit_8ce14357a9">Körperfett</string>
     <string name="l10n_lit_8d2274e37a">Wandern</string>
+    <string name="l10n_lit_8d343fef58">Eine ruhige Woche: Kein Wert hat sich gegenüber der Vorwoche nennenswert verändert.</string>
     <string name="l10n_lit_8dce170de2">Wert</string>
     <string name="l10n_lit_8dd577158b">Roh · pro Sekunde</string>
     <string name="l10n_lit_8e5c632e5d">Importierte Daten aus Apple Health wurden entfernt.</string>
@@ -3946,6 +3956,7 @@
     <string name="l10n_lit_9700f4d831">Ruhepuls</string>
     <string name="l10n_lit_98b87f727e">Letzter Messwert</string>
     <string name="l10n_lit_98ead1a858">Stressmonitor</string>
+    <string name="l10n_lit_9958e2f9b7">Die Vorwoche hatte nur %1$s Tag(e) mit Daten – die Veränderungen sind grob, kein Trend.</string>
     <string name="l10n_lit_997f59bc99">Dez</string>
     <string name="l10n_lit_99cd009ee5">Stand gestern</string>
     <string name="l10n_lit_9a018ecc48">Abend</string>
@@ -3969,6 +3980,7 @@
     <string name="l10n_lit_9ee3b53ab5">Heute noch keine Stressdaten.</string>
     <string name="l10n_lit_9f48a30977">Bluetooth einschalten</string>
     <string name="l10n_lit_9f628b61ae">Ja/Nein</string>
+    <string name="l10n_lit_9fb6ae0420">Schlafqualität</string>
     <string name="l10n_lit_9fc28659c2">noch %1$s s · %2$s Schläge</string>
     <string name="l10n_lit_9fe97b35d4">basierend auf %1$s deiner %2$s Tage</string>
     <string name="l10n_lit_9ff96255b1">Hockey</string>
@@ -3989,6 +4001,7 @@
     <string name="l10n_lit_a1bdabd213">Warum ist meine HRV zuletzt niedrig?</string>
     <string name="l10n_lit_a1ca4ecb02">heute erfasst</string>
     <string name="l10n_lit_a20d753b74">Hast du Alkohol getrunken?</string>
+    <string name="l10n_lit_a242f346bc">%1$s Pkt.</string>
     <string name="l10n_lit_a2696b7d37">Schlafenszeit für den Koffein-Stopp</string>
     <string name="l10n_lit_a29750d8e6">Wahrscheinlich auch Garantie und Support von Oura, weil der Ring nicht mehr mit Oura gekoppelt ist. Betrachte das als endgültig.</string>
     <string name="l10n_lit_a36ef8aba2">Hell</string>
@@ -4009,6 +4022,7 @@
     <string name="l10n_lit_a66f79a083">Pilates</string>
     <string name="l10n_lit_a67d1a158e">Meditation</string>
     <string name="l10n_lit_a725020675">Zustand</string>
+    <string name="l10n_lit_a72e0f9ee4">d. MMM</string>
     <string name="l10n_lit_a733b809d2">Aktiv</string>
     <string name="l10n_lit_a7378877d9">Sauna</string>
     <string name="l10n_lit_a7494b5df2">Magermasse</string>
@@ -4061,6 +4075,7 @@
     <string name="l10n_lit_b25928c699">Gesamt</string>
     <string name="l10n_lit_b2a67887c6">ANSTRENGEND</string>
     <string name="l10n_lit_b2bb7604c8">Metrisch</string>
+    <string name="l10n_lit_b2de92cf43">%1$s Tage</string>
     <string name="l10n_lit_b3012de005">Gleichmäßig</string>
     <string name="l10n_lit_b3636e3ccd" formatted="false">RMSSD jetzt %.0f ms, dein Basiswert ~%.0f ms (geschätzt aus PPG-R-R-Abständen).</string>
     <string name="l10n_lit_b36d9bc4a7">Prognose · %1$s</string>
@@ -4103,6 +4118,7 @@
     <string name="l10n_lit_b9692bbece">Schlafdauer</string>
     <string name="l10n_lit_b98be38bd9">Energie morgen</string>
     <string name="l10n_lit_b992eb8650">Route teilen</string>
+    <string name="l10n_lit_b9c7b42de2">gleich</string>
     <string name="l10n_lit_b9ceacd3b3">Schreibzugriff auf Health Connect nicht gewährt.</string>
     <string name="l10n_lit_b9e4e6ff3f">3 Monate</string>
     <string name="l10n_lit_b9fca2f8e9">Kajak</string>
@@ -4159,7 +4175,7 @@
     <string name="l10n_lit_c7c3d8dfb7">Auto · %1$s Sicherheit</string>
     <string name="l10n_lit_c7dfb6f1d9">Pause</string>
     <string name="l10n_lit_c7f73bb54d">Einstellungen</string>
-    <string name="l10n_lit_c810c57058">, gutes Zeichen</string>
+    <string name="l10n_lit_c810c57058">, ein gutes Zeichen</string>
     <string name="l10n_lit_c837844889">Energie → Energie am Folgetag</string>
     <string name="l10n_lit_c83dbbd3e6">Spitze</string>
     <string name="l10n_lit_c84ac77713">Nickerchen verwerfen</string>
@@ -4377,6 +4393,7 @@
     <string name="l10n_lit_f1ecac31bf">Puls · HRV · Hauttemp.* · Atemfrequenz* · Schlaf · Belastung · Akku</string>
     <string name="l10n_lit_f1f0989994">30 TAGE</string>
     <string name="l10n_lit_f1f6d6482e">Air Bike</string>
+    <string name="l10n_lit_f23438c236">Eine ruhige Woche: Die Schlafqualität blieb gleichmäßig (±%1$s Pkt.), sonst hat sich kaum etwas bewegt.</string>
     <string name="l10n_lit_f26fb5784d">Calisthenics</string>
     <string name="l10n_lit_f2c26588a4">Mach deinen Ring bereit</string>
     <string name="l10n_lit_f2cef74b52">Nicht verbunden. Öffne „Live“ zum Koppeln.</string>

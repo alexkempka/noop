@@ -1049,6 +1049,7 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     Button(
                         onClick = { onMark(SleepMarkType.BEDTIME) },
                         modifier = Modifier.weight(1f).fillMaxHeight().semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_going_to_sleep_6c2b519d) },
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 10.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Palette.surfaceInset,
                             contentColor = Palette.textPrimary,
@@ -1056,11 +1057,12 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     ) {
                         Icon(Icons.Filled.Bedtime, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(uiString(R.string.l10n_sleep_screen_going_to_sleep_9c6c63fd), style = NoopType.subhead, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                        Text(uiString(R.string.l10n_sleep_screen_going_to_sleep_9c6c63fd), style = NoopType.subhead.copy(hyphens = androidx.compose.ui.text.style.Hyphens.None), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                     Button(
                         onClick = { onMark(SleepMarkType.WAKE) },
                         modifier = Modifier.weight(1f).fillMaxHeight().semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_waking_up_2f9c230e) },
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 10.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Palette.surfaceInset,
                             contentColor = Palette.textPrimary,
@@ -1068,7 +1070,7 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     ) {
                         Icon(Icons.Filled.WbSunny, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(uiString(R.string.l10n_sleep_screen_i_m_awake_2caf0e7f), style = NoopType.subhead, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                        Text(uiString(R.string.l10n_sleep_screen_i_m_awake_2caf0e7f), style = NoopType.subhead.copy(hyphens = androidx.compose.ui.text.style.Hyphens.None), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                 }
             }

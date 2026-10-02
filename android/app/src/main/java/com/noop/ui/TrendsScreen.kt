@@ -1096,7 +1096,7 @@ private fun RecoveryHistoryCard(days: List<DailyMetric>, range: TrendsRange) {
 
     NoopCard {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            SectionHeader(title, overline = stringResource(R.string.trends_calendar), trailing = "${recovery.size} days")
+            SectionHeader(title, overline = stringResource(R.string.trends_calendar), trailing = uiText("%1\$s days", recovery.size))
             if (recovery.size >= 2) {
                 BarChart(
                     values = recovery,
