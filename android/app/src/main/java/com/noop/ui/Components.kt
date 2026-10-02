@@ -499,6 +499,10 @@ internal fun AutoSizeValue(
     modifier: Modifier = Modifier,
     minScale: Float = 0.6f,
     textAlign: TextAlign = TextAlign.Start,
+    // Measure THIS text instead of [text] when picking the size. Labels that stand side by side in
+    // equal-width slots pass the longest of the set, so they all land on one size instead of each
+    // shrinking by its own length (the Today hero labels read three different sizes).
+    fitText: String? = null,
 ) {
     // Measured, not stepped: the earlier loop shrank only when a layout REPORTED an ellipsis, and with
     // hyphenation on the label styles that report did not come, so German labels stayed at full size and
@@ -512,27 +516,39 @@ internal fun AutoSizeValue(
     BoxWithConstraints(modifier = modifier, contentAlignment = contentAlignment) {
         val maxWidth = constraints.maxWidth
         val bounded = constraints.hasBoundedWidth
-        val scale = remember(text, style, maxWidth, bounded) {
+        val measured = fitText ?: text
+        val scale = remember(measured, style, maxWidth, bounded) {
             if (!bounded || maxWidth <= 0) {
                 1f
             } else {
-                val natural = measurer.measure(
-                    text,
-                    style.copy(hyphens = Hyphens.None, lineBreak = LineBreak.Simple),
+                fun widthAt(s: Float): Int = measurer.measure(
+                    measured,
+                    scaledValueStyle(style, s).copy(lineBreak = LineBreak.Simple),
                     softWrap = false,
                     maxLines = 1,
                 ).size.width
-                if (natural > maxWidth) (maxWidth.toFloat() / natural * 0.98f).coerceIn(minScale, 1f) else 1f
+                val natural = widthAt(1f)
+                if (natural <= maxWidth) {
+                    1f
+                } else {
+                    // Width does not scale exactly with the font size (hinting, rounding, fixed
+                    // spacing), so the first estimate is checked at the size it picks and nudged down
+                    // until it really fits. "170 bpm" still read "170 bp…" on a device with the
+                    // estimate alone.
+                    var s = (maxWidth.toFloat() / natural * 0.98f).coerceIn(minScale, 1f)
+                    var tries = 0
+                    while (s > minScale && widthAt(s) > maxWidth && tries < 6) {
+                        s = (s * 0.95f).coerceAtLeast(minScale)
+                        tries++
+                    }
+                    s
+                }
             }
         }
         Text(
             text = text,
             color = color,
-            style = style.copy(
-                fontSize = style.fontSize * scale,
-                letterSpacing = if (style.letterSpacing.isSpecified) style.letterSpacing * scale else style.letterSpacing,
-                hyphens = Hyphens.None,
-            ),
+            style = scaledValueStyle(style, scale),
             maxLines = 1,
             softWrap = false,
             overflow = TextOverflow.Ellipsis,
@@ -540,6 +556,12 @@ internal fun AutoSizeValue(
         )
     }
 }
+
+private fun scaledValueStyle(style: TextStyle, scale: Float): TextStyle = style.copy(
+    fontSize = style.fontSize * scale,
+    letterSpacing = if (style.letterSpacing.isSpecified) style.letterSpacing * scale else style.letterSpacing,
+    hyphens = Hyphens.None,
+)
 
 /**
  * Whether a value laid out like this should take another step down. Pure, so the rule is testable
@@ -603,6 +625,7 @@ fun StatTile(
                     style = NoopType.number(26f),
                     color = accent,
                     modifier = Modifier.weight(1f),
+                    minScale = 0.5f,
                 )
                 if (delta != null) {
                     Spacer(Modifier.width(8.dp))

@@ -747,6 +747,7 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                     VitalDetailScreen(
                         vm = viewModel,
                         key = backStackEntry.arguments?.getString("key").orEmpty(),
+                        onClose = { nav.popBackStack() },
                     )
                 }
                 // --- v5 pillar screens (Wave 3 wiring) ---

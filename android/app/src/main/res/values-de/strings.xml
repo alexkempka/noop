@@ -658,7 +658,7 @@
     <string name="l10n_lab_book_screen_type_in_a_blood_pressure_reading_c276d418">Trag einen Blutdruck- oder Cholesterinwert von deinem letzten Termin ein. Er bleibt auf diesem Handy, und mit der Zeit siehst du, wie er zu deinem Schlaf, deinem Puls und deiner Erholung passt.</string>
     <string name="l10n_lab_book_screen_what_lab_book_is_and_isn_f28686df">Was das Laborbuch ist (und was nicht)</string>
     <string name="l10n_live_screen_manage_devices_e5c277ff">Geräte verwalten</string>
-    <string name="l10n_live_screen_max_hr_6acd9e07">Max. HF</string>
+    <string name="l10n_live_screen_max_hr_6acd9e07">Max. Puls</string>
     <string name="l10n_live_screen_rmssd_e240fd3c">RMSSD</string>
     <string name="l10n_live_screen_rmssd_roundtoint_ms_9e6c0887">%1$s ms</string>
     <string name="l10n_live_screen_scan_and_connect_to_start_a_3e27b47b">Suchen und verbinden, um einen Live-Datenstrom zu starten.</string>
@@ -1471,7 +1471,7 @@
     <string name="l10n_live_screen_pace_7a9a6226">Tempo</string>
     <string name="l10n_live_screen_peak_c83dbbd3">Spitze</string>
     <string name="l10n_live_screen_refresh_56e3badc">Aktualisieren</string>
-    <string name="l10n_live_screen_session_f7f1997c">Einheit</string>
+    <string name="l10n_live_screen_session_f7f1997c">Session</string>
     <string name="l10n_live_screen_start_workout_d0f3f2cd">Workout starten</string>
     <string name="l10n_live_screen_strap_02b88eeb">Band</string>
     <string name="l10n_live_screen_take_an_hrv_reading_20ecb2d2">HRV-Messung durchführen</string>
@@ -2196,7 +2196,7 @@
     <string name="l10n_breathe_screen_calm_me_a1b2c3d4">Beruhige mich</string>
     <!-- Home/Heute -->
     <string name="today_section_hero">Energie / Belastung / Schlafqualität</string>
-    <string name="today_section_live_session">Session starten</string>
+    <string name="today_section_live_session">Start Session</string>
     <string name="today_section_synthesis">Zusammenfassung</string>
     <string name="today_section_key_metrics">Kennzahlen</string>
     <string name="today_section_workouts">Workouts</string>
@@ -2374,7 +2374,7 @@
     <string name="today_unit_bpm">bpm</string>
     <string name="today_unit_ms">ms</string>
     <string name="today_unit_rpm">/min</string>
-    <string name="today_vs_your_baseline">vs. dein Basiswert</string>
+    <string name="today_vs_your_baseline">im Vergleich zu deinem Basiswert</string>
     <string name="today_what_drove_charge">Was deine Energie bestimmt hat</string>
     <string name="today_what_shaped_it">Was es beeinflusst hat</string>
     <string name="today_workouts_14_days">14 Tage</string>
@@ -2403,7 +2403,7 @@
     <string name="today_pending_scores_body">Dein Live-Puls kommt schon vom Band. Erholung, Belastung und Schlaf bauen sich in den nächsten Nächten mit Band darauf auf und werden genauer, während NOOP deinen Basiswert lernt. Du willst sofort deinen ganzen Verlauf? Importiere deinen WHOOP-Export unter „Datenquellen“ – nach etwa einer Minute ist er nachgetragen.</string>
     <string name="today_live_session_running">Session läuft</string>
     <string name="today_live_session_ended">Session beendet</string>
-    <string name="today_live_session_start">Session starten</string>
+    <string name="today_live_session_start">Start Session</string>
     <string name="today_live_session_guarding">Wache aktiv – solange es still bleibt, bist du im Plan.</string>
     <string name="today_live_session_summary">Zusammenfassung deiner letzten Session ansehen.</string>
     <string name="today_live_session_explanation">Vom Band geführte Belastungs-Session. Es vibriert nur, wenn du den heutigen Zielbereich verlässt.</string>
@@ -3430,6 +3430,7 @@
     <string name="l10n_lit_22170d9545">Nach Sportart</string>
     <string name="l10n_lit_222ac3faae">Aufwachzeit</string>
     <string name="l10n_lit_22609f3105">Verbunden, koppelt…</string>
+    <string name="l10n_lit_227f38db8f">Messwert</string>
     <string name="l10n_lit_22859fa3d4">Koffein</string>
     <string name="l10n_lit_23408b19b2">Mi</string>
     <string name="l10n_lit_2352230ae4">Schätzung</string>
@@ -3855,6 +3856,7 @@
     <string name="l10n_lit_80ba791261">Lockerer Tag. Du warst die meiste Zeit unter dem Zielbereich.</string>
     <string name="l10n_lit_80c3052d33">Nie</string>
     <string name="l10n_lit_8158159704">Doppelt</string>
+    <string name="l10n_lit_8158f38848">%1$s Messwerte</string>
     <string name="l10n_lit_816c52fd2b">Nein</string>
     <string name="l10n_lit_818d889836">Öffne die offizielle Oura-App und entferne diesen Ring (dort heißt das „Werkseinstellungen“ oder „Entkoppeln und zurücksetzen“). Damit verliert der Ring seinen Besitzer, und NOOP kann ihn übernehmen.</string>
     <string name="l10n_lit_820599da89">Importiert…</string>
@@ -3944,6 +3946,7 @@
     <string name="l10n_lit_93fd82994f">Quellen weichen ab</string>
     <string name="l10n_lit_943ad21843">NOOP-Backup-Fehler</string>
     <string name="l10n_lit_9495b34e0a">Backup exportiert. Kopier die Datei aufs neue Handy und stell dort per „Importieren“ alles wieder her.</string>
+    <string name="l10n_lit_94d0e31630">%1$s Balken</string>
     <string name="l10n_lit_953b0ed138">Verlass dich bei der Deutung von Ergebnissen und bei Entscheidungen immer auf deine Ärztin, deinen Arzt, deine Apotheke oder eine andere Fachperson. Macht dir ein Wert Sorgen, sprich mit ihnen – nicht mit einer App.</string>
     <string name="l10n_lit_9556d852a9">Fechten</string>
     <string name="l10n_lit_95c20ff108">Standard-Puls ist keine volle Kopplung</string>
@@ -4358,6 +4361,7 @@
     <string name="l10n_lit_eb9a4bc1c0">Datum</string>
     <string name="l10n_lit_ebb4cf7070">%1$s heute Nacht: %2$s – %3$s%% der Nacht.</string>
     <string name="l10n_lit_ebc6242725">AKTIV</string>
+    <string name="l10n_lit_ec4a71f1f6">Messwerte</string>
     <string name="l10n_lit_ec5de0daeb">Tagesbelastung</string>
     <string name="l10n_lit_ec74bb9395">Wie kann ich meinen Schlaf verbessern?</string>
     <string name="l10n_lit_ec7b598335">Runde</string>

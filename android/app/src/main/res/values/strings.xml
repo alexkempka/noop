@@ -3446,6 +3446,7 @@
     <string name="l10n_lit_22170d9545">By sport</string>
     <string name="l10n_lit_222ac3faae">Wake-up time</string>
     <string name="l10n_lit_22609f3105">Connected, pairing…</string>
+    <string name="l10n_lit_227f38db8f">reading</string>
     <string name="l10n_lit_22859fa3d4">Caffeine</string>
     <string name="l10n_lit_23408b19b2">Wed</string>
     <string name="l10n_lit_2352230ae4">Estimate</string>
@@ -3871,6 +3872,7 @@
     <string name="l10n_lit_80ba791261">Easy day. You sat under the band most of the way.</string>
     <string name="l10n_lit_80c3052d33">Never</string>
     <string name="l10n_lit_8158159704">Double</string>
+    <string name="l10n_lit_8158f38848">%1$s readings</string>
     <string name="l10n_lit_816c52fd2b">No</string>
     <string name="l10n_lit_818d889836">Open the official Oura app and remove this ring (Oura calls it \"factory reset\" or \"unpair and reset\"). This wipes the ring\'s owner so NOOP can take it over.</string>
     <string name="l10n_lit_820599da89">Importing…</string>
@@ -3960,6 +3962,7 @@
     <string name="l10n_lit_93fd82994f">Sources differ</string>
     <string name="l10n_lit_943ad21843">NOOP backup error</string>
     <string name="l10n_lit_9495b34e0a">Backup exported. Copy this file to your new phone and use Import there to restore everything.</string>
+    <string name="l10n_lit_94d0e31630">%1$s bars</string>
     <string name="l10n_lit_953b0ed138">Always rely on your doctor, pharmacist, or a qualified professional to interpret results and make decisions. If a number worries you, talk to them, not to an app.</string>
     <string name="l10n_lit_9556d852a9">Fencing</string>
     <string name="l10n_lit_95c20ff108">Standard HR is not a full bond</string>
@@ -4374,6 +4377,7 @@
     <string name="l10n_lit_eb9a4bc1c0">Date</string>
     <string name="l10n_lit_ebb4cf7070">%1$s tonight: %2$s — %3$s%% of the night.</string>
     <string name="l10n_lit_ebc6242725">WORK</string>
+    <string name="l10n_lit_ec4a71f1f6">readings</string>
     <string name="l10n_lit_ec5de0daeb">Day Strain</string>
     <string name="l10n_lit_ec74bb9395">How can I improve my sleep?</string>
     <string name="l10n_lit_ec7b598335">Round</string>

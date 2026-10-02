@@ -217,14 +217,18 @@ fun TrendsScreen(vm: AppViewModel) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
+                    // weight(fill = false): the range caption is measured first and the pill row scrolls in
+                    // what is left. Unweighted, the scrolling pills took the whole width and the caption was
+                    // squeezed to one letter per line ("LETZTE 90 TAGE" read top to bottom).
                     SegmentedPillControl(
                         items = TrendsRange.entries.toList(),
                         selection = range,
                         label = { it.label },
                         onSelect = { range = it },
+                        modifier = Modifier.weight(1f, fill = false),
                     )
-                    Spacer(Modifier.weight(1f))
                     TrendsRangeCaption(range = range, fullSubtitle = rangeSubtitle)
                 }
                 Text(
@@ -661,7 +665,7 @@ private fun windowPoints(
 
 /** Caption text, mirroring TrendsView.caption(count:eff:). */
 private fun caption(count: Int, eff: TrendsRange, selected: TrendsRange): String {
-    val unit = if (count == 1) "reading" else "readings"
+    val unit = if (count == 1) uiText("reading") else uiText("readings")
     return if (eff != selected) {
         uiText("%1\$s %2\$s · sparse , widened to %3\$s", count, unit, eff.longName)
     } else {

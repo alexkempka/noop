@@ -602,16 +602,16 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                         .size(18.dp)
                         .padding(end = 4.dp),
                 )
-                Text(
-                    when {
-                        live.scanning -> uiString(R.string.l10n_live_screen_searching_1a6a5ba8)
-                        live.connected -> uiString(R.string.l10n_live_screen_re_scan_8bd32cdf)
-                        else -> uiString(R.string.l10n_live_screen_connect_b65463cb)
-                    },
+                // Shrinks before it clips: "Neu suchen" was cut to "Neu suc" in a third of the row.
+                AutoSizeValue(
+                    text = when {
+                            live.scanning -> uiString(R.string.l10n_live_screen_searching_1a6a5ba8)
+                            live.connected -> uiString(R.string.l10n_live_screen_re_scan_8bd32cdf)
+                            else -> uiString(R.string.l10n_live_screen_connect_b65463cb)
+                        },
                     style = NoopType.captionNumber,
-                    maxLines = 1,
-                    softWrap = false,
-                    overflow = TextOverflow.Clip,
+                    color = androidx.compose.material3.LocalContentColor.current,
+                    minScale = 0.7f,
                 )
             }
 
@@ -631,12 +631,12 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                         .size(18.dp)
                         .padding(end = 4.dp),
                 )
-                Text(
-                    uiString(R.string.l10n_live_screen_buzz_edbd47b2),
+                // Shrinks before it clips: "Neu suchen" was cut to "Neu suc" in a third of the row.
+                AutoSizeValue(
+                    text = uiString(R.string.l10n_live_screen_buzz_edbd47b2),
                     style = NoopType.captionNumber,
-                    maxLines = 1,
-                    softWrap = false,
-                    overflow = TextOverflow.Clip,
+                    color = androidx.compose.material3.LocalContentColor.current,
+                    minScale = 0.7f,
                 )
             }
 
@@ -654,12 +654,12 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                         .size(18.dp)
                         .padding(end = 4.dp),
                 )
-                Text(
-                    uiString(R.string.l10n_live_screen_end_a2bb9d34),
+                // Shrinks before it clips: "Neu suchen" was cut to "Neu suc" in a third of the row.
+                AutoSizeValue(
+                    text = uiString(R.string.l10n_live_screen_end_a2bb9d34),
                     style = NoopType.captionNumber,
-                    maxLines = 1,
-                    softWrap = false,
-                    overflow = TextOverflow.Clip,
+                    color = androidx.compose.material3.LocalContentColor.current,
+                    minScale = 0.7f,
                 )
             }
         }
@@ -1411,7 +1411,8 @@ private fun SignalTrustTile(tile: SignalTile, modifier: Modifier = Modifier) {
     NoopCard(modifier = modifier.heightIn(min = 112.dp), padding = 14.dp) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Overline(tile.title)
-            Text(tile.value, style = NoopType.headline, color = tile.tint, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            // Shrinks before it clips: "Am Handgelenk" read "Am Handg…" in a half-width tile.
+            AutoSizeValue(tile.value, style = NoopType.headline, color = tile.tint, minScale = 0.6f)
             Text(tile.detail, style = NoopType.footnote, color = Palette.textTertiary, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }

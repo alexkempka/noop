@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Sync
@@ -584,7 +585,7 @@ private fun HealthContributorsSection(day: DailyMetric?) {
                 )
                 ContributorBar(
                     label = uiString(R.string.l10n_health_screen_respiratory_1cd8c175),
-                    readout = resp?.let { String.format(Locale.US, "%.1f rpm", it) } ?: "—",
+                    readout = resp?.let { "${String.format(Locale.getDefault(), "%.1f", it)} ${uiText("rpm")}" } ?: "—",
                     fraction = resp?.let { 1.0 - ((it - 12.0) / 8.0) },
                     color = Palette.sleepLight,
                     modifier = Modifier.staggeredAppear(3),
@@ -1885,7 +1886,13 @@ internal fun spo2EmptyState(
 }
 
 @Composable
-fun VitalDetailScreen(vm: AppViewModel, key: String) {
+fun VitalDetailScreen(
+    vm: AppViewModel,
+    key: String,
+    // A visible × alongside the system Back, so a detail opened from a Today ring closes the same way as
+    // the Charge breakdown beside it. Null keeps the screen without one.
+    onClose: (() -> Unit)? = null,
+) {
     val days by vm.recentDays.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val tempUnit = UnitPrefs.temperature(context)
@@ -1976,6 +1983,17 @@ fun VitalDetailScreen(vm: AppViewModel, key: String) {
             key == "fitness_age" && loadedPoints == 0 -> uiText("What your Fitness Age still needs.")
             loadedPoints == 1 -> uiText("Your latest reading — trend to follow.")
             else -> uiText("Historical trend from cached daily metrics.")
+        },
+        trailing = onClose?.let { close ->
+            {
+                IconButton(onClick = close) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = uiString(R.string.l10n_today_screen_close_bbfa773e),
+                        tint = Palette.textSecondary,
+                    )
+                }
+            }
         },
         topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
         // Sky-behind-cards needs the full-viewport container too — the band container's status-bar
@@ -2096,7 +2114,13 @@ fun VitalDetailScreen(vm: AppViewModel, key: String) {
         // across recompositions that do not change the window.
         val dayLabels = remember(filteredPoints) { filteredPoints.map { shortDayLabel(it.first) } }
         val latest = filteredPoints.last()
-        val latestLabel = stepsSeries?.selectionLabels?.lastOrNull() ?: latest.first
+        // A readable date ("02.10.2026"), not the stored key "2026-10-02".
+        val latestLabel = stepsSeries?.selectionLabels?.lastOrNull() ?: runCatching {
+            java.time.LocalDate.parse(latest.first).format(
+                java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM)
+                    .withLocale(Locale.getDefault()),
+            )
+        }.getOrDefault(latest.first)
         val min = values.minOrNull()
         val max = values.maxOrNull()
         val avg = values.average()
@@ -2104,7 +2128,7 @@ fun VitalDetailScreen(vm: AppViewModel, key: String) {
         if (!isStepsDetail) SectionHeader(
             detail.title,
             overline = uiText("Vital Signs"),
-            trailing = stepsSeries?.let { "${it.buckets.size} bars" } ?: "${filteredReadings.size} readings",
+            trailing = stepsSeries?.let { uiText("%1\$s bars", it.buckets.size) } ?: uiText("%1\$s readings", filteredReadings.size),
         )
         NoopCard {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -2409,7 +2433,9 @@ private fun buildVitalDetail(
         unit = if (effortScale == EffortScale.HUNDRED) "%" else "",
         color = Palette.effortColor,
         readings = days.mapNotNull { row -> row.strain?.let { VitalReading(row.day, it, row.deviceId) } },
-        format = { UnitFormatter.effortDisplay(it, effortScale) },
+        // The device's decimal mark here ("0,0" in German): this is a screen read-out. effortDisplay stays
+        // on Locale.US because the AI coach prompt is built from it too.
+        format = { String.format(Locale.getDefault(), "%.1f", UnitFormatter.effortValue(it, effortScale)) },
     )
     "resp" -> VitalDetailModel(
         key = key,
@@ -2417,7 +2443,7 @@ private fun buildVitalDetail(
         unit = uiText("rpm"),
         color = Palette.metricCyan,
         readings = days.mapNotNull { row -> row.respRateBpm?.let { VitalReading(row.day, it, row.deviceId) } },
-        format = { String.format(Locale.US, "%.1f", it) },
+        format = { String.format(Locale.getDefault(), "%.1f", it) },
     )
     "spo2" -> {
         // #103/queue-11a follow-up: fill in the spo2 candidate fallback for any day with no calibrated
@@ -2594,7 +2620,7 @@ internal suspend fun buildSeriesVitalDetail(vm: AppViewModel, key: String): Vita
             // while every read-out, the Min/Avg/Max row and the readings table all printed the same
             // number. #1664 made those text surfaces agree with each other; it could not make them agree
             // with the LINE, because the precision was too coarse to express what the line draws.
-            format = { String.format(Locale.US, "%.1f", it) },
+            format = { String.format(Locale.getDefault(), "%.1f", it) },
         )
     }
     "steps_est" -> {

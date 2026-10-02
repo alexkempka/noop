@@ -9,9 +9,9 @@
     <string name="steps_as_of">Stand: %1$s</string>
     <string name="steps_latest">Zuletzt</string>
     <string name="steps_readings">Messwerte</string>
-    <string name="steps_min">Minimum</string>
-    <string name="steps_avg">Durchschnitt</string>
-    <string name="steps_max">Maximum</string>
+    <string name="steps_min">Min.</string>
+    <string name="steps_avg">Ø</string>
+    <string name="steps_max">Max.</string>
     <string name="steps_unit">Schritte</string>
     <string name="steps_value">%1$s Schritte</string>
     <string name="steps_mean_value">%1$s Schritte im Schnitt pro erfasstem Tag</string>

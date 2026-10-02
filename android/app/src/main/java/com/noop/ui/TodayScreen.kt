@@ -2296,11 +2296,12 @@ private fun LiveSessionEntryCard(onOpen: () -> Unit) {
                     horizontalArrangement = Arrangement.spacedBy(Metrics.space8),
                 ) {
                     // The title yields width, not the pill: "BETA" was being squeezed to "BE…".
+                    // Two lines before an ellipsis: a longer translation wraps instead of reading "Session st…".
                     Text(
                         title,
                         style = NoopType.headline,
                         color = Palette.textPrimary,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false),
                     )
@@ -3260,6 +3261,13 @@ private fun HeroRingColumn(
             DomainTheme.Stress -> R.string.today_card_stress
         },
     )
+    // The three hero labels share one size: each is fitted as if it were the longest of the three, so a
+    // short word no longer stands larger than its neighbour that had to shrink.
+    val heroLabelFit = listOf(
+        uiString(R.string.today_metric_charge),
+        uiString(R.string.today_metric_effort),
+        uiString(R.string.today_metric_rest_short),
+    ).maxBy { it.length }.uppercase()
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -3323,6 +3331,7 @@ private fun HeroRingColumn(
                     .padding(horizontal = Metrics.space14),
                 minScale = 0.55f,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                fitText = if (domain == DomainTheme.Stress) null else heroLabelFit,
             )
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -5529,15 +5538,19 @@ private fun RecoveryDriversSection(
         ?: uiString(R.string.trends_charge)
 
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        // Header row: section title + the SURFACED confidence pill (dot + tier tag) on the right.
-        Row(
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(Metrics.space8),
-        ) {
-            Box(modifier = Modifier.weight(1f)) {
-                SectionHeader(uiString(R.string.today_what_shaped_it), overline = overline, trailing = uiString(R.string.today_vs_your_baseline))
+        // Header: overline + the SURFACED confidence pill (dot + tier tag) on one line, then the title, then
+        // the "vs your baseline" note on its own line. Three items squeezed into one row wrapped into a
+        // jumble in German ("vs. dein Basiswert" broke beside the pill), so each now gets its own line.
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Metrics.space8),
+            ) {
+                Overline(overline, modifier = Modifier.weight(1f))
+                ChargeConfidencePill(tier)
             }
-            ChargeConfidencePill(tier)
+            Text(uiString(R.string.today_what_shaped_it), style = NoopType.title2, color = Palette.textPrimary)
+            Text(uiString(R.string.today_vs_your_baseline), style = NoopType.footnote, color = Palette.textSecondary)
         }
         NoopCard {
             Column(verticalArrangement = Arrangement.spacedBy(Metrics.space16)) {
@@ -5648,11 +5661,13 @@ private fun DriverRow(driver: ChargeDriver) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.semantics { contentDescription = driverA11y },
     ) {
-        // Signed-point delta chip with a direction glyph.
+        // Signed-point delta chip with a direction glyph. Fixed width so every row's name starts in the
+        // same column; sized to the chip, "+11 Pkt." was 10 dp wider than "0 Pkt." and the names zig-zagged.
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
             modifier = Modifier
+                .width(88.dp)
                 .clip(RoundedCornerShape(Metrics.cornerPill))
                 .background(tone.copy(alpha = 0.12f))
                 .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -6059,7 +6074,8 @@ private fun MetricGrid(
             spark = w.strain,
         ),
         KeyMetric.REST to KeyTileData(
-            label = uiString(R.string.l10n_today_screen_rest_b79e5f48),
+            // The short name, as under the hero ring: "SCHLAFQUALITÄT" does not fit a third-width tile.
+            label = uiString(R.string.today_metric_rest_short),
             // #1164/#2012: a provisional Rest is now SAID to be provisional rather than withheld. The
             // caption below carries that; blanking the number as well left a user who had slept, and
             // whose score was computed, looking at "—" for as long as the strap had anything left to
