@@ -294,7 +294,9 @@ private suspend fun loadNights(vm: AppViewModel, days: List<DailyMetric>): List<
     sessions.groupBy { Instant.ofEpochSecond(it.endTs).atZone(zone).toLocalDate().toString() }
         .mapNotNull { (day, list) -> list.maxByOrNull { it.endTs - it.startTs }?.let { day to it } }
         .map { (day, s) ->
-            val dm = daily[day]
+            // NOOP keys a night's daily row by the UTC day of its end in some paths and by the local day
+            // in others, and its own readers try both (SleepModelLogic). So does this one.
+            val dm = daily[day] ?: daily[com.noop.analytics.AnalyticsEngine.dayString(s.endTs)]
             val pulse = if (s.endTs >= now - PULSE_BACK_DAYS * 86_400L) pulseFor(vm, active, s.startTs, s.endTs) else null
             NightFeatures(
                 day = day,

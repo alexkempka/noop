@@ -325,7 +325,11 @@ object BloodPressureEstimator {
 
     // MARK: - Pulse-wave shape
 
-    /** Samples per second of the R26 optical window: a base code plus 24 deltas. */
+    /**
+     * Samples per R26 window: a base code plus 24 deltas. Read as one second per window, which
+     * `PROTOCOL_SENSORS.md` calls an interpretation, not an established rate. The model does not depend
+     * on it: rise time is standardised per wearer before use, so a wrong rate only rescales the feature.
+     */
     const val PPG_SAMPLE_RATE = 25
 
     /** Beats needed before a night's pulse shape is trusted. */
