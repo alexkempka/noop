@@ -181,7 +181,7 @@ private val builtInMetrics: List<MetricSpec> = listOf(
         dailyPick = { it.spo2Pct },
     ),
     MetricSpec(
-        key = "resp", title = uiString(R.string.l10n_trends_explore_screen_respiratory_rate_3fbb532f), unit = "rpm", category = uiString(R.string.explore_category_health),
+        key = "resp", title = uiString(R.string.l10n_trends_explore_screen_respiratory_rate_3fbb532f), unit = uiText("rpm"), category = uiString(R.string.explore_category_health),
         accent = Palette.accent, higherIsBetter = null, decimals = 1,
         dailyPick = { it.respRateBpm },
     ),
@@ -724,7 +724,7 @@ private fun HeroChartCard(
 /** ISO "yyyy-MM-dd" to the same compact date used by both the axis and selection label. */
 private fun prettyExploreDate(day: String?): String =
     day?.let {
-        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("d MMM", Locale.US)) }
+        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())) }
             .getOrDefault(it)
     }.orEmpty()
 

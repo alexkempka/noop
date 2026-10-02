@@ -1502,7 +1502,7 @@ fun SettingsScreen(
                     selection = themeMode,
                     label = {
                         when (it) {
-                            AppearanceMode.SYSTEM -> uiString(R.string.settings_language_system)
+                            AppearanceMode.SYSTEM -> uiString(R.string.onboarding_system)
                             AppearanceMode.LIGHT -> uiString(R.string.settings_theme_light)
                             AppearanceMode.DARK -> uiString(R.string.settings_theme_dark)
                         }
@@ -1592,11 +1592,11 @@ fun SettingsScreen(
                     selection = sleepChartStyle,
                     label = {
                         when (it) {
-                            SleepChartStyle.FILLED -> uiText("Fill")
+                            SleepChartStyle.FILLED -> com.noop.NoopApplication.localizedTextIn("sleepChart", "Fill")
                             // "Garmin" not "Garmin Fill": four equal-width segments ellipsis-truncate a long
                             // label on a normal-width phone (iOS keeps "Garmin Fill" — it's a menu, not a pill).
                             SleepChartStyle.GARMIN_FILLED -> "Garmin"
-                            SleepChartStyle.RIBBON -> uiText("Ribbon")
+                            SleepChartStyle.RIBBON -> com.noop.NoopApplication.localizedTextIn("sleepChart", "Ribbon")
                             else -> uiText("Classic")
                         }
                     },
@@ -2063,6 +2063,7 @@ fun SettingsScreen(
                         leadingIcon = Icons.Filled.Refresh,
                         kind = NoopButtonKind.Primary,
                         enabled = !live.scanning,
+                        modifier = Modifier.weight(1f),
                         onClick = { requestScan() },
                     )
 
@@ -2071,6 +2072,7 @@ fun SettingsScreen(
                         leadingIcon = Icons.Filled.Cancel,
                         kind = NoopButtonKind.Secondary,
                         enabled = live.connected || live.bonded,
+                        modifier = Modifier.weight(1f),
                         onClick = { vm.disconnect() },
                     )
                 }

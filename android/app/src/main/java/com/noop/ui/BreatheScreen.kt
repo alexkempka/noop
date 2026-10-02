@@ -763,7 +763,7 @@ fun BreatheScreen(viewModel: AppViewModel) {
                     guided -> "—"
                     else -> "—"
                 },
-                unit = "br/min",
+                unit = uiText("br/min"),
                 accent = Palette.restBright,
                 caption = when {
                     guided -> uiString(R.string.l10n_breathe_screen_guided_timer_g7h8i9j0)
@@ -1228,7 +1228,7 @@ private fun ResonanceResultCard(result: ResonanceEngine.SweepResult, context: an
                 Text(String.format(Locale.US, "%.1f", result.lockedBpm),
                     style = NoopType.number(40f), color = Palette.restBright)
                 Spacer(Modifier.width(6.dp))
-                Text("br/min", style = NoopType.subhead, color = Palette.textTertiary,
+                Text(uiText("br/min"), style = NoopType.subhead, color = Palette.textTertiary,
                     modifier = Modifier.padding(bottom = 6.dp))
             }
             if (!result.didLock) {
@@ -1259,7 +1259,7 @@ private fun LockedPaceCard(bpm: Double, context: android.content.Context) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(String.format(Locale.US, "%.1f", bpm), style = NoopType.number(34f), color = Palette.restBright)
                 Spacer(Modifier.width(6.dp))
-                Text("br/min", style = NoopType.subhead, color = Palette.textTertiary,
+                Text(uiText("br/min"), style = NoopType.subhead, color = Palette.textTertiary,
                     modifier = Modifier.padding(bottom = 4.dp))
             }
             val dateMs = BiofeedbackPrefs.lockedPaceDateMs(context)

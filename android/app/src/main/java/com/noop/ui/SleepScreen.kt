@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -1039,10 +1040,15 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
+                // IntrinsicSize.Min + fillMaxHeight: when one German label wraps to two lines, both buttons
+                // take that height instead of standing at two different heights side by side.
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(Metrics.gap),
+                    modifier = Modifier.height(androidx.compose.foundation.layout.IntrinsicSize.Min),
+                ) {
                     Button(
                         onClick = { onMark(SleepMarkType.BEDTIME) },
-                        modifier = Modifier.weight(1f).semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_going_to_sleep_6c2b519d) },
+                        modifier = Modifier.weight(1f).fillMaxHeight().semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_going_to_sleep_6c2b519d) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Palette.surfaceInset,
                             contentColor = Palette.textPrimary,
@@ -1050,11 +1056,11 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     ) {
                         Icon(Icons.Filled.Bedtime, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(uiString(R.string.l10n_sleep_screen_going_to_sleep_9c6c63fd), style = NoopType.subhead)
+                        Text(uiString(R.string.l10n_sleep_screen_going_to_sleep_9c6c63fd), style = NoopType.subhead, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                     Button(
                         onClick = { onMark(SleepMarkType.WAKE) },
-                        modifier = Modifier.weight(1f).semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_waking_up_2f9c230e) },
+                        modifier = Modifier.weight(1f).fillMaxHeight().semantics { contentDescription = uiString(R.string.l10n_sleep_screen_log_waking_up_2f9c230e) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Palette.surfaceInset,
                             contentColor = Palette.textPrimary,
@@ -1062,7 +1068,7 @@ internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
                     ) {
                         Icon(Icons.Filled.WbSunny, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(uiString(R.string.l10n_sleep_screen_i_m_awake_2caf0e7f), style = NoopType.subhead)
+                        Text(uiString(R.string.l10n_sleep_screen_i_m_awake_2caf0e7f), style = NoopType.subhead, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                 }
             }
@@ -1412,7 +1418,7 @@ private fun Hero(
             // 0x49 phase stream), NOT a NOOP approximation — so it gets its own honest caption instead of the
             // "approx. stages (on-device)" one that describes NOOP's own sparse-motion staging.
             val stageCaption = if (activeIsOura) uiText(" · raw on-device stages") else uiText(" · approx. stages (on-device)")
-            val subtitle = "${durationText(inBedMin)} in bed · ${display.efficiencyText} efficiency" +
+            val subtitle = uiText("%1\$s in bed · %2\$s efficiency", durationText(inBedMin), display.efficiencyText) +
                 (if (display.realSegments != null) stageCaption else "")
             // iOS #988 port: true per-epoch segments (≥ 2 — a single run has no transitions to lay
             // out) get the per-stage timeline rows; the rows ARE the legend, so no footer. Anything
@@ -1799,9 +1805,10 @@ internal fun stageSparseNoteApplies(
  *  ("slept 8h, shows 1h"). Honest + actionable. Mirrors iOS SleepView.stageIncompleteNote. */
 @Composable
 private fun SleepIncompleteNote() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Top,
+    // Badge ABOVE the text, not beside it: beside a long caption the badge was squeezed to one letter
+    // per line ("möglicherweise unvollständig" read top to bottom).
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = Modifier.padding(horizontal = 2.dp),
     ) {
         SourceBadge(text = uiString(R.string.l10n_sleep_screen_may_be_incomplete_7230dc27), tint = Palette.statusWarning)
@@ -1829,9 +1836,10 @@ private fun SleepIncompleteNote() {
  */
 @Composable
 private fun SleepPartialNote(coverage: Double) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Top,
+    // Badge ABOVE the text, not beside it: beside a long caption the badge was squeezed to one letter
+    // per line ("möglicherweise unvollständig" read top to bottom).
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = Modifier.padding(horizontal = 2.dp),
     ) {
         SourceBadge(text = uiString(R.string.l10n_sleep_screen_partly_recorded_f43509ab), tint = Palette.statusWarning)

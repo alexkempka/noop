@@ -326,7 +326,7 @@ internal fun vitalsFor(
     val previousSkin = history.asReversed().asSequence()
         .mapNotNull { row -> skinSelector(row)?.takeIf { VitalBands.isAbsoluteSkinTemp(it) == skinIsAbsolute } }
         .firstOrNull()
-    val respRangeCaption = rangeCaption(days.mapNotNull { it.respRateBpm }, "rpm") { String.format(Locale.US, "%.1f", it) }
+    val respRangeCaption = rangeCaption(days.mapNotNull { it.respRateBpm }, uiText("rpm")) { String.format(Locale.US, "%.1f", it) }
     val spo2RangeCaption = rangeCaption(days.mapNotNull { it.spo2Pct }, "%") { String.format(Locale.US, "%.0f", it) }
     val rhrRangeCaption = rangeCaption(days.mapNotNull { it.restingHr?.toDouble() }, "bpm") { it.roundToInt().toString() }
     val hrvRangeCaption = rangeCaption(days.mapNotNull { it.avgHrv }, "ms") { it.roundToInt().toString() }
@@ -346,7 +346,7 @@ internal fun vitalsFor(
         rangeCaption(days.mapNotNull(spo2RawMean), "ADC") { String.format(Locale.US, "%.0f", it) }
     return listOf(
         Vital(
-            key = "resp", label = uiString(R.string.l10n_health_screen_resp_rate_1c48dbd8), unit = "rpm",
+            key = "resp", label = uiString(R.string.l10n_health_screen_resp_rate_1c48dbd8), unit = uiText("rpm"),
             missingCaption = uiText("No respiratory-rate value"),
             value = d?.respRateBpm, format = { String.format("%.1f", it) },
             deltaText = deltaText(d?.respRateBpm, previous { it.respRateBpm }),
@@ -550,6 +550,6 @@ internal fun asOfLabel(day: String?): String? {
     return when (date) {
         today -> uiText("as of today")
         today.minusDays(1) -> uiText("as of yesterday")
-        else -> "as of ${date.format(DateTimeFormatter.ofPattern("d MMM", Locale.US))}"
+        else -> "as of ${date.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))}"
     }
 }

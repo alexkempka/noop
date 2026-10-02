@@ -27,7 +27,7 @@ internal fun sleepMetricSpec(key: String): SleepMetricSpec = when (key) {
     "consistency"     -> SleepMetricSpec(uiText("Consistency"), "%", Palette.metricCyan) { "${it.roundToInt()}" }
     "hours_vs_needed" -> SleepMetricSpec(uiText("Hours vs Needed"), "%", Palette.restColor) { "${it.roundToInt()}" }
     "restorative"     -> SleepMetricSpec(uiText("Restorative"), "%", Palette.sleepREM) { "${it.roundToInt()}" }
-    "respiratory"     -> SleepMetricSpec(uiText("Respiratory Rate"), "rpm", Palette.metricPurple) { String.format(Locale.US, "%.1f", it) }
+    "respiratory"     -> SleepMetricSpec(uiText("Respiratory Rate"), uiText("rpm"), Palette.metricPurple) { String.format(Locale.US, "%.1f", it) }
     "sleep_debt"      -> SleepMetricSpec(uiText("Sleep Debt"), "min", Palette.metricRose) { "${it.roundToInt()}" }   // #691: minutes, not decimal hours
     else              -> SleepMetricSpec(key, "", Palette.accent) { "${it.roundToInt()}" }
 }

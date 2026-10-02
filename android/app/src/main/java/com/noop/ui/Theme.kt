@@ -23,6 +23,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -469,6 +471,10 @@ object NoopType {
     private val sans = FontFamily.SansSerif
     private val monoFamily = FontFamily.Monospace
 
+    /** Long German compounds ("Herzfrequenzvariabilität") must break at a syllable with a hyphen,
+     *  never mid-syllable without one; Paragraph line breaking also evens out ragged lines. */
+    private val wrap = TextStyle(hyphens = Hyphens.Auto, lineBreak = LineBreak.Paragraph)
+
     /** Display 64–80 / Bold — the recovery ring number. Tight tracking (≈ -0.04em),
      *  tabular figures so a changing value never reflows. Mirrors StrandFont.display. */
     fun display(size: Float = 72f) = TextStyle(
@@ -480,19 +486,19 @@ object NoopType {
      *  display(); exposed to mirror StrandFont.displayTracking. */
     fun displayTracking(size: Float = 72f): Float = -size * 0.04f
 
-    val title1 = TextStyle(fontFamily = sans, fontWeight = FontWeight.Bold, fontSize = 28.sp)
-    val title2 = TextStyle(fontFamily = sans, fontWeight = FontWeight.SemiBold, fontSize = 22.sp)
-    val headline = TextStyle(fontFamily = sans, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-    val body = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 15.sp)
-    val subhead = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 13.sp)
-    val caption = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 12.sp)
-    val footnote = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 11.sp)
+    val title1 = TextStyle(fontFamily = sans, fontWeight = FontWeight.Bold, fontSize = 28.sp).merge(wrap)
+    val title2 = TextStyle(fontFamily = sans, fontWeight = FontWeight.SemiBold, fontSize = 22.sp).merge(wrap)
+    val headline = TextStyle(fontFamily = sans, fontWeight = FontWeight.SemiBold, fontSize = 17.sp).merge(wrap)
+    val body = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 15.sp).merge(wrap)
+    val subhead = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 13.sp).merge(wrap)
+    val caption = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 12.sp).merge(wrap)
+    val footnote = TextStyle(fontFamily = sans, fontWeight = FontWeight.Normal, fontSize = 11.sp).merge(wrap)
 
     /** Overline 11 / Bold, +1.4 tracking, ALL-CAPS at use site. */
     val overline = TextStyle(
         fontFamily = sans, fontWeight = FontWeight.Bold, fontSize = 11.sp,
         letterSpacing = 1.4.sp,
-    )
+    ).merge(wrap)
 
     /** Mono 13 — raw / log views. */
     val mono = TextStyle(fontFamily = monoFamily, fontWeight = FontWeight.Normal, fontSize = 13.sp)

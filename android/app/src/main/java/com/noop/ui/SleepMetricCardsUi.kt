@@ -122,7 +122,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
             SparkTile(
                 mod, uiText("Respiratory"),
                 value = m.respiratory.latest?.let { String.format(Locale.US, "%.1f", it) } ?: "—",
-                caption = tileCaption(m.respiratory.latestDay, m.respiratory.latest, m.respiratory.typical, " rpm", decimals = 1),
+                caption = tileCaption(m.respiratory.latestDay, m.respiratory.latest, m.respiratory.typical, " " + uiText("rpm"), decimals = 1),
                 accent = Palette.metricPurple,
                 spark = m.respiratory.series, sparkColor = Palette.metricPurple,
                 onClick = { onMetricClick("respiratory") },
@@ -293,7 +293,7 @@ internal fun StagesHostCard(m: SleepModel) {
         SectionHeader(uiText("Stages"), overline = uiText("Last night"), trailing = m.clockLabel)
         // Verbatim of the Sleep tab Hero's stage-chart block, read from the shared model with a null
         // session window (no clock axis) and no motion strip — the fractions/segments are identical.
-        val subtitle = "${durationText(s.total)} in bed · ${m.efficiencyText} efficiency" +
+        val subtitle = uiText("%1\$s in bed · %2\$s efficiency", durationText(s.total), m.efficiencyText) +
             (if (m.realSegments != null) uiText(" · approx. stages (on-device)") else "")
         val real = m.realSegments?.takeIf { it.size >= 2 }
         if (real != null) {
@@ -481,9 +481,9 @@ internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
             footer = {
                 SleepChartFooter(
                     listOf(
-                        "Avg" to (avg?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
-                        "Min" to (hours.minOrNull()?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
-                        "Max" to (hours.maxOrNull()?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
+                        "Avg" to (avg?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
+                        "Min" to (hours.minOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
+                        "Max" to (hours.maxOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Nights" to "${hours.size}",
                     ),
                 )
@@ -499,7 +499,7 @@ internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
                         selectionEnabled = true,
                         selectionLabels = dates.map(::shortDayLabel),
                         // #1662: hours with one decimal and the unit, matching the Avg/Min/Max row above.
-                        formatValue = { String.format(Locale.US, "%.1f h", it) },
+                        formatValue = { String.format(Locale.getDefault(), "%.1f h", it) },
                     )
                     DateAxisRow(dates)
                 }
@@ -524,9 +524,9 @@ internal fun DurationTrend(m: SleepModel) {
             footer = {
                 SleepChartFooter(
                     listOf(
-                        "Avg" to (avg?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
-                        "Min" to (pts.minOrNull()?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
-                        "Max" to (pts.maxOrNull()?.let { String.format(Locale.US, "%.1f h", it) } ?: "—"),
+                        "Avg" to (avg?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
+                        "Min" to (pts.minOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
+                        "Max" to (pts.maxOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Nights" to "${pts.size}",
                     ),
                 )
@@ -547,7 +547,7 @@ internal fun DurationTrend(m: SleepModel) {
                         // matching the other trend graphs. trendDates is index-aligned with the values.
                         selectionLabels = m.trendDates.map(::shortDayLabel),
                         // #1662: same hours format as the Avg/Min/Max row above.
-                        formatValue = { String.format(Locale.US, "%.1f h", it) },
+                        formatValue = { String.format(Locale.getDefault(), "%.1f h", it) },
                     )
                     DateAxisRow(m.trendDates)
                 }
@@ -566,8 +566,8 @@ internal fun DurationTrend(m: SleepModel) {
             footer = {
                 SleepChartFooter(
                     listOf(
-                        "Avg" to (m.trendDebtHours.sleepAverageOrNull()?.let { durationText(it * 60.0) } ?: "â€”"),
-                        "Max" to (m.trendDebtHours.maxOrNull()?.let { durationText(it * 60.0) } ?: "â€”"),
+                        "Avg" to (m.trendDebtHours.sleepAverageOrNull()?.let { durationText(it * 60.0) } ?: "—"),
+                        "Max" to (m.trendDebtHours.maxOrNull()?.let { durationText(it * 60.0) } ?: "—"),
                         "Days" to "${m.trendDebtHours.size}",
                     ),
                 )
@@ -669,7 +669,8 @@ internal fun SleepChartCard(
 ) {
     NoopCard(padding = Metrics.cardPadding, tint = tint) {
         Column(verticalArrangement = Arrangement.spacedBy(Metrics.space14)) {
-            Row(verticalAlignment = Alignment.Top) {
+            // A gap before the trailing value so a long title never runs into it ("…Aufschlüsselung6h 44m").
+            Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(Metrics.space12)) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(title, style = NoopType.headline, color = Palette.textPrimary)
                     Text(subtitle, style = NoopType.footnote, color = Palette.textSecondary)
@@ -687,10 +688,12 @@ internal fun SleepChartCard(
 /** A footer strip of label/value pairs, evenly distributed. */
 @Composable
 private fun SleepChartFooter(items: List<Pair<String, String>>) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    // A gap between the columns: a two-word German label ("Bedarf pro Nacht") wraps instead of running
+    // into its neighbour, which is what "PER-NIGHTNIGHTS" was.
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Metrics.space8)) {
         items.forEach { (label, value) ->
             Column(modifier = Modifier.weight(1f)) {
-                Overline(label, color = Palette.textTertiary)
+                Overline(uiText(label), color = Palette.textTertiary)
                 // Stage-breakdown values like "1h 23m (24%)" wrapped to a second line in a narrow column,
                 // pushing the row taller and clipping against the card edge (#406). Hold them to one line.
                 Text(
@@ -870,8 +873,8 @@ internal fun HoursVsNeededCard(m: SleepModel) {
             SleepHairline()
             Row(modifier = Modifier.fillMaxWidth()) {
                 listOf(
-                    "Slept" to String.format(Locale.US, "%.1f h", sleptH),
-                    "Needed" to String.format(Locale.US, "%.1f h", neededH),
+                    "Slept" to String.format(Locale.getDefault(), "%.1f h", sleptH),
+                    "Needed" to String.format(Locale.getDefault(), "%.1f h", neededH),
                     "Debt" to if (debtH > 0.05) durationText(debtH * 60.0) else uiText("None"),   // #691: h+m, not "0.6 h"
                 ).forEach { (lbl, v) ->
                     Column(modifier = Modifier.weight(1f)) {
@@ -970,7 +973,7 @@ internal fun SleepConsistencyCard(
     // objects for 14 nights). It's a pure derivation of `sleeps` (no wall-clock input), so memoize it on
     // `sleeps` — scrolling the Sleep screen then reuses it instead of rebuilding it every recompose frame.
     val timings = remember(sleeps, habitualMidsleepSec) {
-        val sdf = SimpleDateFormat("EEE", Locale.US)
+        val sdf = SimpleDateFormat("EEE", Locale.getDefault())
         // #699: bridged bed→wake spans (one per day, night-tail fragments folded in), not raw sessions —
         // see consistencyNightSpans.
         consistencyNightSpans(sleeps, habitualMidsleepSec).map { (onsetTs, wakeTs) ->

@@ -656,7 +656,9 @@ fun <T> SegmentedPillControl(
     // SegmentedPillControl refresh (segment height 36, pill fills it for an even inset).
     Row(
         modifier = modifier
-            .then(if (scrollsForLargeText) Modifier.horizontalScroll(rangeScrollState) else Modifier)
+            // Intrinsic-width controls scroll instead of squeezing: a German label ("Dunkel") must never be
+            // broken mid-word into a 36.dp-high pill, and a fourth option must not be cut at the card edge.
+            .then(if (scrollsForLargeText || !adaptsToAvailableWidth) Modifier.horizontalScroll(rangeScrollState) else Modifier)
             .then(if (usesEqualWidth) Modifier.fillMaxWidth() else Modifier)
             .height(36.dp)
             .clip(outerShape)
@@ -693,7 +695,8 @@ fun <T> SegmentedPillControl(
                 Text(
                     text = label(item),
                     style = NoopType.captionNumber,
-                    maxLines = if (adaptsToAvailableWidth) 1 else Int.MAX_VALUE,
+                    maxLines = 1,
+                    softWrap = false,
                     overflow = if (adaptsToAvailableWidth) TextOverflow.Ellipsis else TextOverflow.Clip,
                     color = when {
                         selected && Palette.isLight -> androidx.compose.ui.graphics.Color.White

@@ -833,7 +833,7 @@
     <string name="l10n_sleep_screen_consistencypct_roundtoint_b23a9d40">%1$s%%</string>
     <string name="l10n_sleep_screen_delete_this_nap_1adf0a3f">Nickerchen löschen</string>
     <string name="l10n_sleep_screen_fell_asleep_at_asleep_woke_at_80465b2d">Eingeschlafen um %1$s, aufgewacht um %2$s</string>
-    <string name="l10n_sleep_screen_going_to_sleep_9c6c63fd">Zubettgehen</string>
+    <string name="l10n_sleep_screen_going_to_sleep_9c6c63fd">Ich gehe schlafen</string>
     <string name="l10n_sleep_screen_hours_asleep_06f68993">Schlafstunden</string>
     <string name="l10n_sleep_screen_hours_vs_needed_500a0aca">Stunden vs. Bedarf</string>
     <string name="l10n_sleep_screen_hours_vs_needed_progress_bar_score_4baad051">Stunden vs. Bedarf, Fortschrittsbalken, %1$s Prozent</string>
@@ -1590,7 +1590,7 @@
     <string name="l10n_settings_screen_sex_e301dd60">Geschlecht</string>
     <string name="l10n_settings_screen_share_5_mg_capture_for_the_e41ac6bd">5/MG-Mitschnitt teilen (fürs Entschlüsseln)</string>
     <string name="l10n_settings_screen_share_on_device_signals_with_the_b3fd747e">Teile On-Device-Signale mit dem Coach</string>
-    <string name="l10n_settings_screen_share_strap_log_for_bug_reports_b9802500">Band-Protokoll teilen (für Fehlerberichte)</string>
+    <string name="l10n_settings_screen_share_strap_log_for_bug_reports_b9802500">Band-Protokoll teilen</string>
     <string name="l10n_settings_screen_shows_a_soft_sunrise_day_dusk_2d20b417">Zeigt eine sanfte Szene aus Sonnenaufgang, Tag, Dämmerung und Nacht hinter dem Heute-Bildschirm. Schalte es aus für einen schlichten dunklen Hintergrund. Deine Karten bleiben genauso gut lesbar.</string>
     <string name="l10n_settings_screen_sky_behind_cards_efbe5cb8">Himmel hinter den Karten</string>
     <string name="l10n_settings_screen_sleep_sorting_scores_recording_and_where_832378b5">Schlaf-Einordnung, Werte, Aufzeichnung und woher deine Zahlen kommen.</string>
@@ -1691,7 +1691,7 @@
     <string name="l10n_today_screen_arrange_today_sections_9675862b">Heute-Bereiche anordnen</string>
     <string name="l10n_today_screen_baselines_learned_on_device_over_14_359f6812">Basiswerte werden über 14 Tage auf dem Gerät gelernt. Die Balken zeigen jedes Signal ungefähr im Vergleich zu einem typischen Bereich für Erwachsene, keine medizinische Beratung.</string>
     <string name="l10n_today_screen_blood_oxygen_a8ad9ff5">Blutsauerstoff</string>
-    <string name="l10n_today_screen_breaths_per_minute_2b197c54">Atemzüge pro Minute</string>
+    <string name="l10n_today_screen_breaths_per_minute_2b197c54">Atemfrequenz</string>
     <string name="l10n_today_screen_calories_3e62ecfe">Kalorien</string>
     <string name="l10n_today_screen_card_title_value_e4bb76b3">%1$s: %2$s</string>
     <string name="l10n_today_screen_choose_which_tiles_show_on_your_a4e3acfb">Wähle, welche Kacheln in deinem Kontrollzentrum erscheinen, und ordne sie mit den Pfeilen neu.</string>
@@ -3111,7 +3111,7 @@
     <string name="l10n_settings_screen_build_77afd285">Build %1$s</string>
     <string name="l10n_settings_screen_change_photo_ed5690c3">Foto ändern</string>
     <string name="l10n_settings_screen_charge_is_noop_s_daily_readiness_1f8911ea">Energie ist NOOPs täglicher Bereitschaftswert, gelernt aus deiner eigenen HRV, deinem Ruhepuls und mehr. Dein Verlauf bleibt erhalten.</string>
-    <string name="l10n_settings_screen_choose_from_photos_935f1b61">Aus Fotos wählen</string>
+    <string name="l10n_settings_screen_choose_from_photos_935f1b61">Aus Fotos</string>
     <string name="l10n_settings_screen_choose_how_noop_looks_on_your_d680c8e0">Wähle, wie NOOP auf deinem Startbildschirm aussieht. Nach einer Änderung kann der Launcher einen Moment brauchen, bis er das Symbol aktualisiert.</string>
     <string name="l10n_settings_screen_choose_photo_4a7eded8">Foto wählen</string>
     <string name="l10n_settings_screen_draw_your_photo_behind_every_tab_9cbd4de2">Zeigt dein Foto hinter jedem Tab statt des Himmels im Tagesverlauf.</string>
@@ -3136,7 +3136,7 @@
     <string name="l10n_settings_screen_reads_a_coarse_menstrual_cycle_phase_f176e436">Leitet grob die Phase deines Menstruationszyklus aus der nächtlichen Verschiebung deiner Hauttemperatur ab – nur auf diesem Gerät. Nur zur Orientierung: keine Verhütung, keine Vorhersage der Fruchtbarkeit, kein medizinischer Dienst.</string>
     <string name="l10n_settings_screen_recent_76eec760">Zuletzt</string>
     <string name="l10n_settings_screen_remove_image_5f94b03c">Bild entfernen</string>
-    <string name="l10n_settings_screen_replace_from_photos_dc6cc6ca">Aus Fotos ersetzen</string>
+    <string name="l10n_settings_screen_replace_from_photos_dc6cc6ca">Aus Fotos</string>
     <string name="l10n_settings_screen_scaling_0b4193c5">Skalierung</string>
     <string name="l10n_settings_screen_scores_today_s_hour_by_hour_a9f3f146">Bewertet den heutigen Stress-Verlauf Stunde für Stunde gegen DEINEN eigenen tagesübergreifenden Basiswert (wie deine Tage normalerweise laufen, ähnlich wie bei Oura) statt gegen die ruhigen Stunden desselben Tages. Die Schwelle ist bisher an den Daten einer einzigen Person abgestimmt – eine alternative Sicht, nicht der Standard. Nur Puls; fließt nie in Erholung oder Krankheits-Frühwarnung ein. Standardmäßig aus.</string>
     <string name="l10n_settings_screen_searching_1a6a5ba8">Sucht…</string>
@@ -3284,6 +3284,7 @@
     <string name="sleep_stage_label_deep">Tief</string>
     <!-- l10n_lit:begin -->
     <string name="l10n_lit_00040bab8a">Aktiv</string>
+    <string name="l10n_lit_0041f91590">/min</string>
     <string name="l10n_lit_009c64bb2e">Etwas Schwankung</string>
     <string name="l10n_lit_00d8c525a2">Bereit machen, dann suchen.</string>
     <string name="l10n_lit_014795e468">Stress (auf dem Gerät)</string>
@@ -3335,6 +3336,7 @@
     <string name="l10n_lit_0e3a0d5853">z. B. Magnesium</string>
     <string name="l10n_lit_0e4b3622ba">Kein HRV-Wert</string>
     <string name="l10n_lit_0e4bea342b">Beginn aktive Stunden</string>
+    <string name="l10n_lit_0e58805b78">Streifen</string>
     <string name="l10n_lit_0e5d9a37dc">Liefert Live-Anzeige + Belastung. Keine Energie, Schlafqualität oder Schlaf</string>
     <string name="l10n_lit_0ea7b95eab">Regelmäßigkeit</string>
     <string name="l10n_lit_0fd1397963">%1$s %2$s jünger als du</string>
@@ -3363,6 +3365,7 @@
     <string name="l10n_lit_1370004da7">Dauer</string>
     <string name="l10n_lit_13ae16858e">Lass den Ring auf dem Ladegerät oder am Finger, damit er wach bleibt.</string>
     <string name="l10n_lit_13aeec7b6b">Körperfett</string>
+    <string name="l10n_lit_13dc80d197">Geschlafen</string>
     <string name="l10n_lit_13e267e868">Letzte %1$s Schläge</string>
     <string name="l10n_lit_14063bee3a">Geschätzte Restlaufzeit</string>
     <string name="l10n_lit_14069cb650">Tennis</string>
@@ -3440,6 +3443,7 @@
     <string name="l10n_lit_26e1ed149e">Wähl einen längeren Zeitraum (3M, 6M, 1Y oder ALL), um den Verlauf dieses Werts zu sehen.</string>
     <string name="l10n_lit_272bf3c1d5">Noch %1$s Nächte tragen und unten Alter und Geschlecht eintragen – dann zeigen wir dir dein Fitnessalter.</string>
     <string name="l10n_lit_277af7eb68">Gesundes Minimum</string>
+    <string name="l10n_lit_27c0ee6e64">Benötigt</string>
     <string name="l10n_lit_282432f97c">Letzte 14 Nächte</string>
     <string name="l10n_lit_28463f2473">Phasen vs. typisch</string>
     <string name="l10n_lit_28820fbb7b">Eisbad</string>
@@ -3580,6 +3584,7 @@
     <string name="l10n_lit_485dd93902">Wahrscheinlich keine Krankheit</string>
     <string name="l10n_lit_4876e2c174">vor %1$s Tagen</string>
     <string name="l10n_lit_4890cae39f">CSV wählen…</string>
+    <string name="l10n_lit_489f487724">Wert</string>
     <string name="l10n_lit_48b998e89b">VERBINDET</string>
     <string name="l10n_lit_48c2a13dc6">Diese Einheit</string>
     <string name="l10n_lit_48c867158c">Nicht genug saubere Schläge – bleib ruhig sitzen und versuch’s noch mal.</string>
@@ -3781,6 +3786,7 @@
     <string name="l10n_lit_75329da3be">%1$s%2$s vs. üblich</string>
     <string name="l10n_lit_76022a00a1">Ozean</string>
     <string name="l10n_lit_7626de1949">Erhöhte Signale</string>
+    <string name="l10n_lit_766b301808">Krafttraining</string>
     <string name="l10n_lit_76c143beac">heute nicht erfasst</string>
     <string name="l10n_lit_76edfcab69">Datum der Messung</string>
     <string name="l10n_lit_76eec760c9">Zuletzt</string>
@@ -3788,6 +3794,7 @@
     <string name="l10n_lit_771e05f27b">Getrennt</string>
     <string name="l10n_lit_77385403c0">Alter, %1$s Jahre</string>
     <string name="l10n_lit_773ba1b336">Pendelt sich ein</string>
+    <string name="l10n_lit_7741f3c70c">%1$s im Bett · %2$s Effizienz</string>
     <string name="l10n_lit_77605e30f3">REM-Schlaf</string>
     <string name="l10n_lit_77dfd2135f">Abbrechen</string>
     <string name="l10n_lit_77e66956a9">Die eine Regel</string>
@@ -3818,12 +3825,15 @@
     <string name="l10n_lit_7cd9c290f7">noch keine Bewegungsdaten</string>
     <string name="l10n_lit_7ced2ffa2c">braucht einen aktuellen Tag</string>
     <string name="l10n_lit_7ceee3f361">Anbieter</string>
+    <string name="l10n_lit_7cf21aec5f">Bedarf pro Nacht</string>
     <string name="l10n_lit_7d107c59b3">%1$s erfasste Tage</string>
     <string name="l10n_lit_7d4278a875">30 Tage</string>
     <string name="l10n_lit_7d54c51e40">Anhaltend hoher Stress</string>
+    <string name="l10n_lit_7dffc25fc2">Üblich</string>
     <string name="l10n_lit_7e0fe26828">noch keine Messwerte</string>
     <string name="l10n_lit_7e4b91991b">Was sich verändert hat</string>
     <string name="l10n_lit_7e9cc53419">Schritte (geschätzt)</string>
+    <string name="l10n_lit_7eb0cee888">Min.</string>
     <string name="l10n_lit_7f27e202f8">Surfen</string>
     <string name="l10n_lit_7f2c44c8bf">Ein %1$s heute Abend geht bei dir meist mit etwa %2$s%3$s %4$s bei der morgigen %5$s einher, %6$s.</string>
     <string name="l10n_lit_7f68c29127">Heute noch keine Energie – Zielbereich in der Mitte.</string>
@@ -3858,6 +3868,7 @@
     <string name="l10n_lit_864b1e8d56">American Football</string>
     <string name="l10n_lit_865e588793">Tiefschlaf</string>
     <string name="l10n_lit_8690a9a0db">NOOP sendet deinen Puls weiter (Studio / Zwift / Garmin)</string>
+    <string name="l10n_lit_86e38cda19">Krafttraining</string>
     <string name="l10n_lit_86f693b7e8">Beginn Ruhezeit</string>
     <string name="l10n_lit_870508e522">" · Phasen ca. (auf dem Gerät)"</string>
     <string name="l10n_lit_87a65ae69a">das Backup vom %1$s</string>
@@ -3908,6 +3919,7 @@
     <string name="l10n_lit_905cb326c7">Du</string>
     <string name="l10n_lit_905fbd6496">Im Tagesverlauf</string>
     <string name="l10n_lit_90ccd64974">Verlauf</string>
+    <string name="l10n_lit_90eef61304">Saldo</string>
     <string name="l10n_lit_915ac3e12b">IM AUFBAU</string>
     <string name="l10n_lit_91e43db630">Einzelwert im Zeitraum</string>
     <string name="l10n_lit_91ffe73716">Liefert Energie, Belastung, Schlafqualität, Schlaf + Gesundheitsmonitor</string>
@@ -3972,6 +3984,7 @@
     <string name="l10n_lit_a137586db0">Herzfrequenzvariabilität</string>
     <string name="l10n_lit_a16c5bbe4b">Zeitraum</string>
     <string name="l10n_lit_a189df0953">Letzter HRV-Messwert</string>
+    <string name="l10n_lit_a18eb72121">Nächte</string>
     <string name="l10n_lit_a1b2c6cb53">Abgeglichen mit</string>
     <string name="l10n_lit_a1bdabd213">Warum ist meine HRV zuletzt niedrig?</string>
     <string name="l10n_lit_a1ca4ecb02">heute erfasst</string>
@@ -4006,11 +4019,13 @@
     <string name="l10n_lit_a84c4001bb">Live-Puls und HRV, sofern der Ring sie messen kann.</string>
     <string name="l10n_lit_a8522bd405">Du hast etwa %1$s Polster über %2$s – unterm Strich mehr geschlafen als nötig. Stark.</string>
     <string name="l10n_lit_a866104aec">Garmin-Uhr</string>
+    <string name="l10n_lit_a88fb68cf5">Fläche</string>
     <string name="l10n_lit_a8a1a016c3">Funktionen nach Band</string>
     <string name="l10n_lit_a8ad9ff532">Blutsauerstoff</string>
     <string name="l10n_lit_a8cc349d2e">Ein typischer Tag zuletzt</string>
     <string name="l10n_lit_a9324eb4ba">Vibration an</string>
     <string name="l10n_lit_a93be67f07">%1$s erhöhen</string>
+    <string name="l10n_lit_a95e85aed5">Max.</string>
     <string name="l10n_lit_a975ed8add">Kraft</string>
     <string name="l10n_lit_a9dcad9bc4">Verbunden, warte auf Datenstrom.</string>
     <string name="l10n_lit_a9f9b3fcb2">TOPFORM</string>
@@ -4082,6 +4097,7 @@
     <string name="l10n_lit_b8506fa0a8">Pulszone</string>
     <string name="l10n_lit_b8642022be">Noch nicht lange genug getragen – lass dein Band über Nacht an.</string>
     <string name="l10n_lit_b8a5aeb460">letzte 90 Tage</string>
+    <string name="l10n_lit_b8e58a0426">Krafttraining</string>
     <string name="l10n_lit_b8eea318a0">Noch keine numerischen Werte.</string>
     <string name="l10n_lit_b96782df71">Bluetooth-Namen des Bands ändern</string>
     <string name="l10n_lit_b9692bbece">Schlafdauer</string>
@@ -4160,6 +4176,7 @@
     <string name="l10n_lit_c9618ddb04">Gehen</string>
     <string name="l10n_lit_c9c4e5ecdf">Weicht leicht ab</string>
     <string name="l10n_lit_c9e2d0d244">Früheste Weckzeit</string>
+    <string name="l10n_lit_ca5ed362c7">J.</string>
     <string name="l10n_lit_ca76977658">Kickboxen</string>
     <string name="l10n_lit_ca8c206c19">Wie das gemessen wird</string>
     <string name="l10n_lit_caa861bd47">Band verbunden</string>
@@ -4232,6 +4249,7 @@
     <string name="l10n_lit_d77d0b2795">HOCH</string>
     <string name="l10n_lit_d7d874f3f0">Schlaf · %1$s Nächte</string>
     <string name="l10n_lit_d802d232a8">Keine Daten</string>
+    <string name="l10n_lit_d839ee4589">/min</string>
     <string name="l10n_lit_d887be1f1b">Tägliche Backup-Zeit</string>
     <string name="l10n_lit_d8a3d0cf1e">Kohärenz (Schätzung)</string>
     <string name="l10n_lit_d8b9679fad">NIEDRIG</string>
@@ -4336,7 +4354,7 @@
     <string name="l10n_lit_ee6c60b9cf">Stell sicher, dass es mit keiner anderen App verbunden ist (Radcomputer, Hersteller-App …).</string>
     <string name="l10n_lit_ee8307d43a">Schreib uns an %1$s</string>
     <string name="l10n_lit_ee8870b95d">Experimentell, ohne Garantie. Klappt live nicht, exportierst du aus Zepp und importierst die Datei.</string>
-    <string name="l10n_lit_ee8cef042b">Schlafmarke setzen</string>
+    <string name="l10n_lit_ee8cef042b">Schlafzeit eintragen</string>
     <string name="l10n_lit_eebeb0f21d">Stimmung ↔ Erholung</string>
     <string name="l10n_lit_eef9f92e4e">dieses Gerät</string>
     <string name="l10n_lit_ef06dfd40d">Dein Band ist gekoppelt und sendet Daten. Öffne „Live“ für deinen Puls in Echtzeit.</string>

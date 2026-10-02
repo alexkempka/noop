@@ -49,11 +49,11 @@ enum class DashboardCard(
 ) {
     HRV("hrv", R.string.today_card_hrv, R.string.today_card_hrv_subtitle, "ms", Icons.Filled.MonitorHeart),
     RESTING_HR("restingHr", R.string.today_card_resting_hr, R.string.today_card_resting_hr_subtitle, "bpm", Icons.Filled.Favorite),
-    RESPIRATORY("respiratory", R.string.today_card_respiratory, R.string.today_card_respiratory_subtitle, "rpm", Icons.Filled.Air),
+    RESPIRATORY("respiratory", R.string.today_card_respiratory, R.string.today_card_respiratory_subtitle, uiText("rpm"), Icons.Filled.Air),
     STEPS("steps", R.string.today_card_steps, R.string.today_card_steps_subtitle, "", Icons.AutoMirrored.Filled.DirectionsWalk),
     STEPS_AVERAGE_30("stepsAverage30", R.string.steps_average_30, R.string.steps_average_subtitle, "", Icons.AutoMirrored.Filled.DirectionsWalk),
     STRESS("stress", R.string.today_card_stress, R.string.today_card_stress_subtitle, "", Icons.Filled.Bolt),
-    FITNESS_AGE("fitnessAge", R.string.today_card_fitness_age, R.string.today_card_fitness_age_subtitle, "yrs", Icons.AutoMirrored.Filled.DirectionsRun),
+    FITNESS_AGE("fitnessAge", R.string.today_card_fitness_age, R.string.today_card_fitness_age_subtitle, uiText("yrs"), Icons.AutoMirrored.Filled.DirectionsRun),
     VO2MAX("vo2max", R.string.today_card_vo2max, R.string.today_card_vo2max_subtitle, "", Icons.Filled.Air),
     VITALITY("vitality", R.string.today_card_vitality, R.string.today_card_vitality_subtitle, "", Icons.Filled.AutoAwesome),
     BLOOD_OXYGEN("bloodOxygen", R.string.today_card_blood_oxygen, R.string.today_card_blood_oxygen_subtitle, "", Icons.Filled.WaterDrop),

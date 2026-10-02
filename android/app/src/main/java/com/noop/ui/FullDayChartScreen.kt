@@ -582,7 +582,7 @@ internal fun landTargetDayStart(
 private fun dayLabel(dayStartSec: Long, todayStart: Long): String = when (dayStartSec) {
     todayStart -> uiText("Today")
     todayStart - 86_400 -> uiText("Yesterday")
-    else -> java.text.SimpleDateFormat("EEE d MMM", Locale.US).format(java.util.Date(dayStartSec * 1000))
+    else -> java.text.SimpleDateFormat("EEE d MMM", Locale.getDefault()).format(java.util.Date(dayStartSec * 1000))
 }
 
 // MARK: - X-axis time labels

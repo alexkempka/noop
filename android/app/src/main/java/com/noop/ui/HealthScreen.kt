@@ -2414,7 +2414,7 @@ private fun buildVitalDetail(
     "resp" -> VitalDetailModel(
         key = key,
         title = uiString(R.string.l10n_health_screen_respiratory_rate_3fbb532f),
-        unit = "rpm",
+        unit = uiText("rpm"),
         color = Palette.metricCyan,
         readings = days.mapNotNull { row -> row.respRateBpm?.let { VitalReading(row.day, it, row.deviceId) } },
         format = { String.format(Locale.US, "%.1f", it) },
@@ -2552,7 +2552,7 @@ internal suspend fun buildSeriesVitalDetail(vm: AppViewModel, key: String): Vita
     "fitness_age" -> VitalDetailModel(
         key = key,
         title = uiString(R.string.l10n_health_screen_fitness_age_12383b4a),
-        unit = "yrs",
+        unit = uiText("yrs"),
         color = Palette.chargeColor,
         readings = vm.repo.metricSeriesComputedUnion(vm.activeStrapId, "fitness_age", "0000-01-01", "9999-12-31")
             .map { VitalReading(it.day, it.value, it.deviceId) },

@@ -658,7 +658,7 @@ object TrendsReportShare {
             val series = ReportMetric.allCases.associateWith {
                 TrendsReportData.series(it, days, report.start, report.end, stressByDay)
             }
-            val generatedOn = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.US))
+            val generatedOn = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.getDefault()))
             val file = TrendsReportRenderer.renderPdf(context, report, range, series, generatedOn, units)
                 ?: run {
                     Toast.makeText(context, uiText("Couldn't build the report."), Toast.LENGTH_LONG).show()

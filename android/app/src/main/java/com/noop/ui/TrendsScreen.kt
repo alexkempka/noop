@@ -951,7 +951,7 @@ internal fun trendAxisLabels(dates: List<String>): List<TrendAxisLabel> = when {
 /** ISO "yyyy-MM-dd" → "d MMM"; falls back to the raw string (or "" when null) if it doesn't parse. */
 private fun prettyAxisDate(day: String?): String =
     day?.let {
-        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("d MMM", Locale.US)) }
+        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())) }
             .getOrDefault(it)
     }.orEmpty()
 

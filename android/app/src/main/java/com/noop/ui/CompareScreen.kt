@@ -156,15 +156,15 @@ private object CompareCatalog {
         CompareMetric("max_hr", uiText("Max Heart Rate"), "Heart", "bpm", "my-whoop", 0),
         CompareMetric("energy_kcal", uiText("Calories"), "Heart", "kcal", "my-whoop", 0),
         CompareMetric("vo2max", "VO₂ Max", "Heart", "", "apple-health", 1),
-        CompareMetric("fitness_age", uiText("Fitness Age"), "Heart", "yrs", "my-whoop", 0),
+        CompareMetric("fitness_age", uiText("Fitness Age"), "Heart", uiText("yrs"), "my-whoop", 0),
         CompareMetric("vo2max_est", uiText("VO₂ Max (estimated)"), "Heart", "", "my-whoop", 1),
         CompareMetric("vitality", uiText("Vitality"), "Heart", "", "my-whoop", 0),
-        CompareMetric("body_age", uiText("Body Age"), "Heart", "yrs", "my-whoop", 0),
+        CompareMetric("body_age", uiText("Body Age"), "Heart", uiText("yrs"), "my-whoop", 0),
         // Charge (was Recovery)
         CompareMetric("recovery", uiText("Charge"), "Charge", "%", "my-whoop", 0),
         CompareMetric("hrv", uiText("Heart Rate Variability"), "Charge", "ms", "my-whoop", 0),
         CompareMetric("rhr", uiText("Resting Heart Rate"), "Charge", "bpm", "my-whoop", 0),
-        CompareMetric("resp_rate", uiText("Respiratory Rate"), "Charge", "rpm", "my-whoop", 1),
+        CompareMetric("resp_rate", uiText("Respiratory Rate"), "Charge", uiText("rpm"), "my-whoop", 1),
         CompareMetric("spo2", uiText("Blood Oxygen"), "Charge", "%", "my-whoop", 0),
         CompareMetric("skin_temp", uiText("Skin Temperature"), "Charge", "°C", "my-whoop", 1),
         // Rest (was Sleep)
@@ -1182,7 +1182,7 @@ private fun CompareChartTooltip(
 
 // Device locale so the weekday/month names translate (a non-English user shouldn't see an English
 // tooltip date). Same pattern + device locale as the iOS twin, so both localize consistently.
-private val compareTooltipDateFormatter: DateTimeFormatter =
+private val compareTooltipDateFormatter: DateTimeFormatter get() =
     DateTimeFormatter.ofPattern("EEE d MMM yyyy", Locale.getDefault())
 
 private fun prettyCompareDay(day: String): String =

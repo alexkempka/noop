@@ -2208,7 +2208,7 @@ private fun ManualWorkoutDialog(
 @Composable
 private fun SpanTimeField(caption: String, millis: Long, onPick: (Long) -> Unit) {
     val context = LocalContext.current
-    val label = remember(millis) { SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US).format(java.util.Date(millis)) }
+    val label = remember(millis) { SimpleDateFormat("d MMM yyyy, h:mm a", Locale.getDefault()).format(java.util.Date(millis)) }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(caption, style = NoopType.footnote, color = Palette.textSecondary)
         Row(
@@ -2540,9 +2540,9 @@ private val WorkoutRow.sourceBadge: Pair<String, Color>
 
 // MARK: - Formatting
 
-private val dateFmt: DateTimeFormatter =
-    DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US).withZone(ZoneId.systemDefault())
-private val timeFmt: DateTimeFormatter =
+private val dateFmt: DateTimeFormatter get() =
+    DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault()).withZone(ZoneId.systemDefault())
+private val timeFmt: DateTimeFormatter get() =
     // Respect the device's 12-/24-hour locale (#337): "7:10 AM" or "19:10", not forced 24-hour.
     DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
         .withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault())

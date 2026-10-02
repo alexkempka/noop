@@ -1280,9 +1280,12 @@ private fun SustainedBreatheCard(day: DaytimeStress.Result, onBreathe: () -> Uni
     }
 }
 
-/** "6 am" / "2 pm" style hour-of-day label. */
+/** Hour-of-day label: "6 am" / "2 pm" where the language writes 12-hour time, "6:00" / "14:00" where it doesn't. */
 private fun hourLabel(hour: Int): String {
     val h = ((hour % 24) + 24) % 24
+    val localPattern = (java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT, Locale.getDefault())
+        as? java.text.SimpleDateFormat)?.toPattern()
+    if (localPattern != null && !localPattern.contains('a')) return "$h:00"
     val ampm = if (h < 12) "am" else "pm"
     val h12 = if (h % 12 == 0) 12 else h % 12
     return "$h12 $ampm"

@@ -320,7 +320,7 @@ private fun CatalogList(search: String, onPick: (MarkerDefinition) -> Unit) {
 private fun DateRow(millis: Long, onPick: (Long) -> Unit) {
     val context = LocalContext.current
     val cal = remember(millis) { Calendar.getInstance().apply { timeInMillis = millis } }
-    val label = remember(millis) { SimpleDateFormat("d MMM yyyy", Locale.US).format(java.util.Date(millis)) }
+    val label = remember(millis) { SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(java.util.Date(millis)) }
     Row(
         modifier = Modifier
             .fillMaxWidth()

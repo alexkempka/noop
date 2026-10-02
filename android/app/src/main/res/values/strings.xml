@@ -3300,6 +3300,7 @@
     <string name="sleep_stage_label_deep">Deep</string>
     <!-- l10n_lit:begin -->
     <string name="l10n_lit_00040bab8a">Work</string>
+    <string name="l10n_lit_0041f91590">br/min</string>
     <string name="l10n_lit_009c64bb2e">Some variation</string>
     <string name="l10n_lit_00d8c525a2">Get it ready, then scan.</string>
     <string name="l10n_lit_014795e468">Stress (on-device)</string>
@@ -3351,6 +3352,7 @@
     <string name="l10n_lit_0e3a0d5853">e.g. Magnesium</string>
     <string name="l10n_lit_0e4b3622ba">No HRV value</string>
     <string name="l10n_lit_0e4bea342b">Active hours start</string>
+    <string name="l10n_lit_0e58805b78">Ribbon</string>
     <string name="l10n_lit_0e5d9a37dc">Powers the live console + Effort. No Charge, Rest or Sleep</string>
     <string name="l10n_lit_0ea7b95eab">Consistency</string>
     <string name="l10n_lit_0fd1397963">%1$s %2$s younger than your age</string>
@@ -3379,6 +3381,7 @@
     <string name="l10n_lit_1370004da7">Duration</string>
     <string name="l10n_lit_13ae16858e">Keep the ring on the charger or on your finger so it stays awake.</string>
     <string name="l10n_lit_13aeec7b6b">Body Fat</string>
+    <string name="l10n_lit_13dc80d197">Slept</string>
     <string name="l10n_lit_13e267e868">Last %1$s beats</string>
     <string name="l10n_lit_14063bee3a">Estimated runtime left</string>
     <string name="l10n_lit_14069cb650">Tennis</string>
@@ -3456,6 +3459,7 @@
     <string name="l10n_lit_26e1ed149e">Try a longer interval like 3M, 6M, 1Y, or ALL to see this vital’s trend.</string>
     <string name="l10n_lit_272bf3c1d5">%1$s more nights of wear, plus your age and sex below, and we can show your Fitness Age.</string>
     <string name="l10n_lit_277af7eb68">Healthy Min</string>
+    <string name="l10n_lit_27c0ee6e64">Needed</string>
     <string name="l10n_lit_282432f97c">Last 14 nights</string>
     <string name="l10n_lit_28463f2473">Stages vs typical</string>
     <string name="l10n_lit_28820fbb7b">Ice Bath</string>
@@ -3596,6 +3600,7 @@
     <string name="l10n_lit_485dd93902">Probably not illness</string>
     <string name="l10n_lit_4876e2c174">%1$s days ago</string>
     <string name="l10n_lit_4890cae39f">Choose CSV…</string>
+    <string name="l10n_lit_489f487724">Score</string>
     <string name="l10n_lit_48b998e89b">CONNECTING</string>
     <string name="l10n_lit_48c2a13dc6">This session</string>
     <string name="l10n_lit_48c867158c">Not enough clean beats - sit still and try again.</string>
@@ -3797,6 +3802,7 @@
     <string name="l10n_lit_75329da3be">%1$s%2$s vs typ</string>
     <string name="l10n_lit_76022a00a1">Ocean</string>
     <string name="l10n_lit_7626de1949">Signals up</string>
+    <string name="l10n_lit_766b301808">Strength-Trainer</string>
     <string name="l10n_lit_76c143beac">not logged today</string>
     <string name="l10n_lit_76edfcab69">Date taken</string>
     <string name="l10n_lit_76eec760c9">Recent</string>
@@ -3804,6 +3810,7 @@
     <string name="l10n_lit_771e05f27b">Disconnected</string>
     <string name="l10n_lit_77385403c0">Age, %1$s years</string>
     <string name="l10n_lit_773ba1b336">Settling</string>
+    <string name="l10n_lit_7741f3c70c">%1$s in bed · %2$s efficiency</string>
     <string name="l10n_lit_77605e30f3">REM Sleep</string>
     <string name="l10n_lit_77dfd2135f">Cancel</string>
     <string name="l10n_lit_77e66956a9">The one rule</string>
@@ -3834,12 +3841,15 @@
     <string name="l10n_lit_7cd9c290f7">no live gravity yet</string>
     <string name="l10n_lit_7ced2ffa2c">needs a recent day</string>
     <string name="l10n_lit_7ceee3f361">Provider</string>
+    <string name="l10n_lit_7cf21aec5f">Per-night need</string>
     <string name="l10n_lit_7d107c59b3">%1$s days logged</string>
     <string name="l10n_lit_7d4278a875">30 days</string>
     <string name="l10n_lit_7d54c51e40">Sustained high stress</string>
+    <string name="l10n_lit_7dffc25fc2">Typical</string>
     <string name="l10n_lit_7e0fe26828">no readings yet</string>
     <string name="l10n_lit_7e4b91991b">What changed</string>
     <string name="l10n_lit_7e9cc53419">Steps (estimated)</string>
+    <string name="l10n_lit_7eb0cee888">Min</string>
     <string name="l10n_lit_7f27e202f8">Surfing</string>
     <string name="l10n_lit_7f2c44c8bf">A %1$s tonight tends to line up with about %2$s%3$s %4$s on tomorrow’s %5$s for you, %6$s.</string>
     <string name="l10n_lit_7f68c29127">No Charge yet today — guarding a middle-of-the-road band.</string>
@@ -3874,6 +3884,7 @@
     <string name="l10n_lit_864b1e8d56">American football</string>
     <string name="l10n_lit_865e588793">Deep sleep</string>
     <string name="l10n_lit_8690a9a0db">NOOP re-broadcasts your HR (gym / Zwift / Garmin)</string>
+    <string name="l10n_lit_86e38cda19">Strength- Trainer</string>
     <string name="l10n_lit_86f693b7e8">Quiet hours start</string>
     <string name="l10n_lit_870508e522">" · approx. stages (on-device)"</string>
     <string name="l10n_lit_87a65ae69a">the backup from %1$s</string>
@@ -3924,6 +3935,7 @@
     <string name="l10n_lit_905cb326c7">You</string>
     <string name="l10n_lit_905fbd6496">Intraday</string>
     <string name="l10n_lit_90ccd64974">History</string>
+    <string name="l10n_lit_90eef61304">Balance</string>
     <string name="l10n_lit_915ac3e12b">BUILDING</string>
     <string name="l10n_lit_91e43db630">Single reading in range</string>
     <string name="l10n_lit_91ffe73716">Powers Charge, Effort, Rest, Sleep + Health Monitor</string>
@@ -3988,6 +4000,7 @@
     <string name="l10n_lit_a137586db0">Heart-rate variability</string>
     <string name="l10n_lit_a16c5bbe4b">Range</string>
     <string name="l10n_lit_a189df0953">Last HRV reading</string>
+    <string name="l10n_lit_a18eb72121">Nights</string>
     <string name="l10n_lit_a1b2c6cb53">Fitted from</string>
     <string name="l10n_lit_a1bdabd213">Why might my HRV be low lately?</string>
     <string name="l10n_lit_a1ca4ecb02">logged today</string>
@@ -4022,11 +4035,13 @@
     <string name="l10n_lit_a84c4001bb">Live heart rate, and HRV when the ring can measure it.</string>
     <string name="l10n_lit_a8522bd405">You\'re carrying about %1$s of surplus over %2$s. You\'ve slept past your need on balance. Nicely ahead.</string>
     <string name="l10n_lit_a866104aec">Garmin watch</string>
+    <string name="l10n_lit_a88fb68cf5">Fill</string>
     <string name="l10n_lit_a8a1a016c3">Feature by strap</string>
     <string name="l10n_lit_a8ad9ff532">Blood Oxygen</string>
     <string name="l10n_lit_a8cc349d2e">A typical recent day</string>
     <string name="l10n_lit_a9324eb4ba">Haptics on</string>
     <string name="l10n_lit_a93be67f07">Increase %1$s</string>
+    <string name="l10n_lit_a95e85aed5">Max</string>
     <string name="l10n_lit_a975ed8add">Lifting</string>
     <string name="l10n_lit_a9dcad9bc4">Connected, waiting for a streaming state.</string>
     <string name="l10n_lit_a9f9b3fcb2">PEAK</string>
@@ -4098,6 +4113,7 @@
     <string name="l10n_lit_b8506fa0a8">HR zone</string>
     <string name="l10n_lit_b8642022be">Not enough wear yet — keep your strap on overnight.</string>
     <string name="l10n_lit_b8a5aeb460">last 90 days</string>
+    <string name="l10n_lit_b8e58a0426">Strength trainer</string>
     <string name="l10n_lit_b8eea318a0">No numeric readings yet.</string>
     <string name="l10n_lit_b96782df71">Rename the strap\'s Bluetooth name</string>
     <string name="l10n_lit_b9692bbece">Asleep</string>
@@ -4176,6 +4192,7 @@
     <string name="l10n_lit_c9618ddb04">Walking</string>
     <string name="l10n_lit_c9c4e5ecdf">Differs slightly</string>
     <string name="l10n_lit_c9e2d0d244">Earliest wake time</string>
+    <string name="l10n_lit_ca5ed362c7">yrs</string>
     <string name="l10n_lit_ca76977658">Kickboxing</string>
     <string name="l10n_lit_ca8c206c19">How this is measured</string>
     <string name="l10n_lit_caa861bd47">Strap connected</string>
@@ -4248,6 +4265,7 @@
     <string name="l10n_lit_d77d0b2795">HIGH</string>
     <string name="l10n_lit_d7d874f3f0">Sleep · %1$s nights</string>
     <string name="l10n_lit_d802d232a8">No data</string>
+    <string name="l10n_lit_d839ee4589">rpm</string>
     <string name="l10n_lit_d887be1f1b">Daily backup time</string>
     <string name="l10n_lit_d8a3d0cf1e">Coherence estimate</string>
     <string name="l10n_lit_d8b9679fad">LOW</string>

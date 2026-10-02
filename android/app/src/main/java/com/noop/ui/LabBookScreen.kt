@@ -759,7 +759,7 @@ private fun pearson(xy: List<Pair<Double, Double>>): LabCorrelation? {
     return LabCorrelation(r, n)
 }
 
-private val labDayFmt = SimpleDateFormat("d MMM yyyy", Locale.US)
+private val labDayFmt: SimpleDateFormat get() = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
 private fun labDayLabel(epochSeconds: Long): String = labDayFmt.format(Date(epochSeconds * 1000L))
 
 /** "yyyy-MM-dd" parser + "d MMM yyyy" render, both pinned to UTC, so a stored day key renders the same
@@ -768,7 +768,7 @@ private fun labDayLabel(epochSeconds: Long): String = labDayFmt.format(Date(epoc
 private val labDayKeyParser = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
     timeZone = java.util.TimeZone.getTimeZone("UTC")
 }
-private val labDayKeyFmt = SimpleDateFormat("d MMM yyyy", Locale.US).apply {
+private val labDayKeyFmt = SimpleDateFormat("d MMM yyyy", Locale.getDefault()).apply {
     timeZone = java.util.TimeZone.getTimeZone("UTC")
 }
 private fun labDayFromKey(day: String): String =

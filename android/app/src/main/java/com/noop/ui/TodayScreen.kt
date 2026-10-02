@@ -1722,9 +1722,15 @@ fun TodayScreen(
                             // for a navigated past day so the caption is a TODAY-only explanation.
                             val todayEffort = if (selectedDayOffset == 0) effortForDay else null
                             if (todayEffort != null && todayEffort < 1.0) {
+                                // On a frosted surface with secondary text: straight on the day-cycle sky the
+                                // tertiary grey was almost invisible (reported on a bright afternoon sky).
                                 Row(
-                                    modifier = Modifier.padding(horizontal = 2.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .frostedCardSurface(cornerRadius = 12.dp)
+                                        .padding(horizontal = 12.dp, vertical = 10.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                                     verticalAlignment = Alignment.Top,
                                 ) {
                                     Icon(
@@ -1736,7 +1742,7 @@ fun TodayScreen(
                                     Text(
                                         uiString(R.string.l10n_today_screen_no_cardio_load_yet_effort_builds_e952006c),
                                         style = NoopType.footnote,
-                                        color = Palette.textTertiary,
+                                        color = Palette.textSecondary,
                                     )
                                 }
                             }
@@ -3293,7 +3299,8 @@ private fun HeroRingColumn(
             // from pushing the third column right or being clipped at the screen edge.
             AutoSizeValue(
                 text = domainLabelShort.uppercase(),
-                style = NoopType.overline,
+                // Tracking eased from the overline's 1.4 so "BELASTUNG" fits a third of a phone at full size.
+                style = NoopType.overline.copy(letterSpacing = 0.5.sp),
                 color = Palette.textSecondary,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -3327,7 +3334,8 @@ private fun HeroRingColumn(
             Text(
                 text = caption,
                 style = NoopType.footnote,
-                color = Palette.textTertiary,
+                // textSecondary, not Tertiary: on the hero's sky background the tertiary grey was barely legible.
+                color = Palette.textSecondary,
                 maxLines = 2,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -3780,7 +3788,14 @@ private fun HeroMetricRows(
             verticalArrangement = Arrangement.spacedBy(Metrics.space12),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Overline(uiString(R.string.today_section_recovery_vitals), modifier = Modifier.weight(1f))
+                // One line that shrinks to fit: next to the date, "ERHOLUNGSWERTE" broke mid-word otherwise.
+                AutoSizeValue(
+                    text = uiString(R.string.today_section_recovery_vitals).uppercase(),
+                    style = NoopType.overline,
+                    color = Palette.textSecondary,
+                    minScale = 0.7f,
+                    modifier = Modifier.weight(1f).padding(end = Metrics.space8),
+                )
                 // iOS `lastNightLine` — today's own "Last night · <date>" unless the shown vitals are a carry.
                 Text(
                     if (carriedFromVitals) carriedCaption(vitalsDay!!.day).localized() else heroVitalsLastNightLine(),
@@ -4624,12 +4639,11 @@ private fun DashboardCardRow(
             verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
             // iOS: overline 11 / +1.0 tracking, textPrimary.
-            Text(
-                uiString(card.titleRes).uppercase(),
-                style = NoopType.overline.copy(fontSize = 11.sp, letterSpacing = 1.0.sp),
+            AutoSizeValue(
+                text = uiString(card.titleRes).uppercase(),
+                style = NoopType.overline.copy(fontSize = 11.sp, letterSpacing = 0.6.sp),
                 color = Palette.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                minScale = 0.75f,
             )
             Text(
                 subtitleOverride ?: uiString(card.subtitleRes),
@@ -6117,7 +6131,7 @@ private fun MetricGrid(
             KeyTileData(
                 label = uiString(R.string.l10n_today_screen_respiratory_1cd8c175),
                 value = v?.let { String.format(Locale.getDefault(), "%.1f", it) } ?: NO_DATA,
-                unit = if (v != null) "rpm" else "",
+                unit = if (v != null) uiText("rpm") else "",
                 tint = Palette.accent,
                 frac = v?.let { (it / 24.0).coerceIn(0.0, 1.0) },
                 spark = w.resp,
@@ -6365,12 +6379,11 @@ private fun LiquidKeyTile(
                 tint = data.tint.copy(alpha = 0.72f),
                 modifier = Modifier.size(12.dp),
             )
-            Text(
-                data.label.uppercase(),
-                style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 1.2.sp),
+            AutoSizeValue(
+                text = data.label.uppercase(),
+                style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 0.5.sp),
                 color = Palette.textTertiary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                minScale = 0.8f,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -7980,9 +7993,9 @@ private fun localizedMetricValue(value: String): String = when (value) {
     else -> value
 }
 
-private val workoutDateFmt: DateTimeFormatter =
+private val workoutDateFmt: DateTimeFormatter get() =
     DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()).withZone(ZoneId.systemDefault())
-private val workoutTimeFmt: DateTimeFormatter =
+private val workoutTimeFmt: DateTimeFormatter get() =
     // Respect the device's 12-/24-hour locale (#337): "7:10 AM" where 12-hour is preferred, "19:10"
     // where 24-hour is, instead of forcing 24-hour on everyone.
     DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)

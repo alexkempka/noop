@@ -258,7 +258,7 @@ internal fun vitalReadingDateLabel(day: String): String {
     return when (date) {
         today -> uiText("Today")
         today.minusDays(1) -> uiText("Yesterday")
-        else -> date.format(DateTimeFormatter.ofPattern("d MMM", Locale.US))
+        else -> date.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
     }
 }
 

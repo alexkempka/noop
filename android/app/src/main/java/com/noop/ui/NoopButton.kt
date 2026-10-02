@@ -202,15 +202,16 @@ fun NoopButton(
                 modifier = Modifier.height(18.dp),
             )
         }
-        Text(
+        // Shrinks a little before it ellipsises: a German label in a half-width button ("Aus Fotos wählen")
+        // read as "Aus Fot…".
+        AutoSizeValue(
             text = text,
             style = NoopType.headline.copy(
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 0.2.sp, // a hair of openness on the semibold face (iOS tracking 0.2)
             ),
             color = appearance.label,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            minScale = 0.75f,
         )
     }
 }
