@@ -252,17 +252,11 @@ fun JournalLogCard(
                 Text(
                     when {
                         editing ->
-                            "Rename, regroup, or remove an item to tidy your list. Renaming keeps the " +
-                                "original question behind the scenes, so a WHOOP import still lines up. " +
-                                "Custom items are deleted; built-in ones are hidden and can be restored below."
+                            uiString(R.string.l10n_journal_log_rename_regroup_or_remove_an_item_e3ae474b)
                         dayOffset == -1L ->
-                            "Logging ahead for tomorrow: today's activities inform tomorrow's " +
-                                "recovery, just as yesterday's are reflected in today's. Tomorrow's " +
-                                "answers line up with tomorrow's morning."
+                            uiString(R.string.l10n_journal_log_logging_ahead_for_tomorrow_today_s_675651b2)
                         else ->
-                            "Answers are about the night and day leading into this morning, the " +
-                                "same attribution a WHOOP export uses, so logged and imported days " +
-                                "line up."
+                            uiString(R.string.l10n_journal_log_answers_are_about_the_night_and_06d55af5)
                     },
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
@@ -442,7 +436,7 @@ private fun JournalItemEditControls(
                     onClick = { menuOpen = false; groupMenuOpen = true },
                 )
                 androidx.compose.material3.DropdownMenuItem(
-                    text = { Text(if (item.kind.isNumeric) "Change to Yes/No" else "Change to Number") },
+                    text = { Text(if (item.kind.isNumeric) uiString(R.string.l10n_journal_log_change_to_yes_no_fc3128aa) else uiString(R.string.l10n_journal_log_change_to_number_be3326c5)) },
                     onClick = {
                         menuOpen = false
                         onSetKind(if (item.kind.isNumeric) JournalKind.Bool else JournalKind.Numeric(null))
@@ -574,7 +568,7 @@ private fun JournalChip(label: String, selected: Boolean, onClick: () -> Unit) {
 private fun JournalRemoveButton(isCustom: Boolean, onClick: () -> Unit) {
     val shape = RoundedCornerShape(50)
     Text(
-        if (isCustom) "Delete" else "Hide",
+        if (isCustom) uiString(R.string.l10n_journal_log_delete_f6fdbe48) else uiString(R.string.l10n_journal_log_hide_34d8b60f),
         style = NoopType.caption,
         color = Palette.statusCritical,
         modifier = Modifier

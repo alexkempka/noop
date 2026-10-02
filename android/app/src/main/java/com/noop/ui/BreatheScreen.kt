@@ -466,7 +466,7 @@ fun BreatheScreen(viewModel: AppViewModel) {
     val skyBehindCards = remember { NoopPrefs.skyBehindCards(skyCtx) }
     ScreenScaffold(
         title = uiString(R.string.l10n_breathe_screen_breathe_282be568),
-        subtitle = "Haptic-paced breathing · find your pace · calm down",
+        subtitle = uiString(R.string.l10n_breathe_screen_haptic_paced_breathing_find_your_pace_35c8c4af),
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the time-of-day liquid sky settles
         // into the theme canvas behind the header + top card and bleeds full-width up behind the status bar
         // via the scaffold's topBackground plumbing. The Android equivalent of the iOS
@@ -575,7 +575,7 @@ fun BreatheScreen(viewModel: AppViewModel) {
                     }
                     when {
                         bpmSelected > 0 -> Text(
-                            String.format(Locale.US, "%.1f br/min", bpmSelected),
+                            String.format(Locale.US, uiString(R.string.l10n_breathe_screen_1f_br_min_2d79de54), bpmSelected),
                             style = NoopType.captionNumber, color = Palette.textSecondary,
                         )
                         guided -> Text(
@@ -685,7 +685,7 @@ fun BreatheScreen(viewModel: AppViewModel) {
                     contentDescription = null,
                     modifier = Modifier.padding(end = 6.dp),
                 )
-                Text(if (running) "Stop session" else "Start session", style = NoopType.headline)
+                Text(if (running) uiString(R.string.l10n_breathe_screen_stop_session_51a72359) else uiString(R.string.l10n_breathe_screen_start_session_76684eaf), style = NoopType.headline)
             }
 
             OutlinedButton(
@@ -1159,7 +1159,7 @@ private fun ResonanceMode(
             NoopCard(tint = Palette.restColor) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(sweepLabel ?: "Sweeping…", style = NoopType.headline, color = Palette.textPrimary)
+                        Text(sweepLabel ?: uiString(R.string.l10n_breathe_screen_sweeping_007fe416), style = NoopType.headline, color = Palette.textPrimary)
                         Spacer(Modifier.weight(1f))
                         StatePill("Live", tone = StrandTone.Accent, pulsing = true)
                     }

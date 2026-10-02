@@ -293,8 +293,8 @@ private fun CaffeineActiveHint(estimate: CaffeineActiveEstimate, hasAnyLog: Bool
     if (estimate.hasActive) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                estimate.totalRemainingMg?.let { "About ${it.roundToInt()} mg may still be active" }
-                    ?: "Caffeine may still be active",
+                estimate.totalRemainingMg?.let { uiString(R.string.l10n_caffeine_log_about_mg_may_still_be_active_2c2166e8, it.roundToInt()) }
+                    ?: uiString(R.string.l10n_caffeine_log_caffeine_may_still_be_active_4890ab03),
                 style = NoopType.headline,
                 color = Palette.textPrimary,
             )
@@ -302,8 +302,8 @@ private fun CaffeineActiveHint(estimate: CaffeineActiveEstimate, hasAnyLog: Bool
         }
     } else {
         Text(
-            if (!hasAnyLog) "No caffeine logged. Log an intake to see an estimate."
-            else "Estimated mostly cleared. Nothing logged is likely still active.",
+            if (!hasAnyLog) uiString(R.string.l10n_caffeine_log_no_caffeine_logged_log_an_intake_ebbc2682)
+            else uiString(R.string.l10n_caffeine_log_estimated_mostly_cleared_nothing_logged_is_7f6a7520),
             style = NoopType.footnote,
             color = Palette.textTertiary,
         )

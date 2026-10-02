@@ -180,7 +180,7 @@ fun HrvSnapshotScreen(
     // spacing identical (LazyColumn reproduces the eager `spacedBy(20.dp)`).
     LazyScreenScaffold(
         title = uiString(R.string.l10n_hrv_snapshot_screen_hrv_reading_a2cf71f3),
-        subtitle = "A still, seated snapshot of your heart-rate variability",
+        subtitle = uiString(R.string.l10n_hrv_snapshot_screen_a_still_seated_snapshot_of_your_8eab3627),
     ) {
         // Status row.
         item {
@@ -306,7 +306,7 @@ fun HrvSnapshotScreen(
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Palette.accent),
                 ) {
                     Icon(Icons.Filled.Download, contentDescription = null, modifier = Modifier.padding(end = 6.dp))
-                    Text(if (saved) "Saved" else "Save", style = NoopType.body)
+                    Text(if (saved) uiString(R.string.l10n_hrv_snapshot_screen_saved_c0ae8f6e) else uiString(R.string.l10n_hrv_snapshot_screen_save_efc007a3), style = NoopType.body)
                 }
             }
         }
@@ -356,7 +356,7 @@ private fun CaptureDial(fraction: Float, value: String, unit: String, sub: Strin
         label = uiString(R.string.l10n_hrv_snapshot_screen_hrvdial_4c244c45),
     )
     val a11y = when {
-        sub != null -> "Capturing. $value milliseconds RMSSD so far. $sub."
+        sub != null -> uiString(R.string.l10n_hrv_snapshot_screen_capturing_milliseconds_rmssd_so_far_d5392fca, value, sub)
         else -> "$value $unit"
     }
     Box(
@@ -455,7 +455,7 @@ private fun ResultCard(result: HrvAnalyzer.HrvResult) {
                         modifier = Modifier.weight(1f),
                         label = uiString(R.string.l10n_hrv_snapshot_screen_beats_12aafda0),
                         value = "${result.nClean}",
-                        caption = "used",
+                        caption = uiString(R.string.l10n_hrv_snapshot_screen_used_192a5675),
                         accent = Palette.metricCyan,
                     )
                 }

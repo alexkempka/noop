@@ -994,7 +994,7 @@ private fun MoreScreen(onNavigate: (String) -> Unit) {
     val skyBehindCards = remember { NoopPrefs.skyBehindCards(context) }
     ScreenScaffold(
         title = uiString(R.string.l10n_app_root_more_4bab2d8f),
-        subtitle = "Everything else, one tap away",
+        subtitle = uiString(R.string.l10n_app_root_everything_else_one_tap_away_6d748a38),
         topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
         // Sky-behind-cards fills the viewport so the transparent cards reveal the sky the whole way down.
         fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
@@ -1053,7 +1053,7 @@ private fun MoreGroupHeader(title: String, expanded: Boolean, onToggle: () -> Un
             .clickable(onClick = onToggle)
             .semantics {
                 contentDescription = title
-                stateDescription = if (expanded) "Expanded" else "Collapsed"
+                stateDescription = if (expanded) uiString(R.string.l10n_app_root_expanded_6d170474) else uiString(R.string.l10n_app_root_collapsed_0084e8fa)
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {

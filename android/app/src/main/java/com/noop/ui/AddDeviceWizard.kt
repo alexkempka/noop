@@ -1015,7 +1015,7 @@ private fun FtmsPickStep(
         discovered.sortedByDescending { it.rssi }.forEach { machine ->
             DiscoveredRow(
                 name = machine.name,
-                subtitle = "Gym equipment",
+                subtitle = uiString(R.string.l10n_add_device_wizard_gym_equipment_3da4ea18),
                 rssi = machine.rssi,
                 onTap = { onSelect(machine) },
             )
@@ -1035,7 +1035,7 @@ private fun HuamiPickStep(
         discovered.sortedByDescending { it.rssi }.forEach { dev ->
             DiscoveredRow(
                 name = dev.name,
-                subtitle = "Experimental",
+                subtitle = uiString(R.string.l10n_add_device_wizard_experimental_b718f8c3),
                 rssi = dev.rssi,
                 onTap = { onSelect(dev) },
             )
@@ -1470,9 +1470,7 @@ private fun OuraFailedStep(reason: String?, onTryAgain: () -> Unit, onUseFileImp
         // Surface the live adopt-failure reason when the source reported one; otherwise the static help.
         // Mirrors the Swift wizard's `model.ouraNeedsPairing ?? <static fallback>`.
         Text(
-            reason ?: "The most common cause is the ring was not fully reset in the Oura app, or the Oura " +
-                "app is still running. Reset the ring again, force-quit Oura, then try once more. If it keeps " +
-                "failing, your ring may be a generation NOOP cannot adopt yet. You can still use file import.",
+            reason ?: uiString(R.string.l10n_add_device_wizard_the_most_common_cause_is_the_f9e64e82),
             style = NoopType.subhead,
             color = Palette.textSecondary,
         )

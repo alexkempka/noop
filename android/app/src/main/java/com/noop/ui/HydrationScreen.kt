@@ -183,7 +183,7 @@ fun HydrationScreen(viewModel: AppViewModel) {
     // opted-out user still gets the plain surface. Mirrors the liquid Today scaffold.
     LazyScreenScaffold(
         title = uiString(R.string.l10n_hydration_screen_hydration_bdfb040f),
-        subtitle = "Your fluid intake today, on this phone only.",
+        subtitle = uiString(R.string.l10n_hydration_screen_your_fluid_intake_today_on_this_b4c5c1b8),
         topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
         // Sky-behind-cards fills the viewport so the transparent cards reveal the sky the whole way
         // down (Today / Trends / Sleep / metric-detail parity - same two prefs, same two behaviours).
@@ -237,7 +237,7 @@ fun HydrationScreen(viewModel: AppViewModel) {
                                 color = Color.White,
                             )
                             Text(
-                                String.format(Locale.US, "of %.1f L", goalMl / 1000.0),
+                                String.format(Locale.US, uiString(R.string.l10n_hydration_screen_of_1f_l_f71f77cc), goalMl / 1000.0),
                                 style = NoopType.subhead,
                                 color = Color.White.copy(alpha = 0.72f),
                             )
@@ -446,7 +446,7 @@ private fun LiquidLogTile(
             .clickable(
                 interactionSource = interaction,
                 indication = null,
-                onClickLabel = "Log $label",
+                onClickLabel = uiString(R.string.l10n_hydration_screen_log_859e54be, label),
                 onClick = onLog,
             )
             .padding(vertical = 14.dp),

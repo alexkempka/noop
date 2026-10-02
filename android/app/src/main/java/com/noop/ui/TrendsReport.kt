@@ -63,6 +63,15 @@ enum class ReportRange(val days: Int?, val label: String, val longName: String) 
     All(null, "All", "All history"),
 }
 
+/** [ReportRange.longName] for on-screen copy. The PDF header keeps the English `longName`. */
+internal fun ReportRange.localizedLongName(): String = when (this) {
+    ReportRange.Days30 -> uiString(R.string.l10n_trends_report_range_last_30_days)
+    ReportRange.Days90 -> uiString(R.string.l10n_trends_report_range_last_90_days)
+    ReportRange.Days180 -> uiString(R.string.l10n_trends_report_range_last_6_months)
+    ReportRange.Days365 -> uiString(R.string.l10n_trends_report_range_last_year)
+    ReportRange.All -> uiString(R.string.l10n_trends_report_range_all_history)
+}
+
 // MARK: - Data builder (pure glue over the engine)
 
 object TrendsReportData {
@@ -470,9 +479,7 @@ object TrendsReportRenderer {
         drawCard(canvas, MARGIN, top, PAGE_W - MARGIN, top + cardH, null)
         val left = MARGIN + 16f
         text(canvas, "Not enough data in this range yet", left, top + 30f, 16f, sansBold, TEXT_PRIMARY)
-        val body = "No workout, stress, recovery, sleep, HRV, resting-HR, strain, respiratory-rate or " +
-            "skin-temp readings fell inside ${range.longName.lowercase()}. Wear your strap a few more days, " +
-            "or pick a wider range, then export again."
+        val body = uiString(R.string.l10n_trends_report_no_workout_stress_recovery_sleep_hrv_78e17114, range.localizedLongName())
         drawWrapped(canvas, body, left, top + 52f, PAGE_W - MARGIN - left - 16f, 16f, 12f, sans, TEXT_SECONDARY)
     }
 
@@ -716,7 +723,7 @@ fun TrendsReportExportSection(vm: AppViewModel, modifier: Modifier = Modifier) {
                 label = { it.label },
                 onSelect = { range = it },
             )
-            Text(range.longName, style = NoopType.footnote, color = Palette.textTertiary)
+            Text(range.localizedLongName().replaceFirstChar { it.uppercase() }, style = NoopType.footnote, color = Palette.textTertiary)
 
             // Routed through the unified NoopButton (crisp filled accent, no gold) — the same button
             // system every other CTA uses, mirroring the iOS exportReportRow.

@@ -50,6 +50,15 @@ import kotlin.math.sqrt
 /** One face on the check-in scale. `value` is the stored 1.0–5.0 contract value. */
 private data class MoodFace(val emoji: String, val value: Double, val word: String)
 
+/** The on-screen word for a mood face. [MoodFace.word] stays the English identity of the face. */
+private fun moodWord(face: MoodFace): String = when (face.value.toInt()) {
+    1 -> uiString(R.string.l10n_mind_section_mood_awful)
+    2 -> uiString(R.string.l10n_mind_section_mood_low)
+    3 -> uiString(R.string.l10n_mind_section_mood_okay)
+    4 -> uiString(R.string.l10n_mind_section_mood_good)
+    else -> uiString(R.string.l10n_mind_section_mood_great)
+}
+
 private val MOOD_FACES = listOf(
     MoodFace("😞", 1.0, "Awful"),   // 😞
     MoodFace("😕", 2.0, "Low"),     // 😕
@@ -150,7 +159,7 @@ fun MindSection(vm: AppViewModel) {
                         Text(face.emoji, style = NoopType.number(26f))
                         Spacer(Modifier.width(10.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(face.word, style = NoopType.headline, color = Palette.textPrimary)
+                            Text(moodWord(face), style = NoopType.headline, color = Palette.textPrimary)
                             Text(uiString(R.string.l10n_mind_section_logged_today_0071a46c), style = NoopType.caption, color = Palette.textTertiary)
                         }
                         MoodChip("Edit") { editing = true }
@@ -198,7 +207,7 @@ fun MindSection(vm: AppViewModel) {
 @Composable
 private fun MoodFaceButton(face: MoodFace, selected: Boolean, onClick: () -> Unit) {
     val shape = RoundedCornerShape(50)
-    val desc = "${face.word}, mood ${face.value.toInt()} of 5"
+    val desc = uiString(R.string.l10n_mind_section_mood_of_5_760d1c0d, moodWord(face), face.value.toInt())
     Box(
         modifier = Modifier
             .clip(shape)

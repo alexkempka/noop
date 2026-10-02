@@ -399,7 +399,7 @@ private fun WeeklyDigestNav(
                 NoopCard { WeeklyDigestContent(digest = digest, compact = true) }
             }
             NoopButton(
-                text = "Share recap",
+                text = uiString(R.string.l10n_trends_screen_share_recap_c1268ca7),
                 leadingIcon = Icons.Filled.IosShare,
                 kind = NoopButtonKind.Secondary,
                 onClick = {

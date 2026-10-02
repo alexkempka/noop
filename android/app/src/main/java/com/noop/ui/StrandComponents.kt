@@ -165,7 +165,7 @@ internal fun DayNavBar(
                 // dark-yellow block); the gold pop lives only on the date text itself.
                 .background(Palette.surfaceInset)
                 .border(Metrics.divider, Palette.hairline, blockShape)
-                .clickable(onClickLabel = "Pick a date") { showPicker = true }
+                .clickable(onClickLabel = uiString(R.string.l10n_strand_components_pick_a_date_629b7ca5)) { showPicker = true }
                 .padding(vertical = Metrics.selectorPadding, horizontal = Metrics.selectorPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

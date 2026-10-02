@@ -227,6 +227,20 @@ private object CompareCatalog {
 // MARK: - Range control (shared spec — W / M / 3M / 6M / 1Y / ALL)
 
 /** The canonical Strand range window. [days] == null means ALL of history. */
+/**
+ * [CompareRange.phrase] for sentences that are themselves translated. The enum's own `phrase` stays English
+ * because the untranslated headers above still read it; dropping it into a German sentence produced
+ * "innerhalb von the last 7 days".
+ */
+private fun CompareRange.localizedPhrase(): String = when (this) {
+    CompareRange.Week -> uiString(R.string.l10n_compare_screen_range_phrase_week)
+    CompareRange.Month -> uiString(R.string.l10n_compare_screen_range_phrase_month)
+    CompareRange.Quarter -> uiString(R.string.l10n_compare_screen_range_phrase_quarter)
+    CompareRange.Half -> uiString(R.string.l10n_compare_screen_range_phrase_half)
+    CompareRange.Year -> uiString(R.string.l10n_compare_screen_range_phrase_year)
+    CompareRange.All -> uiString(R.string.l10n_compare_screen_range_phrase_all)
+}
+
 private enum class CompareRange(val label: String, val days: Int?, val phrase: String) {
     Week("W", 7, "the last 7 days"),
     Month("M", 30, "30 days"),
@@ -476,7 +490,7 @@ fun CompareScreen(vm: AppViewModel) {
 
     LazyScreenScaffold(
         title = uiString(R.string.l10n_compare_screen_compare_8d105cf4),
-        subtitle = "Overlay signals, draw conclusions.",
+        subtitle = uiString(R.string.l10n_compare_screen_overlay_signals_draw_conclusions_d4fb7bee),
         // Liquid sky backdrop (LiquidScreenSky.kt) in the scaffold's topBackground slot, gated on the
         // day-cycle preference — the same pilot plumbing the liquid Today uses.
         topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
@@ -568,8 +582,7 @@ fun CompareScreen(vm: AppViewModel) {
                     item {
                         DataPendingNote(
                             title = uiString(R.string.l10n_compare_screen_compare_needs_at_least_two_metrics_2bfe1fad),
-                            body = "Compare needs at least two metrics with history. Import your " +
-                                "WHOOP export in Data Sources first.",
+                            body = uiString(R.string.l10n_compare_screen_compare_needs_at_least_two_metrics_44ec15c9),
                         )
                     }
                 } else {
@@ -645,7 +658,7 @@ private fun AddMetricMenu(
                 modifier = Modifier.size(16.dp),
             )
             Text(
-                if (atMax) "Max 4" else "Add metric",
+                if (atMax) uiString(R.string.l10n_compare_screen_max_4_2e3d8d84) else uiString(R.string.l10n_compare_screen_add_metric_0a6b5a85),
                 style = NoopType.subhead,
                 color = tint,
                 maxLines = 1,
@@ -805,9 +818,9 @@ private fun OverlaySection(
                 Overline("Normalized overlay")
                 Text(
                     if (anyWidened) {
-                        "Each line min-max normalized · sparse series widened past ${range.phrase}"
+                        uiString(R.string.l10n_compare_screen_each_line_min_max_normalized_sparse_98c4cb04, range.localizedPhrase())
                     } else {
-                        "Each line min-max normalized within ${range.phrase}"
+                        uiString(R.string.l10n_compare_screen_each_line_min_max_normalized_within_d384d684, range.localizedPhrase())
                     },
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
@@ -1264,7 +1277,7 @@ private fun CorrelationSection(series: List<CompareSeries>, range: CompareRange)
         if (pairs.isEmpty()) {
             NoopCard {
                 Text(
-                    uiString(R.string.l10n_compare_screen_not_enough_overlapping_days_between_these_44563110, range.phrase),
+                    uiString(R.string.l10n_compare_screen_not_enough_overlapping_days_between_these_44563110, range.localizedPhrase()),
                     style = NoopType.subhead,
                     color = Palette.textTertiary,
                 )

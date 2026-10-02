@@ -382,7 +382,7 @@ private fun ZoneRail(zone: Int, zoneSet: com.noop.analytics.HrZoneSet) {
             Spacer(Modifier.weight(1f))
             val capsuleTint = if (zone >= 1) Palette.hrZoneColor(zone) else Palette.effortColor
             Text(
-                if (zone >= 1) "Zone $zone · ${zoneName(zone)}" else "Below Zone 1",
+                if (zone >= 1) uiString(R.string.l10n_live_workout_screen_zone_88eb4377, zone, zoneName(zone)) else uiString(R.string.l10n_live_workout_screen_below_zone_1_94222d70),
                 style = NoopType.captionNumber,
                 color = capsuleTint,
                 modifier = Modifier
@@ -421,8 +421,8 @@ private fun ZoneRail(zone: Int, zoneSet: com.noop.analytics.HrZoneSet) {
         val band = zoneSet.zones.firstOrNull { it.number == zone }
         Text(
             if (band != null)
-                "Zone $zone: ${band.lower.toInt()} - ${band.upper.toInt()} bpm (${(band.lowerPct * 100).toInt()} - ${(band.upperPct * 100).toInt()}% max HR)"
-            else "Warming up - keep moving to climb into Zone 1.",
+                uiString(R.string.l10n_live_workout_screen_zone_bpm_max_hr_53ac1dd6, zone, band.lower.toInt(), band.upper.toInt(), (band.lowerPct * 100).toInt(), (band.upperPct * 100).toInt())
+            else uiString(R.string.l10n_live_workout_screen_warming_up_keep_moving_to_climb_6e9ee79a),
             style = NoopType.footnote,
             color = Palette.textTertiary,
         )
@@ -430,10 +430,10 @@ private fun ZoneRail(zone: Int, zoneSet: com.noop.analytics.HrZoneSet) {
 }
 
 private fun zoneName(zone: Int): String = when (zone) {
-    1 -> "Recovery"
-    2 -> "Fat burn"
-    3 -> "Aerobic"
-    4 -> "Threshold"
-    5 -> "Maximum"
+    1 -> uiString(R.string.l10n_live_workout_screen_zone_name_recovery)
+    2 -> uiString(R.string.l10n_live_workout_screen_zone_name_fat_burn)
+    3 -> uiString(R.string.l10n_live_workout_screen_zone_name_aerobic)
+    4 -> uiString(R.string.l10n_live_workout_screen_zone_name_threshold)
+    5 -> uiString(R.string.l10n_live_workout_screen_zone_name_maximum)
     else -> ""
 }

@@ -526,7 +526,7 @@ internal fun NightNavHeader(
                     // the gold pop lives only on the date text below.
                     .background(Palette.surfaceInset)
                     .border(Metrics.divider, Palette.hairline, blockShape)
-                    .clickable(enabled = onPickNightDate != null, onClickLabel = "Pick night date") { showDatePicker = true }
+                    .clickable(enabled = onPickNightDate != null, onClickLabel = uiString(R.string.l10n_sleep_night_nav_ui_pick_night_date_99db89e3)) { showDatePicker = true }
                     .padding(vertical = Metrics.selectorPadding, horizontal = Metrics.selectorPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {

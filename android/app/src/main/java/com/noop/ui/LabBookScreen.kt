@@ -163,7 +163,7 @@ fun LabBookScreen(vm: AppViewModel) {
     // byte-identical; the sheets below the scaffold are untouched.
     LazyScreenScaffold(
         title = uiString(R.string.l10n_lab_book_screen_lab_book_f966c140),
-        subtitle = "Your bloods, BP and body numbers. Kept private, on this phone.",
+        subtitle = uiString(R.string.l10n_lab_book_screen_your_bloods_bp_and_body_numbers_ae4dd5dc),
     ) {
         // Header card: count + scope + add action.
         item {
@@ -491,8 +491,7 @@ private fun CorrelationResult(
         computing -> Text(uiString(R.string.l10n_lab_book_screen_lining_them_up_c59ee297), style = NoopType.subhead, color = Palette.textTertiary)
         n < LAB_FLOOR -> Text(
             if (n == 0) {
-                "No overlap yet between this marker and ${signal.title.lowercase()}. Log a few more readings " +
-                    "(and keep wearing your strap)."
+                uiString(R.string.l10n_lab_book_screen_no_overlap_yet_between_this_marker_287f74eb, signal.title.lowercase())
             } else {
                 "$n reading${if (n == 1) "" else "s"} line up so far, not enough to read a trend yet " +
                     "(NOOP waits for $LAB_FLOOR)."
@@ -538,7 +537,7 @@ private fun SignalPicker(selected: LabSignal?, onSelect: (LabSignal?) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Icon(Icons.Filled.Add, contentDescription = null, tint = Palette.accent, modifier = Modifier.size(16.dp))
-            Text(selected?.title ?: "Choose a signal", style = NoopType.subhead, color = Palette.accent)
+            Text(selected?.title ?: uiString(R.string.l10n_lab_book_screen_choose_a_signal_1375f40a), style = NoopType.subhead, color = Palette.accent)
         }
         androidx.compose.material3.DropdownMenu(
             expanded = expanded,

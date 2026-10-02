@@ -68,7 +68,7 @@ private val LIMIT_ROWS: List<LimitRow> = listOf(
 fun NoopLimitationsScreen() {
     ScreenScaffold(
         title = stringResource(R.string.nav_noop_limitations),
-        subtitle = "What each strap can read",
+        subtitle = uiString(R.string.l10n_noop_limitations_screen_what_each_strap_can_read_d601fac3),
     ) {
         LimitTableCard()
         LegendCard()
@@ -82,7 +82,7 @@ private fun LimitTableCard() {
             Overline("What NOOP reads")
             // Column header.
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Feature", style = NoopType.caption, color = Palette.textTertiary, modifier = Modifier.weight(1f))
+                Text(uiString(R.string.l10n_noop_limitations_screen_feature_ad565d9d), style = NoopType.caption, color = Palette.textTertiary, modifier = Modifier.weight(1f))
                 Text("4.0", style = NoopType.caption, color = Palette.textTertiary, textAlign = TextAlign.Center, modifier = Modifier.width(48.dp))
                 Text("5.0/MG", style = NoopType.caption, color = Palette.textTertiary, textAlign = TextAlign.Center, modifier = Modifier.width(48.dp))
             }
@@ -90,7 +90,7 @@ private fun LimitTableCard() {
                 if (idx > 0) Hairline()
                 Row(
                     modifier = Modifier.fillMaxWidth().semantics {
-                        contentDescription = "${row.feature}: WHOOP 4.0 ${row.whoop4.spoken}, 5.0/MG ${row.whoop5.spoken}"
+                        contentDescription = uiString(R.string.l10n_noop_limitations_screen_whoop_4_0_5_0_mg_1d67e797, row.feature, row.whoop4.spoken, row.whoop5.spoken)
                     },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {

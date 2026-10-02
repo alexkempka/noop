@@ -180,7 +180,7 @@ fun DevicesScreen(
     // Conditional rows use `if (cond) { item/items }` so a hidden section adds no row.
     LazyScreenScaffold(
         title = uiString(R.string.l10n_devices_screen_devices_df485c87),
-        subtitle = "Pair and manage the bands NOOP reads from.",
+        subtitle = uiString(R.string.l10n_devices_screen_pair_and_manage_the_bands_noop_87021a2a),
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the time-of-day liquid sky settles
         // into the flat canvas behind the top of the screen so the frosted device cards float over it. The
         // static sky (LiquidSkyStatic inside the helper) carries no per-frame cost on this scrolling list.
@@ -220,7 +220,7 @@ fun DevicesScreen(
             item {
             DataPendingNote(
                 title = uiString(R.string.l10n_devices_screen_getting_your_devices_ready_bd391949),
-                body = "NOOP is opening your on-device data. Your paired bands will appear here in a moment.",
+                body = uiString(R.string.l10n_devices_screen_noop_is_opening_your_on_device_da28c1fb),
             )
             }
             return@LazyScreenScaffold
@@ -396,9 +396,8 @@ fun DevicesScreen(
     switchTarget?.let { device ->
         ConfirmDialog(
             title = uiString(R.string.l10n_devices_screen_make_this_your_active_strap_fea6bebd),
-            message = "Make ${displayName(device)} your active strap? From now on it provides your live data. " +
-                "$currentActiveName's history stays exactly as it is. Only new days come from ${displayName(device)}.",
-            confirmLabel = "Make active",
+            message = uiString(R.string.l10n_devices_screen_make_your_active_strap_from_now_86a4fbf5, displayName(device), currentActiveName, displayName(device)),
+            confirmLabel = uiString(R.string.l10n_devices_screen_make_active_75690bb8),
             onConfirm = {
                 scope.launch { viewModel.setActiveDevice(device.id); reload() }
                 switchTarget = null
@@ -423,9 +422,8 @@ fun DevicesScreen(
     removeTarget?.let { device ->
         ConfirmDialog(
             title = uiString(R.string.l10n_devices_screen_remove_this_device_dd9dbda9),
-            message = "Remove ${displayName(device)}? NOOP will stop connecting to it. Its recorded data is " +
-                "kept and you can re-add it any time.",
-            confirmLabel = "Remove",
+            message = uiString(R.string.l10n_devices_screen_remove_noop_will_stop_connecting_to_a1b78a91, displayName(device)),
+            confirmLabel = uiString(R.string.l10n_devices_screen_remove_e963907d),
             destructive = true,
             onConfirm = {
                 val wasActive = device.status == DeviceStatus.active.name
@@ -448,9 +446,8 @@ fun DevicesScreen(
     rebootTarget?.let { device ->
         ConfirmDialog(
             title = uiString(R.string.l10n_devices_screen_restart_this_strap_50fc481b),
-            message = "Restart ${displayName(device)}? It disconnects for about 30 seconds while it " +
-                "reboots, then reconnects on its own. Your recorded data is kept.",
-            confirmLabel = "Restart",
+            message = uiString(R.string.l10n_devices_screen_restart_it_disconnects_for_about_30_d96bb7b6, displayName(device)),
+            confirmLabel = uiString(R.string.l10n_devices_screen_restart_b134bd55),
             destructive = false,
             onConfirm = { viewModel.rebootStrap(); rebootTarget = null },
             onDismiss = { rebootTarget = null },
@@ -541,8 +538,8 @@ fun DevicesScreen(
     deleteDataTarget?.let { device ->
         ConfirmDialog(
             title = uiString(R.string.l10n_devices_screen_delete_all_of_this_device_s_754cde90),
-            message = "This permanently deletes all data recorded from ${displayName(device)}. This can't be undone.",
-            confirmLabel = "Delete data",
+            message = uiString(R.string.l10n_devices_screen_this_permanently_deletes_all_data_recorded_c80392bd, displayName(device)),
+            confirmLabel = uiString(R.string.l10n_devices_screen_delete_data_cfbcfa19),
             destructive = true,
             onConfirm = {
                 scope.launch { viewModel.deletePairedDeviceData(device.id); reload() }
@@ -791,7 +788,7 @@ private fun DeviceCard(
         .clickable(
             interactionSource = interaction,
             indication = null,
-            onClickLabel = "Device actions for ${displayName(device)}",
+            onClickLabel = uiString(R.string.l10n_devices_screen_device_actions_for_74814a38, displayName(device)),
         ) { menuOpen = true }
 
     // The ACTIVE device is the hero: the liquid translucent-black frosted card (rgba(13,14,20,.80), radius
@@ -873,7 +870,7 @@ private fun DeviceCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     lastSeenLine(device, isLiveConnected, bondRefused) +
-                        (liveFirmware?.let { " · FW $it" } ?: "") +
+                        (liveFirmware?.let { uiString(R.string.l10n_devices_screen_fw_b2b92860, it) } ?: "") +
                         voltsSuffix +
                         packSuffix +
                         (historyLayoutLine(liveHistoryLayout)?.let { " · $it" } ?: ""),
@@ -1763,8 +1760,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "Gym equipment (FTMS)",
             captures = "Speed · Cadence · Power · Distance · Energy · Heart rate (if the machine sends it)",
             powers = "Records a live machine workout, Effort-scored from HR when the machine reports it",
-            footnote = "Live machine data over Bluetooth FTMS. No sleep, recovery, skin temp or SpO₂. " +
-                "Effort needs the machine's heart rate; without it the session logs the machine metrics only.",
+            footnote = uiString(R.string.l10n_devices_screen_live_machine_data_over_bluetooth_ftms_0634e3d2),
         )
     }
     // EXPERIMENTAL Huami device (Amazfit / Zepp / Mi Band): best-effort live HR only, honest about it.
@@ -1773,9 +1769,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "${device.brand} (experimental)",
             captures = "Heart rate (live, best-effort)",
             powers = "Powers the live console + Effort. No Charge, Rest or Sleep",
-            footnote = "Experimental: live heart rate where the band exposes it. Some bands need a pairing " +
-                "we can't do yet. NOOP will say so honestly and never show a made-up number. No sleep, " +
-                "recovery, skin temp, SpO₂ or steps.",
+            footnote = uiString(R.string.l10n_devices_screen_experimental_live_heart_rate_where_the_ecfccba2),
         )
     }
     // EXPERIMENTAL locally-adopted Oura ring (gen 3/4/5). The gen is carried on `model` ("Oura Ring
@@ -1800,9 +1794,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "${gen.displayName} (Beta)",
             captures = captures,
             powers = powers,
-            footnote = "Beta. * is an on-device estimate. Skin temp is a trend versus your own baseline, " +
-                "and HRV needs you to be still. No Oura Readiness or SpO₂ " +
-                "percentage comes off the ring (import an Oura file for those).",
+            footnote = uiString(R.string.l10n_devices_screen_beta_is_an_on_device_estimate_1bbd10f8),
         )
     }
     // Generic heart-rate strap: live HR + R-R only; drives the live console + Effort, nothing nightly.
@@ -1811,8 +1803,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "Heart-rate strap",
             captures = "Heart rate · HRV (live)* · Strain",
             powers = "Powers the live console + Effort. No Charge, Rest or Sleep",
-            footnote = "Live HR + R-R only · no sleep, recovery, skin temp, SpO₂, steps or battery " +
-                "(those are WHOOP-only).",
+            footnote = uiString(R.string.l10n_devices_screen_live_hr_r_r_only_no_302c9dbe),
         )
     }
     val whoopPowers = "Powers Charge, Effort, Rest, Sleep + Health Monitor"
@@ -1823,8 +1814,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "WHOOP 5.0 / MG",
             captures = "Heart rate · HRV · Skin temp* · Resp rate* · Steps* · Sleep · Strain · Battery",
             powers = whoopPowers,
-            footnote = "* on-device estimate: skin temp is a nightly ±°C deviation, steps are a raw " +
-                "motion count (#78). No SpO₂ % off the strap; import a WHOOP CSV for a real %.",
+            footnote = uiString(R.string.l10n_devices_screen_on_device_estimate_skin_temp_is_158ed38c),
         )
     }
     // WHOOP 4.0 — NOOP's primary band; no steps over BLE.
@@ -1833,8 +1823,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
             displayModel = "WHOOP 4.0",
             captures = "Heart rate · HRV · Skin temp* · Resp rate* · Sleep · Strain · Battery",
             powers = whoopPowers,
-            footnote = "* on-device estimate: skin temp is a nightly ±°C deviation (firmware-dependent); " +
-                "no steps over BLE on a 4.0. No SpO₂ % off the strap; import a WHOOP CSV for a real %.",
+            footnote = uiString(R.string.l10n_devices_screen_on_device_estimate_skin_temp_is_f82530d4),
         )
     }
     // Legacy / unknown WHOOP (the seeded device, model just "WHOOP") — show only the common-to-all set.
@@ -1842,8 +1831,7 @@ private fun deviceProfile(device: PairedDeviceRow): DeviceCapabilityProfile {
         displayModel = "WHOOP",
         captures = "Heart rate · HRV · Skin temp* · Resp rate* · Sleep · Strain · Battery",
         powers = whoopPowers,
-        footnote = "Exact model unknown. Shows what every WHOOP can do. * on-device estimate · " +
-            "no SpO₂ % off the strap (import a WHOOP CSV for that).",
+        footnote = uiString(R.string.l10n_devices_screen_exact_model_unknown_shows_what_every_72bd3755),
     )
 }
 

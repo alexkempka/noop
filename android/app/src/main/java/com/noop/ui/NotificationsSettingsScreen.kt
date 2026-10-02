@@ -270,14 +270,13 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
 
     ScreenScaffold(
         title = uiString(R.string.l10n_notifications_settings_screen_notifications_753a22b2),
-        subtitle = "Buzz your strap when these apps notify you. Everything runs on this device.",
+        subtitle = uiString(R.string.l10n_notifications_settings_screen_buzz_your_strap_when_these_apps_124e6da7),
     ) {
         // MARK: Master card
         AlertSection(
             icon = Icons.Filled.NotificationsActive,
             title = uiString(R.string.l10n_notifications_settings_screen_wrist_alerts_75581d51),
-            blurb = "When on, NOOP taps your wrist for the apps you pick below, so you can leave " +
-                "your phone and still feel what matters.",
+            blurb = uiString(R.string.l10n_notifications_settings_screen_when_on_noop_taps_your_wrist_b5931bfe),
         ) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(uiString(R.string.l10n_notifications_settings_screen_enable_wrist_alerts_462b9e0f), style = NoopType.body, color = Palette.textPrimary)
@@ -365,12 +364,12 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
         AlertSection(
             icon = Icons.Filled.Alarm,
             title = uiString(R.string.notif_timer_alarm_title),
-            blurb = "Buzz your wrist when your phone's Clock app finishes a timer or rings an alarm.",
+            blurb = uiString(R.string.l10n_notifications_settings_screen_buzz_your_wrist_when_your_phone_224f3867),
         ) {
             Column(modifier = Modifier.alphaIf(if (masterEnabled) 1f else Palette.disabledOpacity)) {
                 FormToggleRow(
                     label = uiString(R.string.notif_timer_alarm_title),
-                    help = "Requires wrist alerts (above) to be on. Buzzes once when a timer/alarm notification fires.",
+                    help = uiString(R.string.l10n_notifications_settings_screen_requires_wrist_alerts_above_to_be_1e001c9e),
                     checked = alarmTimerEnabled,
                     enabled = masterEnabled,
                     onChange = {
@@ -413,11 +412,11 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
         AlertSection(
             icon = Icons.Filled.Tune,
             title = uiString(R.string.l10n_notifications_settings_screen_behaviour_171ca038),
-            blurb = "Fine-tune when alerts reach your wrist.",
+            blurb = uiString(R.string.l10n_notifications_settings_screen_fine_tune_when_alerts_reach_your_4f40f12d),
         ) {
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_only_buzz_when_worn_6211cee3),
-                help = "Skip alerts when the strap is off your wrist.",
+                help = uiString(R.string.l10n_notifications_settings_screen_skip_alerts_when_the_strap_is_d4dc558d),
                 checked = onlyWhenWorn,
                 onChange = {
                     onlyWhenWorn = it
@@ -427,9 +426,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
             RowDivider()
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_all_other_apps_51a8af2c),
-                help = "Also buzz for apps that aren't in the lists above (e.g. BeReal). Android " +
-                    "doesn't let NOOP see every installed app, so this is how you cover the rest. " +
-                    "Can be chatty; quiet hours and \"only when worn\" still apply.",
+                help = uiString(R.string.l10n_notifications_settings_screen_also_buzz_for_apps_that_aren_36a441d0),
                 checked = allOtherApps,
                 onChange = {
                     allOtherApps = it
@@ -439,7 +436,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
             RowDivider()
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_quiet_hours_706b24d0),
-                help = "Mute wrist alerts overnight.",
+                help = uiString(R.string.l10n_notifications_settings_screen_mute_wrist_alerts_overnight_83422b13),
                 checked = quietHoursEnabled,
                 onChange = {
                     quietHoursEnabled = it
@@ -480,14 +477,11 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
         AlertSection(
             icon = Icons.Filled.NotificationsActive,
             title = uiString(R.string.l10n_notifications_settings_screen_daily_reports_c1a22a74),
-            blurb = "Optional phone notifications, off by default. These arrive after your strap syncs " +
-                "and NOOP scores the data, so they land soon after, not the exact second you wake or " +
-                "finish a workout. Everything is worked out on this phone.",
+            blurb = uiString(R.string.l10n_notifications_settings_screen_optional_phone_notifications_off_by_default_913b3b21),
         ) {
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_morning_recap_45ec05c5),
-                help = "After last night is processed, a notification with your Charge and Rest. Posts " +
-                    "once a day, after your strap has synced the night.",
+                help = uiString(R.string.l10n_notifications_settings_screen_after_last_night_is_processed_a_1452bfea),
                 checked = morningReport,
                 onChange = {
                     morningReport = it
@@ -497,8 +491,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
             RowDivider()
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_post_workout_summary_13e488f5),
-                help = "When a new workout syncs in, a notification with its Effort, duration and average " +
-                    "heart rate. Shows up after the session reaches NOOP on the next sync.",
+                help = uiString(R.string.l10n_notifications_settings_screen_when_a_new_workout_syncs_in_8ee8d2d7),
                 checked = postWorkoutReport,
                 onChange = {
                     postWorkoutReport = it
@@ -512,8 +505,7 @@ fun NotificationsSettingsScreen(vm: AppViewModel) {
             // #593: NOOP's own optimal-strain-reached nudge (not WHOOP's copy).
             FormToggleRow(
                 label = uiString(R.string.l10n_notifications_settings_screen_optimal_strain_reached_2862ec2b),
-                help = "Once a day, a notification when your Effort reaches the low end of today's optimal " +
-                    "strain range (from your recovery). Posts after your strap syncs and NOOP scores the day.",
+                help = uiString(R.string.l10n_notifications_settings_screen_once_a_day_a_notification_when_dc063b2e),
                 checked = strainTargetReport,
                 onChange = {
                     strainTargetReport = it
@@ -557,7 +549,7 @@ private fun CallsCard(
     AlertSection(
         icon = Icons.Filled.Call,
         title = uiString(R.string.l10n_notifications_settings_screen_calls_0a19b7e2),
-        blurb = "Tap your wrist for incoming phone calls and strict best-effort VoIP calls.",
+        blurb = uiString(R.string.l10n_notifications_settings_screen_tap_your_wrist_for_incoming_phone_6f4a129d),
     ) {
         Column(modifier = Modifier.alphaIf(contentAlpha)) {
             Row(
@@ -593,7 +585,7 @@ private fun CallsCard(
                 RowDivider()
                 FormToggleRow(
                     label = uiString(R.string.l10n_notifications_settings_screen_phone_calls_b79420d9),
-                    help = "Needs Phone permission; NOOP never reads numbers or call logs.",
+                    help = uiString(R.string.l10n_notifications_settings_screen_needs_phone_permission_noop_never_reads_486ebd47),
                     checked = phoneCallsEnabled,
                     enabled = masterEnabled,
                     onChange = onPhoneCallsEnabled,
@@ -609,7 +601,7 @@ private fun CallsCard(
                 RowDivider()
                 FormToggleRow(
                     label = uiString(R.string.l10n_notifications_settings_screen_voip_calls_96c5a102),
-                    help = "Detects call-style notifications from known calling apps.",
+                    help = uiString(R.string.l10n_notifications_settings_screen_detects_call_style_notifications_from_known_66f8e00a),
                     checked = voipCallsEnabled,
                     enabled = masterEnabled,
                     onChange = onVoipCallsEnabled,
@@ -744,7 +736,7 @@ private fun AppRow(
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(app.name, style = NoopType.body, color = Palette.textPrimary)
             Text(
-                if (enabled) "Buzzes your wrist" else "Off",
+                if (enabled) uiString(R.string.l10n_notifications_settings_screen_buzzes_your_wrist_e2191d00) else uiString(R.string.l10n_notifications_settings_screen_off_e3de5ab0),
                 style = NoopType.footnote,
                 color = if (enabled) Palette.accent else Palette.textTertiary,
             )

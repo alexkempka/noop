@@ -126,13 +126,12 @@ fun WeeklyDigestCard(vm: AppViewModel, modifier: Modifier = Modifier) {
 fun WeeklyDigestScreen(vm: AppViewModel) {
     val days by vm.recentDays.collectAsStateWithLifecycle()
     val factor = effortDisplayFactor(UnitPrefs.effortScale(LocalContext.current))
-    ScreenScaffold(title = uiString(R.string.l10n_weekly_digest_card_week_in_review_66d95a07), subtitle = "Your Monday-to-Sunday, read in one glance.") {
+    ScreenScaffold(title = uiString(R.string.l10n_weekly_digest_card_week_in_review_66d95a07), subtitle = uiString(R.string.l10n_weekly_digest_card_your_monday_to_sunday_read_in_c475888a)) {
         val digest = buildWeeklyDigest(days, effortDisplayFactor = factor)
         if (digest.isEmpty) {
             DataPendingNote(
                 title = uiString(R.string.l10n_weekly_digest_card_no_readings_this_week_yet_0745a2df),
-                body = "Wear your strap or import your WHOOP export in Data Sources. Once this week has a " +
-                    "day or two of data, your week-in-review appears here.",
+                body = uiString(R.string.l10n_weekly_digest_card_wear_your_strap_or_import_your_b3211f76),
             )
         } else {
             NoopCard { WeeklyDigestContent(digest = digest, compact = false) }

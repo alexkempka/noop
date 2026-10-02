@@ -84,7 +84,7 @@ fun SmartAlarmScreen(vm: AppViewModel) {
         // #766: "Alarms" because this screen now holds the phone Wake Window, the strap's firmware
         // wake-alarm (moved here from Automations), and the wind-down reminder, so the broader title fits.
         title = uiString(R.string.l10n_smart_alarm_screen_alarms_131dd3d6),
-        subtitle = "Your wake window, the strap wake-alarm, and the evening wind-down reminder, in one place.",
+        subtitle = uiString(R.string.l10n_smart_alarm_screen_your_wake_window_the_strap_wake_e0f38901),
     ) {
         // The guaranteed-wake card always shows so the safety promise is the first thing read.
         item {
@@ -135,7 +135,7 @@ fun SmartAlarmScreen(vm: AppViewModel) {
         AlarmSettingsCard {
             ToggleRowLocal(
                 label = uiString(R.string.l10n_smart_alarm_screen_wake_me_with_a_smart_alarm_bbbd082d),
-                help = "A guaranteed OS alarm is set for the end of your window; the strap stream can move it earlier if you're sleeping lightly.",
+                help = uiString(R.string.l10n_smart_alarm_screen_a_guaranteed_os_alarm_is_set_54a3a200),
                 checked = enabled,
                 onChange = { want ->
                     if (want && !vm.canScheduleExactAlarms()) {
@@ -287,7 +287,7 @@ private fun StrapAlarmCard(vm: AppViewModel) {
             // 4.0 path experimental. The 5/MG Experimental-gate branch below is deliberately untouched.
             ToggleRowLocal(
                 label = uiString(R.string.l10n_smart_alarm_screen_wake_me_with_a_strap_buzz_1681ba1d),
-                help = "Arms the strap to buzz at your wake time, even if NOOP is closed. Sends the exact alarm command the official app sends, confirmed buzzing on a real WHOOP 4.0 (community wire capture + on-device test, #535). Keep a backup alarm for anything you truly can't miss.",
+                help = uiString(R.string.l10n_smart_alarm_screen_arms_the_strap_to_buzz_at_3eb5c4f6),
                 checked = smartAlarm,
                 onChange = { vm.setSmartAlarmEnabled(it) },
             )
@@ -330,7 +330,7 @@ private fun StrapAlarmCard(vm: AppViewModel) {
                         if (live.bonded)
                             uiString(R.string.smart_alarm_5mg_armed_experimental)
                         else
-                            "Connect your strap to arm this; it's set on the strap's own firmware alarm. Confirmed working on WHOOP 4.0; still experimental on 5.0 and MG. Keep a backup alarm for anything you truly can't miss.",
+                            uiString(R.string.l10n_smart_alarm_screen_connect_your_strap_to_arm_this_200c2866),
                         style = NoopType.footnote, color = Palette.textTertiary,
                     )
                 } else {
@@ -338,9 +338,9 @@ private fun StrapAlarmCard(vm: AppViewModel) {
                         if (live.bonded)
                             // Truth-sync (#535): confirmed buzzing on a real WHOOP 4.0; byte-identical
                             // wording to the Swift SmartAlarmView.
-                            "Armed on the strap itself, so it can buzz at your wake time even if your phone is asleep or NOOP is closed. Sends the exact alarm command the official app sends, confirmed buzzing on a real WHOOP 4.0 (community wire capture + on-device test, #535). Keep a backup alarm for anything you truly can't miss."
+                            uiString(R.string.l10n_smart_alarm_screen_armed_on_the_strap_itself_so_a69329a6)
                         else
-                            "Connect your strap to arm this; it's set on the strap's own firmware alarm. Confirmed working on WHOOP 4.0; still experimental on 5.0 and MG. Keep a backup alarm for anything you truly can't miss.",
+                            uiString(R.string.l10n_smart_alarm_screen_connect_your_strap_to_arm_this_200c2866),
                         style = NoopType.footnote, color = Palette.textTertiary,
                     )
                     // #1706: ask the strap what it actually has stored. The readback was previously only
@@ -514,7 +514,7 @@ private fun WindDownCard(vm: AppViewModel) {
             }
             ToggleRowLocal(
                 label = uiString(R.string.l10n_smart_alarm_screen_remind_me_to_wind_down_4839f0d0),
-                help = "A gentle evening notification, timed from your wake time and usual sleep need, so you can settle in time. It's a suggestion, not an alarm.",
+                help = uiString(R.string.l10n_smart_alarm_screen_a_gentle_evening_notification_timed_from_0c3db371),
                 checked = enabled,
                 onChange = { vm.setWindDownEnabled(it) },
             )

@@ -257,7 +257,7 @@ private fun RhythmVisualization(
     // reproducing the eager column's inter-card spacing exactly. The Poincaré PlotCard is the heavy one.
     LazyScreenScaffold(
         title = uiString(R.string.l10n_rhythm_screen_rhythm_c715bb28),
-        subtitle = "An experimental picture of your beat-to-beat timing",
+        subtitle = uiString(R.string.l10n_rhythm_screen_an_experimental_picture_of_your_beat_4a22be2a),
         trailing = if (onClose != null) {
             {
                 IconButton(onClick = onClose) {
@@ -299,15 +299,15 @@ private fun RhythmEmptyStateNote(reason: RhythmEmptyState) {
     when (reason) {
         RhythmEmptyState.DEVICE_BANKS_BEATS -> DataPendingNote(
             title = uiString(R.string.l10n_rhythm_screen_this_device_can_t_support_a_bb41aada),
-            body = "Rhythm needs beat-to-beat timing measured one beat at a time. Your device stores its heartbeats in batches, so the exact spacing between them isn't recoverable. Nothing is wrong with your night.",
+            body = uiString(R.string.l10n_rhythm_screen_rhythm_needs_beat_to_beat_timing_28bb775e),
         )
         RhythmEmptyState.DEVICE_NO_MOTION -> DataPendingNote(
             title = uiString(R.string.l10n_rhythm_screen_this_device_can_t_support_a_bb41aada),
-            body = "Rhythm reads only during still, resting windows, and this device doesn't record the stillness signal it needs to find them. Nothing is wrong with your night.",
+            body = uiString(R.string.l10n_rhythm_screen_rhythm_reads_only_during_still_resting_81377dca),
         )
         RhythmEmptyState.NONE, RhythmEmptyState.GATHERING_DATA -> DataPendingNote(
             title = uiString(R.string.l10n_rhythm_screen_no_clear_reading_yet_92f40443),
-            body = "Rhythm only looks during quiet, still, resting windows, so it needs a calm night's worth of steady beats. Once there's a clean window, the scatter and its description show here.",
+            body = uiString(R.string.l10n_rhythm_screen_rhythm_only_looks_during_quiet_still_8fc6fdf6),
         )
     }
 }
@@ -488,24 +488,24 @@ private fun StatsCard(headline: RhythmScreener.WindowResult?) {
         Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
             StatTile(
                 label = uiString(R.string.l10n_rhythm_screen_cloud_shape_2a745ff0), value = fmt(headline?.sd1sd2, "%.2f"),
-                caption = "SD1:SD2 ratio", accent = Palette.metricCyan,
+                caption = uiString(R.string.l10n_rhythm_screen_sd1_sd2_ratio_236002cc), accent = Palette.metricCyan,
                 modifier = Modifier.weight(1f),
             )
             StatTile(
                 label = uiString(R.string.l10n_rhythm_screen_beat_to_beat_34a3a652), value = percent(headline?.normRmssd),
-                caption = "variation index", accent = Palette.metricPurple,
+                caption = uiString(R.string.l10n_rhythm_screen_variation_index_7900d836), accent = Palette.metricPurple,
                 modifier = Modifier.weight(1f),
             )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
             StatTile(
                 label = uiString(R.string.l10n_rhythm_screen_extra_skipped_4a153489), value = percent(headline?.ectopicFraction),
-                caption = "of beats", accent = Palette.restColor,
+                caption = uiString(R.string.l10n_rhythm_screen_of_beats_f6a121dd), accent = Palette.restColor,
                 modifier = Modifier.weight(1f),
             )
             StatTile(
                 label = uiString(R.string.l10n_rhythm_screen_beats_read_15da45e3), value = headline?.nBeats?.toString() ?: "—",
-                caption = "clean intervals", accent = Palette.textSecondary,
+                caption = uiString(R.string.l10n_rhythm_screen_clean_intervals_3e604c4f), accent = Palette.textSecondary,
                 modifier = Modifier.weight(1f),
             )
         }

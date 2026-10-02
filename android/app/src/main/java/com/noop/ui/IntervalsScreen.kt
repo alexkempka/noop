@@ -206,7 +206,7 @@ fun IntervalsScreen(vm: AppViewModel) {
     // semantics-walked. Order/spacing unchanged (LazyColumn reproduces the eager `spacedBy(20.dp)`).
     LazyScreenScaffold(
         title = uiString(R.string.l10n_intervals_screen_interval_timer_1d703deb),
-        subtitle = "Silent haptic HIIT - the strap buzzes the transitions",
+        subtitle = uiString(R.string.l10n_intervals_screen_silent_haptic_hiit_the_strap_buzzes_4d41347e),
     ) {
         // --- Status row ---
         item {
@@ -286,7 +286,7 @@ fun IntervalsScreen(vm: AppViewModel) {
                                 modifier = Modifier.padding(end = 6.dp),
                             )
                             Text(
-                                if (running) "Pause" else if (isFinished) "Restart" else "Start",
+                                if (running) uiString(R.string.l10n_intervals_screen_pause_781961bc) else if (isFinished) uiString(R.string.l10n_intervals_screen_restart_b134bd55) else uiString(R.string.l10n_intervals_screen_start_952f3754),
                                 style = NoopType.headline,
                             )
                         }
@@ -536,14 +536,14 @@ private fun ConfigStepper(
         Spacer(Modifier.width(12.dp))
         StepperButton(
             icon = Icons.Filled.Remove,
-            description = "Decrease $title",
+            description = uiString(R.string.l10n_intervals_screen_decrease_ef806b65, title),
             enabled = enabled && value > range.first,
             tint = tint,
         ) { onChange((value - step).coerceIn(range.first, range.last)) }
         Spacer(Modifier.width(8.dp))
         StepperButton(
             icon = Icons.Filled.Add,
-            description = "Increase $title",
+            description = uiString(R.string.l10n_intervals_screen_increase_a93be67f, title),
             enabled = enabled && value < range.last,
             tint = tint,
         ) { onChange((value + step).coerceIn(range.first, range.last)) }

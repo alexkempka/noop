@@ -323,7 +323,7 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
     val skyBehindCards = remember { NoopPrefs.skyBehindCards(skyCtx) }
     LazyScreenScaffold(
         title = uiString(R.string.l10n_insights_screen_insights_b4510362),
-        subtitle = "Interrogate what affects what.",
+        subtitle = uiString(R.string.l10n_insights_screen_interrogate_what_affects_what_9b5fe6a6),
         topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
         // Sky-behind-cards fills the viewport so the transparent cards reveal the sky the whole way
         // down (Today / Trends / Sleep / metric-detail parity - same two prefs, same two behaviours).
@@ -500,9 +500,7 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
             // No journal yet, explain, without dead-ending on a paid export.
             DataPendingNote(
                 title = uiString(R.string.l10n_insights_screen_insights_read_your_journal_and_outcomes_6ec8aaf9),
-                body = "Log behaviours above. After a few days of answers, NOOP ranks how each " +
-                    "one moves your recovery, HRV and sleep. Importing a WHOOP export (which " +
-                    "includes its journal) backfills history instantly.",
+                body = uiString(R.string.l10n_insights_screen_log_behaviours_above_after_a_few_9563db0a),
             )
         } else {
             BehaviourSection(
@@ -695,14 +693,14 @@ private fun ActivityCostCard(cost: com.noop.analytics.ActivityCost) {
                     modifier = Modifier.weight(1f),
                     label = uiString(R.string.l10n_insights_screen_next_morning_61d1ea83),
                     value = "${cost.meanNextMorning.roundToInt()}",
-                    caption = "Charge · $pointsLabel pts",
+                    caption = uiString(R.string.l10n_insights_screen_charge_pts_304c8e1a, pointsLabel),
                     accent = accent,
                 )
                 StatTile(
                     modifier = Modifier.weight(1f),
                     label = uiString(R.string.l10n_insights_screen_rest_baseline_b3ac52a5),
                     value = "${cost.baselineMean.roundToInt()}",
-                    caption = "untouched days",
+                    caption = uiString(R.string.l10n_insights_screen_untouched_days_04480b6b),
                     accent = Palette.textPrimary,
                 )
             }
@@ -1084,14 +1082,14 @@ private fun ActiveExperimentCard(
                 modifier = Modifier.weight(1f),
                 label = uiString(R.string.l10n_insights_screen_baseline_e6ab7982),
                 value = snapshot.baselineMean?.let { snapshot.outcome.format(it) } ?: "—",
-                caption = "${snapshot.baselineCount} days without it",
+                caption = uiString(R.string.l10n_insights_screen_days_without_it_d984cae7, snapshot.baselineCount),
                 tint = Palette.textSecondary,
             )
             ExperimentMeasure(
                 modifier = Modifier.weight(1f),
                 label = uiString(R.string.l10n_insights_screen_intervention_e9b90c40),
                 value = snapshot.interventionMean?.let { snapshot.outcome.format(it) } ?: "—",
-                caption = "${snapshot.interventionCount} logged days",
+                caption = uiString(R.string.l10n_insights_screen_logged_days_235d1222, snapshot.interventionCount),
                 tint = Palette.accent,
             )
         }

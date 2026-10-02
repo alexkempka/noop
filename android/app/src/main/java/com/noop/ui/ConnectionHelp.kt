@@ -84,8 +84,7 @@ fun ConnectionHelp(viewModel: AppViewModel, modifier: Modifier = Modifier) {
             HelpStep(
                 done = !whoopInstalled,
                 title = uiString(R.string.l10n_connection_help_close_the_official_whoop_app_768d7d17),
-                body = "Your strap only pairs with ONE app at a time. If the WHOOP app is connected, " +
-                    "NOOP can't reach the strap. Force stop it (swiping it out of recents isn't enough).",
+                body = uiString(R.string.l10n_connection_help_your_strap_only_pairs_with_one_9a37cbb5),
                 actionLabel = if (whoopInstalled) "Open WHOOP app, then Force stop" else "WHOOP app isn't installed",
                 enabled = whoopInstalled,
                 onAction = { openAppInfo(context, WHOOP_PACKAGE) },
@@ -112,8 +111,7 @@ fun ConnectionHelp(viewModel: AppViewModel, modifier: Modifier = Modifier) {
             HelpStep(
                 done = false,
                 title = uiString(R.string.l10n_connection_help_charge_it_and_put_it_on_31b04814),
-                body = "A flat or off-wrist strap won't advertise, so nothing shows up. A real phone is " +
-                    "required too: an emulator has no Bluetooth.",
+                body = uiString(R.string.l10n_connection_help_a_flat_or_off_wrist_strap_441b5376),
                 actionLabel = null,
                 enabled = false,
                 onAction = {},

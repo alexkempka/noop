@@ -120,7 +120,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
     // accessibility-walked on scroll.
     LazyScreenScaffold(
         title = uiString(R.string.l10n_automations_screen_automations_82542d6d),
-        subtitle = "Make the strap do things: tap to act, walk away to lock, train by feel.",
+        subtitle = uiString(R.string.l10n_automations_screen_make_the_strap_do_things_tap_f0de13d0),
     ) {
         // #haptics (#1115): per-event in-session haptic toggles, default ON (opt-out) — turn off any cue you
         // find noisy; the feature keeps working, just without that wrist buzz.
@@ -128,33 +128,33 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.Vibration,
             title = uiString(R.string.haptics_section_title),
-            blurb = "Choose which in-session cues buzz your wrist during a breathing session, timer, or workout.",
+            blurb = uiString(R.string.l10n_automations_screen_choose_which_in_session_cues_buzz_4f0f0ec8),
             active = breathingHaptic || intervalsHaptic || liveSessionHaptic || workoutHaptic,
         ) {
             ToggleRow(
                 label = uiString(R.string.haptics_breathing_label),
-                help = "Buzz each inhale and exhale during a breathing or resonance session.",
+                help = uiString(R.string.l10n_automations_screen_buzz_each_inhale_and_exhale_during_8453ca95),
                 checked = breathingHaptic,
                 onChange = { breathingHaptic = it; HapticPrefs.setEnabled(ctx, HapticPrefs.BREATHING, it) },
             )
             RowDivider()
             ToggleRow(
                 label = uiString(R.string.haptics_intervals_label),
-                help = "Buzz on each interval change.",
+                help = uiString(R.string.l10n_automations_screen_buzz_on_each_interval_change_20f3be61),
                 checked = intervalsHaptic,
                 onChange = { intervalsHaptic = it; HapticPrefs.setEnabled(ctx, HapticPrefs.INTERVALS, it) },
             )
             RowDivider()
             ToggleRow(
                 label = uiString(R.string.haptics_live_session_label),
-                help = "Coaching buzzes during a live workout session.",
+                help = uiString(R.string.l10n_automations_screen_coaching_buzzes_during_a_live_workout_4642e54b),
                 checked = liveSessionHaptic,
                 onChange = { liveSessionHaptic = it; HapticPrefs.setEnabled(ctx, HapticPrefs.LIVE_SESSION, it) },
             )
             RowDivider()
             ToggleRow(
                 label = uiString(R.string.haptics_workout_label),
-                help = "A buzz confirms a workout starting and saving.",
+                help = uiString(R.string.l10n_automations_screen_a_buzz_confirms_a_workout_starting_0263ba2e),
                 checked = workoutHaptic,
                 onChange = { workoutHaptic = it; HapticPrefs.setEnabled(ctx, HapticPrefs.WORKOUT, it) },
             )
@@ -167,7 +167,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.TouchApp,
             title = uiString(R.string.l10n_automations_screen_double_tap_8d2f1646),
-            blurb = "Double-tap the strap to trigger an action on this device. (The strap exposes a single double-tap gesture.)",
+            blurb = uiString(R.string.l10n_automations_screen_double_tap_the_strap_to_trigger_f1273b28),
             active = doubleTapAction != DoubleTapAction.NONE,
         ) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -203,12 +203,12 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.Bolt,
             title = uiString(R.string.l10n_automations_screen_haptic_coaching_e2fab286),
-            blurb = "Train by feel. The strap buzzes so you don't have to watch a screen.",
+            blurb = uiString(R.string.l10n_automations_screen_train_by_feel_the_strap_buzzes_463f60c2),
             active = zoneCoaching,
         ) {
             ToggleRow(
                 label = uiString(R.string.l10n_automations_screen_hr_zone_coaching_9306e6e1),
-                help = "A triple-buzz when you climb into your top zone (Zone 5, ≥ $zone5Bpm bpm), a cue to ease off. Max HR comes from Settings.",
+                help = uiString(R.string.l10n_automations_screen_a_triple_buzz_when_you_climb_6bd9fb9f, zone5Bpm),
                 checked = zoneCoaching,
                 onChange = { viewModel.setZoneCoaching(it) },
             )
@@ -216,7 +216,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 RowDivider()
                 ToggleRow(
                     label = uiString(R.string.l10n_automations_screen_recovery_buzz_1abc9a51),
-                    help = "Also buzz once when your heart rate drops back to Zone 1, a cue that you've recovered.",
+                    help = uiString(R.string.l10n_automations_screen_also_buzz_once_when_your_heart_b96aee2b),
                     checked = zoneCoachRecovery,
                     onChange = { viewModel.setZoneCoachRecovery(it) },
                 )
@@ -233,12 +233,12 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.Timer,
             title = uiString(R.string.l10n_automations_screen_inactivity_reminder_ca49b1ba),
-            blurb = "A gentle wrist buzz when you've been sitting too long, a nudge to get up and move. Inferred from the strap's motion on each history sync, so it lags real time by a sync or two.",
+            blurb = uiString(R.string.l10n_automations_screen_a_gentle_wrist_buzz_when_you_022719d3),
             active = inactivityEnabled,
         ) {
             ToggleRow(
                 label = uiString(R.string.l10n_automations_screen_enable_inactivity_reminder_468c3017),
-                help = "Buzzes after you've been sitting past your threshold.",
+                help = uiString(R.string.l10n_automations_screen_buzzes_after_you_ve_been_sitting_1597d772),
                 checked = inactivityEnabled,
                 onChange = {
                     inactivityEnabled = it
@@ -256,7 +256,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 RowDivider()
                 StepperRow(
                     label = uiString(R.string.l10n_automations_screen_sitting_for_e464c472),
-                    help = "Minutes seated before the first nudge.",
+                    help = uiString(R.string.l10n_automations_screen_minutes_seated_before_the_first_nudge_7d30de20),
                     value = inactivityThreshold, suffix = "min", range = 15..120, step = 15,
                     onChange = {
                         inactivityThreshold = it
@@ -266,7 +266,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 RowDivider()
                 StepperRow(
                     label = uiString(R.string.l10n_automations_screen_re_nudge_every_646023cd),
-                    help = "If you're still seated, buzz again this often.",
+                    help = uiString(R.string.l10n_automations_screen_if_you_re_still_seated_buzz_e248b041),
                     value = inactivityReNudge, suffix = "min", range = 15..120, step = 15,
                     onChange = {
                         inactivityReNudge = it
@@ -276,7 +276,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 RowDivider()
                 StepperRow(
                     label = uiString(R.string.l10n_automations_screen_buzz_strength_e895f99e),
-                    help = "How strong the buzz is.",
+                    help = uiString(R.string.l10n_automations_screen_how_strong_the_buzz_is_6ccd8625),
                     value = inactivityBuzzLoops, suffix = "×", range = 1..4, step = 1,
                     onChange = {
                         inactivityBuzzLoops = it
@@ -286,7 +286,7 @@ fun AutomationsScreen(viewModel: AppViewModel) {
                 RowDivider()
                 ToggleRow(
                     label = uiString(R.string.l10n_automations_screen_only_during_active_hours_29c53fc9),
-                    help = "Only nudge during your active hours.",
+                    help = uiString(R.string.l10n_automations_screen_only_nudge_during_your_active_hours_f308e0a9),
                     checked = inactivityActiveHours,
                     onChange = {
                         inactivityActiveHours = it
@@ -333,12 +333,12 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.MonitorHeart,
             title = uiString(R.string.l10n_automations_screen_illness_early_warning_453ab477),
-            blurb = "Watches your resting HR, HRV, skin temperature and respiration against your own 28-day baseline. On-device and approximate: informational only, not a diagnosis.",
+            blurb = uiString(R.string.l10n_automations_screen_watches_your_resting_hr_hrv_skin_1cac89f1),
             active = illnessWatch,
         ) {
             ToggleRow(
                 label = uiString(R.string.l10n_automations_screen_watch_for_early_illness_signs_4c22e127),
-                help = "Needs at least 14 days of history. When two or more signals drift together you get a banner on Today and a notification, at most once a day.",
+                help = uiString(R.string.l10n_automations_screen_needs_at_least_14_days_of_8db35695),
                 checked = illnessWatch,
                 onChange = { viewModel.setIllnessWatchEnabled(it) },
             )
@@ -350,19 +350,19 @@ fun AutomationsScreen(viewModel: AppViewModel) {
         SettingsSection(
             icon = Icons.Filled.BatteryStd,
             title = uiString(R.string.l10n_automations_screen_battery_alerts_f3679d60),
-            blurb = "A heads-up when the strap battery gets low so you can recharge before bed, and a note when it's finished charging.",
+            blurb = uiString(R.string.l10n_automations_screen_a_heads_up_when_the_strap_ab7d84fe),
             active = batteryAlerts,
         ) {
             ToggleRow(
                 label = uiString(R.string.l10n_automations_screen_notify_on_low_and_full_battery_d1903bb8),
-                help = "Sends a notification when the strap drops to 15% or reaches a full charge, at most once per charge cycle.",
+                help = uiString(R.string.l10n_automations_screen_sends_a_notification_when_the_strap_28d36e37),
                 checked = batteryAlerts,
                 onChange = { viewModel.setBatteryAlertsEnabled(it) },
             )
             if (batteryAlerts) {
                 ToggleRow(
                     label = uiString(R.string.l10n_automations_screen_predictive_runtime_warning_4d85f5a6),
-                    help = "An early \"recharge tonight\" heads-up when the strap has about a day of estimated runtime left, at most once per discharge cycle. Turn off to keep only the 15% warning.",
+                    help = uiString(R.string.l10n_automations_screen_an_early_recharge_tonight_heads_up_c470e1d0),
                     checked = predictiveBatteryAlerts,
                     onChange = { viewModel.setPredictiveBatteryAlertsEnabled(it) },
                 )
@@ -390,14 +390,12 @@ private fun NapDetectionSection(viewModel: AppViewModel) {
     SettingsSection(
         icon = Icons.Filled.Bedtime,
         title = uiString(R.string.l10n_automations_screen_nap_detection_ca2dedf5),
-        blurb = "Spots a likely daytime nap from the strap's motion and heart rate on each history sync, " +
-            "then asks you to confirm it. Inferred and approximate: NOOP never adds a nap to your sleep " +
-            "without your OK.",
+        blurb = uiString(R.string.l10n_automations_screen_spots_a_likely_daytime_nap_from_694ebb70),
         active = enabled,
     ) {
         ToggleRow(
             label = uiString(R.string.l10n_automations_screen_detect_short_naps_bbfd136d),
-            help = "When a sync shows a quiet, settled stretch in the day, NOOP offers it here for you to keep or skip.",
+            help = uiString(R.string.l10n_automations_screen_when_a_sync_shows_a_quiet_2140e9fe),
             checked = enabled,
             onChange = {
                 viewModel.setNapDetectionEnabled(it)

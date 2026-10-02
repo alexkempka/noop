@@ -218,7 +218,7 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
 
     LazyScreenScaffold(
         title = uiString(R.string.l10n_live_screen_live_body_console_54838e06),
-        subtitle = "Current physiology, strap trust, and session controls",
+        subtitle = uiString(R.string.l10n_live_screen_current_physiology_strap_trust_and_session_0bceb204),
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the time-of-day liquid sky settles
         // behind the header + hero and the cards float over the flat canvas below. Reuses the shared
         // LiquidScreenSky() slot verbatim; when the day-cycle background is off, the scaffold paints the
@@ -323,8 +323,8 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                 )
                 Text(
                     if (live.syncChunksThisSession > 0)
-                        "Syncing your strap history… ${live.syncChunksThisSession} chunks pulled"
-                    else "Syncing your strap history…",
+                        uiString(R.string.l10n_live_screen_syncing_your_strap_history_chunks_pulled_2ce4def0, live.syncChunksThisSession)
+                    else uiString(R.string.l10n_live_screen_syncing_your_strap_history_a56c41e1),
                     style = NoopType.footnote,
                     color = Palette.textSecondary,
                 )
@@ -604,9 +604,9 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                 )
                 Text(
                     when {
-                        live.scanning -> "Searching…"
-                        live.connected -> "Re-scan"
-                        else -> "Connect"
+                        live.scanning -> uiString(R.string.l10n_live_screen_searching_1a6a5ba8)
+                        live.connected -> uiString(R.string.l10n_live_screen_re_scan_8bd32cdf)
+                        else -> uiString(R.string.l10n_live_screen_connect_b65463cb)
                     },
                     style = NoopType.captionNumber,
                     maxLines = 1,
@@ -709,7 +709,7 @@ fun LiveScreen(viewModel: AppViewModel, onManageDevices: () -> Unit = {}) {
                     )
                 }
                 Text(
-                    if (live.backfilling) "Syncing…" else "Sync now",
+                    if (live.backfilling) uiString(R.string.l10n_live_screen_syncing_221ca630) else uiString(R.string.l10n_live_screen_sync_now_2b7d938e),
                     style = NoopType.captionNumber,
                     maxLines = 1,
                     softWrap = false,
@@ -756,9 +756,9 @@ private fun MaxHrZoneCard(hrMax: Int, zone5Bpm: Int, coachingOn: Boolean) {
             }
             Text(
                 if (coachingOn)
-                    "Strap buzzes when you climb into Zone 5 (≥ $zone5Bpm bpm). Manage it in Automations → Haptic coaching."
+                    uiString(R.string.l10n_live_screen_strap_buzzes_when_you_climb_into_2adf77c5, zone5Bpm)
                 else
-                    "Turn on HR-zone coaching in Automations for a wrist buzz when you reach Zone 5 (≥ $zone5Bpm bpm).",
+                    uiString(R.string.l10n_live_screen_turn_on_hr_zone_coaching_in_4686844b, zone5Bpm),
                 style = NoopType.footnote,
                 color = Palette.textTertiary,
                 modifier = Modifier.fillMaxWidth(),
@@ -942,7 +942,7 @@ private fun OfflineConnectCallout(scanning: Boolean, onConnect: () -> Unit) {
                     modifier = Modifier.size(18.dp).padding(end = 4.dp),
                 )
                 Text(
-                    if (scanning) "Searching…" else "Scan & Connect",
+                    if (scanning) uiString(R.string.l10n_live_screen_searching_1a6a5ba8) else uiString(R.string.l10n_live_screen_scan_connect_ac25e587),
                     style = NoopType.captionNumber,
                     maxLines = 1,
                     softWrap = false,
@@ -1265,7 +1265,7 @@ private fun RRStrip(rrRecent: List<Int>) {
             }
         }
         Text(
-            if (values.isEmpty()) "Waiting for R-R intervals."
+            if (values.isEmpty()) uiString(R.string.l10n_live_screen_waiting_for_r_r_intervals_62a482a6)
             else "Recent intervals: " + values.takeLast(5).joinToString(" · ") + " ms",
             style = NoopType.footnote,
             color = Palette.textTertiary,

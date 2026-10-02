@@ -881,7 +881,7 @@ fun SettingsScreen(
 
     ScreenScaffold(
         title = uiString(R.string.l10n_settings_screen_settings_c7f73bb5),
-        subtitle = "Your numbers, your strap, and how NOOP works. All on this phone.",
+        subtitle = uiString(R.string.l10n_settings_screen_your_numbers_your_strap_and_how_5aad55af),
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the static time-of-day sky settles
         // into the theme canvas behind the top of the list, exactly like the liquid Today. This is a long,
         // scroll-heavy list with NO hero gauge, so the liquid finish here is just the sky + liquidPress on
@@ -922,7 +922,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Outlined.AccountCircle,
             title = uiString(R.string.l10n_settings_screen_profile_photo_33f385bb),
-            blurb = "Optional. Add a photo for the avatar in the top-left. Stored only on this phone. NOOP is offline, so it's never uploaded.",
+            blurb = uiString(R.string.l10n_settings_screen_optional_add_a_photo_for_the_aee66863),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -936,7 +936,7 @@ fun SettingsScreen(
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         NoopButton(
-                            text = if (ProfileAvatarStore.hasAvatar) "Change photo" else "Choose photo",
+                            text = if (ProfileAvatarStore.hasAvatar) uiString(R.string.l10n_settings_screen_change_photo_ed5690c3) else uiString(R.string.l10n_settings_screen_choose_photo_4a7eded8),
                             kind = NoopButtonKind.Secondary,
                             modifier = Modifier.weight(1f),
                             onClick = {
@@ -962,7 +962,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Outlined.Person,
             title = uiString(R.string.l10n_settings_screen_profile_ff4fc027),
-            blurb = "These power your heart-rate zones, calorie estimates and recovery baselines. Keep them accurate.",
+            blurb = uiString(R.string.l10n_settings_screen_these_power_your_heart_rate_zones_6d5e1ab1),
         ) {
             Column {
                 SettingsFormRow(label = uiString(R.string.l10n_settings_screen_age_ff9f1ff3)) {
@@ -1109,9 +1109,9 @@ fun SettingsScreen(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             text = if (profile.hrMaxOverride > 0) {
-                                "Manual override"
+                                uiString(R.string.l10n_settings_screen_manual_override_8661a63e)
                             } else {
-                                "Auto · ${profile.hrMaxAuto} bpm (Tanaka)"
+                                uiString(R.string.l10n_settings_screen_auto_bpm_tanaka_e9e619ec, profile.hrMaxAuto)
                             },
                             style = NoopType.footnote,
                             color = if (profile.hrMaxOverride > 0) Palette.accent else Palette.textTertiary,
@@ -1586,7 +1586,7 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Text("Sleep chart", style = NoopType.body, color = Palette.textPrimary)
+                Text(uiString(R.string.l10n_settings_screen_sleep_chart_b6335ce1), style = NoopType.body, color = Palette.textPrimary)
                 SegmentedPillControl(
                     items = listOf(SleepChartStyle.CLASSIC, SleepChartStyle.FILLED,
                                    SleepChartStyle.GARMIN_FILLED, SleepChartStyle.RIBBON),
@@ -1722,9 +1722,9 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Transparent cards", style = NoopType.subhead, color = Palette.textPrimary)
+                    Text(uiString(R.string.l10n_settings_screen_transparent_cards_24d17f6e), style = NoopType.subhead, color = Palette.textPrimary)
                     Text(
-                        "Let the background show through every card. Tune how much just below.",
+                        uiString(R.string.l10n_settings_screen_let_the_background_show_through_every_4d2dd4f8),
                         style = NoopType.footnote,
                         color = Palette.textTertiary,
                     )
@@ -1916,16 +1916,15 @@ fun SettingsScreen(
         // controls + the live backdrop update the instant an image is set, removed, or re-scaled.
         SettingsCard(
             icon = Icons.Outlined.Image,
-            title = "Background image",
-            blurb = "Optional. Use your own photo behind every tab, in place of the day-cycle sky. " +
-                "Stored only on this phone. Pair it with Transparent cards above to let it show through.",
+            title = uiString(R.string.l10n_settings_screen_background_image_5eb0ff1a),
+            blurb = uiString(R.string.l10n_settings_screen_optional_use_your_own_photo_behind_4e354f6e),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 NoopButton(
-                    text = if (BackgroundImageStore.hasImage) "Replace from Photos" else "Choose from Photos",
+                    text = if (BackgroundImageStore.hasImage) uiString(R.string.l10n_settings_screen_replace_from_photos_dc6cc6ca) else uiString(R.string.l10n_settings_screen_choose_from_photos_935f1b61),
                     kind = NoopButtonKind.Secondary,
                     modifier = Modifier.weight(1f),
                     onClick = {
@@ -1935,7 +1934,7 @@ fun SettingsScreen(
                     },
                 )
                 NoopButton(
-                    text = "Browse files",
+                    text = uiString(R.string.l10n_settings_screen_browse_files_524932e0),
                     kind = NoopButtonKind.Secondary,
                     modifier = Modifier.weight(1f),
                     onClick = { backgroundFileLauncher.launch(arrayOf("image/*")) },
@@ -1948,7 +1947,7 @@ fun SettingsScreen(
                 val recents = BackgroundImageStore.recents
                 if (recents.isNotEmpty()) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("Recent", style = NoopType.footnote, color = Palette.textSecondary)
+                        Text(uiString(R.string.l10n_settings_screen_recent_76eec760), style = NoopType.footnote, color = Palette.textSecondary)
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             recents.forEachIndexed { i, r ->
                                 BackgroundRecentThumb(
@@ -1966,8 +1965,8 @@ fun SettingsScreen(
                 }
                 // Master gate + scaling only make sense once an image exists.
                 SettingsToggleRow(
-                    title = "Show custom background",
-                    detail = "Draw your photo behind every tab, replacing the day-cycle sky.",
+                    title = uiString(R.string.l10n_settings_screen_show_custom_background_85a2c096),
+                    detail = uiString(R.string.l10n_settings_screen_draw_your_photo_behind_every_tab_9cbd4de2),
                     checked = BackgroundImageStore.enabled,
                     onCheckedChange = { BackgroundImageStore.setEnabled(context, it) },
                 )
@@ -1976,7 +1975,7 @@ fun SettingsScreen(
                 // to ~0px, which wrapped "Scaling" one letter per line and blew the row up to a tall
                 // empty gap. A stacked label sidesteps that entirely.
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Scaling", style = NoopType.footnote, color = Palette.textSecondary)
+                    Text(uiString(R.string.l10n_settings_screen_scaling_0b4193c5), style = NoopType.footnote, color = Palette.textSecondary)
                     SegmentedPillControl(
                         items = BackgroundFillMode.entries,
                         selection = BackgroundImageStore.fillMode,
@@ -1994,7 +1993,7 @@ fun SettingsScreen(
                     )
                 }
                 NoopButton(
-                    text = "Remove image",
+                    text = uiString(R.string.l10n_settings_screen_remove_image_5f94b03c),
                     kind = NoopButtonKind.Tertiary,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -2011,7 +2010,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Palette,
             title = uiString(R.string.l10n_settings_screen_app_icon_abde7a74),
-            blurb = "Choose how NOOP looks on your home screen. The launcher may take a moment to refresh the icon after you change it.",
+            blurb = uiString(R.string.l10n_settings_screen_choose_how_noop_looks_on_your_d680c8e0),
         ) {
             SettingsFormRow(label = uiString(R.string.l10n_settings_screen_icon_716f63b9)) {
                 SegmentedPillControl(
@@ -2030,7 +2029,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Sensors,
             title = uiString(R.string.l10n_settings_screen_strap_02b88eeb),
-            blurb = "NOOP pairs directly with your WHOOP over Bluetooth: no WHOOP app, no cloud.",
+            blurb = uiString(R.string.l10n_settings_screen_noop_pairs_directly_with_your_whoop_0b5d57cd),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(
@@ -2061,7 +2060,7 @@ fun SettingsScreen(
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     NoopButton(
-                        text = if (live.scanning) "Searching…" else "Re-scan",
+                        text = if (live.scanning) uiString(R.string.l10n_settings_screen_searching_1a6a5ba8) else uiString(R.string.l10n_settings_screen_re_scan_8bd32cdf),
                         leadingIcon = Icons.Filled.Refresh,
                         kind = NoopButtonKind.Primary,
                         enabled = !live.scanning,
@@ -2606,7 +2605,7 @@ fun SettingsScreen(
         // away. Mirrors the iOS SettingsView "Advanced" disclosure and the Test Centre Advanced group.
         SettingsDisclosureGroup(
             title = uiString(R.string.l10n_settings_screen_advanced_4d064726),
-            subtitle = "Experimental probes, diagnostics, raw-sensor export, and the Trends report. Tucked away to keep the everyday screen tidy.",
+            subtitle = uiString(R.string.l10n_settings_screen_experimental_probes_diagnostics_raw_sensor_export_df4a89ef),
             expanded = advancedOpen,
             onToggle = { advancedOpen = !advancedOpen; SettingsDisclosurePrefs.write(NoopPrefs.of(context), advancedOpen) },
         ) {
@@ -2631,7 +2630,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Science,
             title = uiString(R.string.l10n_settings_screen_experimental_whoop_5_mg_41ef7041),
-            blurb = "Normal WHOOP 5/MG recording and history sync are supported. These remaining controls are developer experiments for unmapped protocol features; they are not required for everyday use.",
+            blurb = uiString(R.string.l10n_settings_screen_normal_whoop_5_mg_recording_and_cdc16792),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(
@@ -2929,9 +2928,9 @@ fun SettingsScreen(
                         onClick = { vm.ble.enableWhoop5DeepData() },
                     )
                     Text(
-                        if (!live.encryptedBond) "Needs the full encrypted bond: close the official WHOOP app and pair the strap to NOOP first (a live-HR-only link can't carry the unlock)."
-                        else if (!live.worn) "Put the strap on first. The deep stream is on-wrist only."
-                        else "Wear the strap, tap once, then let it sync and share your strap log.",
+                        if (!live.encryptedBond) uiString(R.string.l10n_settings_screen_needs_the_full_encrypted_bond_close_1dd2e31e)
+                        else if (!live.worn) uiString(R.string.l10n_settings_screen_put_the_strap_on_first_the_24ce5505)
+                        else uiString(R.string.l10n_settings_screen_wear_the_strap_tap_once_then_f6b84fa4),
                         style = NoopType.caption,
                         color = Palette.textTertiary,
                     )
@@ -3027,7 +3026,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Science,
             title = uiString(R.string.l10n_settings_screen_diagnostics_3af2279f),
-            blurb = "A read-only export of the decoded sensor streams NOOP already stores. Works on any strap. Nothing is written to your device, and nothing is uploaded.",
+            blurb = uiString(R.string.l10n_settings_screen_a_read_only_export_of_the_ad0afd99),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 // --- Sleep staging (V2) — the DEFAULT engine after the 44-subject benchmark; toggle off to
@@ -3121,7 +3120,7 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Text(
-                        "Blood Oxygen: strap estimate",
+                        uiString(R.string.l10n_settings_screen_blood_oxygen_strap_estimate_873e7bd6),
                         style = NoopType.subhead,
                         color = Palette.textPrimary,
                         modifier = Modifier.weight(1f),
@@ -3142,14 +3141,7 @@ fun SettingsScreen(
                     )
                 }
                 Text(
-                    "Surfaces your strap's nightly SpO₂ estimate in the Blood Oxygen tile when no " +
-                        "calibrated percentage is available: a WHOOP 5.0/MG's @82 candidate byte, or an " +
-                        "Oura ring's own reading with each sample capped at 100% first (the ring's raw " +
-                        "reading runs high otherwise). This is an UNVERIFIED strap-computed value — the " +
-                        "WHOOP candidate matched a reference device closely on most nights but moved " +
-                        "opposite on some; the Oura one has only been checked against a few nights so " +
-                        "far. Shown as an 'estimate' and never fed into recovery or illness scoring. Off " +
-                        "by default.",
+                    uiString(R.string.l10n_settings_screen_surfaces_your_strap_s_nightly_spo_d9b0f0f1),
                     style = NoopType.caption,
                     color = Palette.textTertiary,
                 )
@@ -3167,7 +3159,7 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Text(
-                        "Stress: personal daytime baseline",
+                        uiString(R.string.l10n_settings_screen_stress_personal_daytime_baseline_68a38abd),
                         style = NoopType.subhead,
                         color = Palette.textPrimary,
                         modifier = Modifier.weight(1f),
@@ -3189,10 +3181,7 @@ fun SettingsScreen(
                 }
 
                 Text(
-                    "Scores today's hour-by-hour stress timeline against YOUR own cross-day baseline " +
-                        "(how your days usually run, Oura-style) instead of the day's own calm hours. The " +
-                        "cutoff is tuned from a single-subject reference so far, so it's an alternative lens, " +
-                        "not the default. HR-only; never fed into recovery or illness scoring. Off by default.",
+                    uiString(R.string.l10n_settings_screen_scores_today_s_hour_by_hour_a9f3f146),
                     style = NoopType.caption,
                     color = Palette.textTertiary,
                 )
@@ -3246,12 +3235,12 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Science,
             title = uiString(R.string.l10n_settings_screen_health_wellness_93475778),
-            blurb = "Optional, on-device wellness signals. Each is off by default, computed only on this phone from data you already have, and never a medical diagnosis.",
+            blurb = uiString(R.string.l10n_settings_screen_optional_on_device_wellness_signals_each_8e80e24a),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_illness_heads_up_97e10035),
-                    detail = "Watches your resting heart rate, HRV and skin temperature for the pattern that often shows up before you feel unwell, and surfaces a gentle heads-up. An observation about your own numbers, not a diagnosis.",
+                    detail = uiString(R.string.l10n_settings_screen_watches_your_resting_heart_rate_hrv_1ad88889),
                     checked = illnessWatch,
                     onCheckedChange = {
                         illnessWatch = it
@@ -3271,7 +3260,7 @@ fun SettingsScreen(
                     // Twin of the iOS Automations "Show cycle awareness" toggle.
                     SettingsToggleRow(
                         title = uiString(R.string.l10n_settings_screen_show_cycle_awareness_59709019),
-                        detail = "Shows the cycle-awareness card on Today and in Health. Turn off to hide it entirely — a private choice, never based on your age. You can turn it back on here any time.",
+                        detail = uiString(R.string.l10n_settings_screen_shows_the_cycle_awareness_card_on_e19a7822),
                         checked = !cycleHidden,
                         onCheckedChange = { show ->
                             cycleHidden = !show
@@ -3283,7 +3272,7 @@ fun SettingsScreen(
                     if (!cycleHidden) {
                         SettingsToggleRow(
                             title = uiString(R.string.l10n_settings_screen_cycle_awareness_ffb94783),
-                            detail = "Reads a coarse menstrual-cycle phase from your nightly skin-temperature shift, on this device only. Awareness only: not contraception, not a fertility predictor, not a medical service.",
+                            detail = uiString(R.string.l10n_settings_screen_reads_a_coarse_menstrual_cycle_phase_f176e436),
                             checked = cycleTracking,
                             onCheckedChange = {
                                 cycleTracking = it
@@ -3295,7 +3284,7 @@ fun SettingsScreen(
                 }
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_hydration_tracking_579a2b32),
-                    detail = "Adds a simple fluid log with a daily goal that adjusts to your effort. Tap to add a sip, cup or bottle and watch a progress ring fill. On this phone only. Nothing is synced.",
+                    detail = uiString(R.string.l10n_settings_screen_adds_a_simple_fluid_log_with_007462a0),
                     checked = hydrationTracking,
                     onCheckedChange = {
                         hydrationTracking = it
@@ -3305,7 +3294,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_auto_detect_workouts_bed4cf2a),
-                    detail = "After a sync, NOOP looks over your recent heart rate for a sustained, raised stretch that looks like exercise and offers to save it. It only ever suggests. Nothing is saved until you tap Save, and you can dismiss any suggestion. Turning this off stops future suggestions; workouts already in your history remain. Deliberately conservative, so the odd workout may be missed. On this phone only.",
+                    detail = uiString(R.string.l10n_settings_screen_after_a_sync_noop_looks_over_54156d92),
                     checked = autoDetectWorkouts,
                     onCheckedChange = {
                         autoDetectWorkouts = it
@@ -3325,7 +3314,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_keep_screen_on_during_a_workout_42d27284),
-                    detail = "Holds the screen awake while you're recording a workout, so your live heart rate stays visible without the phone dimming. Only applies during a recording. The screen sleeps normally the rest of the time. Leaving it on does use a bit more battery, and means your unlocked screen stays visible for the whole workout, so flip it off if that's a concern.",
+                    detail = uiString(R.string.l10n_settings_screen_holds_the_screen_awake_while_you_77637345),
                     checked = workoutKeepScreenOn,
                     onCheckedChange = {
                         workoutKeepScreenOn = it
@@ -3337,7 +3326,7 @@ fun SettingsScreen(
                 // gates the Today entry so anyone can wave the beta away here with one flip.
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_live_sessions_beta_2ca3a97f),
-                    detail = "Silence-first strap coaching during workouts.",
+                    detail = uiString(R.string.l10n_settings_screen_silence_first_strap_coaching_during_workouts_e63b1007),
                     checked = liveSessionsBeta,
                     onCheckedChange = {
                         liveSessionsBeta = it
@@ -3347,7 +3336,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_stress_check_ins_haptic_bf2746ba),
-                    detail = "Lets NOOP notice a fresh HRV dip while you're still and offer a minute to breathe. \"Stress\" here is an autonomic proxy from your own baseline, never a diagnosis. The strap gives one light confirming buzz; no push notification.",
+                    detail = uiString(R.string.l10n_settings_screen_lets_noop_notice_a_fresh_hrv_eb7eade4),
                     checked = stressCheckIn,
                     onCheckedChange = {
                         stressCheckIn = it
@@ -3359,7 +3348,7 @@ fun SettingsScreen(
                 if (stressCheckIn) {
                     SettingsToggleRow(
                         title = uiString(R.string.l10n_settings_screen_offer_a_breath_automatically_6c709dee),
-                        detail = "When a dip is detected, surface the check-in card on its own (rate-limited, quiet-hours aware). Off keeps it manual.",
+                        detail = uiString(R.string.l10n_settings_screen_when_a_dip_is_detected_surface_4ccb8458),
                         checked = stressAutoNudge,
                         onCheckedChange = {
                             stressAutoNudge = it
@@ -3370,7 +3359,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_rhythm_experimental_12d357da),
-                    detail = "An experimental picture of your beat-to-beat timing: a Poincaré scatter and plain regularity stats from quiet resting windows. Not an ECG and not a diagnosis; you'll read a short disclaimer and accept before it turns on.",
+                    detail = uiString(R.string.l10n_settings_screen_an_experimental_picture_of_your_beat_29a199d1),
                     checked = rhythmEnabled,
                     onCheckedChange = {
                         // Enabling here just un-gates the experimental item; the screen itself still shows
@@ -3387,7 +3376,7 @@ fun SettingsScreen(
                 SettingsRowDivider()
                 SettingsToggleRow(
                     title = uiString(R.string.l10n_settings_screen_share_on_device_signals_with_the_b3fd747e),
-                    detail = "When the opt-in Coach is set up with your own key, also include a short summary of your strongest on-device patterns and Lab Book markers in its context. Summary only; no raw data leaves your phone. Requires the Coach's own data consent first.",
+                    detail = uiString(R.string.l10n_settings_screen_when_the_opt_in_coach_is_1e5112f4),
                     checked = coachSignals,
                     onCheckedChange = {
                         coachSignals = it
@@ -3404,7 +3393,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.BugReport,
             title = uiString(R.string.l10n_settings_screen_test_centre_37b36828),
-            blurb = "Turn on a test for the thing that's wrong, wear the strap, then tap Report. Your strap log, recalibrate, scheduled export and experimental probes all live here too.",
+            blurb = uiString(R.string.l10n_settings_screen_turn_on_a_test_for_the_a88d29a4),
         ) {
             NoopButton(
                 text = uiString(R.string.l10n_settings_screen_open_test_centre_a7fbe4e9),
@@ -3425,7 +3414,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Favorite,
             title = uiString(R.string.l10n_settings_screen_charge_d4e1aee4),
-            blurb = "Charge is NOOP's daily readiness score, learned from your own HRV, resting heart rate and more over time. Your history stays.",
+            blurb = uiString(R.string.l10n_settings_screen_charge_is_noop_s_daily_readiness_1f8911ea),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -3591,7 +3580,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Storage,
             title = uiString(R.string.l10n_settings_screen_backup_restore_a1616284),
-            blurb = "Move all your NOOP data to another phone. Export saves everything (history, sleeps, workouts, settings) to a single file you can copy across; import replaces this phone's data with a backup.",
+            blurb = uiString(R.string.l10n_settings_screen_move_all_your_noop_data_to_83f17205),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 // Natural widths that wrap, NOT three equal thirds.
@@ -3682,7 +3671,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.CloudSync,
             title = uiString(R.string.l10n_settings_screen_automatic_backups_8a772f3c),
-            blurb = "Have NOOP save a dated backup to a folder every day (around 1am) and keep the last several - so if data ever corrupts, restore the newest. Point the folder at Drive/Dropbox for off-device copies. Off until you switch it on.",
+            blurb = uiString(R.string.l10n_settings_screen_have_noop_save_a_dated_backup_755bb057),
         ) {
             NoopButton(
                 text = uiString(R.string.l10n_settings_screen_set_up_automatic_backups_00b4780c),
@@ -3697,7 +3686,7 @@ fun SettingsScreen(
         SettingsCard(
             icon = Icons.Filled.Info,
             title = uiString(R.string.l10n_settings_screen_about_6b21fb79),
-            blurb = "NOOP: all your data, none of the cloud.",
+            blurb = uiString(R.string.l10n_settings_screen_noop_all_your_data_none_of_ba567df9),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(
@@ -3717,7 +3706,7 @@ fun SettingsScreen(
                 // width of half a phone on a staging build; appending to it would only move the
                 // truncation somewhere else.
                 Text(
-                    "Build ${BuildConfig.VERSION_CODE}",
+                    uiString(R.string.l10n_settings_screen_build_77afd285, BuildConfig.VERSION_CODE),
                     style = NoopType.caption,
                     color = Palette.textTertiary,
                 )
@@ -4045,8 +4034,8 @@ fun SettingsScreen(
 
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Overline("Built on")
-                    SettingsAttributionRow(repo = "my-whoop", note = "WHOOP 4.0 protocol")
-                    SettingsAttributionRow(repo = "goose", note = "WHOOP 5.0 protocol")
+                    SettingsAttributionRow(repo = "my-whoop", note = uiString(R.string.l10n_settings_screen_whoop_4_0_protocol_87af84d3))
+                    SettingsAttributionRow(repo = "goose", note = uiString(R.string.l10n_settings_screen_whoop_5_0_protocol_ca55847b))
                 }
                 Text(
                     uiString(R.string.l10n_settings_screen_open_source_ble_reverse_engineering_work_40062271),
@@ -4379,10 +4368,10 @@ private fun BackgroundRecentThumb(
         }
         Text(
             text = when (mode) {
-                BackgroundFillMode.FILL -> "Fill"
-                BackgroundFillMode.FIT -> "Fit"
-                BackgroundFillMode.STRETCH -> "Stretch"
-                BackgroundFillMode.TILE -> "Tile"
+                BackgroundFillMode.FILL -> uiString(R.string.l10n_settings_screen_fill_7adb6736)
+                BackgroundFillMode.FIT -> uiString(R.string.l10n_settings_screen_fit_dab564d8)
+                BackgroundFillMode.STRETCH -> uiString(R.string.l10n_settings_screen_stretch_b148ed24)
+                BackgroundFillMode.TILE -> uiString(R.string.l10n_settings_screen_tile_2dd2c660)
             },
             style = NoopType.caption,
             color = if (active) Palette.accent else Palette.textTertiary,

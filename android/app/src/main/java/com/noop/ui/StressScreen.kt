@@ -515,7 +515,7 @@ private fun StressAdvancedCard(
                         modifier = m,
                         label = uiString(R.string.l10n_stress_screen_baevsky_stress_index_296cf7c0),
                         value = "${stressIndex.si.roundToInt()}",
-                        caption = "Autonomic rigidity from your heart-rate rhythm. Higher means a more rigid, stressed rhythm.",
+                        caption = uiString(R.string.l10n_stress_screen_autonomic_rigidity_from_your_heart_rate_ca21ce13),
                         accent = StressRamp.TENSE,
                     )
                 }
@@ -530,7 +530,7 @@ private fun StressAdvancedCard(
                             modifier = m,
                             label = uiString(R.string.l10n_stress_screen_autonomic_balance_lf_hf_776cb6f7),
                             value = StressTrace.formatRatio(ratio),
-                            caption = "Sympathetic vs parasympathetic tone from frequency-domain HRV. Higher leans sympathetic (stress-ward).",
+                            caption = uiString(R.string.l10n_stress_screen_sympathetic_vs_parasympathetic_tone_from_frequency_b8b1aee6),
                             accent = StressRamp.STEADY,
                         )
                     }
@@ -540,7 +540,7 @@ private fun StressAdvancedCard(
                             modifier = m,
                             label = uiString(R.string.l10n_stress_screen_hf_power_3a9fd8c9),
                             value = "${freqHrv.hf.roundToInt()}",
-                            caption = "Parasympathetic (rest) band of your HRV.",
+                            caption = uiString(R.string.l10n_stress_screen_parasympathetic_rest_band_of_your_hrv_17ccac4a),
                             accent = StressRamp.STEADY,
                         )
                     }
@@ -1300,7 +1300,7 @@ private fun StressTiles(model: StressModel) {
                 modifier = m,
                 label = uiString(R.string.l10n_stress_screen_stress_bad33342),
                 value = String.format(Locale.US, "%.1f", model.score),
-                caption = "of 3 · ${model.band.title}",
+                caption = uiString(R.string.l10n_stress_screen_of_3_fe3bee24, model.band.title),
                 accent = StressRamp.color(model.score),
             )
         },
@@ -1510,9 +1510,9 @@ private fun StressMethodologyCard(model: StressModel, modifier: Modifier = Modif
             Overline("How this is computed")
             Text(
                 if (model.usingStored) {
-                    "Today's value is your recorded daily stress score (0-3)."
+                    uiString(R.string.l10n_stress_screen_today_s_value_is_your_recorded_27215db0)
                 } else {
-                    "Stress is derived from two autonomic signals."
+                    uiString(R.string.l10n_stress_screen_stress_is_derived_from_two_autonomic_58132024)
                 },
                 style = NoopType.body,
                 color = Palette.textPrimary,
@@ -1610,7 +1610,7 @@ private fun StressLoading() {
 private fun StressEmpty() {
     DataPendingNote(
         title = uiString(R.string.l10n_stress_screen_no_stress_history_yet_ec962e3c),
-        body = "No stress history yet. Import your WHOOP export in Data Sources to see it.",
+        body = uiString(R.string.l10n_stress_screen_no_stress_history_yet_import_your_16b5535a),
     )
 }
 

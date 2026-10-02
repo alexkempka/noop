@@ -249,8 +249,7 @@ private fun LoadingCard() {
 private fun EmptyState() {
     DataPendingNote(
         title = uiString(R.string.l10n_apple_health_screen_nothing_imported_yet_f457cdbe),
-        body = "Nothing imported yet. On an iPhone: Health app, tap your photo, Export " +
-            "All Health Data, then import the .zip here in Data Sources.",
+        body = uiString(R.string.l10n_apple_health_screen_nothing_imported_yet_on_an_iphone_3bb3b8dc),
     )
 }
 
@@ -338,7 +337,7 @@ private fun MetricTile(
         else -> {
             val m = values.average()
             value = withUnit(fmt(m), unit)
-            caption = "avg · ${values.size}d"
+            caption = uiString(R.string.l10n_apple_health_screen_avg_d_b0d61364, values.size)
         }
     }
 

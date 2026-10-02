@@ -604,7 +604,7 @@ fun SleepScreen(
 
     LazyScreenScaffold(
         title = uiString(R.string.l10n_sleep_screen_sleep_3cac34e6),
-        subtitle = "Last night, read in two seconds.",
+        subtitle = uiString(R.string.l10n_sleep_screen_last_night_read_in_two_seconds_4c9b785b),
         listState = sleepListState,   // #sleep-layout: the hold-to-drag frame loop drives this list state
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the static time-of-day liquid sky
         // settles into the theme canvas behind the header + hero, bled full-width up behind the status bar
@@ -1108,8 +1108,8 @@ private fun SleepUndoBanner(undo: SleepUndoState, onUndo: () -> Unit) {
     // and several read the same (no plural forms in the Android catalogue yet).
     val message = when {
         undo.fromEdit -> uiString(R.string.l10n_sleep_screen_sleep_outside_the_new_times_was_6229881e)
-        session.userEdited -> "Sleep deleted."
-        else -> "Sleep deleted. NOOP won't detect sleep between $startText and $endText again."
+        session.userEdited -> uiString(R.string.l10n_sleep_screen_sleep_deleted_8cb3a23a)
+        else -> uiString(R.string.l10n_sleep_screen_sleep_deleted_noop_won_t_detect_2445a454, startText, endText)
     }
     NoopCard(tint = Palette.restColor) {
         Row(
@@ -1665,11 +1665,9 @@ private fun OuraRawStagesNote() {
         verticalAlignment = Alignment.Top,
         modifier = Modifier.padding(horizontal = 2.dp),
     ) {
-        SourceBadge(text = "Raw on-device stages", tint = Palette.restColor)
+        SourceBadge(text = uiString(R.string.l10n_sleep_screen_raw_on_device_stages_a1b7287f), tint = Palette.restColor)
         Text(
-            "This split is the ring's raw on-device classification read over Bluetooth, not the adjusted " +
-                "stages the Oura app shows. Expect more Awake and less Deep/REM here than in the Oura app " +
-                "for the same night.",
+            uiString(R.string.l10n_sleep_screen_this_split_is_the_ring_s_cb0c077f),
             style = NoopType.caption,
             color = Palette.textTertiary,
         )
@@ -1992,7 +1990,7 @@ private fun NapRow(
             IconButton(onClick = { editingStart = true }) {
                 Icon(
                     Icons.Filled.Edit,
-                    contentDescription = if (nap.userEdited) "Edit nap times (edited)" else "Edit nap times",
+                    contentDescription = if (nap.userEdited) uiString(R.string.l10n_sleep_screen_edit_nap_times_edited_dfc0ea78) else uiString(R.string.l10n_sleep_screen_edit_nap_times_230d6595),
                     tint = Palette.restColor,
                     modifier = Modifier.size(18.dp),
                 )
@@ -2168,7 +2166,7 @@ private fun StageTimelineRow(
             .clip(shape)
             .background(Palette.textPrimary.copy(alpha = 0.045f))
             .then(if (selected) Modifier.border(1.5.dp, Palette.hairlineStrong, shape) else Modifier)
-            .clickable(onClickLabel = "Highlights this stage on the sleep chart", onClick = onTap)
+            .clickable(onClickLabel = uiString(R.string.l10n_sleep_screen_highlights_this_stage_on_the_sleep_1ae81c83), onClick = onTap)
             .padding(horizontal = Metrics.stageRowPadH, vertical = Metrics.stageRowPadV)
             .semantics(mergeDescendants = true) {
                 contentDescription = uiString(R.string.l10n_sleep_screen_label_durationtext_minutes_percent_percent_of_6ab7ae87, label, durationText(minutes), percent)

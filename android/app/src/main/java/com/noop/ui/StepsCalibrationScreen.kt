@@ -427,12 +427,12 @@ private fun ManualAdjustCard(
             )
             Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    if (manual > 0) String.format(Locale.US, "%.1f", manual) else "Auto",
+                    if (manual > 0) String.format(Locale.US, "%.1f", manual) else uiString(R.string.l10n_steps_calibration_screen_auto_c614ba7c),
                     style = NoopType.number(24f),
                     color = if (manual > 0) Palette.accent else Palette.textSecondary,
                 )
                 Text(
-                    if (manual > 0) "steps / motion unit" else "fit from your phone",
+                    if (manual > 0) uiString(R.string.l10n_steps_calibration_screen_steps_motion_unit_8b469fe0) else uiString(R.string.l10n_steps_calibration_screen_fit_from_your_phone_0d0797f4),
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                     modifier = Modifier.padding(bottom = 4.dp),

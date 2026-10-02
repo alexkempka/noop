@@ -117,7 +117,7 @@ fun FusedRecordScreen(
         if (record.rows.isEmpty()) {
             DataPendingNote(
                 title = uiString(R.string.l10n_fused_record_screen_nothing_to_fuse_yet_30789c4e),
-                body = "Import a WHOOP export, Health Connect or a second band and your best-sourced record builds here, on this device.",
+                body = uiString(R.string.l10n_fused_record_screen_import_a_whoop_export_health_connect_ab7fc1e7),
             )
         } else {
             NoopCard(padding = 0.dp) {
@@ -152,9 +152,9 @@ fun FusedRecordScreen(
 @Composable
 private fun DayBadgeRow(owner: FusionSource?) {
     val text = if (owner != null) {
-        "Today's scores owned by ${owner.displayName}"
+        uiString(R.string.l10n_fused_record_screen_today_s_scores_owned_by_85d2a9e6, owner.displayName)
     } else {
-        "Scores still calibrating, no single day-owner yet"
+        uiString(R.string.l10n_fused_record_screen_scores_still_calibrating_no_single_day_1109f7d5)
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -230,7 +230,7 @@ private fun FusedMetricRow(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClickLabel = "Compare sources",
+                onClickLabel = uiString(R.string.l10n_fused_record_screen_compare_sources_7b3b1896),
             ) { onCompare() }
     } else {
         Modifier.fillMaxWidth()

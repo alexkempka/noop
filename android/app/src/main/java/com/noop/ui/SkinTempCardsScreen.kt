@@ -268,7 +268,7 @@ fun BodyClockCard(
                 OutlinedButton(
                     onClick = onOpenPlanner,
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Palette.accent),
-                ) { Text(if (plan == null) "Plan a trip or shift" else "View the full plan") }
+                ) { Text(if (plan == null) uiString(R.string.l10n_skin_temp_cards_screen_plan_a_trip_or_shift_bf373209) else uiString(R.string.l10n_skin_temp_cards_screen_view_the_full_plan_451bac18)) }
             }
         }
     }

@@ -475,7 +475,7 @@ internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
         SectionHeader("Asleep duration", overline = "Sleep", trailing = "Last 14 days")
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
-            subtitle = "Per night, trailing 14 days",
+            subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
             trailing = avg?.let { String.format(Locale.US, "%.1f h avg", it) },
             tint = Palette.restColor,
             footer = {
@@ -518,7 +518,7 @@ internal fun DurationTrend(m: SleepModel) {
         SectionHeader("Trend", overline = "Sleep", trailing = "Last 14 days")
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
-            subtitle = "Per night, trailing 14 days",
+            subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
             trailing = avg?.let { String.format(Locale.US, "%.1f h avg", it) },
             tint = Palette.restColor,
             footer = {
@@ -558,7 +558,7 @@ internal fun DurationTrend(m: SleepModel) {
 
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_sleep_debt_3aec7d9c),
-            subtitle = "Sleep debt per day",
+            subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_sleep_debt_per_day_dc7eb558),
             // #691: sleep debt is usually well under an hour, so decimal hours ("0.6h") reads badly —
             // show hours+minutes. trendDebtHours is in hours; durationText takes minutes.
             trailing = m.trendDebtHours.lastOrNull()?.let { durationText(it * 60.0) },
@@ -603,7 +603,7 @@ internal fun TrendPlaceholder() {
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
-        InsetChartPlaceholder(message = "Not enough nights yet.")
+        InsetChartPlaceholder(message = uiString(R.string.l10n_sleep_metric_cards_ui_not_enough_nights_yet_32fb3c72))
     }
 }
 
@@ -780,8 +780,7 @@ private fun SparkTile(
 internal fun SleepEmptyState() {
     DataPendingNote(
         title = uiString(R.string.l10n_sleep_screen_no_nights_here_yet_607248f5),
-        body = "No nights here yet. Import your WHOOP export in Data Sources to see " +
-            "every night, your sleep stages and trends straight away.",
+        body = uiString(R.string.l10n_sleep_metric_cards_ui_no_nights_here_yet_import_your_aec23e5f),
     )
 }
 

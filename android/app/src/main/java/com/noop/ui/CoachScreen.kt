@@ -97,7 +97,7 @@ fun CoachScreen(vm: CoachViewModel = viewModel(), onOpenSettings: () -> Unit = {
 
     ScreenScaffold(
         title = uiString(R.string.l10n_coach_screen_coach_b32c9ad3),
-        subtitle = "Ask about your recovery, strain, sleep and HRV, grounded in your own numbers.",
+        subtitle = uiString(R.string.l10n_coach_screen_ask_about_your_recovery_strain_sleep_57c69325),
         // LIQUID SKY BACKDROP (the pilot pattern — LiquidScreenSky.kt): the liquid sky sits behind the
         // header and the cards float over the flat canvas below. Reuses the shared LiquidScreenSky() slot
         // verbatim; when the day-cycle background is off, the scaffold paints the plain surface instead.
@@ -141,11 +141,9 @@ private fun CoachSetup(vm: CoachViewModel) {
             }
             Text(
                 if (isCustom)
-                    "Point the coach at any OpenAI-compatible server: a local model (Ollama, LM " +
-                        "Studio, llama.cpp) keeps everything on your device; an API key is optional."
+                    uiString(R.string.l10n_coach_screen_point_the_coach_at_any_openai_d1543415)
                 else
-                    "Bring your own API key. It is stored encrypted on this device and only used to " +
-                        "send your question plus a short summary of your metrics to the provider you pick.",
+                    uiString(R.string.l10n_coach_screen_bring_your_own_api_key_it_43bb3e4c),
                 style = NoopType.subhead, color = Palette.textSecondary,
             )
 
@@ -220,8 +218,8 @@ private fun CoachSetup(vm: CoachViewModel) {
                 CoachKeyField(
                     value = keyInput,
                     onValueChange = { keyInput = it },
-                    placeholder = if (isCustom) "Only if your server requires one"
-                                  else "Paste your ${provider.displayName} key",
+                    placeholder = if (isCustom) uiString(R.string.l10n_coach_screen_only_if_your_server_requires_one_5369cfe1)
+                                  else uiString(R.string.l10n_coach_screen_paste_your_key_399371ac, provider.displayName),
                 )
             }
 
@@ -844,7 +842,7 @@ internal fun RefreshModelsButton(
             )
         }
         Text(
-            if (refreshing) "Fetching…" else "Refresh models",
+            if (refreshing) uiString(R.string.l10n_coach_screen_fetching_2246be56) else uiString(R.string.l10n_coach_screen_refresh_models_ba6da3f2),
             style = NoopType.caption,
             color = if (active) Palette.textPrimary else Palette.textTertiary,
         )
@@ -1116,11 +1114,9 @@ private fun PrivacyNote(local: Boolean = false) {
         Icon(Icons.Filled.Lock, contentDescription = null, tint = Palette.textTertiary, modifier = Modifier.size(13.dp))
         Text(
             if (local)
-                "The coach talks only to the server URL you set. Point it at a local model to " +
-                    "keep everything on your device. Nothing is sent until you ask."
+                uiString(R.string.l10n_coach_screen_the_coach_talks_only_to_the_c02eb37f)
             else
-                "Private by default: only your question and a short metrics summary are sent, " +
-                    "and only after you set a key.",
+                uiString(R.string.l10n_coach_screen_private_by_default_only_your_question_feea1391),
             style = NoopType.footnote,
             color = Palette.textTertiary,
         )
