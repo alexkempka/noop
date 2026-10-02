@@ -132,7 +132,7 @@
     <string name="trends_peak">Spitze</string>
     <string name="trends_low">Niedrig</string>
     <string name="trends_days">Tage</string>
-    <string name="trends_mean">Schnitt</string>
+    <string name="trends_mean">Ø</string>
     <string name="trends_min">Min</string>
     <string name="trends_max">Max</string>
     <string name="trends_calendar_footnote">Jeder Balken ist der Energie-Wert eines Tages, von niedrig bis hoch. Das 53-Wochen-Kalenderraster gibt es in der Desktop-App.</string>
@@ -833,7 +833,7 @@
     <string name="l10n_sleep_screen_consistencypct_roundtoint_b23a9d40">%1$s%%</string>
     <string name="l10n_sleep_screen_delete_this_nap_1adf0a3f">Nickerchen löschen</string>
     <string name="l10n_sleep_screen_fell_asleep_at_asleep_woke_at_80465b2d">Eingeschlafen um %1$s, aufgewacht um %2$s</string>
-    <string name="l10n_sleep_screen_going_to_sleep_9c6c63fd">Ich gehe schlafen</string>
+    <string name="l10n_sleep_screen_going_to_sleep_9c6c63fd">Ich schlafe</string>
     <string name="l10n_sleep_screen_hours_asleep_06f68993">Schlafstunden</string>
     <string name="l10n_sleep_screen_hours_vs_needed_500a0aca">Stunden vs. Bedarf</string>
     <string name="l10n_sleep_screen_hours_vs_needed_progress_bar_score_4baad051">Stunden vs. Bedarf, Fortschrittsbalken, %1$s Prozent</string>
@@ -2369,7 +2369,7 @@
     <string name="today_synthesis_low">Niedrig</string>
     <string name="today_synthesis_no_metrics">Noch keine Messwerte. Importiere deinen WHOOP-Export oder trag das Band, um loszulegen.</string>
     <string name="today_synthesis_peak">Spitze</string>
-    <string name="today_synthesis_steady">Stabil</string>
+    <string name="today_synthesis_steady">Solide</string>
     <string name="today_synthesis_strong">Stark</string>
     <string name="today_unit_bpm">bpm</string>
     <string name="today_unit_ms">ms</string>

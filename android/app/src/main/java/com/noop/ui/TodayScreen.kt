@@ -3320,8 +3320,8 @@ private fun HeroRingColumn(
                     // Symmetric at 16 rather than 18 because the width matters: it is the margin
                     // `AutoSizeValue` shrinks into before it ellipsises, and #1502 was a German "ERHOLUNG"
                     // cut to "R…". 16 clears the 14.dp chevron by 2.
-                    .padding(horizontal = Metrics.space16),
-                minScale = 0.7f,
+                    .padding(horizontal = Metrics.space14),
+                minScale = 0.55f,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             )
             Icon(
@@ -7614,6 +7614,8 @@ private fun ReadinessSection(days: List<DailyMetric>, carriedDay: DailyMetric? =
                     modifier = Modifier.weight(1f),
                 )
                 readiness.acwr?.let { acwr ->
+                    // Room between the verdict and the ratio: "AusgeglichenLastverhältnis" ran together.
+                    Spacer(Modifier.width(Metrics.space12))
                     Text(
                         uiString(R.string.today_load_ratio, String.format(Locale.getDefault(), "%.2f", acwr)),
                         style = NoopType.captionNumber,
