@@ -5161,6 +5161,10 @@ class WhoopBleClient(
     // stalled. The report carries this number, so raising it stays self-describing.
     private val ECG_PROBE_WINDOW_SECONDS = 60
 
+    /** A live reading that has not completed after this long is closed: 6–10 s settling plus ~38 s of
+     *  measuring leaves ample room, and a strap must never be left generating. */
+    private val ECG_LIVE_TIMEOUT_SECONDS = 120
+
     /** Detailed candidate lines are capped; the PACKET COUNT is not, so the verdict stays complete
      *  while a chatty stream cannot grow the strap log without bound. Matches macOS. */
     // Head AND tail, not a hard stop at 12. At roughly one packet a second the old cap showed the
@@ -5582,6 +5586,60 @@ class WhoopBleClient(
         )
     }
 
+    // MARK: - ECG live reading (this fork, Android only)
+
+    private val _ecgLive = MutableStateFlow<com.noop.analytics.EcgLiveState?>(null)
+    /** The reading the ECG screen shows: null before the first start of this process. */
+    val ecgLive: StateFlow<com.noop.analytics.EcgLiveState?> = _ecgLive.asStateFlow()
+
+    /** True from a live start until the reading ended and the OFF sequence went out. */
+    @Volatile private var ecgLiveActive = false
+    private var ecgLiveTimeout: Runnable? = null
+
+    /**
+     * Start a reading for the ECG screen: the same session sequence as the Test Centre probe (including
+     * resolving any previous session first — the "Abschluss" that made readings work in 551), plus a
+     * live state the screen draws from. Pressing Start on the ECG screen IS the opt-in, so it is set here.
+     * Returns false when a gate refused (not an MG, not bonded, not connected); the log says which.
+     */
+    fun ecgLiveStart(): Boolean {
+        puffinExperiment.ecgEnabled = true
+        if (!ecgGatesAllow()) return false
+        _ecgLive.value = com.noop.analytics.EcgLiveSession.start(System.currentTimeMillis())
+        ecgLiveActive = true
+        ecgStartCapture()
+        ecgLiveTimeout?.let { handler.removeCallbacks(it) }
+        val t = Runnable {
+            if (ecgLiveActive) {
+                log("ECG live: no completion within ${ECG_LIVE_TIMEOUT_SECONDS}s — closing the session")
+                ecgLiveFinish()
+            }
+        }
+        ecgLiveTimeout = t
+        handler.postDelayed(t, ECG_LIVE_TIMEOUT_SECONDS * 1000L)
+        return true
+    }
+
+    /** User stop, or the end of a reading: close the session on the strap the documented way. */
+    fun ecgLiveFinish() {
+        if (!ecgLiveActive && !ecgMayBeRunning) return
+        ecgLiveTimeout?.let { handler.removeCallbacks(it) }
+        ecgLiveTimeout = null
+        ecgStopCapture(onSettled = { ecgLiveActive = false })
+    }
+
+    private fun noteEcgLivePacket(packet: com.noop.protocol.LabradorR17) {
+        val before = _ecgLive.value ?: return
+        val after = com.noop.analytics.EcgLiveSession.apply(before, packet, System.currentTimeMillis())
+        _ecgLive.value = after
+        if (!before.ended && after.ended) {
+            log("ECG live: reading ended (progress=${after.progress} state=${after.classifierState} " +
+                "samples=${after.samples.size} invalid=${after.invalid}) — closing the session")
+            // Close it like the official app does once a reading is done, so the next start is clean.
+            handler.post { ecgLiveFinish() }
+        }
+    }
+
     /**
      * The explicit OFF path. Twin of macOS `ecgStopCapture`.
      *
@@ -5650,6 +5708,7 @@ class WhoopBleClient(
     private fun noteEcgProbeCandidate(frame: ByteArray) {
         if (frame.size < 12) return
         val packet = Whoop5Ecg.r17FromFrame(frame) ?: return
+        if (ecgLiveActive) noteEcgLivePacket(packet)
         synchronized(ecgProbeLock) { ecgProbePacketsSeen += 1 }
         // The classifier byte is logged as a NUMBER, never as its token name: a strap log is a shareable
         // artefact, and no line in it should read like a clinical finding.
@@ -8863,7 +8922,7 @@ class WhoopBleClient(
         // Placed after the verifier so bad bytes can never be counted as a candidate, and gated on the
         // window so an ordinary frame pays one boolean. Without this the probe reports zero packets
         // forever and every run reads as "accepted but silent" even while a trace is streaming.
-        if (ecgProbeListening) noteEcgProbeFrame(frame)
+        if (ecgProbeListening || ecgLiveActive) noteEcgProbeFrame(frame)
 
         // Connection test mode: accumulate frames by type and flush ONE `frameTiming` SUMMARY line per
         // rolling window (#1151), instead of a line per frame-TYPE transition — during offloads/command

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ecg_title">EKG</string>
+    <string name="ecg_subtitle">Eine Ein-Kanal-Ableitung über den Verschluss deines Bands</string>
+    <string name="ecg_reading_overline">Messung</string>
+    <string name="ecg_status_ready">Bereit</string>
+    <string name="ecg_status_contact">Warte auf Kontakt</string>
+    <string name="ecg_status_settling">Kontakt erkannt</string>
+    <string name="ecg_status_measuring">Messung läuft · %1$d %%</string>
+    <string name="ecg_status_done">Fertig</string>
+    <string name="ecg_status_invalid">Das Band hat die Messung als ungültig beendet</string>
+    <string name="ecg_hint_ready">Setz dich ruhig hin, leg den Arm ab, tippe auf Start und halte die Kontakte am Verschluss mit Daumen und Finger der anderen Hand.</string>
+    <string name="ecg_hint_contact">Halte die Kontakte am Verschluss fest mit Daumen und Finger der anderen Hand.</string>
+    <string name="ecg_hint_settling">Ruhig halten – das Band braucht meist 6 bis 10 Sekunden festen Kontakt, bis die Messung anfängt (bisher %1$d s).</string>
+    <string name="ecg_hint_measuring">Weiter ruhig halten, bis 100 Prozent erreicht sind. Verrutscht der Kontakt, fängt das Band von vorn an.</string>
+    <string name="ecg_hint_done">Die Messung ist gespeichert und die Sitzung auf dem Band sauber geschlossen.</string>
+    <string name="ecg_hint_invalid">Meist ist der Kontakt verloren gegangen. Die Sitzung ist geschlossen, du kannst neu starten.</string>
+    <string name="ecg_heart_rate">%1$d Schläge/min</string>
+    <string name="ecg_start">EKG starten</string>
+    <string name="ecg_stop">Stopp</string>
+    <string name="ecg_start_refused">Das Band hat den Start nicht angenommen: Nötig ist ein verbundenes WHOOP MG mit voller verschlüsselter Verbindung.</string>
+    <string name="ecg_needs_mg">Nur das WHOOP MG hat EKG-Kontakte.</string>
+    <string name="ecg_scale_pending">Zeitachse wird gemessen …</string>
+    <string name="ecg_scale_known">Raster: kleines Kästchen 0,04 s, großes 0,2 s (wie auf EKG-Papier) · %1$d Werte/s, auf diesem Telefon gemessen · Höhe in den eigenen Einheiten des Bands, ein Millivolt-Maßstab ist nicht bekannt</string>
+    <string name="ecg_paper_speed">Etwa 25 mm/s · %1$d Werte mit %2$d/s · seitlich wischen</string>
+    <string name="ecg_recordings_overline">Gespeicherte Messungen</string>
+    <string name="ecg_note_overline">Notiz</string>
+    <string name="ecg_note_hint">Was du dir zu diesem Moment merken willst, in deinen eigenen Worten. Freiwillig.</string>
+    <string name="ecg_note_save">Notiz speichern</string>
+    <string name="ecg_note_saved">Notiz gespeichert</string>
+    <string name="ecg_disclaimer">Experimentelle Messtechnik, kein medizinisches EKG. Es wird kein Rhythmus bewertet, und nichts hier eignet sich für Diagnosen. Die Messungen bleiben auf diesem Telefon.</string>
+    <string name="ecg_vitals_entry">EKG</string>
+</resources>

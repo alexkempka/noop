@@ -1228,7 +1228,7 @@ class WhoopRepository(
     suspend fun ppgWaveformSamples(deviceId: String, from: Long, to: Long, limit: Int = DEFAULT_LIMIT):
         List<PpgWaveformRow> =
         dao.ppgWaveformSamples(deviceId, from, to, limit)
-            .map { PpgWaveformRow(it.ts, StreamPersistence.unpackPpgSamples(it.samples)) }
+            .map { PpgWaveformRow(it.ts, StreamPersistence.unpackPpgSamples(it.samples), it.burstIndex, it.baseCode) }
 
     /**
      * The banked 5/MG v18 auxiliary fields in [from, to] for one device, ascending by ts — one row per

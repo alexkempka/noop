@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bp_title">Blutdruck</string>
+    <string name="bp_subtitle">Eine Schätzung aus deiner Nacht, abgeglichen mit deiner Manschette</string>
+    <string name="bp_loading_title">Wird geladen</string>
+    <string name="bp_loading_body">Deine Nächte und Manschettenwerte werden gelesen.</string>
+    <string name="bp_estimate_overline">Schätzung für heute Morgen</string>
+    <string name="bp_no_estimate_title">Noch keine Schätzung</string>
+    <string name="bp_no_nights">Es ist noch keine Nacht aufgezeichnet. Trag das Band beim Schlafen.</string>
+    <string name="bp_needs_calibration">Miss %1$d-mal mit deiner Manschette innerhalb von zehn Minuten und trag die Werte unten ein. Ohne sie zeigt NOOP keine Zahl.</string>
+    <string name="bp_estimate_night">Schätzung, keine Messung · Nacht bis %1$s</string>
+    <string name="bp_spread_unknown">Genauigkeit noch unbekannt: %1$d von %2$d Vergleichen mit deiner Manschette.</string>
+    <string name="bp_spread_known">Die Spanne ist die typische Abweichung zu deiner Manschette aus %1$d Vergleichen.</string>
+    <string name="bp_pulse_used">Pulswelle genutzt: %1$d Herzschläge aus der Nacht.</string>
+    <string name="bp_pulse_missing">Keine Pulswelle in dieser Nacht; die Schätzung nutzt nur Puls, HFV und Atmung.</string>
+    <string name="bp_calibration_overline">Kalibrierung mit deiner Manschette</string>
+    <string name="bp_calibration_how">Setz dich ruhig hin, miss %1$d-mal innerhalb von zehn Minuten und trag jeden Wert ein. Jede vollständige Sitzung wird zuerst mit der Schätzung verglichen und erst dann gelernt.</string>
+    <string name="bp_session_progress">Sitzung läuft: %1$d von %2$d Messungen</string>
+    <string name="bp_never_calibrated">Noch nicht kalibriert.</string>
+    <string name="bp_calibration_due">Letzte Kalibrierung %1$s. Zeit für neue Manschettenwerte – die Schätzung läuft so lange weiter.</string>
+    <string name="bp_last_calibration">Letzte Kalibrierung %1$s · bisher %2$d Sitzungen</string>
+    <string name="bp_systolic">Oben (systolisch)</string>
+    <string name="bp_diastolic">Unten (diastolisch)</string>
+    <string name="bp_implausible">Das sieht nach einem Tippfehler aus: Der obere Wert muss größer als der untere sein, beide im Messbereich einer Manschette.</string>
+    <string name="bp_save_reading">Messung speichern</string>
+    <string name="bp_accuracy_overline">Genauigkeit gegen deine Manschette</string>
+    <string name="bp_accuracy_none">Erscheint ab deiner zweiten Kalibrier-Sitzung.</string>
+    <string name="bp_accuracy_rmse">Typische Abweichung ±%1$d / ±%2$d mmHg aus %3$d Vergleichen</string>
+    <string name="bp_accuracy_how">Jeder Vergleich nutzt die Schätzung von vor dieser Sitzung – er zeigt also die echte Abweichung.</string>
+    <string name="bp_comparison_row">%1$s · Manschette %2$s · Schätzung %3$s</string>
+    <string name="bp_history_overline">Letzte Morgen</string>
+    <string name="bp_history_note">Wird mit jeder neuen Kalibrierung neu berechnet.</string>
+    <string name="bp_disclaimer">Eine Schätzung zur eigenen Orientierung, auf diesem Telefon berechnet aus deinem Band und deinen Manschettenwerten. Keine Messung, kein Medizinprodukt, nicht für Diagnosen geeignet.</string>
+    <string name="bp_vitals_entry">Blutdruck (Schätzung)</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bp_title">Blood pressure</string>
+    <string name="bp_subtitle">An estimate from your night, calibrated with your cuff</string>
+    <string name="bp_loading_title">Loading</string>
+    <string name="bp_loading_body">Reading your nights and cuff readings.</string>
+    <string name="bp_estimate_overline">This morning\'s estimate</string>
+    <string name="bp_no_estimate_title">No estimate yet</string>
+    <string name="bp_no_nights">There is no recorded night yet. Wear the strap to sleep.</string>
+    <string name="bp_needs_calibration">Take %1$d readings with your cuff within ten minutes and enter them below. Without them NOOP shows no number.</string>
+    <string name="bp_estimate_night">Estimate, not a measurement · night ending %1$s</string>
+    <string name="bp_spread_unknown">Accuracy not known yet: %1$d of %2$d comparisons with your cuff.</string>
+    <string name="bp_spread_known">The range is the typical deviation from your cuff across %1$d comparisons.</string>
+    <string name="bp_pulse_used">Pulse wave used: %1$d beats from the night.</string>
+    <string name="bp_pulse_missing">No pulse wave for this night; the estimate uses heart rate, HRV and breathing only.</string>
+    <string name="bp_calibration_overline">Calibration with your cuff</string>
+    <string name="bp_calibration_how">Sit quietly, then measure %1$d times within ten minutes and enter each reading. Every complete session is first compared with the estimate, then learned from.</string>
+    <string name="bp_session_progress">Session in progress: %1$d of %2$d readings</string>
+    <string name="bp_never_calibrated">Not calibrated yet.</string>
+    <string name="bp_calibration_due">Last calibration %1$s. Time for new cuff readings — the estimate keeps running meanwhile.</string>
+    <string name="bp_last_calibration">Last calibration %1$s · %2$d sessions so far</string>
+    <string name="bp_systolic">Upper (systolic)</string>
+    <string name="bp_diastolic">Lower (diastolic)</string>
+    <string name="bp_implausible">These values look like a typo: the upper value must be higher than the lower one, and both within the cuff\'s range.</string>
+    <string name="bp_save_reading">Save reading</string>
+    <string name="bp_accuracy_overline">Accuracy against your cuff</string>
+    <string name="bp_accuracy_none">Appears from your second calibration session on.</string>
+    <string name="bp_accuracy_rmse">Typical deviation ±%1$d / ±%2$d mmHg from %3$d comparisons</string>
+    <string name="bp_accuracy_how">Each comparison uses the estimate made before that session was learned, so it shows the real deviation.</string>
+    <string name="bp_comparison_row">%1$s · cuff %2$s · estimate %3$s</string>
+    <string name="bp_history_overline">Recent mornings</string>
+    <string name="bp_history_note">Recalculated with every new calibration.</string>
+    <string name="bp_disclaimer">An estimate for your own orientation, computed on this phone from your strap and your cuff readings. Not a measurement, not a medical device and not suitable for diagnosis.</string>
+    <string name="bp_vitals_entry">Blood pressure (estimate)</string>
+</resources>

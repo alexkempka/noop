@@ -744,11 +744,19 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                     )
                 }
                 composable(Destination.VitalSignsDetail.route) { backStackEntry ->
-                    VitalDetailScreen(
-                        vm = viewModel,
-                        key = backStackEntry.arguments?.getString("key").orEmpty(),
-                        onClose = { nav.popBackStack() },
-                    )
+                    val key = backStackEntry.arguments?.getString("key").orEmpty()
+                    // The blood-pressure estimate rides on this route so it needs no destination of its own.
+                    if (key == BLOOD_PRESSURE_KEY) {
+                        BloodPressureScreen(vm = viewModel, onClose = { nav.popBackStack() })
+                    } else if (key == ECG_KEY) {
+                        EcgScreen(vm = viewModel, onClose = { nav.popBackStack() })
+                    } else {
+                        VitalDetailScreen(
+                            vm = viewModel,
+                            key = key,
+                            onClose = { nav.popBackStack() },
+                        )
+                    }
                 }
                 // --- v5 pillar screens (Wave 3 wiring) ---
                 composable(Destination.InsightsHub.route) { InsightsHubScreen(viewModel) }

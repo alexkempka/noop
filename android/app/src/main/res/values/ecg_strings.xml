@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ecg_title">ECG</string>
+    <string name="ecg_subtitle">A single-lead reading from your strap\'s clasp</string>
+    <string name="ecg_reading_overline">Reading</string>
+    <string name="ecg_status_ready">Ready</string>
+    <string name="ecg_status_contact">Waiting for contact</string>
+    <string name="ecg_status_settling">Contact detected</string>
+    <string name="ecg_status_measuring">Measuring · %1$d %%</string>
+    <string name="ecg_status_done">Done</string>
+    <string name="ecg_status_invalid">The strap ended the reading as invalid</string>
+    <string name="ecg_hint_ready">Sit still, rest your arm, then tap Start and hold the clasp contacts with thumb and finger of your other hand.</string>
+    <string name="ecg_hint_contact">Hold the clasp contacts firmly with thumb and finger of your other hand.</string>
+    <string name="ecg_hint_settling">Keep still — the strap usually needs 6 to 10 seconds of steady contact before the reading starts (%1$d s so far).</string>
+    <string name="ecg_hint_measuring">Keep holding still until it reaches 100 percent. If contact slips, the strap starts over.</string>
+    <string name="ecg_hint_done">The reading is saved and the session on the strap is closed.</string>
+    <string name="ecg_hint_invalid">Usually contact was lost. The session is closed; you can start again.</string>
+    <string name="ecg_heart_rate">%1$d bpm</string>
+    <string name="ecg_start">Start ECG</string>
+    <string name="ecg_stop">Stop</string>
+    <string name="ecg_start_refused">The strap did not accept the start: it needs a connected WHOOP MG with the full encrypted link.</string>
+    <string name="ecg_needs_mg">Only the WHOOP MG has ECG contacts.</string>
+    <string name="ecg_scale_pending">Time axis is being measured …</string>
+    <string name="ecg_scale_known">Grid: small box 0.04 s, large box 0.2 s (as on ECG paper) · %1$d values/s measured on this phone · height in the strap\'s own units, no millivolt scale is known</string>
+    <string name="ecg_paper_speed">About 25 mm/s · %1$d values at %2$d/s · scroll sideways</string>
+    <string name="ecg_recordings_overline">Saved readings</string>
+    <string name="ecg_note_overline">Note</string>
+    <string name="ecg_note_hint">Anything you want to remember about this moment, in your own words. Optional.</string>
+    <string name="ecg_note_save">Save note</string>
+    <string name="ecg_note_saved">Note saved</string>
+    <string name="ecg_disclaimer">Experimental instrumentation, not a medical ECG. No rhythm is assessed and nothing here is suitable for diagnosis. Readings stay on this phone.</string>
+    <string name="ecg_vitals_entry">ECG</string>
+</resources>

@@ -204,6 +204,10 @@ fun HealthScreen(
                     captionMode = VitalCaptionMode.AS_OF,
                 )
             }
+            // Blood-pressure ESTIMATE and the ECG reading (this fork, Android only): own screens, reached here.
+            item { Spacer(Modifier.height(Metrics.selectorTopUp)) }
+            item { ForkEntryCard(uiString(R.string.bp_vitals_entry), uiString(R.string.bp_subtitle)) { onVitalClick(BLOOD_PRESSURE_KEY) } }
+            item { ForkEntryCard(uiString(R.string.ecg_vitals_entry), uiString(R.string.ecg_subtitle)) { onVitalClick(ECG_KEY) } }
             // FITNESS AGE — the weekly Saturday number from the engine (resting HR + activity vs your
             // age), with an honest readiness checklist behind a tap. Authoritative value comes from the
             // metricSeries the IntelligenceEngine writes; readiness is derived from what this screen sees.
@@ -2696,4 +2700,18 @@ private fun HealthEmptyState() {
         title = uiString(R.string.l10n_health_screen_no_biometrics_yet_7c594a6c),
         body = uiString(R.string.l10n_health_screen_no_biometrics_yet_import_your_whoop_11fe9f18),
     )
+}
+
+/** An entry row to one of this fork's own screens (blood pressure, ECG). */
+@Composable
+private fun ForkEntryCard(title: String, detail: String, onClick: () -> Unit) {
+    NoopCard(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(title, style = NoopType.headline, color = Palette.textPrimary)
+                Text(detail, style = NoopType.footnote, color = Palette.textTertiary)
+            }
+            Icon(Icons.Filled.ChevronRight, contentDescription = null, tint = Palette.textTertiary)
+        }
+    }
 }
