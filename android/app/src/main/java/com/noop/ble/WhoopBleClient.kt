@@ -5170,6 +5170,9 @@ class WhoopBleClient(
     private val ECG_PROBE_HEAD_CANDIDATES = 10
     private val ECG_PROBE_TAIL_CANDIDATES = 10
 
+    /** Cap on recorded steps, so unsolicited replies cannot grow the report without bound. */
+    private val ECG_PROBE_MAX_STEPS = 24
+
     /**
      * Gap between the commands of one ECG sequence (see [ecgRunSteps]).
      *
@@ -5319,7 +5322,8 @@ class WhoopBleClient(
      *  was no session to resolve — would classify the whole run as `commandRefused` and mask the ECG
      *  outcome the run exists to establish. Same reasoning as [ecgSendAbortHistorical]. */
     private fun sendEcgCommand(cmd: CommandNumber, arg: Int, recordStep: Boolean = true) {
-        val label = "${CommandNames.label(cmd.rawValue)}(${cmd.rawValue})"
+        // CommandNames.label already carries "(n)"; appending it again rendered "…(139)(139)".
+        val label = CommandNames.label(cmd.rawValue)
         if (recordStep) {
             synchronized(ecgProbeLock) {
                 ecgProbeSteps.add(
@@ -5624,6 +5628,25 @@ class WhoopBleClient(
      * The classifier byte is logged as a NUMBER, never its token name: a strap log is a shareable
      * artefact and no line in it should read like a clinical finding.
      */
+    /**
+     * Route one verified frame while a run listens: a COMMAND_RESPONSE to one of the ECG opcodes settles
+     * the matching step, everything else goes to the packet triage. Twin of macOS `noteEcgProbeFrame`.
+     *
+     * Android had only the triage half. Every step was recorded as NoReply at send time and nothing ever
+     * replaced it, so every run on this platform reported "no reply" for all three commands — while the
+     * strap's own console showed it executing them, and while #891 (macOS) got SUCCESS for the same
+     * opcodes. The silence was this app's, not the strap's.
+     */
+    private fun noteEcgProbeFrame(frame: ByteArray) {
+        val settled = synchronized(ecgProbeLock) { Whoop5EcgProbe.settleReply(ecgProbeSteps, frame, ECG_PROBE_MAX_STEPS) }
+        when (settled) {
+            null -> noteEcgProbeCandidate(frame)
+            is Whoop5EcgProbe.Settled.Matched -> log("ECG probe: ← ${settled.label} ${settled.outcome.token}")
+            is Whoop5EcgProbe.Settled.Unsolicited -> log("ECG probe: ← ${settled.label} ${settled.outcome.token} (unsolicited)")
+            is Whoop5EcgProbe.Settled.Dropped -> Unit
+        }
+    }
+
     private fun noteEcgProbeCandidate(frame: ByteArray) {
         if (frame.size < 12) return
         val packet = Whoop5Ecg.r17FromFrame(frame) ?: return
@@ -5666,8 +5689,10 @@ class WhoopBleClient(
             // The fields that move are the whole point — a run where progress climbs and one where it
             // sits at zero are the same wall of identical lines otherwise, and the old cap hid the
             // difference by stopping before either could show itself.
-            val signature = "${'$'}{packet.progress.raw}/${'$'}{packet.classifierState}/" +
-                "${'$'}{if (packet.presence) 1 else 0}/${'$'}{packet.signalQualityRaw}/${'$'}{packet.sampleCount}"
+            // Real interpolation. This used to escape the dollar signs, so the "signature" was the same
+            // constant text for every packet and no change after the first ten was ever logged live.
+            val signature = "${packet.progress.raw}/${packet.classifierState}/" +
+                "${if (packet.presence) 1 else 0}/${packet.signalQualityRaw}/${packet.sampleCount}"
             val changed = signature != ecgProbeLastSignature
             ecgProbeLastSignature = signature
             ecgProbeCandidates.size <= ECG_PROBE_HEAD_CANDIDATES || changed
@@ -8838,7 +8863,7 @@ class WhoopBleClient(
         // Placed after the verifier so bad bytes can never be counted as a candidate, and gated on the
         // window so an ordinary frame pays one boolean. Without this the probe reports zero packets
         // forever and every run reads as "accepted but silent" even while a trace is streaming.
-        if (ecgProbeListening) noteEcgProbeCandidate(frame)
+        if (ecgProbeListening) noteEcgProbeFrame(frame)
 
         // Connection test mode: accumulate frames by type and flush ONE `frameTiming` SUMMARY line per
         // rolling window (#1151), instead of a line per frame-TYPE transition — during offloads/command

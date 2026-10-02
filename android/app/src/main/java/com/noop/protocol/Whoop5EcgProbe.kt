@@ -100,6 +100,56 @@ object Whoop5EcgProbe {
         }
     }
 
+    /** What [settleReply] did with a frame that IS a reply to an ECG opcode. */
+    sealed class Settled {
+        abstract val label: String
+        abstract val outcome: CommandOutcome
+
+        /** Replaced the first step for this opcode that was still waiting. */
+        data class Matched(override val label: String, override val outcome: CommandOutcome) : Settled()
+
+        /** No waiting step: recorded as its own step that can never unlock a silence verdict. */
+        data class Unsolicited(override val label: String, override val outcome: CommandOutcome) : Settled()
+
+        /** No waiting step and the step list is full. */
+        data class Dropped(override val label: String, override val outcome: CommandOutcome) : Settled()
+    }
+
+    /**
+     * Settle a run's steps with one VERIFIED frame. Returns null when the frame is not a COMMAND_RESPONSE
+     * to one of the ECG opcodes — the caller then hands it to the packet triage. Twin of the matching in
+     * macOS `BLEManager.noteEcgProbeFrame`.
+     *
+     * Android recorded every step as [CommandOutcome.NoReply] at send time and had no code that ever
+     * replaced it, so every run here reported "no reply" for all three commands — while the strap's own
+     * console showed it executing them, and #891 (macOS) got SUCCESS for the same opcodes. The silence was
+     * the app's, not the strap's.
+     *
+     * Labels follow [CommandNames.label], which is what the send side records.
+     */
+    fun settleReply(steps: MutableList<Step>, frame: ByteArray, maxSteps: Int): Settled? {
+        if (frame.size <= 10) return null
+        val type = frame[8].toInt() and 0xFF
+        if (type != PacketType.COMMAND_RESPONSE.rawValue && type != PuffinPacketType.PUFFIN_COMMAND_RESPONSE) return null
+        val respCmd = frame[10].toInt() and 0xFF
+        if (!EcgResearchAllowList.isProbeOpcode(respCmd)) return null
+        val label = CommandNames.label(respCmd)
+        val outcome = outcome(frame) ?: CommandOutcome.NoReply
+        val replyHex = frame.joinToString("") { "%02x".format(it) }
+        // The FIRST step still waiting for this opcode, so a start-then-stop pair keeps two outcomes. The
+        // send-time requestsRealtimeData is kept: the reply does not echo the argument.
+        val idx = steps.indexOfFirst { it.label == label && it.outcome == CommandOutcome.NoReply }
+        if (idx >= 0) {
+            steps[idx] = steps[idx].copy(outcome = outcome, replyHex = replyHex)
+            return Settled.Matched(label, outcome)
+        }
+        if (steps.size >= maxSteps) return Settled.Dropped(label, outcome)
+        // Unsolicited, or the answer to a housekeeping send that records no step. The argument behind it
+        // is unknown, so it must never be able to unlock a verdict that reads silence as evidence.
+        steps.add(Step(label = label, outcome = outcome, requestsRealtimeData = false, replyHex = replyHex))
+        return Settled.Unsolicited(label, outcome)
+    }
+
     /**
      * One command in the turn-on sequence and what came back.
      *

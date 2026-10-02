@@ -412,4 +412,66 @@ class Whoop5EcgProbeTest {
             assertFalse("report must not name $token", text.lowercase().contains(token.lowercase()))
         }
     }
+
+    // MARK: - settleReply: a reply must actually reach its step (Android reported "no reply" for every run)
+
+    private fun waiting(cmd: Int, arg: Int) = sent(cmd, arg, Whoop5EcgProbe.CommandOutcome.NoReply)
+
+    @Test
+    fun aSuccessReplySettlesItsWaitingStep() {
+        val steps = mutableListOf(waiting(139, 1), waiting(124, 2))
+        val settled = Whoop5EcgProbe.settleReply(steps, responseFrame(124, 1), maxSteps = 24)
+        assertTrue(settled is Whoop5EcgProbe.Settled.Matched)
+        assertEquals(Whoop5EcgProbe.CommandOutcome.NoReply, steps[0].outcome)
+        assertEquals(Whoop5EcgProbe.CommandOutcome.Success, steps[1].outcome)
+        // The send-time role survives: the reply carries no argument to re-derive it from.
+        assertTrue(steps[1].requestsRealtimeData)
+        assertTrue(steps[1].replyHex != null)
+    }
+
+    @Test
+    fun aStartThenStopPairKeepsTwoOutcomes() {
+        val steps = mutableListOf(waiting(124, 2), waiting(124, 1))
+        Whoop5EcgProbe.settleReply(steps, responseFrame(124, 1), maxSteps = 24)
+        Whoop5EcgProbe.settleReply(steps, responseFrame(124, 0), maxSteps = 24)
+        assertEquals(Whoop5EcgProbe.CommandOutcome.Success, steps[0].outcome)
+        assertEquals(Whoop5EcgProbe.CommandOutcome.Failure, steps[1].outcome)
+    }
+
+    @Test
+    fun anUnsolicitedReplyCanNeverUnlockASilenceVerdict() {
+        val steps = mutableListOf<Whoop5EcgProbe.Step>()
+        val settled = Whoop5EcgProbe.settleReply(steps, responseFrame(139, 1), maxSteps = 24)
+        assertTrue(settled is Whoop5EcgProbe.Settled.Unsolicited)
+        assertEquals(1, steps.size)
+        assertFalse(steps[0].requestsRealtimeData)
+    }
+
+    @Test
+    fun theStepListIsCapped() {
+        val steps = mutableListOf(sent(139, 1, Whoop5EcgProbe.CommandOutcome.Success))
+        val settled = Whoop5EcgProbe.settleReply(steps, responseFrame(125, 1), maxSteps = 1)
+        assertTrue(settled is Whoop5EcgProbe.Settled.Dropped)
+        assertEquals(1, steps.size)
+    }
+
+    @Test
+    fun framesThatAreNotEcgRepliesGoToTheTriage() {
+        val steps = mutableListOf(waiting(124, 2))
+        // A reply to another opcode (GET_DATA_RANGE, 34).
+        assertNull(Whoop5EcgProbe.settleReply(steps, responseFrame(34, 1), maxSteps = 24))
+        // Not a COMMAND_RESPONSE at all.
+        val data = Framing.puffinCommandFrame(cmd = 124, seq = 1, payload = byteArrayOf(0x01, 0x01), type = 43)
+        assertNull(Whoop5EcgProbe.settleReply(steps, data, maxSteps = 24))
+        assertEquals(Whoop5EcgProbe.CommandOutcome.NoReply, steps[0].outcome)
+    }
+
+    @Test
+    fun aRunWhoseRepliesAllLandIsNoLongerReportedAsSilent() {
+        val steps = mutableListOf(waiting(139, 1), waiting(124, 2))
+        Whoop5EcgProbe.settleReply(steps, responseFrame(139, 1), maxSteps = 24)
+        Whoop5EcgProbe.settleReply(steps, responseFrame(124, 1), maxSteps = 24)
+        assertTrue(steps.none { it.outcome is Whoop5EcgProbe.CommandOutcome.NoReply })
+        assertTrue(Whoop5EcgProbe.verdict(steps, 12, 30) is Whoop5EcgProbe.Verdict.EcgCandidatesArrived)
+    }
 }
