@@ -778,7 +778,7 @@ object AnalyticsEngine {
                 traceSink(RestScorer.subScoreLine(
                     tstSeconds = tstS, inBedSeconds = inBedS, efficiency = efficiency,
                     restorativeSeconds = deepS + remS,
-                    needHours = sleepNeedHours ?: RestScorer.defaultSleepNeedHours,
+                    needHours = sleepNeedHours ?: RestScorer.fallbackNeedHours,
                     consistency = sleepConsistency, deepSeconds = deepS,
                     groupFragments = mainGroup.size, groupInBedSeconds = inBedS))
             }
@@ -1514,6 +1514,30 @@ object RestScorer {
     const val defaultSleepNeedHours: Double = 8.0
 
     /**
+     * The user's own sleep goal (hours), or null for the automatic need. Android-only addition of this
+     * fork (no Swift twin): set from `ProfileStore.sleepGoalMinutes` at start-up and whenever the user
+     * changes it. When set it REPLACES the automatic need everywhere Rest, debt and "needed" read one —
+     * a deliberate, user-chosen exception to the population floor below, so it is never set silently.
+     * Process-wide on purpose: Rest is recomputed from persisted totals in ~15 places, and threading a
+     * parameter through each would leave one behind sooner or later.
+     */
+    @Volatile var userSleepGoalHours: Double? = null
+        set(v) { field = v?.takeIf { it > 0.0 }?.coerceIn(SLEEP_GOAL_MIN_HOURS, SLEEP_GOAL_MAX_HOURS) }
+
+    const val SLEEP_GOAL_MIN_HOURS: Double = 6.0
+    const val SLEEP_GOAL_MAX_HOURS: Double = 10.0
+
+    /** The need a caller without its own estimate falls back to: the user's goal, else 8 h. */
+    val fallbackNeedHours: Double get() = userSleepGoalHours ?: defaultSleepNeedHours
+
+    /**
+     * The descriptive "needed" minutes some tiles show (personal mean floored at [floorMin]) — or the
+     * user's goal when one is set, so the "needed" a tile shows agrees with the need Rest scores against.
+     */
+    fun descriptiveNeedMin(meanMin: Double?, floorMin: Double = 450.0): Double =
+        userSleepGoalHours?.let { it * 60.0 } ?: maxOf(floorMin, meanMin ?: floorMin)
+
+    /**
      * Minimum trailing nights before a personal sleep-need estimate is trusted; below this the
      * population default is used (cold-start honesty — never learn a need from a few nights). Mirrors
      * Swift `AnalyticsEngine.Rest.minNeedNights`.
@@ -1549,6 +1573,7 @@ object RestScorer {
      * `AnalyticsEngine.Rest.personalizedNeedHours`.
      */
     fun personalizedNeedHours(nightlyHours: List<Double>, age: Int?): Double {
+        userSleepGoalHours?.let { return it }
         val floor = populationNeedFloorHours(age)
         val xs = nightlyHours.filter { it > 0.0 }.sorted()
         if (xs.size < minNeedNights) {
@@ -1606,7 +1631,7 @@ object RestScorer {
 
         val asleepHours = asleepSeconds / 3600.0
         // Parity: Swift Rest.composite and Kotlin's own subScoreLine both floor need at 0.1 h (not 1e-9).
-        val needHours = (sleepNeedHours ?: defaultSleepNeedHours).coerceAtLeast(0.1)
+        val needHours = (sleepNeedHours ?: fallbackNeedHours).coerceAtLeast(0.1)
 
         // Duration vs personal need (clamped at 100 — sleeping past need does not over-credit).
         val durationScore = min(100.0, asleepHours / needHours * 100.0)

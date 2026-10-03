@@ -615,6 +615,14 @@ class AiCoach(
             recentJournal.forEach { sb.append("  • ").append(it).append("\n") }
         }
 
+        // --- The user's own sleep goal (this fork), so the coach measures nights against the same need
+        //     the app does instead of assuming 8 h. ---
+        com.noop.analytics.RestScorer.userSleepGoalHours?.let { goal ->
+            if (sb.isNotEmpty()) sb.append("\n")
+            sb.append("SLEEP GOAL: the user chose ${fmt1(goal)} h per night themselves; NOOP's sleep score and ")
+            sb.append("sleep debt are measured against it. Respect the choice; do not argue a different amount.\n")
+        }
+
         // --- Lab Book snapshot: the latest reading per marker the user has entered ---
         val latestByMarker = runCatching { latestLabMarkers() }.getOrDefault(emptyList())
         if (latestByMarker.isNotEmpty()) {

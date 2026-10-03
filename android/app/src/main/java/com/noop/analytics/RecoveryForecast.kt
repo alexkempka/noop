@@ -164,7 +164,7 @@ object RecoveryForecaster {
         }
 
         // 2. Sleep adequacy: planned sleep vs personal need.
-        val need = max(needHours ?: defaultNeedHours, 0.1)
+        val need = max(needHours ?: RestScorer.fallbackNeedHours, 0.1)
         val sleep = max(plannedSleepHours, 0.0)
         val sleepRatio = clamp(sleep / need - 1.0, -1.0, sleepOverCap)
         val sleepAdj = sleepWeight * sleepRatio

@@ -536,7 +536,15 @@ fun SleepScreen(
     // at-a-glance TILES, the debt ledger, the personal need and the trend stay full-history /
     // latest-anchored, matching iOS SleepView. `selectedDay` re-points only the hero. Model is null
     // when the selected day has no stage minutes. (#5)
-    val model = remember(days, night, imported, napSleepMinByDay, sleeps, is24h) {
+    // Fork: the user's own sleep goal. Keyed into the model so "needed" and debt follow a change at once.
+    val sleepGoalMinutes by vm.sleepGoalMinutes.collectAsStateWithLifecycle()
+    val sleepGoalAsked by vm.sleepGoalAsked.collectAsStateWithLifecycle()
+    val recordedNights = remember(days) { days.count { (it.totalSleepMin ?: 0.0) > 0.0 } }
+    val automaticNeedHours = remember(days, sleepGoalMinutes) {
+        com.noop.analytics.RestScorer.personalizedNeedHours(
+            days.mapNotNull { it.totalSleepMin?.let { m -> m / 60.0 } }, null)
+    }
+    val model = remember(days, night, imported, napSleepMinByDay, sleeps, is24h, sleepGoalMinutes) {
         buildSleepModel(days, night?.session, imported, selectedDay = night?.dayKey,
             heroStages = night?.groupStages, heroSegments = night?.groupSegments,
             napSleepMinByDay = napSleepMinByDay, sessions = sleeps, is24h = is24h)
@@ -723,6 +731,15 @@ fun SleepScreen(
                     source = restHeroSource(imported, night?.dayKey ?: days.lastOrNull()?.day, activeIsOura),
                     overline = nightLabel,
                 )
+            }
+            if (shouldAskSleepGoal(sleepGoalAsked, recordedNights)) {
+                item {
+                    SleepGoalQuestionCard(
+                        currentNeedHours = automaticNeedHours,
+                        onKeep = { vm.setSleepGoal(0) },
+                        onSet = { vm.setSleepGoal(it) },
+                    )
+                }
             }
             item { SleepAlarmsEntry(onOpenAlarms) }
             // #sleep-layout: a compact "Arrange" affordance (the same Tune entry Today uses) opens the

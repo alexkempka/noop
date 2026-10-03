@@ -52,6 +52,12 @@ data class UserProfile(
      * (the body term cancels out of the age formula). Default param so existing call-sites compile.
      */
     val waistCm: Double = 0.0,
+    /**
+     * The user's own nightly sleep goal in hours; 0 = automatic need. Android-only (this fork): carried
+     * here so the per-cycle load cache re-scores when the goal changes. The value the scorer reads is
+     * `RestScorer.userSleepGoalHours`, which `ProfileStore` keeps in step.
+     */
+    val sleepGoalHours: Double = 0.0,
 ) {
     /**
      * Every stored field, for a cache key that must change when the profile does (the per-cycle load cache,
@@ -61,7 +67,8 @@ data class UserProfile(
      */
     val cacheKey: String
         get() = "w=${weightKg.toRawBits()},h=${heightCm.toRawBits()},a=${age.toRawBits()},s=$sex," +
-            "t=${stepTicksPerStep.toRawBits()},waist=${waistCm.toRawBits()}"
+            "t=${stepTicksPerStep.toRawBits()},waist=${waistCm.toRawBits()}" +
+            (if (sleepGoalHours > 0.0) ",goal=${sleepGoalHours.toRawBits()}" else "")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

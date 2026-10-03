@@ -101,7 +101,7 @@ object SleepDebt {
      */
     fun debtSeries(
         series: List<Pair<String, Double?>>,
-        needHours: Double = RestScorer.defaultSleepNeedHours,
+        needHours: Double = RestScorer.fallbackNeedHours,
         importedDebtMin: Map<String, Double> = emptyMap(),
         window: Int = DEFAULT_WINDOW_NIGHTS,
     ): List<Pair<String, Double>> {
@@ -139,7 +139,7 @@ object SleepDebt {
      */
     fun ledger(
         series: List<Pair<String, Double?>>,
-        needHours: Double = RestScorer.defaultSleepNeedHours,
+        needHours: Double = RestScorer.fallbackNeedHours,
         window: Int = DEFAULT_WINDOW_NIGHTS,
     ): SleepDebtLedger {
         val needMin = needHours.coerceAtLeast(0.0) * 60.0

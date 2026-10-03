@@ -1480,6 +1480,21 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** Snapshot the user's body profile from SharedPreferences as an analytics [UserProfile]. */
     private fun currentProfile(): UserProfile = profileStore.toUserProfile()
 
+    // Fork: the user's own sleep goal (minutes, 0 = automatic) and whether the one-time question was
+    // answered. Flows so the Sleep card and Settings row agree without re-reading prefs.
+    private val _sleepGoalMinutes = MutableStateFlow(profileStore.sleepGoalMinutes)
+    val sleepGoalMinutes: StateFlow<Int> = _sleepGoalMinutes.asStateFlow()
+    private val _sleepGoalAsked = MutableStateFlow(profileStore.sleepGoalAsked)
+    val sleepGoalAsked: StateFlow<Boolean> = _sleepGoalAsked.asStateFlow()
+
+    /** Store a sleep goal (0 = automatic) and re-score, so every night is measured against it at once. */
+    fun setSleepGoal(minutes: Int) {
+        profileStore.sleepGoalMinutes = minutes
+        _sleepGoalMinutes.value = profileStore.sleepGoalMinutes
+        _sleepGoalAsked.value = true
+        viewModelScope.launch(Dispatchers.IO) { rescoreAfterEdit() }
+    }
+
     // MARK: - HR smoothing (median filter)
 
     private fun ingestHr(raw: Int) {

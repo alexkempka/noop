@@ -186,7 +186,7 @@ internal fun buildSleepModel(
     val typicalLightMin = mean(days.mapNotNull { it.lightMin }.filter { it > 0.0 })
 
     // Personal sleep need (minutes): mean asleep, floored at 7.5h (450 min).
-    val needMin = max(450.0, typicalTotalMin ?: 450.0)
+    val needMin = RestScorer.descriptiveNeedMin(typicalTotalMin)
     // #242: NORMATIVE need (min) the DEBT surfaces measure against — population-anchored, age-floored,
     // upper-quartile personalizedNeedHours (the SAME estimator Rest/Intelligence score against), NOT the
     // descriptive `needMin` mean which drifts toward a chronic under-sleeper's own deficit and quietly

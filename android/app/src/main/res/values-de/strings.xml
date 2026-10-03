@@ -3301,6 +3301,7 @@
     <string name="l10n_lit_03301df3f9">Live-Puls bei Bändern ohne Kopplung. Hilf uns beim Testen.</string>
     <string name="l10n_lit_0359fd6dd6">Pulsgurt</string>
     <string name="l10n_lit_037a5d552e">Körpergröße in Zentimetern</string>
+    <string name="l10n_lit_03845bc470">Zurück auf automatisch</string>
     <string name="l10n_lit_03f497317f">Auf diesem Handy</string>
     <string name="l10n_lit_0436885c7b">Berechtigung erteilt.</string>
     <string name="l10n_lit_0498649135">Deine letzten %1$s Messwerte: %2$s %3$s, %4$s.</string>
@@ -3332,6 +3333,7 @@
     <string name="l10n_lit_0bab1c22b9">Die lokale Oura-Unterstützung ist neu, und wir können nicht jeden Ring testen. Vielleicht verbindet sich deiner nicht, und es kann sich mit Updates ändern. NOOP erfindet nie eine Zahl. Klappt etwas nicht, sagt es dir das klar.</string>
     <string name="l10n_lit_0c28b06ff7">Erklärt durch</string>
     <string name="l10n_lit_0c4a1396a9">Daten &amp; Quellen</string>
+    <string name="l10n_lit_0c4a43905a">Schlafziel</string>
     <string name="l10n_lit_0cf05da103">Abendprognose</string>
     <string name="l10n_lit_0d2a70c06e">Backup wiederhergestellt – NOOP wird neu gestartet…</string>
     <string name="l10n_lit_0d317a2b1a">Workout-Dateien</string>
@@ -3353,6 +3355,7 @@
     <string name="l10n_lit_1097b553dc">Nacht</string>
     <string name="l10n_lit_10c3d1ca4b">Dauer (Minuten)</string>
     <string name="l10n_lit_10dc1bcad7">Dauer</string>
+    <string name="l10n_lit_10dc22d4e5">Ziel speichern</string>
     <string name="l10n_lit_10e221f443">noch keine Sitzung</string>
     <string name="l10n_lit_1154f3c547">Rückblick konnte nicht geteilt werden: %1$s</string>
     <string name="l10n_lit_1156bd96dc">Schlafphasen</string>
@@ -3509,6 +3512,7 @@
     <string name="l10n_lit_34aaa70b1a">Tipps vom Coach teilen</string>
     <string name="l10n_lit_34dfd00b48">Obergrenze heute niedriger – Energie bei %1$s%%.</string>
     <string name="l10n_lit_3525ecaa9e">" · Roh-Phasen vom Gerät"</string>
+    <string name="l10n_lit_35327e5957">NOOP misst jede Nacht derzeit an %1$s Schlaf. Wenn du ein anderes Ziel hast, stell es hier ein: Schlafqualität, Schlafdefizit und Bedarf werden dann daran gemessen.</string>
     <string name="l10n_lit_3593ccd96f">Do</string>
     <string name="l10n_lit_35c09a523c">nichts extra</string>
     <string name="l10n_lit_35d2898645">Heiß gelaufen. Du warst die meiste Zeit über der heutigen Obergrenze.</string>
@@ -3617,6 +3621,7 @@
     <string name="l10n_lit_4b6a3875b8">Schritte heute</string>
     <string name="l10n_lit_4c2b71bfb5">Gewichtheben</string>
     <string name="l10n_lit_4cc5b6fd92">± %1$s Min.</string>
+    <string name="l10n_lit_4cd4bf9f57">Dein Schlafziel</string>
     <string name="l10n_lit_4d16ffcda2">Blau-Titan</string>
     <string name="l10n_lit_4d8dc5fe41">Neuigkeiten</string>
     <string name="l10n_lit_4dc47c61fb">STABIL</string>
@@ -3628,6 +3633,7 @@
     <string name="l10n_lit_4e74e0c08c">An Tagen mit „Ja“ bei „%1$s“ lag dein Wert für %2$s im Schnitt bei %3$s, %4$s als an den übrigen Tagen (%5$s).</string>
     <string name="l10n_lit_4e836fdc25">Manuell</string>
     <string name="l10n_lit_4ec27b3434">Tiefschlaf (SWS)</string>
+    <string name="l10n_lit_4edd132431">Schlafziel, %1$s</string>
     <string name="l10n_lit_4fd3180eaf">Ein reiner Blick auf deinen letzten gemeinsamen Tag – kein Gesamtwert. Verschiedene Geräte messen leicht unterschiedlich, eine Abweichung ist also nicht automatisch falsch.</string>
     <string name="l10n_lit_4ff0b15384">Jahr</string>
     <string name="l10n_lit_4ffc67b62a">Werktags</string>
@@ -3643,6 +3649,7 @@
     <string name="l10n_lit_51e8f37ba8">%1$s Kein klarer Zusammenhang – sie bewegen sich weitgehend unabhängig.</string>
     <string name="l10n_lit_51eae80138">Verlauf wird geladen.</string>
     <string name="l10n_lit_5200014b66">%1$s Jahr älter</string>
+    <string name="l10n_lit_521b6a147a">%1$s behalten</string>
     <string name="l10n_lit_521f5e93d7">Noch %1$s Nächte tragen, dann zeigen wir dir dein Fitnessalter.</string>
     <string name="l10n_lit_52457e1b7e">Kein Atemfrequenzwert</string>
     <string name="l10n_lit_529541bb39">Di</string>
@@ -3661,6 +3668,7 @@
     <string name="l10n_lit_5654948155">noch keine Kalibrierung</string>
     <string name="l10n_lit_56aa8bce06">Verbunden, aber nicht gekoppelt</string>
     <string name="l10n_lit_56e32b31fc">z. B. 2,0–5,0 (Bereich aus deinem Laborbericht)</string>
+    <string name="l10n_lit_57a4830546">Dein eigenes Ziel. Schlafqualität, Schlafdefizit und Bedarf werden daran gemessen.</string>
     <string name="l10n_lit_5846955db6">Legende</string>
     <string name="l10n_lit_58a89a3c17">%1$s: %2$s diese Woche, kein Vergleich.</string>
     <string name="l10n_lit_58d77d8ab8">Dieser Wert wird von Health Connect anhand deines Gewichts und deiner in deinem Profil angegebenen Körpergröße berechnet.</string>
@@ -3715,6 +3723,7 @@
     <string name="l10n_lit_638a1bb51b">Sicherer Wecker</string>
     <string name="l10n_lit_638c2668f0">WHOOP-Blau</string>
     <string name="l10n_lit_63a05d3dfc">Aktive Energie</string>
+    <string name="l10n_lit_63c80676f5">Eigenes Ziel</string>
     <string name="l10n_lit_63cfa828d4">noch keine Nacht</string>
     <string name="l10n_lit_63eb86a806">Racquetball</string>
     <string name="l10n_lit_6413c402e6">Wasserball</string>
@@ -3759,6 +3768,7 @@
     <string name="l10n_lit_6b782d41b0">Sa</string>
     <string name="l10n_lit_6bb37fd44e">Neue Messung</string>
     <string name="l10n_lit_6bd01d5bb6">unter einer Stunde</string>
+    <string name="l10n_lit_6c06aa00dc">Ziel pro Nacht</string>
     <string name="l10n_lit_6c82e6dd86">Zeit</string>
     <string name="l10n_lit_6cc8561fb9">Wandern</string>
     <string name="l10n_lit_6cd9de3a5a">Nicht am Handgelenk</string>
@@ -3779,6 +3789,7 @@
     <string name="l10n_lit_6f85e76618">Versetz das Band in den Kopplungsmodus – am Handgelenk und wach.</string>
     <string name="l10n_lit_6f96b1088f">Hast du Magnesium genommen?</string>
     <string name="l10n_lit_6fa0643c38">Puls beruhigt in %1$s.</string>
+    <string name="l10n_lit_6fac453737">Automatisch: NOOPs eigener Bedarf, für Erwachsene nie unter 8 h.</string>
     <string name="l10n_lit_6fd6ddb1ec">Live-Puls (nicht voll gekoppelt)</string>
     <string name="l10n_lit_6ff610e614">Aus deinen nächtlichen Messungen</string>
     <string name="l10n_lit_70348a1df2">+ Drinks</string>
@@ -4077,8 +4088,10 @@
     <string name="l10n_lit_ab2e582529">zum Basiswert</string>
     <string name="l10n_lit_ac0795bbd4">Puls · HRV* · Schlaf · Ruhepuls · Hauttemp.* · Akku</string>
     <string name="l10n_lit_ac14e51f32">Defizit</string>
+    <string name="l10n_lit_ac9041e768">Automatisch</string>
     <string name="l10n_lit_acb50f1b07">365 TAGE</string>
     <string name="l10n_lit_acbe16a474">%1$s %2$s über %3$s · %4$s</string>
+    <string name="l10n_lit_ad6ff665e5">Ändern kannst du es jederzeit unter Mehr → Einstellungen → Profil.</string>
     <string name="l10n_lit_ad8919ace0">Ereignis</string>
     <string name="l10n_lit_adab5090ac">Kalender</string>
     <string name="l10n_lit_adb13db684">Erholsam</string>
@@ -4452,6 +4465,7 @@
     <string name="l10n_lit_f717794962">%1$s bleibt an den Tagen mit Maßnahme auf Höhe des Basiswerts.</string>
     <string name="l10n_lit_f7efc6bbd6">SEKUNDEN</string>
     <string name="l10n_lit_f7f1997c6c">Einheit</string>
+    <string name="l10n_lit_f7ff82aac8">Schlafziel, automatisch</string>
     <string name="l10n_lit_f8d980634b">Ein Ring spricht immer nur mit einem Besitzer.</string>
     <string name="l10n_lit_f9011d7440">CrossFit</string>
     <string name="l10n_lit_f906d220c3">Kampfsport</string>

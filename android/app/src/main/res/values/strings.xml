@@ -3317,6 +3317,7 @@
     <string name="l10n_lit_03301df3f9">Live heart rate on bands that don\'t need pairing. Help us test.</string>
     <string name="l10n_lit_0359fd6dd6">Heart-rate strap</string>
     <string name="l10n_lit_037a5d552e">Height in centimetres</string>
+    <string name="l10n_lit_03845bc470">Back to automatic</string>
     <string name="l10n_lit_03f497317f">On this phone</string>
     <string name="l10n_lit_0436885c7b">Permission granted.</string>
     <string name="l10n_lit_0498649135">Your last %1$s readings: %2$s %3$s, %4$s.</string>
@@ -3348,6 +3349,7 @@
     <string name="l10n_lit_0bab1c22b9">Local Oura support is new and we cannot test every ring here. It may not connect on your ring, and it can change between updates. NOOP never makes up a number. If something does not work, it will tell you plainly.</string>
     <string name="l10n_lit_0c28b06ff7">Explained by</string>
     <string name="l10n_lit_0c4a1396a9">Records &amp; sources</string>
+    <string name="l10n_lit_0c4a43905a">Sleep goal</string>
     <string name="l10n_lit_0cf05da103">Evening forecast</string>
     <string name="l10n_lit_0d2a70c06e">Backup restored — restarting NOOP…</string>
     <string name="l10n_lit_0d317a2b1a">Workout files</string>
@@ -3369,6 +3371,7 @@
     <string name="l10n_lit_1097b553dc">Night</string>
     <string name="l10n_lit_10c3d1ca4b">Duration (minutes)</string>
     <string name="l10n_lit_10dc1bcad7">Dur</string>
+    <string name="l10n_lit_10dc22d4e5">Save goal</string>
     <string name="l10n_lit_10e221f443">no session yet</string>
     <string name="l10n_lit_1154f3c547">Couldn\'t share the recap: %1$s</string>
     <string name="l10n_lit_1156bd96dc">Sleep staging</string>
@@ -3525,6 +3528,7 @@
     <string name="l10n_lit_34aaa70b1a">Share Coach advice</string>
     <string name="l10n_lit_34dfd00b48">Today\'s ceiling is lower — Charge is %1$s%%.</string>
     <string name="l10n_lit_3525ecaa9e">" · raw on-device stages"</string>
+    <string name="l10n_lit_35327e5957">NOOP currently measures each night against %1$s of sleep. If you aim for a different amount, set your own goal: sleep score, sleep debt and “needed” are then calculated against it.</string>
     <string name="l10n_lit_3593ccd96f">Thu</string>
     <string name="l10n_lit_35c09a523c">no extra</string>
     <string name="l10n_lit_35d2898645">Hot. You ran above today\'s ceiling most of the way.</string>
@@ -3633,6 +3637,7 @@
     <string name="l10n_lit_4b6a3875b8">Steps today</string>
     <string name="l10n_lit_4c2b71bfb5">Weightlifting</string>
     <string name="l10n_lit_4cc5b6fd92">%1$s min SD</string>
+    <string name="l10n_lit_4cd4bf9f57">Your sleep goal</string>
     <string name="l10n_lit_4d16ffcda2">Blue Titanium</string>
     <string name="l10n_lit_4d8dc5fe41">What\'s new</string>
     <string name="l10n_lit_4dc47c61fb">SOLID</string>
@@ -3644,6 +3649,7 @@
     <string name="l10n_lit_4e74e0c08c">On days you logged %1$s, your %2$s averaged %3$s, %4$s than the %5$s on days you didn\'t.</string>
     <string name="l10n_lit_4e836fdc25">Manual</string>
     <string name="l10n_lit_4ec27b3434">Deep (SWS) Sleep</string>
+    <string name="l10n_lit_4edd132431">Sleep goal, %1$s</string>
     <string name="l10n_lit_4fd3180eaf">A read-only look at your last shared day — not a combined score. Different devices read a little differently, so a difference isn\'t necessarily wrong.</string>
     <string name="l10n_lit_4ff0b15384">year</string>
     <string name="l10n_lit_4ffc67b62a">Weekdays</string>
@@ -3659,6 +3665,7 @@
     <string name="l10n_lit_51e8f37ba8">%1$s No clear relationship - they move largely independently.</string>
     <string name="l10n_lit_51eae80138">Fetching this metric\'s history.</string>
     <string name="l10n_lit_5200014b66">%1$s year older</string>
+    <string name="l10n_lit_521b6a147a">Keep %1$s</string>
     <string name="l10n_lit_521f5e93d7">%1$s more nights of wear and we can show your Fitness Age.</string>
     <string name="l10n_lit_52457e1b7e">No respiratory-rate value</string>
     <string name="l10n_lit_529541bb39">Tue</string>
@@ -3677,6 +3684,7 @@
     <string name="l10n_lit_5654948155">no calibration yet</string>
     <string name="l10n_lit_56aa8bce06">Connected, but not paired</string>
     <string name="l10n_lit_56e32b31fc">e.g. 2.0-5.0 (your report\'s own range)</string>
+    <string name="l10n_lit_57a4830546">Your own goal. Sleep score, sleep debt and “needed” are measured against it.</string>
     <string name="l10n_lit_5846955db6">Legend</string>
     <string name="l10n_lit_58a89a3c17">%1$s: %2$s this week, no comparison.</string>
     <string name="l10n_lit_58d77d8ab8">From Health Connect this is derived from your weight and profile height.</string>
@@ -3731,6 +3739,7 @@
     <string name="l10n_lit_638a1bb51b">Guaranteed wake</string>
     <string name="l10n_lit_638c2668f0">WHOOP Blue</string>
     <string name="l10n_lit_63a05d3dfc">Active energy</string>
+    <string name="l10n_lit_63c80676f5">Set my own</string>
     <string name="l10n_lit_63cfa828d4">no night yet</string>
     <string name="l10n_lit_63eb86a806">Racquetball</string>
     <string name="l10n_lit_6413c402e6">Water polo</string>
@@ -3775,6 +3784,7 @@
     <string name="l10n_lit_6b782d41b0">Sat</string>
     <string name="l10n_lit_6bb37fd44e">Take another reading</string>
     <string name="l10n_lit_6bd01d5bb6">under an hour</string>
+    <string name="l10n_lit_6c06aa00dc">Goal per night</string>
     <string name="l10n_lit_6c82e6dd86">Time</string>
     <string name="l10n_lit_6cc8561fb9">Hiking</string>
     <string name="l10n_lit_6cd9de3a5a">Off wrist</string>
@@ -3795,6 +3805,7 @@
     <string name="l10n_lit_6f85e76618">Put the band into pairing mode, on your wrist and awake.</string>
     <string name="l10n_lit_6f96b1088f">Did you take magnesium?</string>
     <string name="l10n_lit_6fa0643c38">HR settled over %1$s.</string>
+    <string name="l10n_lit_6fac453737">Automatic: NOOP’s own need, never below 8 h for an adult.</string>
     <string name="l10n_lit_6fd6ddb1ec">Live HR (not fully paired)</string>
     <string name="l10n_lit_6ff610e614">From your nightly readings</string>
     <string name="l10n_lit_70348a1df2">+ drinks</string>
@@ -4093,8 +4104,10 @@
     <string name="l10n_lit_ab2e582529">to baseline</string>
     <string name="l10n_lit_ac0795bbd4">Heart rate · HRV* · Sleep · Resting HR · Skin temp* · Battery</string>
     <string name="l10n_lit_ac14e51f32">Debt</string>
+    <string name="l10n_lit_ac9041e768">Automatic</string>
     <string name="l10n_lit_acb50f1b07">365 DAYS</string>
     <string name="l10n_lit_acbe16a474">%1$s %2$s across %3$s · %4$s</string>
+    <string name="l10n_lit_ad6ff665e5">You can change it any time under More → Settings → Profile.</string>
     <string name="l10n_lit_ad8919ace0">Event</string>
     <string name="l10n_lit_adab5090ac">Calendar</string>
     <string name="l10n_lit_adb13db684">Restorative</string>
@@ -4468,6 +4481,7 @@
     <string name="l10n_lit_f717794962">%1$s is flat against baseline on logged intervention days.</string>
     <string name="l10n_lit_f7efc6bbd6">SECONDS</string>
     <string name="l10n_lit_f7f1997c6c">Session</string>
+    <string name="l10n_lit_f7ff82aac8">Sleep goal, automatic</string>
     <string name="l10n_lit_f8d980634b">A ring talks to one owner at a time.</string>
     <string name="l10n_lit_f9011d7440">CrossFit</string>
     <string name="l10n_lit_f906d220c3">Martial arts</string>

@@ -657,7 +657,7 @@ private fun sleepNeedForDay(day: DailyMetric?, days: List<DailyMetric>, imported
     day?.day?.let { key -> importedNeed[key]?.takeIf { it > 0 }?.let { return it } }
     val banked = days.mapNotNull { it.totalSleepMin }.filter { it > 0 }
     val mean = if (banked.isEmpty()) null else banked.sum() / banked.size
-    return maxOf(450.0, mean ?: 450.0) // 450 min = 7.5h
+    return com.noop.analytics.RestScorer.descriptiveNeedMin(mean) // 450 min = 7.5h floor, or the user's goal
 }
 
 /**

@@ -38,7 +38,7 @@ internal fun buildSleepMetricPoints(
     imported: ImportedSleepSeries = ImportedSleepSeries(),
     napSleepMinByDay: Map<String, Double> = emptyMap(),
 ): List<Pair<String, Double>> {
-    val needMin = max(450.0, days.mapNotNull { it.totalSleepMin?.takeIf { m -> m > 0.0 } }.average().let { if (it.isNaN()) 480.0 else it })
+    val needMin = RestScorer.descriptiveNeedMin(days.mapNotNull { it.totalSleepMin?.takeIf { m -> m > 0.0 } }.average().let { if (it.isNaN()) 480.0 else it })
     if (key == "sleep_debt") {
         val debtNeedMin = RestScorer.personalizedNeedHours(
             days.mapNotNull { it.totalSleepMin?.let { minutes -> minutes / 60.0 } }, null,

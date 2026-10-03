@@ -275,7 +275,33 @@ class ProfileStore(private val prefs: SharedPreferences) {
         sex = sex,
         stepTicksPerStep = stepTicksPerStep,
         waistCm = waistCm,
+        sleepGoalHours = sleepGoalMinutes / 60.0,
     )
+
+    /**
+     * The user's own nightly sleep goal in minutes; 0 = automatic (NOOP's own need, never below 8 h for
+     * an adult). Android-only addition of this fork. Every write also updates
+     * [com.noop.analytics.RestScorer.userSleepGoalHours], the value Rest, debt and "needed" read.
+     * Stored on a 15-minute grid inside the scorer's bounds.
+     */
+    var sleepGoalMinutes: Int
+        get() = normalizeSleepGoal(prefs.getInt(KEY_SLEEP_GOAL, 0))
+        set(v) {
+            val m = normalizeSleepGoal(v)
+            prefs.edit().putInt(KEY_SLEEP_GOAL, m).putBoolean(KEY_SLEEP_GOAL_ASKED, true).apply()
+            com.noop.analytics.RestScorer.userSleepGoalHours = if (m > 0) m / 60.0 else null
+        }
+
+    /** True once the user answered the sleep-goal question (either way), so it is asked only once. */
+    var sleepGoalAsked: Boolean
+        get() = prefs.getBoolean(KEY_SLEEP_GOAL_ASKED, false)
+        set(v) = prefs.edit().putBoolean(KEY_SLEEP_GOAL_ASKED, v).apply()
+
+    /** Push the stored goal into the scorer. Called once at start-up, before any screen scores a night. */
+    fun publishSleepGoal() {
+        val m = sleepGoalMinutes
+        com.noop.analytics.RestScorer.userSleepGoalHours = if (m > 0) m / 60.0 else null
+    }
 
     // ── Steps ESTIMATE calibration (WHOOP 4.0; StepsEstimateEngine) ─────────────────────────────
     // Mirror of the macOS ProfileStore fields: the engine writes the auto-fit each analytics pass and
@@ -429,6 +455,19 @@ class ProfileStore(private val prefs: SharedPreferences) {
         private const val KEY_WAIST = "waist_cm"
         private const val KEY_HRMAX = "hr_max_override"
         private const val KEY_HR_ZONE_THRESHOLDS = "hr_zone_thresholds"
+        private const val KEY_SLEEP_GOAL = "sleep_goal_minutes"
+        private const val KEY_SLEEP_GOAL_ASKED = "sleep_goal_asked"
+
+        const val SLEEP_GOAL_STEP_MIN = 15
+        val SLEEP_GOAL_MIN_MIN = (com.noop.analytics.RestScorer.SLEEP_GOAL_MIN_HOURS * 60).toInt()
+        val SLEEP_GOAL_MAX_MIN = (com.noop.analytics.RestScorer.SLEEP_GOAL_MAX_HOURS * 60).toInt()
+
+        /** 0 stays 0 (automatic); anything else snaps to the 15-minute grid inside the bounds. */
+        fun normalizeSleepGoal(minutes: Int): Int {
+            if (minutes <= 0) return 0
+            val snapped = Math.round(minutes / SLEEP_GOAL_STEP_MIN.toDouble()).toInt() * SLEEP_GOAL_STEP_MIN
+            return snapped.coerceIn(SLEEP_GOAL_MIN_MIN, SLEEP_GOAL_MAX_MIN)
+        }
 
         /** The shared five-boundary invariant (parity with `HRZones.validCustomLowerBounds`). */
         fun validZoneThresholds(values: List<Int>): Boolean =
@@ -1117,6 +1156,11 @@ fun SettingsScreen(
                         )
                     }
                 }
+                SettingsRowDivider()
+                // Fork: the user's own nightly sleep goal (0 = automatic need). Goes through the view model
+                // so a change re-scores every night at once.
+                val sleepGoalMinutes by vm.sleepGoalMinutes.collectAsStateWithLifecycle()
+                SleepGoalSettingsRow(goalMinutes = sleepGoalMinutes, onChange = { vm.setSleepGoal(it) })
                 SettingsRowDivider()
                 // Custom HR zones (#531, @kavemang): five personalized inclusive BPM lower bounds that
                 // replace the conventional %HRmax bands. Off -> the effective set stays conventional.
