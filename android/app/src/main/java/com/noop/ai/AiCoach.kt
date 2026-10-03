@@ -623,6 +623,11 @@ class AiCoach(
             sb.append("sleep debt are measured against it. Respect the choice; do not argue a different amount.\n")
         }
 
+        com.noop.ui.StepGoalState.goal.value.takeIf { it > 0 }?.let { g ->
+            if (sb.isNotEmpty()) sb.append("\n")
+            sb.append("STEP GOAL: the user chose $g steps per day themselves. Respect the choice; do not argue a different number.\n")
+        }
+
         // --- Lab Book snapshot: the latest reading per marker the user has entered ---
         val latestByMarker = runCatching { latestLabMarkers() }.getOrDefault(emptyList())
         if (latestByMarker.isNotEmpty()) {

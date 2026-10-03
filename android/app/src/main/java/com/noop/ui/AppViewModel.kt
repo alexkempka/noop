@@ -1487,6 +1487,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val _sleepGoalAsked = MutableStateFlow(profileStore.sleepGoalAsked)
     val sleepGoalAsked: StateFlow<Boolean> = _sleepGoalAsked.asStateFlow()
 
+    /** The daily step goal (0 = none), shared with the Today tile through [StepGoalState]. */
+    val stepGoal: StateFlow<Int> = StepGoalState.goal.asStateFlow()
+
+    fun setStepGoal(goal: Int) { profileStore.stepGoal = goal }
+
     /** Store a sleep goal (0 = automatic) and re-score, so every night is measured against it at once. */
     fun setSleepGoal(minutes: Int) {
         profileStore.sleepGoalMinutes = minutes

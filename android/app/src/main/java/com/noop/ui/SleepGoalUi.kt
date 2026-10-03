@@ -76,19 +76,14 @@ internal fun SleepGoalQuestionCard(
                         onPlus = { draft = stepSleepGoal(draft, up = true) },
                     )
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap), modifier = Modifier.fillMaxWidth()) {
-                    NoopButton(text = uiText("Cancel"), kind = NoopButtonKind.Secondary,
-                        modifier = Modifier.weight(1f), onClick = { editing = false })
-                    NoopButton(text = uiText("Save goal"), modifier = Modifier.weight(1f),
-                        onClick = { onSet(draft) })
-                }
+                // Stacked full width: side by side, the German labels were cut off on a phone.
+                NoopButton(text = uiText("Save goal"), fullWidth = true, onClick = { onSet(draft) })
+                NoopButton(text = uiText("Cancel"), kind = NoopButtonKind.Secondary, fullWidth = true,
+                    onClick = { editing = false })
             } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap), modifier = Modifier.fillMaxWidth()) {
-                    NoopButton(text = uiText("Keep %1\$s", formatSleepGoalHours(currentNeedHours)),
-                        kind = NoopButtonKind.Secondary, modifier = Modifier.weight(1f), onClick = onKeep)
-                    NoopButton(text = uiText("Set my own"), modifier = Modifier.weight(1f),
-                        onClick = { editing = true })
-                }
+                NoopButton(text = uiText("Set my own"), fullWidth = true, onClick = { editing = true })
+                NoopButton(text = uiText("Keep %1\$s", formatSleepGoalHours(currentNeedHours)),
+                    kind = NoopButtonKind.Secondary, fullWidth = true, onClick = onKeep)
             }
             Text(
                 uiText("You can change it any time under More → Settings → Profile."),
@@ -102,7 +97,6 @@ internal fun SleepGoalQuestionCard(
 @Composable
 internal fun SleepGoalSettingsRow(goalMinutes: Int, onChange: (Int) -> Unit) {
     SettingsFormRow(label = uiText("Sleep goal")) {
-        Column(horizontalAlignment = Alignment.End) {
             StepperField(
                 value = if (goalMinutes > 0) formatSleepGoal(goalMinutes) else uiText("Automatic"),
                 accessibility = if (goalMinutes > 0) {
@@ -114,12 +108,6 @@ internal fun SleepGoalSettingsRow(goalMinutes: Int, onChange: (Int) -> Unit) {
                 onMinus = { onChange(stepSleepGoal(goalMinutes, up = false)) },
                 onPlus = { onChange(stepSleepGoal(goalMinutes, up = true)) },
             )
-            if (goalMinutes > 0) {
-                TextButton(onClick = { onChange(0) }) {
-                    Text(uiText("Back to automatic"), style = NoopType.footnote, color = Palette.accent)
-                }
-            }
-        }
     }
     Text(
         text = if (goalMinutes > 0) {
@@ -130,4 +118,9 @@ internal fun SleepGoalSettingsRow(goalMinutes: Int, onChange: (Int) -> Unit) {
         style = NoopType.footnote,
         color = if (goalMinutes > 0) Palette.accent else Palette.textTertiary,
     )
+    if (goalMinutes > 0) {
+        TextButton(onClick = { onChange(0) }) {
+            Text(uiText("Back to automatic"), style = NoopType.footnote, color = Palette.accent)
+        }
+    }
 }

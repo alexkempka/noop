@@ -297,11 +297,21 @@ class ProfileStore(private val prefs: SharedPreferences) {
         get() = prefs.getBoolean(KEY_SLEEP_GOAL_ASKED, false)
         set(v) = prefs.edit().putBoolean(KEY_SLEEP_GOAL_ASKED, v).apply()
 
-    /** Push the stored goal into the scorer. Called once at start-up, before any screen scores a night. */
+    /** Push the stored goals out. Called once at start-up, before any screen scores a night. */
     fun publishSleepGoal() {
         val m = sleepGoalMinutes
         com.noop.analytics.RestScorer.userSleepGoalHours = if (m > 0) m / 60.0 else null
+        StepGoalState.goal.value = stepGoal
     }
+
+    /** The user's own daily step goal; 0 = none. Android-only addition of this fork. */
+    var stepGoal: Int
+        get() = StepGoalLogic.normalize(prefs.getInt(KEY_STEP_GOAL, 0))
+        set(v) {
+            val g = StepGoalLogic.normalize(v)
+            prefs.edit().putInt(KEY_STEP_GOAL, g).apply()
+            StepGoalState.goal.value = g
+        }
 
     // ── Steps ESTIMATE calibration (WHOOP 4.0; StepsEstimateEngine) ─────────────────────────────
     // Mirror of the macOS ProfileStore fields: the engine writes the auto-fit each analytics pass and
@@ -457,6 +467,7 @@ class ProfileStore(private val prefs: SharedPreferences) {
         private const val KEY_HR_ZONE_THRESHOLDS = "hr_zone_thresholds"
         private const val KEY_SLEEP_GOAL = "sleep_goal_minutes"
         private const val KEY_SLEEP_GOAL_ASKED = "sleep_goal_asked"
+        private const val KEY_STEP_GOAL = "step_goal"
 
         const val SLEEP_GOAL_STEP_MIN = 15
         val SLEEP_GOAL_MIN_MIN = (com.noop.analytics.RestScorer.SLEEP_GOAL_MIN_HOURS * 60).toInt()
@@ -551,6 +562,7 @@ fun SettingsScreen(
     onOpenBackupSync: () -> Unit = {},
     onOpenSelfHostedPush: () -> Unit = {},
     onOpenStepsCalibration: () -> Unit = {},
+    onOpenStepGoal: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -1162,6 +1174,20 @@ fun SettingsScreen(
                 val sleepGoalMinutes by vm.sleepGoalMinutes.collectAsStateWithLifecycle()
                 SleepGoalSettingsRow(goalMinutes = sleepGoalMinutes, onChange = { vm.setSleepGoal(it) })
                 SettingsRowDivider()
+                // Fork: the daily step goal opens its own screen (scale, quick picks, explanation).
+                val stepGoal by vm.stepGoal.collectAsStateWithLifecycle()
+                SettingsFormRow(label = uiText("Step goal")) {
+                    TextButton(onClick = onOpenStepGoal) {
+                        Text(
+                            if (stepGoal > 0) groupedSteps(stepGoal) else uiText("Not set"),
+                            style = NoopType.body,
+                            color = if (stepGoal > 0) Palette.textPrimary else Palette.textTertiary,
+                        )
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null,
+                            tint = Palette.textTertiary, modifier = Modifier.size(18.dp))
+                    }
+                }
+                SettingsRowDivider()
                 // Custom HR zones (#531, @kavemang): five personalized inclusive BPM lower bounds that
                 // replace the conventional %HRmax bands. Off -> the effective set stays conventional.
                 SettingsFormRow(label = uiString(R.string.l10n_settings_screen_custom_hr_zones_84736ca5)) {
@@ -1216,6 +1242,9 @@ fun SettingsScreen(
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                 )
+                // Fork: the 4.0 steps-ESTIMATE row is hidden on a 5/MG — that strap sends its own count (@57,
+                // calibrated by the divisor above), and the row's "for a WHOOP 4.0" text read as a wrong model.
+                if (!showFiveMGControls) {
                 SettingsRowDivider()
                 // Tap-through to the WHOOP 4.0 steps-ESTIMATE calibration (a SEPARATE thing from the 5/MG
                 // @57 counter divisor above): a 4.0 sends no step count, so NOOP estimates steps from
@@ -1264,6 +1293,7 @@ fun SettingsScreen(
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                 )
+                }
             }
         }
 

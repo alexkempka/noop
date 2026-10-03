@@ -750,6 +750,8 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                         BloodPressureScreen(vm = viewModel, onClose = { nav.popBackStack() })
                     } else if (key == ECG_KEY) {
                         EcgScreen(vm = viewModel, onClose = { nav.popBackStack() })
+                    } else if (key == STEP_GOAL_KEY) {
+                        StepGoalScreen(vm = viewModel, onClose = { nav.popBackStack() })
                     } else {
                         VitalDetailScreen(
                             vm = viewModel,
@@ -784,6 +786,7 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                         onOpenBackupSync = { nav.navigate(Destination.BackupSync.route) },
                         onOpenSelfHostedPush = { nav.navigate(Destination.SelfHostedPush.route) },
                         onOpenStepsCalibration = { nav.navigate(Destination.StepsCalibration.route) },
+                        onOpenStepGoal = { nav.navigate("vital_detail/$STEP_GOAL_KEY") },
                     )
                 }
                 composable(Destination.StepsCalibration.route) {

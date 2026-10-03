@@ -6042,6 +6042,8 @@ private fun MetricGrid(
     onOpenStepsCalibration: () -> Unit = {},
 ) {
     val realStepsForDay = d?.steps ?: importedStepsForDay
+    // Fork: the user's own step goal fills the tile's ring and names itself in the caption.
+    val stepGoal by StepGoalState.goal.collectAsStateWithLifecycle()
     val stepsOpenCalibration = stepsTileShouldOpenCalibration(
         realSteps = realStepsForDay,
         estimatedSteps = estimatedStepsForDay,
@@ -6165,11 +6167,14 @@ private fun MetricGrid(
                 value = steps?.let { intString(it.toDouble()) } ?: NO_DATA,
                 unit = "",
                 tint = Palette.metricCyan,
-                frac = steps?.let { (it / 10000.0).coerceIn(0.0, 1.0) },
+                frac = steps?.let { (it / (if (stepGoal > 0) stepGoal.toDouble() else 10000.0)).coerceIn(0.0, 1.0) },
                 spark = w.steps,   // #616: was missing → no trend line under the tile
                 // A measured count needs no explanation; an ESTIMATE says what it was fitted from
                 // (#760/#792); a BLANK tile on a strap that estimates says what would unblock it (#1491).
                 caption = when {
+                    realStepsForDay != null && stepGoal > 0 ->
+                        if (realStepsForDay >= stepGoal) uiText("Goal reached")
+                        else uiText("Goal %1\$s", groupedSteps(stepGoal))
                     realStepsForDay != null -> null
                     estimatedStepsForDay != null -> stepsEstimateCaption
                     else -> stepsCalibrationPrompt

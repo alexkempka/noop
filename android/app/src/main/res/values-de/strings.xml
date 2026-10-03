@@ -3304,6 +3304,7 @@
     <string name="l10n_lit_03845bc470">Zurück auf automatisch</string>
     <string name="l10n_lit_03f497317f">Auf diesem Handy</string>
     <string name="l10n_lit_0436885c7b">Berechtigung erteilt.</string>
+    <string name="l10n_lit_0490ea2d2f">Erreicht an %1$s von %2$s gezählten Tagen.</string>
     <string name="l10n_lit_0498649135">Deine letzten %1$s Messwerte: %2$s %3$s, %4$s.</string>
     <string name="l10n_lit_04edf9b3ae">Ruhepuls</string>
     <string name="l10n_lit_05029bb059">Manuell (das stellst du von Hand ein)</string>
@@ -3392,6 +3393,7 @@
     <string name="l10n_lit_171ca0385a">Gewohnheit</string>
     <string name="l10n_lit_176e595a08">14 Tage</string>
     <string name="l10n_lit_177375599b">Aktivitätskosten</string>
+    <string name="l10n_lit_178b5bdf67">In den letzten 30 Tagen noch keine gezählten Tage.</string>
     <string name="l10n_lit_184008d0f8">sinkt tendenziell</string>
     <string name="l10n_lit_18548a33ae">vs. 30-Tage-Basiswert</string>
     <string name="l10n_lit_1872917f0e">Erstellt von NOOP am %1$s · alles auf dem Gerät, kein Konto, keine Cloud.</string>
@@ -3425,6 +3427,7 @@
     <string name="l10n_lit_1f90068a8d">Yoga</string>
     <string name="l10n_lit_1fc42e1885">Diese Woche liegen erst %1$s Tag(e) vor – zu früh für einen Vergleich mit der Vorwoche.</string>
     <string name="l10n_lit_1fe271db59">HRV als Motor hinter deinem Energie-Wert.</string>
+    <string name="l10n_lit_200b4e9e3d">Schrittziel</string>
     <string name="l10n_lit_20715bf618">Was bewegt dich ›</string>
     <string name="l10n_lit_20a70c1515">Über deine Messwerte bewegen sich %1$s und %2$s weitgehend unabhängig. Kein klarer Zusammenhang.</string>
     <string name="l10n_lit_20c7c5522f">Bereit</string>
@@ -3651,6 +3654,7 @@
     <string name="l10n_lit_5200014b66">%1$s Jahr älter</string>
     <string name="l10n_lit_521b6a147a">%1$s behalten</string>
     <string name="l10n_lit_521f5e93d7">Noch %1$s Nächte tragen, dann zeigen wir dir dein Fitnessalter.</string>
+    <string name="l10n_lit_52429a6c23">Schritte zählen alles zusammen, was du an einem Tag gehst – den Weg zur Arbeit, die Treppe, die Runde mit dem Hund –, auch an Tagen ganz ohne Training. Sie sind ein einfaches Alltagsmaß dafür, wie viel du auf den Beinen bist.</string>
     <string name="l10n_lit_52457e1b7e">Kein Atemfrequenzwert</string>
     <string name="l10n_lit_529541bb39">Di</string>
     <string name="l10n_lit_52ad354918">90 TAGE</string>
@@ -3666,6 +3670,7 @@
     <string name="l10n_lit_54f3984eed">%1$s Energiepunkte</string>
     <string name="l10n_lit_558287ddcc">Mitternacht</string>
     <string name="l10n_lit_5654948155">noch keine Kalibrierung</string>
+    <string name="l10n_lit_566c58fa59">Wie viel du dich am Tag bewegst</string>
     <string name="l10n_lit_56aa8bce06">Verbunden, aber nicht gekoppelt</string>
     <string name="l10n_lit_56e32b31fc">z. B. 2,0–5,0 (Bereich aus deinem Laborbericht)</string>
     <string name="l10n_lit_57a4830546">Dein eigenes Ziel. Schlafqualität, Schlafdefizit und Bedarf werden daran gemessen.</string>
@@ -3870,6 +3875,7 @@
     <string name="l10n_lit_7d54c51e40">Anhaltend hoher Stress</string>
     <string name="l10n_lit_7dffc25fc2">Üblich</string>
     <string name="l10n_lit_7e0fe26828">noch keine Messwerte</string>
+    <string name="l10n_lit_7e278422aa">Ziel entfernen</string>
     <string name="l10n_lit_7e4b91991b">Was sich verändert hat</string>
     <string name="l10n_lit_7e9cc53419">Schritte (geschätzt)</string>
     <string name="l10n_lit_7eb0cee888">Min.</string>
@@ -3899,6 +3905,7 @@
     <string name="l10n_lit_8444094484">An Tagen mit „Ja“ bei „%1$s“ war dein Wert für %2$s nicht anders als sonst.</string>
     <string name="l10n_lit_84944f198d">Passiv</string>
     <string name="l10n_lit_84add5b295">E-Mail</string>
+    <string name="l10n_lit_84eabd9da9">Schrittziel, %1$s</string>
     <string name="l10n_lit_8537a99ed4">Band vibrieren lassen (Wecker, Haptik, Uhrzeit)</string>
     <string name="l10n_lit_8561f0fc44">Alles, was du hier siehst (einschließlich etwaiger nebeneinander angezeigter Trends), sind deine eigenen Daten, die dir angezeigt werden. Es handelt sich um einen Zusammenhang, niemals um eine Ursache und niemals um einen medizinischen Befund.</string>
     <string name="l10n_lit_85873621e1">Was du verlierst</string>
@@ -3958,6 +3965,7 @@
     <string name="l10n_lit_8f8cc059ea">Puls (live, ohne Garantie)</string>
     <string name="l10n_lit_9024567cbf">Verlaufsformat v%1$s</string>
     <string name="l10n_lit_9043dcaf07">Ein paar Werte sind erhöht</string>
+    <string name="l10n_lit_904e420e92">Bisher weniger als drei gezählte Tage – noch kein Durchschnitt.</string>
     <string name="l10n_lit_905cb326c7">Du</string>
     <string name="l10n_lit_905fbd6496">Im Tagesverlauf</string>
     <string name="l10n_lit_90ccd64974">Verlauf</string>
@@ -3969,6 +3977,7 @@
     <string name="l10n_lit_9220e9fb8f">Ø Puls (bpm, optional)</string>
     <string name="l10n_lit_92e91e9aeb">(noch nichts zum Teilen)</string>
     <string name="l10n_lit_9301b2b67b">%1$s · bestes Signal je Messwert aus %2$s Quellen. Alles bleibt auf %3$s.</string>
+    <string name="l10n_lit_93039e609d">Nicht gesetzt</string>
     <string name="l10n_lit_932e2b5e40">Deine Bänder im Vergleich</string>
     <string name="l10n_lit_934807fc5c">Der Live-Puls kommt an, aber dein Band ist nicht voll gekoppelt. Erst die verschlüsselte Kopplung liefert Bewegung, Hauttemperatur, SpO₂ und Atemfrequenz – ohne sie wird der Schlaf nur aus dem Puls eingeteilt. Vibration, Wecker und Verlaufs-Sync brauchen sie auch.</string>
     <string name="l10n_lit_9364a8e3e3">Schlafphasen, Ruhepuls, Hauttemperatur-Trend, Bewegung und Akku – direkt vom Ring gelesen.</string>
@@ -3986,6 +3995,7 @@
     <string name="l10n_lit_965304ddfc">Tägliche Exportzeit</string>
     <string name="l10n_lit_966319a642">NUR LOKAL</string>
     <string name="l10n_lit_96831988f8">In deinem Bereich</string>
+    <string name="l10n_lit_96d43b1dc4">Ziel %1$s</string>
     <string name="l10n_lit_96f4cf07a2">vor %1$s Nächten</string>
     <string name="l10n_lit_96f5970e08">Keine SpO₂-Rohwerte für diese Nacht</string>
     <string name="l10n_lit_9700f4d831">Ruhepuls</string>
@@ -3997,6 +4007,7 @@
     <string name="l10n_lit_9a018ecc48">Abend</string>
     <string name="l10n_lit_9a3ea0598e">Es ist ein Fehler aufgetreten. Bitte versuche es noch einmal.</string>
     <string name="l10n_lit_9a527d3494">Wähl oben mindestens zwei Werte, um sie übereinanderzulegen und zu sehen, wie sie zusammen laufen.</string>
+    <string name="l10n_lit_9a77348e60">Punkte: deine letzten 14 Tage. Dein Durchschnitt über 30 Tage: %1$s Schritte.</string>
     <string name="l10n_lit_9a88c43eb8">Beckenschwimmen</string>
     <string name="l10n_lit_9ada09cf84">gewählter Ordner</string>
     <string name="l10n_lit_9b2c3e01da">Systolisch</string>
@@ -4019,6 +4030,7 @@
     <string name="l10n_lit_9f628b61ae">Ja/Nein</string>
     <string name="l10n_lit_9fb6ae0420">Schlafqualität</string>
     <string name="l10n_lit_9fc28659c2">noch %1$s s · %2$s Schläge</string>
+    <string name="l10n_lit_9fe00acebc">Ziel</string>
     <string name="l10n_lit_9fe97b35d4">basierend auf %1$s deiner %2$s Tage</string>
     <string name="l10n_lit_9ff96255b1">Hockey</string>
     <string name="l10n_lit_9ffe2c86fe">Standard-Herzfrequenzsensor (0x180D)</string>
@@ -4183,6 +4195,8 @@
     <string name="l10n_lit_bd846adf34">Super</string>
     <string name="l10n_lit_bdbaf457a1">Energie-Basiswert zurückgesetzt. NOOP lernt ihn ab heute Nacht neu. Dein Verlauf bleibt; es dauert ein paar Nächte, bis er sich einpendelt.</string>
     <string name="l10n_lit_bde2fbb6f5">Verschlüsselt</string>
+    <string name="l10n_lit_be06feff06">Dein eigenes Tagesziel</string>
+    <string name="l10n_lit_be1f2f3ec8">Ziel erreicht</string>
     <string name="l10n_lit_be320b06f4">Vitalität</string>
     <string name="l10n_lit_be54df7061">Puls · HRV · Hauttemp.* · Atemfrequenz* · Schritte* · Schlaf · Belastung · Akku</string>
     <string name="l10n_lit_be7a6a372d">Tief</string>
@@ -4199,6 +4213,7 @@
     <string name="l10n_lit_c1268ca7e5">Rückblick teilen</string>
     <string name="l10n_lit_c16981e681">Stimmung</string>
     <string name="l10n_lit_c1d33ad534">Phasen</string>
+    <string name="l10n_lit_c2270b7736">Ein Ziel zeigt auf einen Blick, ob du das Maß hältst, das du dir selbst gesetzt hast. Welche Zahl zu dir passt, entscheidest du – NOOP gibt dazu keine Empfehlung. Über Wochen zeigt der Verlauf, wie sich deine Alltagsbewegung verändert und wie sie neben deiner Belastung und deiner Erholung steht.</string>
     <string name="l10n_lit_c25de2e83e">Genutzt</string>
     <string name="l10n_lit_c2f9b7b489">Verbunden</string>
     <string name="l10n_lit_c328508bad">Letzte 90 Tage</string>
@@ -4348,6 +4363,7 @@
     <string name="l10n_lit_dee96f01d5">Krafttraining</string>
     <string name="l10n_lit_df16066050">Magermasse</string>
     <string name="l10n_lit_df833fe88d">Letzte 7 Tage</string>
+    <string name="l10n_lit_dfd1f888b0">Durchschnitt · %1$s</string>
     <string name="l10n_lit_dff40eb0e1">Die Werte deines vegetativen Nervensystems kippen heute Richtung Stress. Mach heute einen Erholungstag draus.</string>
     <string name="l10n_lit_e111eaa8f0">Tippe auf deins.</string>
     <string name="l10n_lit_e11e37a925">Einheiten</string>
@@ -4381,6 +4397,7 @@
     <string name="l10n_lit_e782e7728e">FERTIG</string>
     <string name="l10n_lit_e7d9e1b124">Vitalwerte</string>
     <string name="l10n_lit_e81b317e9a">" · gefiltert"</string>
+    <string name="l10n_lit_e830fe0971">Gezählt wird vom Bewegungssensor in deinem Armband. NOOP liest den Zähler des Armbands aus und summiert ihn pro Tag; zählt er mehr, als du wirklich gehst, kannst du das unter Mehr → Einstellungen → Profil → Schrittkalibrierung korrigieren.</string>
     <string name="l10n_lit_e86b0ed5a5">Energie-Modell</string>
     <string name="l10n_lit_e88e92ff63">Nur zu Informationszwecken – keine medizinische Beratung.</string>
     <string name="l10n_lit_e8a233b66e">Schlafleistung</string>
@@ -4429,6 +4446,7 @@
     <string name="l10n_lit_efc007a393">Speichern</string>
     <string name="l10n_lit_efd09b0abf">Cricket</string>
     <string name="l10n_lit_efeac6f9f9">Bisher ein Messwert: %1$s %2$s. Erfasse noch ein paar, um einen Trend zu sehen.</string>
+    <string name="l10n_lit_eff9813aa4">Ziel pro Tag</string>
     <string name="l10n_lit_f030c3d667">1 Stunde</string>
     <string name="l10n_lit_f0c4578b00">Taille, nicht gesetzt. Optional: Damit wird deine VO₂max genauer</string>
     <string name="l10n_lit_f0d20bf5cc">Dein Ruhepuls liegt über deinem Normalwert. Dein Körper steht heute unter Last. Halte die Belastung locker.</string>
@@ -4449,6 +4467,7 @@
     <string name="l10n_lit_f3889f8f4c">Live vom Band gelesen</string>
     <string name="l10n_lit_f3e4fadb9e">Exportieren</string>
     <string name="l10n_lit_f442595224">NOOP entscheidet nie, ob ein Wert „normal“, „hoch“ oder „niedrig“ ist. Ein angezeigter Referenzbereich ist genau das, was du aus deinem Laborbericht eingetippt hast.</string>
+    <string name="l10n_lit_f458abf403">Über Schritte</string>
     <string name="l10n_lit_f47f52d3d3">Holt den gespeicherten Verlauf deines Bands sofort, statt auf den nächsten automatischen Sync zu warten.</string>
     <string name="l10n_lit_f49538ba37">NOOP-Trendbericht</string>
     <string name="l10n_lit_f505ad8e83">Neuverbindungen in diesem Lauf</string>
