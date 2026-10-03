@@ -67,15 +67,15 @@ internal fun debtHeadline(ledger: SleepDebtLedger): String =
 
 /** Short tag beside the headline: the recurrence never creates a positive surplus. */
 internal fun debtTag(ledger: SleepDebtLedger): String = when {
-    ledger.magnitudeMin < SleepDebt.ON_TARGET_BAND_MIN -> "balanced"
+    ledger.magnitudeMin < SleepDebt.ON_TARGET_BAND_MIN -> uiText("balanced")
     ledger.isDebt -> uiText("sleep debt")
-    else -> "balanced"
+    else -> uiText("balanced")
 }
 
 /** Plain-English read of the actionable addition to the next night's target. */
 internal fun debtRead(ledger: SleepDebtLedger): String {
     val nights = ledger.nightCount
-    val span = "the last $nights night${if (nights == 1) "" else "s"}"
+    val span = if (nights == 1) uiText("the last night") else uiText("the last %1\$s nights", nights)
     if (ledger.magnitudeMin < SleepDebt.ON_TARGET_BAND_MIN) {
         return uiText("You've met your current sleep target across %1\$s. No extra debt needs carrying into tonight.", span)
     }

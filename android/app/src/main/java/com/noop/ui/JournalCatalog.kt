@@ -316,3 +316,45 @@ fun saveJournalCatalogItems(context: Context, items: List<JournalCatalogItem>) {
     context.getSharedPreferences("noop_prefs", Context.MODE_PRIVATE)
         .edit().putString(JOURNAL_CATALOG_V2_KEY, encodeJournalCatalog(items)).apply()
 }
+
+// MARK: - Follow-up questions (this fork, Android only)
+//
+// After a "yes", some items ask a second question the way the official app's journal does: protein asks
+// for grams, caffeine for the number of servings and when the last one was. A main amount (grams,
+// servings) is stored on the item's own row as its numericValue, exactly as a numeric item already is,
+// so the effects engine's numeric series picks it up. The time of the last serving needs a second value,
+// so it lives on a detail row keyed "<question> [lastAt]" (minutes after midnight), which every reader
+// that lists behaviours skips (isJournalDetailKey). Nothing here is a judgement about the amounts.
+
+/** One follow-up shown under a yes. */
+sealed class JournalFollowUp {
+    /** A free amount with a unit, e.g. grams of protein. */
+    data class Amount(val prompt: String, val unit: String, val step: Double) : JournalFollowUp()
+    /** A whole count with − / + steppers, e.g. servings of caffeine. */
+    data class Count(val prompt: String) : JournalFollowUp()
+    /** A clock time (minutes after midnight) stored on the detail row. */
+    data class LastTime(val prompt: String) : JournalFollowUp()
+}
+
+internal const val JOURNAL_LAST_TIME_SUFFIX = " [lastAt]"
+
+/** True for a detail row ("<question> [lastAt]"): data for its item, never a behaviour of its own. */
+fun isJournalDetailKey(question: String): Boolean = question.endsWith(JOURNAL_LAST_TIME_SUFFIX)
+
+fun journalLastTimeKey(canonical: String): String = canonical + JOURNAL_LAST_TIME_SUFFIX
+
+/**
+ * The follow-ups for an item, matched on its wording (imported WHOOP questions arrive in the export's
+ * language, so both German and English words are recognised). Empty for everything else.
+ */
+fun journalFollowUps(canonical: String): List<JournalFollowUp> {
+    val k = normJournalKey(canonical)
+    return when {
+        "eiweiß" in k || "eiweiss" in k || "protein" in k ->
+            listOf(JournalFollowUp.Amount("How many grams?", "g", 5.0))
+        "koffein" in k || "caffeine" in k ->
+            listOf(JournalFollowUp.Count("How many servings of caffeine did you have?"),
+                JournalFollowUp.LastTime("When was your last serving?"))
+        else -> emptyList()
+    }
+}

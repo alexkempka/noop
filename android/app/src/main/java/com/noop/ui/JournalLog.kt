@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.noop.data.JournalEntry
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 // MARK: - Native journal logging (pure helpers + the Insights logging card)
 
@@ -356,6 +357,7 @@ private fun JournalGroupBlock(
         }
         if (!collapsed) {
             items.forEach { item ->
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -392,10 +394,90 @@ private fun JournalGroupBlock(
                         }
                     }
                 }
+                // The follow-up questions after a yes (protein grams, caffeine servings + last time).
+                val followUps = journalFollowUps(item.canonical)
+                if (!editing && !item.hidden && !item.kind.isNumeric && answers[item.canonical] == true && followUps.isNotEmpty()) {
+                    JournalFollowUpBlock(item.canonical, followUps, numericAnswers, onNumeric)
+                }
+                }
             }
         }
     }
 }
+
+/** The follow-ups under a yes, indented beneath their question. */
+@Composable
+private fun JournalFollowUpBlock(
+    canonical: String,
+    followUps: List<JournalFollowUp>,
+    numericAnswers: Map<String, Double>,
+    onNumeric: (String, Double) -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
+    ) {
+        followUps.forEach { f ->
+            when (f) {
+                is JournalFollowUp.Amount -> Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(uiText(f.prompt), style = NoopType.subhead, color = Palette.textSecondary, modifier = Modifier.weight(1f))
+                    val value = numericAnswers[canonical]
+                    var text by remember(value) { mutableStateOf(value?.let { formatNumeric(it) } ?: "") }
+                    OutlinedTextField(
+                        value = text,
+                        onValueChange = { new ->
+                            text = new.filter { it.isDigit() || it == ',' || it == '.' }.take(5)
+                            text.replace(',', '.').toDoubleOrNull()?.let { onNumeric(canonical, it) }
+                        },
+                        placeholder = { Text("—", style = NoopType.body, color = Palette.textTertiary) },
+                        singleLine = true,
+                        textStyle = NoopType.body,
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                        ),
+                        colors = journalFieldColors(),
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.width(88.dp),
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(f.unit, style = NoopType.footnote, color = Palette.textTertiary)
+                }
+                is JournalFollowUp.Count -> Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(uiText(f.prompt), style = NoopType.subhead, color = Palette.textSecondary, modifier = Modifier.weight(1f))
+                    val n = numericAnswers[canonical]?.toInt()
+                    JournalChip("−", selected = false) { onNumeric(canonical, ((n ?: 0) - 1).coerceAtLeast(0).toDouble()) }
+                    Spacer(Modifier.width(6.dp))
+                    Text(n?.toString() ?: "—", style = NoopType.headline, color = Palette.textPrimary,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.width(32.dp))
+                    Spacer(Modifier.width(6.dp))
+                    JournalChip("+", selected = false) { onNumeric(canonical, ((n ?: 0) + 1).coerceAtMost(30).toDouble()) }
+                }
+                is JournalFollowUp.LastTime -> Column {
+                    val key = journalLastTimeKey(canonical)
+                    val stored = numericAnswers[key]
+                    var minutes by remember(stored) { mutableStateOf((stored ?: 12 * 60.0).toFloat()) }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(uiText(f.prompt), style = NoopType.subhead, color = Palette.textSecondary, modifier = Modifier.weight(1f))
+                        // Shown only once it is set: a time the user never chose is not a reading.
+                        Text(
+                            if (stored == null) "—" else clockFromMinutes(minutes.toInt()),
+                            style = NoopType.headline,
+                            color = if (stored == null) Palette.textTertiary else Palette.accent,
+                        )
+                    }
+                    androidx.compose.material3.Slider(
+                        value = minutes,
+                        onValueChange = { minutes = (it / 15f).roundToInt() * 15f },
+                        onValueChangeFinished = { onNumeric(key, minutes.toDouble()) },
+                        valueRange = 0f..(24 * 60 - 15).toFloat(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun clockFromMinutes(m: Int): String = "%02d:%02d".format(m / 60, m % 60)
 
 /** Compact numeric log field: current value or a placeholder, commits a Double, with -/+ steppers. */
 @Composable

@@ -230,6 +230,7 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
         // ranker can consume like any metric outcome (dose-response lands in the v5 hub). Additive.
         val numericByBehaviour = mutableMapOf<String, MutableMap<String, Double>>()
         for (e in entries) {
+            if (isJournalDetailKey(e.question)) continue   // a follow-up's time, not a behaviour
             val bucket = if (e.answeredYes) byBehaviour else controlsByBehaviour
             bucket.getOrPut(e.question) { mutableSetOf() }.add(e.day)
             e.numericValue?.let { v -> numericByBehaviour.getOrPut(e.question) { mutableMapOf() }[e.day] = v }
@@ -366,6 +367,8 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
             onDayOffset = { dayOffset = it },
             onAnswer = { q, yes ->
                 scope.launch {
+                    // A "no" takes the follow-up's time with it.
+                    if (!yes) vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), journalLastTimeKey(q))
                     // An answer on an imported equivalent supersedes the same day's starter row.
                     JOURNAL_IMPORTED_EQUIVALENTS[normJournalKey(q)]?.let { starter ->
                         vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), starter)
@@ -390,6 +393,7 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
             onClear = { q ->
                 scope.launch {
                     vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), q)
+                    vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), journalLastTimeKey(q))
                     JOURNAL_IMPORTED_EQUIVALENTS[normJournalKey(q)]?.let { starter ->
                         vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), starter)
                     }

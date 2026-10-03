@@ -211,7 +211,7 @@ internal fun SleepDebtLedgerHostCard(m: SleepModel) {
                         listOf(
                             "Balance" to debtSigned(ledger.balanceMin),
                             "Per-night need" to durationText(ledger.needMin),
-                            "Nights" to "${ledger.nightCount}",
+                            uiText("Nights") to "${ledger.nightCount}",
                         ),
                     )
                 }
@@ -476,7 +476,7 @@ internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
             subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
-            trailing = avg?.let { String.format(Locale.US, "%.1f h avg", it) },
+            trailing = avg?.let { uiText("%1\$s h avg", String.format(Locale.getDefault(), "%.1f", it)) },
             tint = Palette.restColor,
             footer = {
                 SleepChartFooter(
@@ -484,7 +484,7 @@ internal fun AsleepDurationHostCard(hours: List<Double>, dates: List<String>) {
                         "Avg" to (avg?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Min" to (hours.minOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Max" to (hours.maxOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
-                        "Nights" to "${hours.size}",
+                        uiText("Nights") to "${hours.size}",
                     ),
                 )
             },
@@ -519,7 +519,7 @@ internal fun DurationTrend(m: SleepModel) {
         SleepChartCard(
             title = uiString(R.string.l10n_sleep_screen_hours_asleep_06f68993),
             subtitle = uiString(R.string.l10n_sleep_metric_cards_ui_per_night_trailing_14_days_b5074639),
-            trailing = avg?.let { String.format(Locale.US, "%.1f h avg", it) },
+            trailing = avg?.let { uiText("%1\$s h avg", String.format(Locale.getDefault(), "%.1f", it)) },
             tint = Palette.restColor,
             footer = {
                 SleepChartFooter(
@@ -527,7 +527,7 @@ internal fun DurationTrend(m: SleepModel) {
                         "Avg" to (avg?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Min" to (pts.minOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
                         "Max" to (pts.maxOrNull()?.let { String.format(Locale.getDefault(), "%.1f h", it) } ?: "—"),
-                        "Nights" to "${pts.size}",
+                        uiText("Nights") to "${pts.size}",
                     ),
                 )
             },
@@ -873,9 +873,9 @@ internal fun HoursVsNeededCard(m: SleepModel) {
             SleepHairline()
             Row(modifier = Modifier.fillMaxWidth()) {
                 listOf(
-                    "Slept" to String.format(Locale.getDefault(), "%.1f h", sleptH),
-                    "Needed" to String.format(Locale.getDefault(), "%.1f h", neededH),
-                    "Debt" to if (debtH > 0.05) durationText(debtH * 60.0) else uiText("None"),   // #691: h+m, not "0.6 h"
+                    uiText("Slept") to String.format(Locale.getDefault(), "%.1f h", sleptH),
+                    uiText("Needed") to String.format(Locale.getDefault(), "%.1f h", neededH),
+                    uiText("Debt") to if (debtH > 0.05) durationText(debtH * 60.0) else uiText("None"),   // #691: h+m, not "0.6 h"
                 ).forEach { (lbl, v) ->
                     Column(modifier = Modifier.weight(1f)) {
                         Overline(lbl, color = Palette.textTertiary)
@@ -1118,9 +1118,9 @@ internal fun SleepConsistencyCard(
             SleepHairline()
             Row(modifier = Modifier.fillMaxWidth()) {
                 listOf(
-                    "Score" to "${consistencyPct.roundToInt()}%",
-                    "Typical" to "${((bedSdH + wakeSdH) / 2f * 60f).roundToInt()} min SD",
-                    "Nights" to "${timings.size}",
+                    uiText("Score") to "${consistencyPct.roundToInt()}%",
+                    uiText("Typical") to uiText("%1\$s min SD", ((bedSdH + wakeSdH) / 2f * 60f).roundToInt()),
+                    uiText("Nights") to "${timings.size}",
                 ).forEach { (lbl, v) ->
                     Column(modifier = Modifier.weight(1f)) {
                         Overline(lbl, color = Palette.textTertiary)

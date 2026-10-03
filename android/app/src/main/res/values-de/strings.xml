@@ -3360,7 +3360,7 @@
     <string name="l10n_lit_11e8ca97ca">Laborbuch CSV</string>
     <string name="l10n_lit_11eda67f9b">Lang</string>
     <string name="l10n_lit_12066e9d46">vernachlässigbar</string>
-    <string name="l10n_lit_1206a44261">Du hast dein aktuelles Schlafziel über %1$s erreicht. Du nimmst keine zusätzliche Schlafdefizit in die Nacht mit.</string>
+    <string name="l10n_lit_1206a44261">Du hast dein aktuelles Schlafziel in %1$s erreicht. Du nimmst kein zusätzliches Schlafdefizit in die Nacht mit.</string>
     <string name="l10n_lit_12383b4a59">Fitnessalter</string>
     <string name="l10n_lit_1294071f96">%1$s %2$s · lückenhaft, erweitert auf %3$s</string>
     <string name="l10n_lit_12c4ffe1d9">Effizienz</string>
@@ -3453,7 +3453,7 @@
     <string name="l10n_lit_26e1ed149e">Wähl einen längeren Zeitraum (3M, 6M, 1Y oder ALL), um den Verlauf dieses Werts zu sehen.</string>
     <string name="l10n_lit_272bf3c1d5">Noch %1$s Nächte tragen und unten Alter und Geschlecht eintragen – dann zeigen wir dir dein Fitnessalter.</string>
     <string name="l10n_lit_277af7eb68">Gesundes Minimum</string>
-    <string name="l10n_lit_27c0ee6e64">Benötigt</string>
+    <string name="l10n_lit_27c0ee6e64">Bedarf</string>
     <string name="l10n_lit_282432f97c">Letzte 14 Nächte</string>
     <string name="l10n_lit_28463f2473">Phasen vs. typisch</string>
     <string name="l10n_lit_28820fbb7b">Eisbad</string>
@@ -3612,9 +3612,11 @@
     <string name="l10n_lit_4a4d88dbb4">Kein Ruhepulswert</string>
     <string name="l10n_lit_4a9be042af">Akku</string>
     <string name="l10n_lit_4ace11aa3f">Bisher passt %1$s Messwert zusammen – zu wenig für einen Trend (NOOP wartet auf %2$s).</string>
+    <string name="l10n_lit_4af00fab64">der letzten Nacht</string>
     <string name="l10n_lit_4b0afa8b20">Fertig. Speichere den Messwert, damit er in deinen Trends erscheint.</string>
     <string name="l10n_lit_4b6a3875b8">Schritte heute</string>
     <string name="l10n_lit_4c2b71bfb5">Gewichtheben</string>
+    <string name="l10n_lit_4cc5b6fd92">± %1$s Min.</string>
     <string name="l10n_lit_4d16ffcda2">Blau-Titan</string>
     <string name="l10n_lit_4d8dc5fe41">Neuigkeiten</string>
     <string name="l10n_lit_4dc47c61fb">STABIL</string>
@@ -3694,7 +3696,7 @@
     <string name="l10n_lit_5f6e6c9c57">Hast du den 16-Byte-Schlüssel deines Rings aus einer früheren Oura-Einrichtung ausgelesen, kann NOOP damit OHNE Zurücksetzen mit dem Ring sprechen – die Oura-App funktioniert dann weiter. NOOP liest keine Schlüssel für dich aus und hilft auch nicht beim Finden. Wenn du nicht weißt, was das heißt, geh zurück und nutze die normale Einrichtung oder den Datei-Import.</string>
     <string name="l10n_lit_5f8b2739a7">Maximale Herzfrequenz</string>
     <string name="l10n_lit_5f99fe21da">Lädt</string>
-    <string name="l10n_lit_601117a6c6">Schlaf heute Nacht etwa %1$s über deinen Grundbedarf hinaus. Schaffst du das, ist die angezeigte Schlafdefizit ausgeglichen.</string>
+    <string name="l10n_lit_601117a6c6">Schlaf heute Nacht etwa %1$s über deinen Grundbedarf hinaus. Schaffst du das, ist das angezeigte Schlafdefizit ausgeglichen.</string>
     <string name="l10n_lit_6089c92a6f">Trainingsvolumen pro Einheit</string>
     <string name="l10n_lit_60e50930c6">vs. Basiswert ohne Gewohnheit</string>
     <string name="l10n_lit_60e9e9828f">noch keine Übertragung</string>
@@ -3706,6 +3708,7 @@
     <string name="l10n_lit_61cc55aa04">Hinzufügen</string>
     <string name="l10n_lit_61dedcf053">Gut</string>
     <string name="l10n_lit_62009bc1fa">Gesamter Verlauf</string>
+    <string name="l10n_lit_6217e69f78">ausgeglichen</string>
     <string name="l10n_lit_623d0bd00e">Mindestens %1$s %2$s jünger als du</string>
     <string name="l10n_lit_62411afcf0">Die WHOOP-App ist nicht installiert</string>
     <string name="l10n_lit_6303be9374">noch keine Nacht bewertet</string>
@@ -3734,6 +3737,7 @@
     <string name="l10n_lit_673b70e1fd">, Übertraining-Warnung</string>
     <string name="l10n_lit_6765c507cf">Nicht vom Band. SpO₂ lässt sich per Import eines WHOOP- oder Health-Exports füllen.</string>
     <string name="l10n_lit_67e5b09b27">Quelle der Entladekurve</string>
+    <string name="l10n_lit_6818b66d96">Wie viel Gramm?</string>
     <string name="l10n_lit_681cbb722b">Stell sicher, dass die Oura-App vollständig geschlossen ist. Ein Ring reagiert jeweils nur auf einen Besitzer.</string>
     <string name="l10n_lit_6866b0718f">%1$s oder jünger</string>
     <string name="l10n_lit_68b41bf11c">Neueres WHOOP-Band mit Live-Daten und Verlaufs-Sync</string>
@@ -3833,6 +3837,7 @@
     <string name="l10n_lit_7a7e86e61e">Zusammenführen (%1$s)</string>
     <string name="l10n_lit_7a9c19e0e9">Liefert jetzt Belastung; Energie und Schlafqualität, sobald genug Nächte und die Entschlüsselung bestätigt sind</string>
     <string name="l10n_lit_7adb6736cf">Füllen</string>
+    <string name="l10n_lit_7b6f91d309">den letzten %1$s Nächten</string>
     <string name="l10n_lit_7b71bd0c3d">Fett</string>
     <string name="l10n_lit_7b7a5bb359">Heutiger Verlauf</string>
     <string name="l10n_lit_7b7d6f9a92">Voller Datenstrom vom Band aktiv.</string>
@@ -3990,6 +3995,7 @@
     <string name="l10n_lit_9c26990fd7">späterer Zeitpunkt</string>
     <string name="l10n_lit_9c48381183">Ende aktive Stunden</string>
     <string name="l10n_lit_9c8f63817d">höher</string>
+    <string name="l10n_lit_9cb92e2fe7">Wie viele Portionen Koffein hattest du?</string>
     <string name="l10n_lit_9cd9abc4fb">Ring-Schlüssel (32 Hex-Zeichen)</string>
     <string name="l10n_lit_9d914bfcf1">Baut auf</string>
     <string name="l10n_lit_9d99a9059f">Ruhepuls erhöht und HRV unter deinem Basiswert – beides klassische Zeichen hoher Aktivierung. Setz auf Erholung, genug trinken und einen lockeren Tag.</string>
@@ -4052,7 +4058,7 @@
     <string name="l10n_lit_a7d16ee6fb">letztes Jahr</string>
     <string name="l10n_lit_a7f8e7cc0d">gerade eben</string>
     <string name="l10n_lit_a84c4001bb">Live-Puls und HRV, sofern der Ring sie messen kann.</string>
-    <string name="l10n_lit_a8522bd405">Du hast etwa %1$s Polster über %2$s – unterm Strich mehr geschlafen als nötig. Stark.</string>
+    <string name="l10n_lit_a8522bd405">Du hast in %2$s etwa %1$s Polster aufgebaut – unterm Strich mehr geschlafen als nötig. Stark.</string>
     <string name="l10n_lit_a866104aec">Garmin-Uhr</string>
     <string name="l10n_lit_a88fb68cf5">Fläche</string>
     <string name="l10n_lit_a8a1a016c3">Funktionen nach Band</string>
@@ -4089,6 +4095,7 @@
     <string name="l10n_lit_b07f374b49">%1$s%2$s%3$s vs. üblich</string>
     <string name="l10n_lit_b0b9b988f5">Innere Uhr</string>
     <string name="l10n_lit_b0dd15185e">Mies</string>
+    <string name="l10n_lit_b0ece857ef">Ø %1$s h</string>
     <string name="l10n_lit_b148ed24bf">Strecken</string>
     <string name="l10n_lit_b14f6156ae">Zone %1$s beginnt bei %2$s bpm</string>
     <string name="l10n_lit_b1a576a419">Wie entwickelt sich meine Erholung diese Woche?</string>
@@ -4235,6 +4242,7 @@
     <string name="l10n_lit_cd54d0244b">gesamt</string>
     <string name="l10n_lit_cd75b86f4f">6 Monate</string>
     <string name="l10n_lit_cd9363b743">Hauttemp.</string>
+    <string name="l10n_lit_cd9cbf75cc">Wann war deine letzte Portion?</string>
     <string name="l10n_lit_cdc93143c6">Ø</string>
     <string name="l10n_lit_cdd7bb2816">Einrichtung</string>
     <string name="l10n_lit_cdde008871">Dein Verlauf wird geladen…</string>

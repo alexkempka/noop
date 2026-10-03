@@ -581,6 +581,7 @@ internal class InsightsHubViewModel {
         // Yes days and NO days, kept apart. A day with no journal row for the question appears in
         // neither, so the ranker cannot mistake "never logged" for "logged No" (#EffectRanker.effect).
         for (e in entries) {
+            if (isJournalDetailKey(e.question)) continue   // a follow-up's time, not a behaviour
             val bucket = if (e.answeredYes) byBehaviour else controlsByBehaviour
             bucket.getOrPut(e.question) { mutableSetOf() }.add(e.day)
         }

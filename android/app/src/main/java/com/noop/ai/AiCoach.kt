@@ -604,6 +604,17 @@ class AiCoach(
             }
         }
 
+        // --- The last 7 journal days with amounts (this fork): what the user logged, so the coach can
+        //     relate it to the night and the morning the way the official app's coach does. The user's own
+        //     entries, not readings; sent only behind this same opt-in. ---
+        val recentJournal = runCatching { recentJournalLines(7) }.getOrDefault(emptyList())
+        if (recentJournal.isNotEmpty()) {
+            if (sb.isNotEmpty()) sb.append("\n")
+            sb.append("RECENT JOURNAL (the user's own answers per day; amounts as they typed them — ")
+            sb.append("never judge an amount as too much or too little in medical terms):\n")
+            recentJournal.forEach { sb.append("  • ").append(it).append("\n") }
+        }
+
         // --- Lab Book snapshot: the latest reading per marker the user has entered ---
         val latestByMarker = runCatching { latestLabMarkers() }.getOrDefault(emptyList())
         if (latestByMarker.isNotEmpty()) {
@@ -633,10 +644,43 @@ class AiCoach(
         val yes = HashMap<String, MutableSet<String>>()
         val no = HashMap<String, MutableSet<String>>()
         for (e in byKey.values) {
+            if (com.noop.ui.isJournalDetailKey(e.question)) continue   // a follow-up's time, not a behaviour
             val bucket = if (e.answeredYes) yes else no
             bucket.getOrPut(e.question) { mutableSetOf() }.add(e.day)
         }
         return yes.mapValues { it.value.toSet() } to no.mapValues { it.value.toSet() }
+    }
+
+    /** One line per journal day (newest first) over the last [days]: each answer, with a follow-up's
+     *  amount and the time of the last serving where they were logged. */
+    private suspend fun recentJournalLines(days: Int): List<String> {
+        val today = java.time.LocalDate.now()
+        val from = today.minusDays(days.toLong() - 1).toString()
+        val to = today.toString()
+        val imported = repo.journal(deviceId, from, to)
+        val native = repo.journal(journalDeviceId, from, to)
+        val byKey = LinkedHashMap<Pair<String, String>, JournalEntry>()
+        for (e in imported) byKey[e.day to e.question] = e
+        for (e in native) byKey[e.day to e.question] = e
+        val all = byKey.values
+        return all.filterNot { com.noop.ui.isJournalDetailKey(it.question) }
+            .groupBy { it.day }.toSortedMap(compareByDescending { it })
+            .map { (day, entries) ->
+                val parts = entries.sortedBy { it.question }.map { e ->
+                    val sb = StringBuilder(e.question).append(" ").append(if (e.answeredYes) "yes" else "no")
+                    if (e.answeredYes) {
+                        e.numericValue?.let { v ->
+                            val unit = com.noop.ui.journalFollowUps(e.question)
+                                .firstNotNullOfOrNull { (it as? com.noop.ui.JournalFollowUp.Amount)?.unit }
+                            sb.append(" (").append(fmt1(v)).append(if (unit != null) " $unit" else "").append(")")
+                        }
+                        all.firstOrNull { it.day == day && it.question == com.noop.ui.journalLastTimeKey(e.question) }
+                            ?.numericValue?.toInt()?.let { m -> sb.append(", last at %02d:%02d".format(m / 60, m % 60)) }
+                    }
+                    sb.toString()
+                }
+                "$day: " + parts.joinToString("; ")
+            }
     }
 
     /** The latest reading per Lab Book marker key (stored under the ACTIVE strap deviceId). #1304/#512:

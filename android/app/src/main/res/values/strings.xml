@@ -3628,9 +3628,11 @@
     <string name="l10n_lit_4a4d88dbb4">No resting HR value</string>
     <string name="l10n_lit_4a9be042af">Battery</string>
     <string name="l10n_lit_4ace11aa3f">%1$s reading lines up so far, not enough to read a trend yet (NOOP waits for %2$s).</string>
+    <string name="l10n_lit_4af00fab64">the last night</string>
     <string name="l10n_lit_4b0afa8b20">Done. Save this reading to keep it in your trends.</string>
     <string name="l10n_lit_4b6a3875b8">Steps today</string>
     <string name="l10n_lit_4c2b71bfb5">Weightlifting</string>
+    <string name="l10n_lit_4cc5b6fd92">%1$s min SD</string>
     <string name="l10n_lit_4d16ffcda2">Blue Titanium</string>
     <string name="l10n_lit_4d8dc5fe41">What\'s new</string>
     <string name="l10n_lit_4dc47c61fb">SOLID</string>
@@ -3722,6 +3724,7 @@
     <string name="l10n_lit_61cc55aa04">Add</string>
     <string name="l10n_lit_61dedcf053">Good</string>
     <string name="l10n_lit_62009bc1fa">All history</string>
+    <string name="l10n_lit_6217e69f78">balanced</string>
     <string name="l10n_lit_623d0bd00e">At least %1$s %2$s younger than your age</string>
     <string name="l10n_lit_62411afcf0">WHOOP app isn\'t installed</string>
     <string name="l10n_lit_6303be9374">no night scored yet</string>
@@ -3750,6 +3753,7 @@
     <string name="l10n_lit_673b70e1fd">, overreaching watch</string>
     <string name="l10n_lit_6765c507cf">Not from the strap. SpO₂ can be filled by importing a WHOOP or Health export.</string>
     <string name="l10n_lit_67e5b09b27">Slope source</string>
+    <string name="l10n_lit_6818b66d96">How many grams?</string>
     <string name="l10n_lit_681cbb722b">Make sure the Oura app is fully closed. A ring answers one owner at a time.</string>
     <string name="l10n_lit_6866b0718f">%1$s or younger</string>
     <string name="l10n_lit_68b41bf11c">Newer WHOOP band with live data and history sync</string>
@@ -3849,6 +3853,7 @@
     <string name="l10n_lit_7a7e86e61e">Merge (%1$s)</string>
     <string name="l10n_lit_7a9c19e0e9">Powers Effort now; Charge and Rest once enough nights and decode are confirmed</string>
     <string name="l10n_lit_7adb6736cf">Fill</string>
+    <string name="l10n_lit_7b6f91d309">the last %1$s nights</string>
     <string name="l10n_lit_7b71bd0c3d">Fat</string>
     <string name="l10n_lit_7b7a5bb359">Today\'s Timeline</string>
     <string name="l10n_lit_7b7d6f9a92">Full strap stream is active.</string>
@@ -4006,6 +4011,7 @@
     <string name="l10n_lit_9c26990fd7">later step</string>
     <string name="l10n_lit_9c48381183">Active hours end</string>
     <string name="l10n_lit_9c8f63817d">higher</string>
+    <string name="l10n_lit_9cb92e2fe7">How many servings of caffeine did you have?</string>
     <string name="l10n_lit_9cd9abc4fb">Ring key (32 hex characters)</string>
     <string name="l10n_lit_9d914bfcf1">Building</string>
     <string name="l10n_lit_9d99a9059f">Resting HR is elevated and HRV is below your baseline, both classic signs of high activation. Prioritise rest, hydration and an easy day.</string>
@@ -4105,6 +4111,7 @@
     <string name="l10n_lit_b07f374b49">%1$s%2$s%3$s vs typical</string>
     <string name="l10n_lit_b0b9b988f5">Body clock</string>
     <string name="l10n_lit_b0dd15185e">Awful</string>
+    <string name="l10n_lit_b0ece857ef">%1$s h avg</string>
     <string name="l10n_lit_b148ed24bf">Stretch</string>
     <string name="l10n_lit_b14f6156ae">Zone %1$s starts at %2$s bpm</string>
     <string name="l10n_lit_b1a576a419">How\'s my recovery trending this week?</string>
@@ -4251,6 +4258,7 @@
     <string name="l10n_lit_cd54d0244b">log</string>
     <string name="l10n_lit_cd75b86f4f">6 months</string>
     <string name="l10n_lit_cd9363b743">Skin temp</string>
+    <string name="l10n_lit_cd9cbf75cc">When was your last serving?</string>
     <string name="l10n_lit_cdc93143c6">Avg</string>
     <string name="l10n_lit_cdd7bb2816">Setup</string>
     <string name="l10n_lit_cdde008871">Reading your history…</string>
