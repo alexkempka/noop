@@ -1896,6 +1896,8 @@ fun VitalDetailScreen(
     // A visible × alongside the system Back, so a detail opened from a Today ring closes the same way as
     // the Charge breakdown beside it. Null keeps the screen without one.
     onClose: (() -> Unit)? = null,
+    // Fork: the Steps history links to the step-goal screen, so the goal is one tap from the Steps tile.
+    onOpenStepGoal: (() -> Unit)? = null,
 ) {
     val days by vm.recentDays.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -2004,6 +2006,10 @@ fun VitalDetailScreen(
         // offset left the lower cards on plain canvas (tester report).
         fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
     ) {
+        if (isStepsDetail && onOpenStepGoal != null) {
+            val stepGoal by vm.stepGoal.collectAsStateWithLifecycle()
+            StepGoalEntryCard(goal = stepGoal, onClick = onOpenStepGoal)
+        }
         if (isSeriesBacked && !seriesLoaded) {
             DataPendingNote(
                 title = uiString(if (isStepsDetail) R.string.steps_loading_title else R.string.l10n_health_screen_loading_33ce4174),

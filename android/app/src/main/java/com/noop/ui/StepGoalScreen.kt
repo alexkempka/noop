@@ -1,6 +1,8 @@
 package com.noop.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -243,6 +245,23 @@ private fun StepGoalScale(window: List<Pair<LocalDate, Int>>, goal: Int, average
         Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
             if (goal > 0) Text("▲ " + uiText("Goal"), style = NoopType.footnote, color = goalColor)
             if (average != null) Text("┆ " + uiText("Average"), style = NoopType.footnote, color = avgColor)
+        }
+    }
+}
+
+/** The entry at the top of the Steps history: the current goal, one tap to change it. */
+@Composable
+internal fun StepGoalEntryCard(goal: Int, onClick: () -> Unit) {
+    NoopCard(modifier = Modifier.clickable(onClick = onClick), tint = Palette.accent) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
+            Column(Modifier.weight(1f)) {
+                Text(uiText("Step goal"), style = NoopType.headline, color = Palette.textPrimary)
+                Text(
+                    if (goal > 0) uiText("%1\$s steps per day", groupedSteps(goal)) else uiText("Not set — tap to choose one"),
+                    style = NoopType.footnote, color = Palette.textSecondary,
+                )
+            }
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = Palette.textTertiary)
         }
     }
 }

@@ -3657,6 +3657,7 @@
     <string name="l10n_lit_52429a6c23">Schritte zählen alles zusammen, was du an einem Tag gehst – den Weg zur Arbeit, die Treppe, die Runde mit dem Hund –, auch an Tagen ganz ohne Training. Sie sind ein einfaches Alltagsmaß dafür, wie viel du auf den Beinen bist.</string>
     <string name="l10n_lit_52457e1b7e">Kein Atemfrequenzwert</string>
     <string name="l10n_lit_529541bb39">Di</string>
+    <string name="l10n_lit_529f0753c2">Nicht gesetzt – tippen, um eins festzulegen</string>
     <string name="l10n_lit_52ad354918">90 TAGE</string>
     <string name="l10n_lit_52d491466f">Ø Schlaf</string>
     <string name="l10n_lit_5301648dcf">Bearbeiten</string>
@@ -4303,6 +4304,7 @@
     <string name="l10n_lit_d1f48b71bb">Laufband, Indoor-Bike, Rudergerät oder Crosstrainer (Bluetooth FTMS)</string>
     <string name="l10n_lit_d2212fac51">Ein moderater</string>
     <string name="l10n_lit_d231762420">Eislaufen</string>
+    <string name="l10n_lit_d2ab7886dd">%1$s Schritte pro Tag</string>
     <string name="l10n_lit_d2e00605aa">ein Band</string>
     <string name="l10n_lit_d2e39dc3f7">Workout-Erkennung</string>
     <string name="l10n_lit_d2fd7a1972">Rudergerät</string>

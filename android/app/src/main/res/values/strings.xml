@@ -3673,6 +3673,7 @@
     <string name="l10n_lit_52429a6c23">Steps add up everything you walk in a day — the way to work, the stairs, the round with the dog — including days without any training. They are a simple, everyday measure of how much you are on your feet.</string>
     <string name="l10n_lit_52457e1b7e">No respiratory-rate value</string>
     <string name="l10n_lit_529541bb39">Tue</string>
+    <string name="l10n_lit_529f0753c2">Not set — tap to choose one</string>
     <string name="l10n_lit_52ad354918">90 DAYS</string>
     <string name="l10n_lit_52d491466f">Asleep avg</string>
     <string name="l10n_lit_5301648dcf">Edit</string>
@@ -4319,6 +4320,7 @@
     <string name="l10n_lit_d1f48b71bb">Treadmill, indoor bike, rower or cross-trainer (Bluetooth FTMS)</string>
     <string name="l10n_lit_d2212fac51">A moderate</string>
     <string name="l10n_lit_d231762420">Ice skating</string>
+    <string name="l10n_lit_d2ab7886dd">%1$s steps per day</string>
     <string name="l10n_lit_d2e00605aa">one strap</string>
     <string name="l10n_lit_d2e39dc3f7">Workout detection</string>
     <string name="l10n_lit_d2fd7a1972">Row machine</string>
