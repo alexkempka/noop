@@ -3305,6 +3305,7 @@
     <string name="l10n_lit_00d8c525a2">Get it ready, then scan.</string>
     <string name="l10n_lit_014795e468">Stress (on-device)</string>
     <string name="l10n_lit_01930b53bc">VO₂ Max (estimated)</string>
+    <string name="l10n_lit_02057bf52e">positive</string>
     <string name="l10n_lit_02390b0ca7">No buzzes sent.</string>
     <string name="l10n_lit_0247ce357c">STREAMING</string>
     <string name="l10n_lit_0299370d30">Beat-to-beat timing varies for many ordinary reasons: breathing, movement, an imperfect optical reading, or the occasional extra or skipped beat that most healthy people have.</string>
@@ -3357,6 +3358,7 @@
     <string name="l10n_lit_0e4bea342b">Active hours start</string>
     <string name="l10n_lit_0e58805b78">Ribbon</string>
     <string name="l10n_lit_0e5d9a37dc">Powers the live console + Effort. No Charge, Rest or Sleep</string>
+    <string name="l10n_lit_0e8d8e0069">EEE d MMM</string>
     <string name="l10n_lit_0ea7b95eab">Consistency</string>
     <string name="l10n_lit_0fd1397963">%1$s %2$s younger than your age</string>
     <string name="l10n_lit_0fed7c7390">Quiet hours end</string>
@@ -3373,6 +3375,7 @@
     <string name="l10n_lit_11c8d229a8">Your Effort outpaced your Charge this week: you leaned into the red. Watch for a recovery dip.</string>
     <string name="l10n_lit_11e8ca97ca">Lab Book CSV</string>
     <string name="l10n_lit_11eda67f9b">Long</string>
+    <string name="l10n_lit_12066e9d46">negligible</string>
     <string name="l10n_lit_1206a44261">You\'ve met your current sleep target across %1$s. No extra debt needs carrying into tonight.</string>
     <string name="l10n_lit_12383b4a59">Fitness Age</string>
     <string name="l10n_lit_1294071f96">%1$s %2$s · sparse , widened to %3$s</string>
@@ -3412,6 +3415,7 @@
     <string name="l10n_lit_1948bf2dfa">Tomorrow</string>
     <string name="l10n_lit_19aabe2600">Deep calm</string>
     <string name="l10n_lit_1a14ce5195">Could not take over</string>
+    <string name="l10n_lit_1a3e490bca">negative</string>
     <string name="l10n_lit_1a6a5ba8c2">Searching…</string>
     <string name="l10n_lit_1b4170ab2e">SESSION DONE</string>
     <string name="l10n_lit_1b59b67345">Jumping Rope</string>
@@ -3485,8 +3489,10 @@
     <string name="l10n_lit_2c85a73cd1">COMPLETE</string>
     <string name="l10n_lit_2ccc3ff5a5">It shows the shape of your heartbeat timing and a plain-language description of how steady it looked. It does not tell you whether anything is right or wrong.</string>
     <string name="l10n_lit_2d173b37f8">Diastolic</string>
+    <string name="l10n_lit_2d2ec43f1e">large</string>
     <string name="l10n_lit_2d3288f9f6">Active Energy</string>
     <string name="l10n_lit_2d5aeb746b">Soccer</string>
+    <string name="l10n_lit_2d8a6f7c34">1 day</string>
     <string name="l10n_lit_2dd2c66098">Tile</string>
     <string name="l10n_lit_2e269ed6db">Not calibrated</string>
     <string name="l10n_lit_2e560a4439">API Key (optional)</string>
@@ -3508,6 +3514,7 @@
     <string name="l10n_lit_32365028d8">Backed up to your folder.</string>
     <string name="l10n_lit_32482f0697">Your ring</string>
     <string name="l10n_lit_3297c0cabb">as of today</string>
+    <string name="l10n_lit_32cbad2007">No clear relationship (r = %1$s, n = %2$s).</string>
     <string name="l10n_lit_33398a2f58">Below today\'s band</string>
     <string name="l10n_lit_33ce6bc7f1">Resting HR ↔ Charge</string>
     <string name="l10n_lit_33f722f472">Personal curve · prior-shrunk</string>
@@ -3597,6 +3604,7 @@
     <string name="l10n_lit_4481948392">Nothing</string>
     <string name="l10n_lit_44caf74675">Inbox</string>
     <string name="l10n_lit_450bb244eb">from your report</string>
+    <string name="l10n_lit_45463b6ebe">small</string>
     <string name="l10n_lit_45e0768d9a">EARLY SIGNAL</string>
     <string name="l10n_lit_4646e9f2b7">IDLE</string>
     <string name="l10n_lit_479718523c">Trends, %1$s series, low %2$s, high %3$s</string>
@@ -3662,6 +3670,7 @@
     <string name="l10n_lit_53c2f4974d">Strap not connected</string>
     <string name="l10n_lit_53c837f51f">week</string>
     <string name="l10n_lit_54d1144d3c">%1$sh elevated</string>
+    <string name="l10n_lit_54f3984eed">%1$s Charge points</string>
     <string name="l10n_lit_558287ddcc">Midnight</string>
     <string name="l10n_lit_5654948155">no calibration yet</string>
     <string name="l10n_lit_56aa8bce06">Connected, but not paired</string>
@@ -3733,6 +3742,7 @@
     <string name="l10n_lit_661b85fe2a">Snowboarding</string>
     <string name="l10n_lit_666119eda6">Live heart rate appears here once a strap is connected.</string>
     <string name="l10n_lit_66b11ea257">Take it over locally. Beta.</string>
+    <string name="l10n_lit_66baac7fd3">1 Charge point</string>
     <string name="l10n_lit_66d95a0708">Week in review</string>
     <string name="l10n_lit_66f34ddda8">How much one day\'s charge carries into the next.</string>
     <string name="l10n_lit_670c843978">Resting heart rate is low and HRV is up. Your nervous system looks well-recovered and calm. A great day to push if you want to.</string>
@@ -3746,6 +3756,7 @@
     <string name="l10n_lit_68c2cc7f0c">Model</string>
     <string name="l10n_lit_690e053e90">What NOOP reads</string>
     <string name="l10n_lit_69c0b81540">Weight</string>
+    <string name="l10n_lit_69e699bc1f">solid</string>
     <string name="l10n_lit_6a33dd58b2">HR density (per min)</string>
     <string name="l10n_lit_6a4e2a86b0">%1$s d ago</string>
     <string name="l10n_lit_6a72085653">All</string>
@@ -3765,6 +3776,7 @@
     <string name="l10n_lit_6cd9de3a5a">Off wrist</string>
     <string name="l10n_lit_6d1def3d08">Titanium</string>
     <string name="l10n_lit_6d38f41390">e.g. mmol/L</string>
+    <string name="l10n_lit_6d50a38c64">Sessions like this usually cost you about %1$s the next morning and take about %2$s to bounce back (n=%3$s).</string>
     <string name="l10n_lit_6d879a212b">Make sure it\'s NOT connected to the official WHOOP app right now.</string>
     <string name="l10n_lit_6d942bfeed">vs need</string>
     <string name="l10n_lit_6da13addb0">Source</string>
@@ -3793,6 +3805,7 @@
     <string name="l10n_lit_72658120d0">Strap live</string>
     <string name="l10n_lit_727b4908de">Last session: %1$s</string>
     <string name="l10n_lit_72b805c7a8">LIFT</string>
+    <string name="l10n_lit_7319fecca5">Sessions like this usually lift you by about %1$s the next morning (n=%2$s).</string>
     <string name="l10n_lit_734f3891fa">PRIMED</string>
     <string name="l10n_lit_737cf27ab3">Last offload result</string>
     <string name="l10n_lit_7390d11fb5">Mostly steady, with a few isolated extra or skipped beats. Very common and usually nothing.</string>
@@ -3806,6 +3819,7 @@
     <string name="l10n_lit_74f6923617">Above today\'s band</string>
     <string name="l10n_lit_74fb2cc6c8">Detected</string>
     <string name="l10n_lit_750ab75b18">A weak</string>
+    <string name="l10n_lit_752d55a869">d MMM</string>
     <string name="l10n_lit_75329da3be">%1$s%2$s vs typ</string>
     <string name="l10n_lit_76022a00a1">Ocean</string>
     <string name="l10n_lit_7626de1949">Signals up</string>
@@ -3962,7 +3976,9 @@
     <string name="l10n_lit_93fd82994f">Sources differ</string>
     <string name="l10n_lit_943ad21843">NOOP backup error</string>
     <string name="l10n_lit_9495b34e0a">Backup exported. Copy this file to your new phone and use Import there to restore everything.</string>
+    <string name="l10n_lit_94c868cd28">Sessions like this barely move your next-day Charge (n=%1$s).</string>
     <string name="l10n_lit_94d0e31630">%1$s bars</string>
+    <string name="l10n_lit_952f839033">%1$s %2$s relationship (r = %3$s, n = %4$s).</string>
     <string name="l10n_lit_953b0ed138">Always rely on your doctor, pharmacist, or a qualified professional to interpret results and make decisions. If a number worries you, talk to them, not to an app.</string>
     <string name="l10n_lit_9556d852a9">Fencing</string>
     <string name="l10n_lit_95c20ff108">Standard HR is not a full bond</string>
@@ -3989,6 +4005,7 @@
     <string name="l10n_lit_9c17112fad">Share trends report</string>
     <string name="l10n_lit_9c26990fd7">later step</string>
     <string name="l10n_lit_9c48381183">Active hours end</string>
+    <string name="l10n_lit_9c8f63817d">higher</string>
     <string name="l10n_lit_9cd9abc4fb">Ring key (32 hex characters)</string>
     <string name="l10n_lit_9d914bfcf1">Building</string>
     <string name="l10n_lit_9d99a9059f">Resting HR is elevated and HRV is below your baseline, both classic signs of high activation. Prioritise rest, hydration and an easy day.</string>
@@ -4040,6 +4057,7 @@
     <string name="l10n_lit_a6485c610f">Streaming now</string>
     <string name="l10n_lit_a66f79a083">Pilates</string>
     <string name="l10n_lit_a67d1a158e">Meditation</string>
+    <string name="l10n_lit_a6c6b5106f">Sessions like this usually cost you about %1$s the next morning (n=%2$s).</string>
     <string name="l10n_lit_a725020675">State</string>
     <string name="l10n_lit_a72e0f9ee4">MMM d</string>
     <string name="l10n_lit_a733b809d2">Active</string>
@@ -4127,6 +4145,7 @@
     <string name="l10n_lit_b79e5f4822">Rest</string>
     <string name="l10n_lit_b7baa1d40c">Number</string>
     <string name="l10n_lit_b7c17e97d3">Female</string>
+    <string name="l10n_lit_b8114546a3">building</string>
     <string name="l10n_lit_b82ff694ba">Basketball</string>
     <string name="l10n_lit_b8506fa0a8">HR zone</string>
     <string name="l10n_lit_b8642022be">Not enough wear yet — keep your strap on overnight.</string>
@@ -4254,6 +4273,7 @@
     <string name="l10n_lit_d00635865c">Solid</string>
     <string name="l10n_lit_d04f8d0dd5">Last gate fired</string>
     <string name="l10n_lit_d0605fdbe6">Add your age and sex below and we can show your Fitness Age.</string>
+    <string name="l10n_lit_d0a152ee9d">lower</string>
     <string name="l10n_lit_d0c12b6b51">REM sleep</string>
     <string name="l10n_lit_d0d9deaf5f">Nap(s)</string>
     <string name="l10n_lit_d0efe0b2c7">Alerts</string>
@@ -4313,6 +4333,7 @@
     <string name="l10n_lit_dde6e8f765">Heart Rate</string>
     <string name="l10n_lit_ddf6a1f0ce">Metrics</string>
     <string name="l10n_lit_de3dd28dda">There wasn\'t a calm, still window clean enough to describe. Try again after a settled night.</string>
+    <string name="l10n_lit_de43ff8efd">Sessions like this usually lift you by about %1$s the next morning and take about %2$s to settle back (n=%3$s).</string>
     <string name="l10n_lit_de91fdcca9">Connection uptime</string>
     <string name="l10n_lit_de9a4ea8c8">Rugby</string>
     <string name="l10n_lit_dea39410d8">%1$s · amount not logged</string>
@@ -4351,6 +4372,7 @@
     <string name="l10n_lit_e7048143e3">Height, %1$s feet %2$s inches</string>
     <string name="l10n_lit_e70f0fd3b2">Golf</string>
     <string name="l10n_lit_e715f7b44a">Padel</string>
+    <string name="l10n_lit_e7575c1df9">moderate</string>
     <string name="l10n_lit_e782e7728e">DONE</string>
     <string name="l10n_lit_e7d9e1b124">Vital Signs</string>
     <string name="l10n_lit_e81b317e9a">" · filtered"</string>
@@ -4447,6 +4469,7 @@
     <string name="l10n_lit_f96ba590f7">How closely a good night tracks next-morning charge.</string>
     <string name="l10n_lit_f9fcea2ca1">Mountain Biking</string>
     <string name="l10n_lit_fa245f0c72">Device metrics</string>
+    <string name="l10n_lit_fa3ff03209">%1$sd</string>
     <string name="l10n_lit_fa558c3dae">Records a live machine workout, Effort-scored from HR when the machine reports it</string>
     <string name="l10n_lit_fa7e677205">This is your only sleep block today.</string>
     <string name="l10n_lit_fafbf8577f">HRV has dropped well below your baseline, pointing to elevated stress or fatigue. Ease off and give your body time to recover.</string>

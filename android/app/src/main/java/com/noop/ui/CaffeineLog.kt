@@ -243,17 +243,17 @@ fun CaffeineLogCard() {
                 }
 
                 // Log "now" or a quick number of hours ago.
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(uiString(R.string.l10n_caffeine_log_had_it_8576ac66), style = NoopType.footnote, color = Palette.textSecondary)
-                    Spacer(Modifier.weight(1f))
+                // Label above, four equal chips below: label + four chips in one row overflowed the card in
+                // German, and the chip pushed past the edge broke one letter per line into a tall empty block.
+                Text(uiString(R.string.l10n_caffeine_log_had_it_8576ac66), style = NoopType.footnote, color = Palette.textSecondary)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     for (h in intArrayOf(0, 1, 2, 3)) {
-                        CaffeineChip(if (h == 0) uiText("Now") else uiText("%1\$sh ago", h)) {
+                        CaffeineChip(if (h == 0) uiText("Now") else uiText("%1\$sh ago", h), Modifier.weight(1f)) {
                             val at = (System.currentTimeMillis() / 1000L) - h * 3600L
                             intakes = addCaffeineIntake(context, at, mgDraft)
                             mgDraft = ""
                             Toast.makeText(context, uiText("Caffeine logged."), Toast.LENGTH_SHORT).show()
                         }
-                        Spacer(Modifier.width(6.dp))
                     }
                 }
 
@@ -356,18 +356,21 @@ private fun CaffeineDivider() {
 }
 
 @Composable
-private fun CaffeineChip(label: String, onClick: () -> Unit) {
+private fun CaffeineChip(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val shape = RoundedCornerShape(50)
     Text(
         label,
         style = NoopType.caption,
         color = Palette.textSecondary,
-        modifier = Modifier
+        maxLines = 1,
+        softWrap = false,
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        modifier = modifier
             .clip(shape)
             .background(Palette.surfaceInset)
             .border(1.dp, Palette.hairline, shape)
             .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = 6.dp, vertical = 8.dp),
     )
 }
 

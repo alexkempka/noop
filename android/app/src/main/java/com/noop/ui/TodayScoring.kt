@@ -184,7 +184,7 @@ internal data class LastCharge(val value: Double, val caption: String)
  *  the key and falls back to the raw key so the caption is never empty. Mirrors iOS lastChargeDateFmt. */
 internal fun lastChargeDateLabel(dayKey: String): String =
     runCatching {
-        LocalDate.parse(dayKey).format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+        LocalDate.parse(dayKey).format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
     }.getOrDefault(dayKey)
 
 /** Carry-over recency cap (#779): the "Last night" framing only holds when the carried scored day is
@@ -297,7 +297,7 @@ sealed class ScoreState {
             return Instant.ofEpochSecond(epochSeconds)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
-                .format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+                .format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
         }
 
         internal fun calibrationRestartCause(recalibratedOn: String?): DisplayText? = recalibratedOn

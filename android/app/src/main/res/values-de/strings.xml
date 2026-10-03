@@ -3025,7 +3025,7 @@
     <string name="l10n_hydration_screen_of_1f_l_f71f77cc" formatted="false">von %.1f L</string>
     <string name="l10n_hydration_screen_your_fluid_intake_today_on_this_b4c5c1b8">Was du heute getrunken hast – nur auf diesem Handy.</string>
     <string name="l10n_insights_hub_screen_patterns_in_your_own_data_association_ad6c33c2">Muster in deinen eigenen Daten: Zusammenhänge, keine Ursachen.</string>
-    <string name="l10n_insights_screen_charge_pts_304c8e1a">Energie · %1$s Pkt.</string>
+    <string name="l10n_insights_screen_charge_pts_304c8e1a">%1$s Pkt.</string>
     <string name="l10n_insights_screen_days_without_it_d984cae7">%1$s Tage ohne</string>
     <string name="l10n_insights_screen_interrogate_what_affects_what_9b5fe6a6">Finde heraus, was was beeinflusst.</string>
     <string name="l10n_insights_screen_log_behaviours_above_after_a_few_9563db0a">Trag oben deine Gewohnheiten ein. Nach ein paar Tagen mit Antworten zeigt NOOP, wie jede davon deine Erholung, HRV und deinen Schlaf bewegt. Ein importierter WHOOP-Export (inklusive Journal) trägt den Verlauf sofort nach.</string>
@@ -3289,6 +3289,7 @@
     <string name="l10n_lit_00d8c525a2">Bereit machen, dann suchen.</string>
     <string name="l10n_lit_014795e468">Stress (auf dem Gerät)</string>
     <string name="l10n_lit_01930b53bc">VO₂ Max (geschätzt)</string>
+    <string name="l10n_lit_02057bf52e">positiver</string>
     <string name="l10n_lit_02390b0ca7">Keine Vibration gesendet.</string>
     <string name="l10n_lit_0247ce357c">LIVE</string>
     <string name="l10n_lit_0299370d30">Schlagabstände schwanken aus vielen alltäglichen Gründen: Atmung, Bewegung, eine unsaubere optische Messung oder gelegentliche Extra- oder ausgelassene Schläge, wie sie die meisten Gesunden haben.</string>
@@ -3341,6 +3342,7 @@
     <string name="l10n_lit_0e4bea342b">Beginn aktive Stunden</string>
     <string name="l10n_lit_0e58805b78">Streifen</string>
     <string name="l10n_lit_0e5d9a37dc">Liefert Live-Anzeige + Belastung. Keine Energie, Schlafqualität oder Schlaf</string>
+    <string name="l10n_lit_0e8d8e0069">EEE, d. MMM</string>
     <string name="l10n_lit_0ea7b95eab">Regelmäßigkeit</string>
     <string name="l10n_lit_0fd1397963">%1$s %2$s jünger als du</string>
     <string name="l10n_lit_0fed7c7390">Ende Ruhezeit</string>
@@ -3357,6 +3359,7 @@
     <string name="l10n_lit_11c8d229a8">Deine Belastung lag diese Woche über deiner Energie – du warst im roten Bereich. Achte auf einen Einbruch bei der Erholung.</string>
     <string name="l10n_lit_11e8ca97ca">Laborbuch CSV</string>
     <string name="l10n_lit_11eda67f9b">Lang</string>
+    <string name="l10n_lit_12066e9d46">vernachlässigbar</string>
     <string name="l10n_lit_1206a44261">Du hast dein aktuelles Schlafziel über %1$s erreicht. Du nimmst keine zusätzliche Schlafdefizit in die Nacht mit.</string>
     <string name="l10n_lit_12383b4a59">Fitnessalter</string>
     <string name="l10n_lit_1294071f96">%1$s %2$s · lückenhaft, erweitert auf %3$s</string>
@@ -3396,6 +3399,7 @@
     <string name="l10n_lit_1948bf2dfa">Morgen</string>
     <string name="l10n_lit_19aabe2600">Tiefe Ruhe</string>
     <string name="l10n_lit_1a14ce5195">Übernahme fehlgeschlagen</string>
+    <string name="l10n_lit_1a3e490bca">negativer</string>
     <string name="l10n_lit_1a6a5ba8c2">Sucht…</string>
     <string name="l10n_lit_1b4170ab2e">EINHEIT FERTIG</string>
     <string name="l10n_lit_1b59b67345">Seilspringen</string>
@@ -3469,8 +3473,10 @@
     <string name="l10n_lit_2c85a73cd1">ABGESCHLOSSEN</string>
     <string name="l10n_lit_2ccc3ff5a5">Es zeigt die Form deiner Schlagabstände und beschreibt in einfachen Worten, wie gleichmäßig sie aussahen. Es sagt dir nicht, ob etwas in Ordnung ist oder nicht.</string>
     <string name="l10n_lit_2d173b37f8">Diastolisch</string>
+    <string name="l10n_lit_2d2ec43f1e">groß</string>
     <string name="l10n_lit_2d3288f9f6">Aktive Energie</string>
     <string name="l10n_lit_2d5aeb746b">Fußball</string>
+    <string name="l10n_lit_2d8a6f7c34">1 Tag</string>
     <string name="l10n_lit_2dd2c66098">Kacheln</string>
     <string name="l10n_lit_2e269ed6db">Nicht kalibriert</string>
     <string name="l10n_lit_2e560a4439">API-Schlüssel (optional)</string>
@@ -3492,6 +3498,7 @@
     <string name="l10n_lit_32365028d8">In deinen Ordner gesichert.</string>
     <string name="l10n_lit_32482f0697">Dein Ring</string>
     <string name="l10n_lit_3297c0cabb">Stand heute</string>
+    <string name="l10n_lit_32cbad2007">Kein klarer Zusammenhang (r = %1$s, n = %2$s).</string>
     <string name="l10n_lit_33398a2f58">Unter dem heutigen Zielbereich</string>
     <string name="l10n_lit_33ce6bc7f1">Ruhepuls ↔ Energie</string>
     <string name="l10n_lit_33f722f472">Persönliche Kurve · an Vorwissen angelehnt</string>
@@ -3581,6 +3588,7 @@
     <string name="l10n_lit_4481948392">Nichts</string>
     <string name="l10n_lit_44caf74675">Posteingang</string>
     <string name="l10n_lit_450bb244eb">aus deinem Laborbericht</string>
+    <string name="l10n_lit_45463b6ebe">klein</string>
     <string name="l10n_lit_45e0768d9a">FRÜHES SIGNAL</string>
     <string name="l10n_lit_4646e9f2b7">BEREIT</string>
     <string name="l10n_lit_479718523c">Trends, %1$s Reihen, Minimum %2$s, Maximum %3$s</string>
@@ -3615,7 +3623,7 @@
     <string name="l10n_lit_4e0436d03c">Rudern</string>
     <string name="l10n_lit_4e0fa4378f">Schwach</string>
     <string name="l10n_lit_4e39567064">Notiz (optional)</string>
-    <string name="l10n_lit_4e74e0c08c">An Tagen mit %1$s lag dein %2$s im Schnitt bei %3$s – %4$s als der %5$s an Tagen ohne.</string>
+    <string name="l10n_lit_4e74e0c08c">An Tagen mit „Ja“ bei „%1$s“ lag dein Wert für %2$s im Schnitt bei %3$s, %4$s als an den übrigen Tagen (%5$s).</string>
     <string name="l10n_lit_4e836fdc25">Manuell</string>
     <string name="l10n_lit_4ec27b3434">Tiefschlaf (SWS)</string>
     <string name="l10n_lit_4fd3180eaf">Ein reiner Blick auf deinen letzten gemeinsamen Tag – kein Gesamtwert. Verschiedene Geräte messen leicht unterschiedlich, eine Abweichung ist also nicht automatisch falsch.</string>
@@ -3646,6 +3654,7 @@
     <string name="l10n_lit_53c2f4974d">Band nicht verbunden</string>
     <string name="l10n_lit_53c837f51f">diese Woche</string>
     <string name="l10n_lit_54d1144d3c">%1$s h erhöht</string>
+    <string name="l10n_lit_54f3984eed">%1$s Energiepunkte</string>
     <string name="l10n_lit_558287ddcc">Mitternacht</string>
     <string name="l10n_lit_5654948155">noch keine Kalibrierung</string>
     <string name="l10n_lit_56aa8bce06">Verbunden, aber nicht gekoppelt</string>
@@ -3717,6 +3726,7 @@
     <string name="l10n_lit_661b85fe2a">Snowboarden</string>
     <string name="l10n_lit_666119eda6">Der Live-Puls erscheint hier, sobald ein Band verbunden ist.</string>
     <string name="l10n_lit_66b11ea257">Lokal übernehmen. Beta.</string>
+    <string name="l10n_lit_66baac7fd3">1 Energiepunkt</string>
     <string name="l10n_lit_66d95a0708">Wochenrückblick</string>
     <string name="l10n_lit_66f34ddda8">Wie viel Energie eines Tages in den nächsten mitgeht.</string>
     <string name="l10n_lit_670c843978">Ruhepuls niedrig, HRV hoch. Dein Nervensystem wirkt gut erholt und ruhig. Ein guter Tag, um Gas zu geben – wenn du willst.</string>
@@ -3730,6 +3740,7 @@
     <string name="l10n_lit_68c2cc7f0c">Modell</string>
     <string name="l10n_lit_690e053e90">Was NOOP anzeigt</string>
     <string name="l10n_lit_69c0b81540">Gewicht</string>
+    <string name="l10n_lit_69e699bc1f">stabil</string>
     <string name="l10n_lit_6a33dd58b2">Pulsdichte (pro min)</string>
     <string name="l10n_lit_6a4e2a86b0">vor %1$s T</string>
     <string name="l10n_lit_6a72085653">Alle</string>
@@ -3749,6 +3760,7 @@
     <string name="l10n_lit_6cd9de3a5a">Nicht am Handgelenk</string>
     <string name="l10n_lit_6d1def3d08">Titan</string>
     <string name="l10n_lit_6d38f41390">z. B. mmol/L</string>
+    <string name="l10n_lit_6d50a38c64">Einheiten wie diese kosten dich am nächsten Morgen meist etwa %1$s; zurück auf deinem Basiswert bist du nach etwa %2$s (n=%3$s).</string>
     <string name="l10n_lit_6d879a212b">Stell sicher, dass es gerade NICHT mit der offiziellen WHOOP-App verbunden ist.</string>
     <string name="l10n_lit_6d942bfeed">vs. Bedarf</string>
     <string name="l10n_lit_6da13addb0">Quelle</string>
@@ -3777,6 +3789,7 @@
     <string name="l10n_lit_72658120d0">Band live</string>
     <string name="l10n_lit_727b4908de">Letzte Sitzung: %1$s</string>
     <string name="l10n_lit_72b805c7a8">KRAFT</string>
+    <string name="l10n_lit_7319fecca5">Einheiten wie diese heben deine Energie am nächsten Morgen meist um etwa %1$s (n=%2$s).</string>
     <string name="l10n_lit_734f3891fa">BEREIT</string>
     <string name="l10n_lit_737cf27ab3">Letzte Übertragung</string>
     <string name="l10n_lit_7390d11fb5">Meist gleichmäßig, mit ein paar vereinzelten Extra- oder ausgelassenen Schlägen. Sehr häufig und meist ohne Bedeutung.</string>
@@ -3790,6 +3803,7 @@
     <string name="l10n_lit_74f6923617">Über dem heutigen Zielbereich</string>
     <string name="l10n_lit_74fb2cc6c8">Erkannt</string>
     <string name="l10n_lit_750ab75b18">Ein schwacher</string>
+    <string name="l10n_lit_752d55a869">d. MMM</string>
     <string name="l10n_lit_75329da3be">%1$s%2$s vs. üblich</string>
     <string name="l10n_lit_76022a00a1">Ozean</string>
     <string name="l10n_lit_7626de1949">Erhöhte Signale</string>
@@ -3866,7 +3880,7 @@
     <string name="l10n_lit_833e4e692b">Sitz still und atme normal. Halte dein Handgelenk entspannt und ruhig.</string>
     <string name="l10n_lit_839fa23b94">jeder Wert, den du eingetragen hast</string>
     <string name="l10n_lit_84211f4eca">Band nicht angelegt</string>
-    <string name="l10n_lit_8444094484">An Tagen mit %1$s war dein %2$s nicht anders.</string>
+    <string name="l10n_lit_8444094484">An Tagen mit „Ja“ bei „%1$s“ war dein Wert für %2$s nicht anders als sonst.</string>
     <string name="l10n_lit_84944f198d">Passiv</string>
     <string name="l10n_lit_84add5b295">E-Mail</string>
     <string name="l10n_lit_8537a99ed4">Band vibrieren lassen (Wecker, Haptik, Uhrzeit)</string>
@@ -3946,7 +3960,9 @@
     <string name="l10n_lit_93fd82994f">Quellen weichen ab</string>
     <string name="l10n_lit_943ad21843">NOOP-Backup-Fehler</string>
     <string name="l10n_lit_9495b34e0a">Backup exportiert. Kopier die Datei aufs neue Handy und stell dort per „Importieren“ alles wieder her.</string>
+    <string name="l10n_lit_94c868cd28">Einheiten wie diese verändern deine Energie am nächsten Morgen kaum (n=%1$s).</string>
     <string name="l10n_lit_94d0e31630">%1$s Balken</string>
+    <string name="l10n_lit_952f839033">%1$s %2$s Zusammenhang (r = %3$s, n = %4$s).</string>
     <string name="l10n_lit_953b0ed138">Verlass dich bei der Deutung von Ergebnissen und bei Entscheidungen immer auf deine Ärztin, deinen Arzt, deine Apotheke oder eine andere Fachperson. Macht dir ein Wert Sorgen, sprich mit ihnen – nicht mit einer App.</string>
     <string name="l10n_lit_9556d852a9">Fechten</string>
     <string name="l10n_lit_95c20ff108">Standard-Puls ist keine volle Kopplung</string>
@@ -3973,6 +3989,7 @@
     <string name="l10n_lit_9c17112fad">Trendbericht teilen</string>
     <string name="l10n_lit_9c26990fd7">späterer Zeitpunkt</string>
     <string name="l10n_lit_9c48381183">Ende aktive Stunden</string>
+    <string name="l10n_lit_9c8f63817d">höher</string>
     <string name="l10n_lit_9cd9abc4fb">Ring-Schlüssel (32 Hex-Zeichen)</string>
     <string name="l10n_lit_9d914bfcf1">Baut auf</string>
     <string name="l10n_lit_9d99a9059f">Ruhepuls erhöht und HRV unter deinem Basiswert – beides klassische Zeichen hoher Aktivierung. Setz auf Erholung, genug trinken und einen lockeren Tag.</string>
@@ -4024,6 +4041,7 @@
     <string name="l10n_lit_a6485c610f">Sendet gerade</string>
     <string name="l10n_lit_a66f79a083">Pilates</string>
     <string name="l10n_lit_a67d1a158e">Meditation</string>
+    <string name="l10n_lit_a6c6b5106f">Einheiten wie diese kosten dich am nächsten Morgen meist etwa %1$s (n=%2$s).</string>
     <string name="l10n_lit_a725020675">Zustand</string>
     <string name="l10n_lit_a72e0f9ee4">d. MMM</string>
     <string name="l10n_lit_a733b809d2">Aktiv</string>
@@ -4050,7 +4068,7 @@
     <string name="l10n_lit_aae67c24ff">Nutzt die Pulsübertragung (Broadcast Heart Rate) der Uhr. Wir zeigen dir, wie.</string>
     <string name="l10n_lit_aaf9748343">Letzte Energie-Aufschlüsselung</string>
     <string name="l10n_lit_ab136e9d63">Der Bericht konnte nicht geteilt werden: %1$s</string>
-    <string name="l10n_lit_ab2e582529">bis zum Basiswert</string>
+    <string name="l10n_lit_ab2e582529">zum Basiswert</string>
     <string name="l10n_lit_ac0795bbd4">Puls · HRV* · Schlaf · Ruhepuls · Hauttemp.* · Akku</string>
     <string name="l10n_lit_ac14e51f32">Defizit</string>
     <string name="l10n_lit_acb50f1b07">365 TAGE</string>
@@ -4111,6 +4129,7 @@
     <string name="l10n_lit_b79e5f4822">Schlafqualität</string>
     <string name="l10n_lit_b7baa1d40c">Zahl</string>
     <string name="l10n_lit_b7c17e97d3">Weiblich</string>
+    <string name="l10n_lit_b8114546a3">im Aufbau</string>
     <string name="l10n_lit_b82ff694ba">Basketball</string>
     <string name="l10n_lit_b8506fa0a8">Pulszone</string>
     <string name="l10n_lit_b8642022be">Noch nicht lange genug getragen – lass dein Band über Nacht an.</string>
@@ -4238,6 +4257,7 @@
     <string name="l10n_lit_d00635865c">Solide</string>
     <string name="l10n_lit_d04f8d0dd5">Letzte ausgelöste Prüfstufe</string>
     <string name="l10n_lit_d0605fdbe6">Trag unten Alter und Geschlecht ein, dann zeigen wir dir dein Fitnessalter.</string>
+    <string name="l10n_lit_d0a152ee9d">niedriger</string>
     <string name="l10n_lit_d0c12b6b51">REM-Schlaf</string>
     <string name="l10n_lit_d0d9deaf5f">Nickerchen</string>
     <string name="l10n_lit_d0efe0b2c7">Hinweise</string>
@@ -4297,6 +4317,7 @@
     <string name="l10n_lit_dde6e8f765">Puls</string>
     <string name="l10n_lit_ddf6a1f0ce">Werte</string>
     <string name="l10n_lit_de3dd28dda">Es gab keine ruhige Phase, die sauber genug für eine Beschreibung war. Probier es nach einer ruhigen Nacht noch mal.</string>
+    <string name="l10n_lit_de43ff8efd">Einheiten wie diese heben deine Energie am nächsten Morgen meist um etwa %1$s; zurück auf deinem Basiswert bist du nach etwa %2$s (n=%3$s).</string>
     <string name="l10n_lit_de91fdcca9">Verbindungsdauer</string>
     <string name="l10n_lit_de9a4ea8c8">Rugby</string>
     <string name="l10n_lit_dea39410d8">%1$s · Menge nicht erfasst</string>
@@ -4335,6 +4356,7 @@
     <string name="l10n_lit_e7048143e3">Größe, %1$s Fuß %2$s Zoll</string>
     <string name="l10n_lit_e70f0fd3b2">Golf</string>
     <string name="l10n_lit_e715f7b44a">Padel</string>
+    <string name="l10n_lit_e7575c1df9">mittel</string>
     <string name="l10n_lit_e782e7728e">FERTIG</string>
     <string name="l10n_lit_e7d9e1b124">Vitalwerte</string>
     <string name="l10n_lit_e81b317e9a">" · gefiltert"</string>
@@ -4431,6 +4453,7 @@
     <string name="l10n_lit_f96ba590f7">Wie eng eine gute Nacht mit der Energie am nächsten Morgen zusammenhängt.</string>
     <string name="l10n_lit_f9fcea2ca1">Mountainbiken</string>
     <string name="l10n_lit_fa245f0c72">Gerätekennzahlen</string>
+    <string name="l10n_lit_fa3ff03209">%1$s T.</string>
     <string name="l10n_lit_fa558c3dae">Zeichnet ein Live-Workout am Gerät auf; Belastung aus dem Puls, sofern das Gerät ihn meldet</string>
     <string name="l10n_lit_fa7e677205">Das ist heute dein einziger Schlafblock.</string>
     <string name="l10n_lit_fafbf8577f">Die HRV ist deutlich unter deinen Basiswert gefallen – Zeichen für erhöhten Stress oder Ermüdung. Nimm Tempo raus und gib deinem Körper Zeit.</string>

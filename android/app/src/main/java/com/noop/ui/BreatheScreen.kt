@@ -1506,7 +1506,7 @@ private fun ProgressBar(frac: Float) {
 }
 
 private fun formatDay(epochMs: Long): String =
-    SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(epochMs))
+    SimpleDateFormat(uiText("d MMM"), Locale.getDefault()).format(Date(epochMs))
 
 // ════════════════════════════════════════════════════════════════════════════
 // Audio pacer (opt-in soft phase tones)

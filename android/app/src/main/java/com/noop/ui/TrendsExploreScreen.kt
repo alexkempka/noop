@@ -724,7 +724,7 @@ private fun HeroChartCard(
 /** ISO "yyyy-MM-dd" to the same compact date used by both the axis and selection label. */
 private fun prettyExploreDate(day: String?): String =
     day?.let {
-        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())) }
+        runCatching { LocalDate.parse(it).format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault())) }
             .getOrDefault(it)
     }.orEmpty()
 

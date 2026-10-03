@@ -55,7 +55,7 @@ internal fun ThreeDaySelectorBar(
                 1 -> uiText("Yesterday")
                 else -> uiText("2 days ago")
             }
-            val date = day.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+            val date = day.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -144,7 +144,7 @@ internal fun DayNavBar(
     val label = when (selectedOffset) {
         0 -> uiText("Today")
         1 -> uiText("Yesterday")
-        else -> selectedDay.format(DateTimeFormatter.ofPattern("EEE d MMM", Locale.getDefault()))
+        else -> selectedDay.format(DateTimeFormatter.ofPattern(uiText("EEE d MMM"), Locale.getDefault()))
     }
     val date = selectedDay.format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault()))
     val blockShape = RoundedCornerShape(Metrics.cornerSm)

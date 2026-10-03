@@ -2129,11 +2129,16 @@ fun VitalDetailScreen(
         val max = values.maxOrNull()
         val avg = values.average()
 
-        if (!isStepsDetail) SectionHeader(
-            detail.title,
-            overline = uiText("Vital Signs"),
-            trailing = stepsSeries?.let { uiText("%1\$s bars", it.buckets.size) } ?: uiText("%1\$s readings", filteredReadings.size),
-        )
+        // Overline and count only: the screen title above already names the metric, and repeating it
+        // here printed "Schlafqualität" twice in a row.
+        if (!isStepsDetail) Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Overline(uiText("Vital Signs"), modifier = Modifier.weight(1f))
+            Text(
+                stepsSeries?.let { uiText("%1\$s bars", it.buckets.size) } ?: uiText("%1\$s readings", filteredReadings.size),
+                style = NoopType.footnote,
+                color = Palette.textSecondary,
+            )
+        }
         NoopCard {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(verticalAlignment = Alignment.Top) {

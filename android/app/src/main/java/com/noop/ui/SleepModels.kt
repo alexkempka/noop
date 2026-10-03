@@ -52,7 +52,7 @@ internal data class Metric(
 
         fun shortDayLabel(key: String): String {
             val date = runCatching { dayKeyParser.parse(key) }.getOrNull() ?: return key
-            val f = java.text.SimpleDateFormat("d MMM", java.util.Locale.getDefault())
+            val f = java.text.SimpleDateFormat(uiText("d MMM"), java.util.Locale.getDefault())
             return f.format(date)
         }
     }

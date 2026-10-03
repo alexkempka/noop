@@ -258,7 +258,7 @@ internal fun vitalReadingDateLabel(day: String): String {
     return when (date) {
         today -> uiText("Today")
         today.minusDays(1) -> uiText("Yesterday")
-        else -> date.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+        else -> date.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
     }
 }
 
@@ -338,9 +338,9 @@ private fun stepsBucketLabel(
 ): String {
     val parsed = strictLocalDay(day) ?: return day
     return when (granularity) {
-        StepsDetailGranularity.DAILY -> parsed.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+        StepsDetailGranularity.DAILY -> parsed.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
         StepsDetailGranularity.WEEKLY ->
-            resolveString(com.noop.R.string.steps_week_of, arrayOf(parsed.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))))
+            resolveString(com.noop.R.string.steps_week_of, arrayOf(parsed.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))))
         StepsDetailGranularity.MONTHLY -> parsed.format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.getDefault()))
     }
 }

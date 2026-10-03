@@ -14,7 +14,7 @@ import java.util.TimeZone
 /** "Wed 4 Jun · 22:50–06:48" style trailing label from the session clock, when available. */
 internal fun shortDayLabel(day: String): String =
     runCatching {
-        LocalDate.parse(day).format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+        LocalDate.parse(day).format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
     }.getOrDefault(day)
 
 internal fun clockLabel(latest: DailyMetric, session: SleepSession?, is24h: Boolean): String {
@@ -34,7 +34,7 @@ internal fun clockLabel(latest: DailyMetric, session: SleepSession?, is24h: Bool
     // calendar date has no instant to misplace.
     return runCatching {
         LocalDate.parse(latest.day).minusDays(1)
-            .format(DateTimeFormatter.ofPattern("EEE d MMM", Locale.getDefault()))
+            .format(DateTimeFormatter.ofPattern(uiText("EEE d MMM"), Locale.getDefault()))
     }.getOrNull() ?: latest.day
 }
 
@@ -70,7 +70,7 @@ internal fun clockLabelFor(onsetTs: Long, wakeTs: Long, is24h: Boolean): String 
     // 25 hours long and the arithmetic form lands on the wrong calendar date.
     val zone = TimeZone.getDefault().toZoneId()
     val nightDay = Instant.ofEpochSecond(wakeTs).atZone(zone).toLocalDate().minusDays(1)
-    val nightDate = nightDay.format(DateTimeFormatter.ofPattern("EEE d MMM", Locale.getDefault()))
+    val nightDate = nightDay.format(DateTimeFormatter.ofPattern(uiText("EEE d MMM"), Locale.getDefault()))
     return "$nightDate · ${timeFmt.format(onset)} - ${timeFmt.format(wake)}"
 }
 

@@ -1249,7 +1249,8 @@ private val LIQUID_HERO_RADIUS: Dp = 26.dp
 @Composable
 private fun RestHero(score: Double?, asleepMin: Double?, source: String, overline: String) {
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader(uiText("Sleep performance"), overline = overline, trailing = uiText("Rest"))
+        // One name for the score: the header said "Schlafleistung" with "Schlafqualität" beside it.
+        SectionHeader(uiText("Rest"), overline = overline)
         Box(
             modifier = Modifier
                 .fillMaxWidth()

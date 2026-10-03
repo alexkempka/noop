@@ -628,7 +628,7 @@ private fun SleepCard(
 
 /** The header subtitle "Today, d MMM". */
 private fun subtitleToday(): String =
-    "Today, " + SimpleDateFormat("d MMM", Locale.getDefault()).format(Date())
+    "Today, " + SimpleDateFormat(uiText("d MMM"), Locale.getDefault()).format(Date())
 
 /** "6h 42m" from a minutes count, for the slept-vs-needed read. Mirrors CoupledView.hoursMinutes EXACTLY. */
 internal fun hoursMinutes(minutes: Double): String {

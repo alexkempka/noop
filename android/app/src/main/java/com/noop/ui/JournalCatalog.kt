@@ -140,16 +140,20 @@ fun resolveJournalItems(
     val out = ArrayList<JournalCatalogItem>()
     val seen = HashSet<String>()
     var fallbackIndex = (savedItems.maxOfOrNull { it.sortIndex } ?: -1) + 1
+    // A starter question an imported equivalent stands in for is not listed twice (see
+    // JOURNAL_IMPORTED_EQUIVALENTS); the imported one takes the starter's group.
+    val replaced = journalStarterReplacements(imported)
     for (q in imported + starter) {
         val t = q.trim()
         val key = normJournalKey(q)
-        if (t.isEmpty() || !seen.add(key)) continue
+        if (t.isEmpty() || key in replaced || !seen.add(key)) continue
         val saved = byKey[key]
         if (saved != null) {
             out.add(saved)
         } else {
+            val starterTwin = JOURNAL_IMPORTED_EQUIVALENTS[key]
             out.add(JournalCatalogItem(canonical = t, kind = JournalKind.Bool,
-                group = STARTER_JOURNAL_GROUPS[t] ?: JournalGroup.Other,
+                group = STARTER_JOURNAL_GROUPS[t] ?: starterTwin?.let { STARTER_JOURNAL_GROUPS[it] } ?: JournalGroup.Other,
                 sortIndex = fallbackIndex, hidden = false, custom = false))
             fallbackIndex++
         }

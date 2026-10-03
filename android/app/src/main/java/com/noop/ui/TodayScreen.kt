@@ -3859,7 +3859,7 @@ private fun HeroMetricRows(
 @Composable
 private fun heroVitalsLastNightLine(): String {
     val d = LocalDate.now().minusDays(1)
-    return uiString(R.string.today_last_night_date, d.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())))
+    return uiString(R.string.today_last_night_date, d.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault())))
 }
 
 /** One iOS `vitalRow`: a 26dp mini liquid RING filled to [fraction] in [tint], the label (subhead,
@@ -5667,10 +5667,10 @@ private fun DriverRow(driver: ChargeDriver) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
             modifier = Modifier
-                .width(88.dp)
+                .width(92.dp)
                 .clip(RoundedCornerShape(Metrics.cornerPill))
                 .background(tone.copy(alpha = 0.12f))
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(horizontal = 6.dp, vertical = 4.dp),
         ) {
             if (driver.deltaPoints != 0) {
                 Icon(
@@ -5680,13 +5680,20 @@ private fun DriverRow(driver: ChargeDriver) {
                     modifier = Modifier.size(14.dp),
                 )
             }
-            Text(uiString(R.string.l10n_today_screen_signed_pts_5ea85678, signed), style = NoopType.captionNumber, color = tone)
+            // One line, shrinking if it must: "+12 Pkt." broke over two lines inside the fixed chip.
+            AutoSizeValue(
+                text = uiString(R.string.l10n_today_screen_signed_pts_5ea85678, signed),
+                style = NoopType.captionNumber,
+                color = tone,
+                minScale = 0.75f,
+            )
         }
         // Name and value share the first line; the verdict and the baseline each get the full width
         // below. Three side-by-side columns left the German name a few letters wide ("Ru-he-puls").
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(label, style = NoopType.headline, color = Palette.textPrimary, modifier = Modifier.weight(1f))
+                // One line, shrinking: "Herzfrequenzvariabilität" hyphenated over three lines here.
+                AutoSizeValue(label, style = NoopType.headline, color = Palette.textPrimary, minScale = 0.65f, modifier = Modifier.weight(1f))
                 Text(
                     valueText,
                     style = NoopType.captionNumber,
@@ -6614,7 +6621,7 @@ private fun HeartRateTrendCard(
     val selectedLabel = when (selectedDay) {
         today -> uiString(R.string.today_day_today)
         today.minusDays(1) -> uiString(R.string.today_day_yesterday)
-        else -> selectedDay.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))
+        else -> selectedDay.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))
     }
 
     // #985 view-only narrowing (the #829 rule): the selected window filters the loaded 5-minute buckets,
@@ -8009,7 +8016,7 @@ private fun localizedMetricValue(value: String): String = when (value) {
 }
 
 private val workoutDateFmt: DateTimeFormatter get() =
-    DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()).withZone(ZoneId.systemDefault())
+    DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()).withZone(ZoneId.systemDefault())
 private val workoutTimeFmt: DateTimeFormatter get() =
     // Respect the device's 12-/24-hour locale (#337): "7:10 AM" where 12-hour is preferred, "19:10"
     // where 24-hour is, instead of forcing 24-hour on everyone.

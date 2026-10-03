@@ -238,8 +238,11 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
         controls = controlsByBehaviour.mapValues { it.value.toSet() }
         numericJournalSeries = numericByBehaviour.mapValues { it.value.toMap() }
         importedQuestions = imported.map { it.question }.distinct()
+        // A native answer to a starter question an imported equivalent replaces shows on that row.
+        val replace = journalStarterReplacements(importedQuestions)
+        fun shown(q: String) = replace[normJournalKey(q)] ?: q
         val key = journalDayKey(dayOffset)
-        var answers = native.filter { it.day == key }.associate { it.question to it.answeredYes }
+        var answers = native.filter { it.day == key }.associate { shown(it.question) to it.answeredYes }
         // #322: the selected day's numeric values (native-only; imported WHOOP rows carry none).
         dayNumeric = native.filter { it.day == key && it.numericValue != null }
             .associate { it.question to it.numericValue!! }
@@ -248,7 +251,7 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
         if (answers.isEmpty() && dayOffset == 0L) {
             val yesterdayAnswers = native
                 .filter { it.day == journalDayKey(1L) }
-                .associate { it.question to it.answeredYes }
+                .associate { shown(it.question) to it.answeredYes }
             if (yesterdayAnswers.isNotEmpty()) {
                 // Upsert real rows for today so the effects engine counts the day as logged
                 // and onClear can delete the row it finds. Without this the chips looked
@@ -363,6 +366,10 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
             onDayOffset = { dayOffset = it },
             onAnswer = { q, yes ->
                 scope.launch {
+                    // An answer on an imported equivalent supersedes the same day's starter row.
+                    JOURNAL_IMPORTED_EQUIVALENTS[normJournalKey(q)]?.let { starter ->
+                        vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), starter)
+                    }
                     vm.repo.upsertJournal(
                         listOf(JournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), q, yes)),
                     )
@@ -383,6 +390,9 @@ fun InsightsScreen(vm: AppViewModel, onOpenInsightsHub: () -> Unit = {}) {
             onClear = { q ->
                 scope.launch {
                     vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), q)
+                    JOURNAL_IMPORTED_EQUIVALENTS[normJournalKey(q)]?.let { starter ->
+                        vm.repo.deleteJournalEntry(JOURNAL_DEVICE_ID, journalDayKey(dayOffset), starter)
+                    }
                     journalSeq++
                 }
             },
@@ -673,10 +683,10 @@ private fun ActivityCostCard(cost: com.noop.analytics.ActivityCost) {
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    cost.sport,
+                    WorkoutEditing.sportLabel(cost.sport),
                     style = NoopType.headline,
                     color = Palette.textPrimary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
@@ -686,7 +696,7 @@ private fun ActivityCostCard(cost: com.noop.analytics.ActivityCost) {
                     showsDot = false,
                 )
             }
-            Text(cost.sentence(), style = NoopType.subhead, color = Palette.textSecondary)
+            Text(localizedCostSentence(cost), style = NoopType.subhead, color = Palette.textSecondary)
             // 2×2 StatTile grid so tile heights stay uniform on phone widths (matches SummarySection).
             Row(horizontalArrangement = Arrangement.spacedBy(Metrics.gap)) {
                 StatTile(
@@ -708,7 +718,7 @@ private fun ActivityCostCard(cost: com.noop.analytics.ActivityCost) {
                 StatTile(
                     modifier = Modifier.weight(1f),
                     label = uiString(R.string.l10n_insights_screen_bounce_back_be2d66a4),
-                    value = cost.daysToBaseline?.let { "${it}d" } ?: "—",
+                    value = cost.daysToBaseline?.let { uiText("%1\$sd", it) } ?: "—",
                     caption = if (cost.daysToBaseline != null) uiText("to baseline") else uiText("not within 7d"),
                     accent = Palette.chargeColor,
                 )
@@ -716,7 +726,7 @@ private fun ActivityCostCard(cost: com.noop.analytics.ActivityCost) {
                     modifier = Modifier.weight(1f),
                     label = uiString(R.string.l10n_insights_screen_sessions_e11e37a9),
                     value = "${cost.n}",
-                    caption = if (solid) "solid" else "building",
+                    caption = if (solid) uiText("solid") else uiText("building"),
                     accent = Palette.textPrimary,
                 )
             }
@@ -733,23 +743,19 @@ private fun BehaviourSection(
     ranked: List<BehaviorEffect>,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        Row(
+        // Header above the selector, not beside it: the four-segment selector took the whole row and left
+        // the header a sliver, so its title broke one letter per line into a tall, empty-looking block.
+        SectionHeader(
+            uiText("Behaviour Effects"),
+            overline = uiText("What moves your %1\$s", outcome.label),
+        )
+        SegmentedPillControl(
+            items = Outcome.entries.toList(),
+            selection = outcome,
+            label = { it.label },
+            onSelect = onOutcome,
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(modifier = Modifier.weight(1f)) {
-                SectionHeader(
-                    uiText("Behaviour Effects"),
-                    overline = uiText("What moves your %1\$s", outcome.label),
-                )
-            }
-            SegmentedPillControl(
-                items = Outcome.entries.toList(),
-                selection = outcome,
-                label = { it.label },
-                onSelect = onOutcome,
-            )
-        }
+        )
 
         if (ranked.isEmpty()) {
             NoopCard {
@@ -811,7 +817,7 @@ private fun EffectCard(e: BehaviorEffect, outcome: Outcome) {
                         e.behavior,
                         style = NoopType.headline,
                         color = Palette.textPrimary,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
@@ -974,22 +980,26 @@ private fun ExperimentSetupCard(
     onStart: () -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
+        // Only the title shares its row with the pill; the description runs the full card width below.
+        // Beside the German pill it was squeezed into half the card, one short word per line.
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top,
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(uiString(R.string.l10n_insights_screen_run_a_clean_personal_test_4da69781), style = NoopType.headline, color = Palette.textPrimary)
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    uiString(R.string.l10n_insights_screen_pick_one_behaviour_you_log_one_bd34090e),
-                    style = NoopType.subhead,
-                    color = Palette.textSecondary,
-                )
-            }
+            Text(
+                uiString(R.string.l10n_insights_screen_run_a_clean_personal_test_4da69781),
+                style = NoopType.headline,
+                color = Palette.textPrimary,
+                modifier = Modifier.weight(1f),
+            )
             Spacer(Modifier.width(12.dp))
             StatePill(uiText("LOCAL ONLY"), tone = StrandTone.Neutral, showsDot = false)
         }
+        Text(
+            uiString(R.string.l10n_insights_screen_pick_one_behaviour_you_log_one_bd34090e),
+            style = NoopType.subhead,
+            color = Palette.textSecondary,
+        )
 
         if (candidates.isEmpty()) {
             Text(
@@ -1495,7 +1505,7 @@ private fun RelationshipRow(rel: Relationship) {
                 style = NoopType.headline,
                 color = Palette.textPrimary,
                 modifier = Modifier.weight(1f),
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
@@ -1692,28 +1702,50 @@ private fun significanceThreshold(n: Int): Double =
 // MARK: - Text + colour helpers
 
 private fun effectSentence(e: BehaviorEffect, outcome: Outcome): String {
+    // The direction word goes through the translation table too: "higher"/"lower" stood untranslated
+    // in the German sentence. The behaviour is passed verbatim — it is usually a question such as
+    // "Alkohol konsumiert?", which the German sentence quotes; lower-casing it mangled the German.
     val dir = when {
-        e.delta > 0 -> "higher"
-        e.delta < 0 -> "lower"
+        e.delta > 0 -> uiTextIn("effectDir", "higher")
+        e.delta < 0 -> uiTextIn("effectDir", "lower")
         else -> uiText("no different")
     }
     val name = outcome.label
     if (e.delta == 0.0) {
-        return uiText("On days you logged %1\$s, your %2\$s was no different.", e.behavior.lowercase(Locale.US), name)
+        return uiText("On days you logged %1\$s, your %2\$s was no different.", e.behavior, name)
     }
     val withStr = outcome.format(e.meanWith)
     val withoutStr = outcome.format(e.meanWithout)
-    return uiText("On days you logged %1\$s, your %2\$s averaged %3\$s, %4\$s than the %5\$s on days you didn't.", e.behavior.lowercase(Locale.US), name, withStr, dir, withoutStr)
+    return uiText("On days you logged %1\$s, your %2\$s averaged %3\$s, %4\$s than the %5\$s on days you didn't.", e.behavior, name, withStr, dir, withoutStr)
+}
+
+/** [ActivityCost.sentence] for the screen: the engine's sentence stays English (its tests read it),
+ *  this one goes through the translation table with singular/plural kept apart. */
+private fun localizedCostSentence(c: com.noop.analytics.ActivityCost): String {
+    val mag = abs(c.delta)
+    val points = com.noop.analytics.ActivityCostEngine.roundToIntHalfUp(mag)
+    if (mag < com.noop.analytics.ActivityCostEngine.barelyMovesPoints) {
+        return uiText("Sessions like this barely move your next-day Charge (n=%1\$s).", c.n)
+    }
+    val pts = if (points == 1) uiText("1 Charge point") else uiText("%1\$s Charge points", points)
+    val days = c.daysToBaseline?.let { if (it == 1) uiText("1 day") else uiText("%1\$s days", it) }
+    val cost = c.delta >= 0
+    return when {
+        cost && days != null -> uiText("Sessions like this usually cost you about %1\$s the next morning and take about %2\$s to bounce back (n=%3\$s).", pts, days, c.n)
+        cost -> uiText("Sessions like this usually cost you about %1\$s the next morning (n=%2\$s).", pts, c.n)
+        days != null -> uiText("Sessions like this usually lift you by about %1\$s the next morning and take about %2\$s to settle back (n=%3\$s).", pts, days, c.n)
+        else -> uiText("Sessions like this usually lift you by about %1\$s the next morning (n=%2\$s).", pts, c.n)
+    }
 }
 
 private fun effectMagnitudeWord(d: Double): String {
     val m = abs(d)
-    return when {
+    return uiTextIn("effectSize", when {
         m < 0.2 -> "negligible"
         m < 0.5 -> "small"
         m < 0.8 -> "moderate"
         else -> "large"
-    }
+    })
 }
 
 private fun strengthWord(r: Double): String {
@@ -1728,9 +1760,13 @@ private fun strengthWord(r: Double): String {
 }
 
 private fun relationshipSentence(rel: Relationship): String {
-    val dir = if (rel.r > 0) "positive" else if (rel.r < 0) "negative" else "flat"
-    return "${strengthWord(rel.r)} $dir relationship " +
-        "(r = ${String.format(Locale.US, "%.2f", rel.r)}, n = ${rel.n})."
+    val r = String.format(Locale.US, "%.2f", rel.r)
+    // Under |r| 0.1 there is no direction worth naming; "No positive relationship" read oddly in
+    // English and could not be inflected in German at all.
+    if (abs(rel.r) < 0.1) return uiText("No clear relationship (r = %1\$s, n = %2\$s).", r, rel.n)
+    // German inflects the adjective after "Ein schwacher": positiver/negativer, not positive.
+    val dir = uiTextIn("relDir", if (rel.r > 0) "positive" else "negative")
+    return uiText("%1\$s %2\$s relationship (r = %3\$s, n = %4\$s).", strengthWord(rel.r), dir, r, rel.n)
 }
 
 /** Tint a correlation by strength, keyed on the recovery gradient so strong positive

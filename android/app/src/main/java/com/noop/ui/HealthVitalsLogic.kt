@@ -550,6 +550,6 @@ internal fun asOfLabel(day: String?): String? {
     return when (date) {
         today -> uiText("as of today")
         today.minusDays(1) -> uiText("as of yesterday")
-        else -> "as of ${date.format(DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()))}"
+        else -> "as of ${date.format(DateTimeFormatter.ofPattern(uiText("d MMM"), Locale.getDefault()))}"
     }
 }

@@ -44,3 +44,8 @@ internal fun uiText(english: String, vararg formatArgs: Any?): String =
 
 /** A sport name for the screen ("Running" → "Laufen"); the English name stays the stored value. */
 internal fun uiSport(english: String): String = NoopApplication.localizedTextIn("sport", english)
+
+/** A short word whose translation depends on where it stands ("higher" in an effect sentence, "small"
+ *  as an effect size): looked up under its own [domain] so it cannot collide with the same English
+ *  word elsewhere. Falls back to the English when no translation exists. */
+internal fun uiTextIn(domain: String, english: String): String = NoopApplication.localizedTextIn(domain, english)

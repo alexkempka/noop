@@ -110,15 +110,42 @@ internal fun mergeJournalCatalog(
     return out
 }
 
+/**
+ * Imported WHOOP questions that ask EXACTLY what a starter question asks, in another wording or
+ * language (this fork, Android only). Keyed by [normJournalKey] of the imported text.
+ *
+ * A German WHOOP export writes "Alkohol konsumiert?" where the starter says "Did you drink any
+ * alcohol?", so the two never folded and the journal asked the same thing twice — once with a year of
+ * imported history, once empty. Only true equivalents belong here: "Koffein konsumiert?" (any caffeine)
+ * is NOT "caffeine late in the day", and "im Bett gelesen" is not "read before bed", so those stay
+ * separate questions.
+ */
+internal val JOURNAL_IMPORTED_EQUIVALENTS: Map<String, String> = mapOf(
+    "alkohol konsumiert?" to "Did you drink any alcohol?",
+    "kurz vor dem schlafengehen noch etwas gegessen?" to "Did you eat close to bedtime?",
+)
+
+/** For each starter question that an imported question stands in for: starter key → imported text. */
+internal fun journalStarterReplacements(imported: List<String>): Map<String, String> =
+    imported.mapNotNull { q ->
+        JOURNAL_IMPORTED_EQUIVALENTS[normJournalKey(q)]?.let { normJournalKey(it) to q.trim() }
+    }.toMap()
+
 /** Union of imported + native entries; on a (day, question) collision the NATIVE row wins (the
- *  in-app answer is the user's most recent explicit action and stays editable). */
+ *  in-app answer is the user's most recent explicit action and stays editable). A native answer to a
+ *  starter question that an imported equivalent replaces is joined onto the imported question, so the
+ *  history is one series. */
 internal fun mergeJournalEntries(
     imported: List<JournalEntry>,
     native: List<JournalEntry>,
 ): List<JournalEntry> {
+    val replace = journalStarterReplacements(imported.map { it.question }.distinct())
     val byKey = LinkedHashMap<Pair<String, String>, JournalEntry>()
     for (e in imported) byKey[e.day to e.question] = e
-    for (e in native) byKey[e.day to e.question] = e
+    for (e0 in native) {
+        val e = replace[normJournalKey(e0.question)]?.let { e0.copy(question = it) } ?: e0
+        byKey[e.day to e.question] = e
+    }
     return byKey.values.sortedWith(compareBy({ it.day }, { it.question }))
 }
 
@@ -496,18 +523,19 @@ private fun JournalAddRow(onAddCustom: (String, JournalKind, JournalGroup) -> Un
     var group by remember { mutableStateOf(JournalGroup.Other) }
     var groupMenu by remember { mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // The field gets its own full-width line. Beside the two chips it was measured LAST (weight) and
+        // left with a sliver, so its German placeholder ran down the screen one syllable per line.
+        OutlinedTextField(
+            value = draft,
+            onValueChange = { draft = it },
+            placeholder = { Text(uiString(R.string.l10n_journal_log_add_a_custom_item_0dbd8f7c), style = NoopType.body, color = Palette.textTertiary, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+            singleLine = true,
+            textStyle = NoopType.body,
+            colors = journalFieldColors(),
+            shape = RoundedCornerShape(14.dp),
+            modifier = Modifier.fillMaxWidth(),
+        )
         Row(verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = draft,
-                onValueChange = { draft = it },
-                placeholder = { Text(uiString(R.string.l10n_journal_log_add_a_custom_item_0dbd8f7c), style = NoopType.body, color = Palette.textTertiary) },
-                singleLine = true,
-                textStyle = NoopType.body,
-                colors = journalFieldColors(),
-                shape = RoundedCornerShape(14.dp),
-                modifier = Modifier.weight(1f),
-            )
-            Spacer(Modifier.width(8.dp))
             JournalChip(if (numeric) uiText("Number") else uiText("Yes/No"), selected = numeric) { numeric = !numeric }
             Spacer(Modifier.width(8.dp))
             JournalChip(uiText("Add"), selected = draft.isNotBlank()) {
@@ -519,7 +547,7 @@ private fun JournalAddRow(onAddCustom: (String, JournalKind, JournalGroup) -> Un
             }
         }
         Box {
-            Text(uiString(R.string.l10n_journal_log_group_group_title_1f88621e, group.title), style = NoopType.footnote, color = Palette.textSecondary,
+            Text(uiString(R.string.l10n_journal_log_group_group_title_1f88621e, uiText(group.title)), style = NoopType.footnote, color = Palette.textSecondary,
                 modifier = Modifier.clickable { groupMenu = true })
             androidx.compose.material3.DropdownMenu(expanded = groupMenu, onDismissRequest = { groupMenu = false }) {
                 JournalGroup.displayOrder.forEach { g ->
