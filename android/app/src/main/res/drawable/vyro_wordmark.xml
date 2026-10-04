@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- VYRO-Schriftzug für dunklen Grund (aus VYRO-Paket/logo/VYRO-schriftzug-dunkel.svg, Linien 1:1 übernommen):
+<!-- VYRO-Schriftzug für dunklen Grund (aus alexkempka/Grafics, VYRO/logo/VYRO-schriftzug-dunkel.svg, Linien 1:1 übernommen):
      V in Türkis, YRO in Weiß. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="99.6dp" android:height="30dp"
