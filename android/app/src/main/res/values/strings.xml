@@ -3382,6 +3382,7 @@
     <string name="l10n_lit_12066e9d46">negligible</string>
     <string name="l10n_lit_1206a44261">You\'ve met your current sleep target across %1$s. No extra debt needs carrying into tonight.</string>
     <string name="l10n_lit_12383b4a59">Fitness Age</string>
+    <string name="l10n_lit_12748281e0">Units</string>
     <string name="l10n_lit_1294071f96">%1$s %2$s · sparse , widened to %3$s</string>
     <string name="l10n_lit_12c4ffe1d9">Efficiency</string>
     <string name="l10n_lit_12d334d59b" formatted="false">Blood oxygen (SpO₂ %)</string>
@@ -3530,6 +3531,7 @@
     <string name="l10n_lit_34a8ddba9d">About %1$s min %2$s than your schedule</string>
     <string name="l10n_lit_34aaa70b1a">Share Coach advice</string>
     <string name="l10n_lit_34dfd00b48">Today\'s ceiling is lower — Charge is %1$s%%.</string>
+    <string name="l10n_lit_351c09bf83">Step calibration</string>
     <string name="l10n_lit_3525ecaa9e">" · raw on-device stages"</string>
     <string name="l10n_lit_35327e5957">NOOP currently measures each night against %1$s of sleep. If you aim for a different amount, set your own goal: sleep score, sleep debt and “needed” are then calculated against it.</string>
     <string name="l10n_lit_3593ccd96f">Thu</string>
@@ -3582,6 +3584,7 @@
     <string name="l10n_lit_3fbb532f33">Respiratory Rate</string>
     <string name="l10n_lit_3fbe810b61">In your data so far, this doesn’t move your %1$s the way it typically does.</string>
     <string name="l10n_lit_40107ebc87">Ultimate</string>
+    <string name="l10n_lit_401ccfef8b">Blood pressure — estimate and cuff calibration</string>
     <string name="l10n_lit_4073e6e539">, worth a look</string>
     <string name="l10n_lit_40a8c2fa06">Avg HR</string>
     <string name="l10n_lit_40b577472f">unverified · over-reports R-R</string>
@@ -3647,6 +3650,7 @@
     <string name="l10n_lit_4dc47c61fb">SOLID</string>
     <string name="l10n_lit_4dc58f41c9">Active · Live</string>
     <string name="l10n_lit_4dda60db70">Bonded · streaming</string>
+    <string name="l10n_lit_4de3692594">Sit quietly, measure %1$s times within ten minutes and enter all readings here.</string>
     <string name="l10n_lit_4e0436d03c">Rowing</string>
     <string name="l10n_lit_4e0fa4378f">Poor</string>
     <string name="l10n_lit_4e39567064">Note (optional)</string>
@@ -3662,6 +3666,7 @@
     <string name="l10n_lit_506d17d620">Visual only</string>
     <string name="l10n_lit_508bfb096b">Heads-up</string>
     <string name="l10n_lit_50e09b5cbd">MS RMSSD</string>
+    <string name="l10n_lit_50ed754b42">Reading %1$s</string>
     <string name="l10n_lit_5131161e18">Buzz cues on</string>
     <string name="l10n_lit_51327aef98">Oct</string>
     <string name="l10n_lit_51baa50873">Did you eat close to bedtime?</string>
@@ -3738,6 +3743,7 @@
     <string name="l10n_lit_61bbc3c7a6">Stair climber</string>
     <string name="l10n_lit_61cc55aa04">Add</string>
     <string name="l10n_lit_61dedcf053">Good</string>
+    <string name="l10n_lit_61feacb17d">Calibrate</string>
     <string name="l10n_lit_62009bc1fa">All history</string>
     <string name="l10n_lit_6217e69f78">balanced</string>
     <string name="l10n_lit_623d0bd00e">At least %1$s %2$s younger than your age</string>
@@ -3892,6 +3898,7 @@
     <string name="l10n_lit_7d107c59b3">%1$s days logged</string>
     <string name="l10n_lit_7d4278a875">30 days</string>
     <string name="l10n_lit_7d54c51e40">Sustained high stress</string>
+    <string name="l10n_lit_7dd8b93660">too few days (needs %1$s on each side)</string>
     <string name="l10n_lit_7dffc25fc2">Typical</string>
     <string name="l10n_lit_7e0fe26828">no readings yet</string>
     <string name="l10n_lit_7e278422aa">Remove goal</string>
@@ -3935,6 +3942,7 @@
     <string name="l10n_lit_864b1e8d56">American football</string>
     <string name="l10n_lit_865e588793">Deep sleep</string>
     <string name="l10n_lit_8690a9a0db">NOOP re-broadcasts your HR (gym / Zwift / Garmin)</string>
+    <string name="l10n_lit_86b0c27716">Nothing found. Try another word.</string>
     <string name="l10n_lit_86e38cda19">Strength- Trainer</string>
     <string name="l10n_lit_86f693b7e8">Quiet hours start</string>
     <string name="l10n_lit_870508e522">" · approx. stages (on-device)"</string>
@@ -3994,6 +4002,7 @@
     <string name="l10n_lit_91ffe73716">Powers Charge, Effort, Rest, Sleep + Health Monitor</string>
     <string name="l10n_lit_92185dc52f">Missing</string>
     <string name="l10n_lit_9220e9fb8f">Avg HR (bpm, optional)</string>
+    <string name="l10n_lit_9274c47001">Appearance: background, transparent cards, motion</string>
     <string name="l10n_lit_92e91e9aeb">(nothing to share yet)</string>
     <string name="l10n_lit_9301b2b67b">%1$s · best signal per metric, from %2$s sources. Everything stays on %3$s.</string>
     <string name="l10n_lit_93039e609d">Not set</string>
@@ -4059,6 +4068,7 @@
     <string name="l10n_lit_a0cf424734">Morning</string>
     <string name="l10n_lit_a0f2f9ff86">low-stress days · %1$sd</string>
     <string name="l10n_lit_a0fec85ec2">Estimate (unverified)</string>
+    <string name="l10n_lit_a1068b0c17">Save calibration</string>
     <string name="l10n_lit_a111633379">Weight, %1$s pounds</string>
     <string name="l10n_lit_a124947cbd">Low</string>
     <string name="l10n_lit_a129a492dd">Open-water swim</string>
@@ -4116,6 +4126,7 @@
     <string name="l10n_lit_aa98f1102c">DEPLETED</string>
     <string name="l10n_lit_aae67c24ff">Uses the watch\'s Broadcast Heart Rate. We\'ll show you how.</string>
     <string name="l10n_lit_aaf9748343">Last Charge breakdown</string>
+    <string name="l10n_lit_ab06e51d7d">Calibrate with your cuff</string>
     <string name="l10n_lit_ab136e9d63">Couldn\'t share the report: %1$s</string>
     <string name="l10n_lit_ab2e582529">to baseline</string>
     <string name="l10n_lit_ac0795bbd4">Heart rate · HRV* · Sleep · Resting HR · Skin temp* · Battery</string>
@@ -4181,6 +4192,7 @@
     <string name="l10n_lit_b79e5f4822">Rest</string>
     <string name="l10n_lit_b7baa1d40c">Number</string>
     <string name="l10n_lit_b7c17e97d3">Female</string>
+    <string name="l10n_lit_b7fb80bb6d">Share strap log</string>
     <string name="l10n_lit_b8114546a3">building</string>
     <string name="l10n_lit_b82ff694ba">Basketball</string>
     <string name="l10n_lit_b8506fa0a8">HR zone</string>
@@ -4361,6 +4373,7 @@
     <string name="l10n_lit_dab564d809">Fit</string>
     <string name="l10n_lit_db07807ac7">Manual Labor</string>
     <string name="l10n_lit_db2c4d324c">Latest entry: %1$s.</string>
+    <string name="l10n_lit_db5cfe81f6">Search NOOP — e.g. blood pressure, sleep goal</string>
     <string name="l10n_lit_db6dc83096">Historical trend from cached daily metrics.</string>
     <string name="l10n_lit_dba442e042">Your resonance pace</string>
     <string name="l10n_lit_dc555edb2d">no estimate yet</string>
@@ -4400,6 +4413,7 @@
     <string name="l10n_lit_e3cb8bd6bf">Bedtime</string>
     <string name="l10n_lit_e3ddc02bc5">%1$s day metrics</string>
     <string name="l10n_lit_e4115be258">Coming soon</string>
+    <string name="l10n_lit_e41d71493f">Profile: age, weight, height, max heart rate</string>
     <string name="l10n_lit_e479075e90">Calm me</string>
     <string name="l10n_lit_e47e804262">Quick actions</string>
     <string name="l10n_lit_e494e61564">Indoor cycle</string>
@@ -4469,6 +4483,7 @@
     <string name="l10n_lit_efeac6f9f9">One reading so far: %1$s %2$s. Log a few more to see a trend.</string>
     <string name="l10n_lit_eff9813aa4">Goal per day</string>
     <string name="l10n_lit_f030c3d667">1 hour</string>
+    <string name="l10n_lit_f03c6d4fd6">ECG reading</string>
     <string name="l10n_lit_f0c4578b00">Waist, not set. Optional: your VO₂max is more accurate with it</string>
     <string name="l10n_lit_f0d20bf5cc">Resting heart rate is running high versus your norm. Your body is under load today. Keep effort light.</string>
     <string name="l10n_lit_f0f343bf42">Badminton</string>

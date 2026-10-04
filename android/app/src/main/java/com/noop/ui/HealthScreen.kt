@@ -204,9 +204,8 @@ fun HealthScreen(
                     captionMode = VitalCaptionMode.AS_OF,
                 )
             }
-            // Blood-pressure ESTIMATE and the ECG reading (this fork, Android only): own screens, reached here.
+            // The ECG reading (this fork, Android only): own screen, reached here. Blood pressure moved to Vital Signs.
             item { Spacer(Modifier.height(Metrics.selectorTopUp)) }
-            item { ForkEntryCard(uiString(R.string.bp_vitals_entry), uiString(R.string.bp_subtitle)) { onVitalClick(BLOOD_PRESSURE_KEY) } }
             item { ForkEntryCard(uiString(R.string.ecg_vitals_entry), uiString(R.string.ecg_subtitle)) { onVitalClick(ECG_KEY) } }
             // FITNESS AGE — the weekly Saturday number from the engine (resting HR + activity vs your
             // age), with an honest readiness checklist behind a tap. Authoritative value comes from the
@@ -1294,13 +1293,17 @@ fun VitalSignsScreen(vm: AppViewModel, onVitalClick: (String) -> Unit = {}) {
             VitalsSection(
                 title = uiString(R.string.l10n_health_screen_vital_signs_e7d9e1b1),
                 overline = selectedDayLabel(selectedDayOffset),
-                trailing = "as of ${selectedMetric.day}",
+                trailing = uiString(R.string.l10n_health_screen_as_of_latest_first_726f20bb, localizedDayLabel(selectedMetric.day)),
                 vitals = vitals,
                 onVitalClick = onVitalClick,
                 footer = false,
                 captionMode = VitalCaptionMode.RANGE,
             )
         }
+        // Fork (product owner 04.10.2026): blood pressure belongs with the other vitals; the card opens the
+        // estimate with its cuff calibration. Shown even on a day without vitals — calibration needs no night.
+        Spacer(Modifier.height(Metrics.selectorTopUp))
+        ForkEntryCard(uiString(R.string.bp_vitals_entry), uiString(R.string.bp_subtitle)) { onVitalClick(BLOOD_PRESSURE_KEY) }
     }
 }
 

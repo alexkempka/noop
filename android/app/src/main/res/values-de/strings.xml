@@ -3366,6 +3366,7 @@
     <string name="l10n_lit_12066e9d46">vernachlässigbar</string>
     <string name="l10n_lit_1206a44261">Du hast dein aktuelles Schlafziel in %1$s erreicht. Du nimmst kein zusätzliches Schlafdefizit in die Nacht mit.</string>
     <string name="l10n_lit_12383b4a59">Fitnessalter</string>
+    <string name="l10n_lit_12748281e0">Einheiten</string>
     <string name="l10n_lit_1294071f96">%1$s %2$s · lückenhaft, erweitert auf %3$s</string>
     <string name="l10n_lit_12c4ffe1d9">Effizienz</string>
     <string name="l10n_lit_12d334d59b" formatted="false">Blutsauerstoff (SpO₂ %)</string>
@@ -3514,6 +3515,7 @@
     <string name="l10n_lit_34a8ddba9d">Etwa %1$s min %2$s als dein Zeitplan</string>
     <string name="l10n_lit_34aaa70b1a">Tipps vom Coach teilen</string>
     <string name="l10n_lit_34dfd00b48">Obergrenze heute niedriger – Energie bei %1$s%%.</string>
+    <string name="l10n_lit_351c09bf83">Schrittkalibrierung</string>
     <string name="l10n_lit_3525ecaa9e">" · Roh-Phasen vom Gerät"</string>
     <string name="l10n_lit_35327e5957">NOOP misst jede Nacht derzeit an %1$s Schlaf. Wenn du ein anderes Ziel hast, stell es hier ein: Schlafqualität, Schlafdefizit und Bedarf werden dann daran gemessen.</string>
     <string name="l10n_lit_3593ccd96f">Do</string>
@@ -3566,6 +3568,7 @@
     <string name="l10n_lit_3fbb532f33">Atemfrequenz</string>
     <string name="l10n_lit_3fbe810b61">In deinen bisherigen Daten bewegt das deine %1$s nicht so, wie es typischerweise der Fall ist.</string>
     <string name="l10n_lit_40107ebc87">Ultimate Frisbee</string>
+    <string name="l10n_lit_401ccfef8b">Blutdruck – Schätzung und Kalibrierung mit der Manschette</string>
     <string name="l10n_lit_4073e6e539">, schau es dir an</string>
     <string name="l10n_lit_40a8c2fa06">Ø Puls</string>
     <string name="l10n_lit_40b577472f">ungeprüft · zählt zu viele R-R</string>
@@ -3631,6 +3634,7 @@
     <string name="l10n_lit_4dc47c61fb">STABIL</string>
     <string name="l10n_lit_4dc58f41c9">Aktiv · Live</string>
     <string name="l10n_lit_4dda60db70">Gekoppelt · sendet</string>
+    <string name="l10n_lit_4de3692594">Setz dich ruhig hin, miss %1$s-mal innerhalb von zehn Minuten und trag hier alle Werte ein.</string>
     <string name="l10n_lit_4e0436d03c">Rudern</string>
     <string name="l10n_lit_4e0fa4378f">Schwach</string>
     <string name="l10n_lit_4e39567064">Notiz (optional)</string>
@@ -3646,6 +3650,7 @@
     <string name="l10n_lit_506d17d620">Nur visuell</string>
     <string name="l10n_lit_508bfb096b">Achtung</string>
     <string name="l10n_lit_50e09b5cbd">ms RMSSD</string>
+    <string name="l10n_lit_50ed754b42">Messung %1$s</string>
     <string name="l10n_lit_5131161e18">Vibration an</string>
     <string name="l10n_lit_51327aef98">Okt</string>
     <string name="l10n_lit_51baa50873">Hast du kurz vor dem Schlafengehen noch was gegessen?</string>
@@ -3722,6 +3727,7 @@
     <string name="l10n_lit_61bbc3c7a6">Stepper</string>
     <string name="l10n_lit_61cc55aa04">Hinzufügen</string>
     <string name="l10n_lit_61dedcf053">Gut</string>
+    <string name="l10n_lit_61feacb17d">Kalibrieren</string>
     <string name="l10n_lit_62009bc1fa">Gesamter Verlauf</string>
     <string name="l10n_lit_6217e69f78">ausgeglichen</string>
     <string name="l10n_lit_623d0bd00e">Mindestens %1$s %2$s jünger als du</string>
@@ -3876,6 +3882,7 @@
     <string name="l10n_lit_7d107c59b3">%1$s erfasste Tage</string>
     <string name="l10n_lit_7d4278a875">30 Tage</string>
     <string name="l10n_lit_7d54c51e40">Anhaltend hoher Stress</string>
+    <string name="l10n_lit_7dd8b93660">zu wenige Tage (je Seite %1$s nötig)</string>
     <string name="l10n_lit_7dffc25fc2">Üblich</string>
     <string name="l10n_lit_7e0fe26828">noch keine Messwerte</string>
     <string name="l10n_lit_7e278422aa">Ziel entfernen</string>
@@ -3919,6 +3926,7 @@
     <string name="l10n_lit_864b1e8d56">American Football</string>
     <string name="l10n_lit_865e588793">Tiefschlaf</string>
     <string name="l10n_lit_8690a9a0db">NOOP sendet deinen Puls weiter (Studio / Zwift / Garmin)</string>
+    <string name="l10n_lit_86b0c27716">Nichts gefunden. Versuch ein anderes Wort.</string>
     <string name="l10n_lit_86e38cda19">Krafttraining</string>
     <string name="l10n_lit_86f693b7e8">Beginn Ruhezeit</string>
     <string name="l10n_lit_870508e522">" · Phasen ca. (auf dem Gerät)"</string>
@@ -3978,6 +3986,7 @@
     <string name="l10n_lit_91ffe73716">Liefert Energie, Belastung, Schlafqualität, Schlaf + Gesundheitsmonitor</string>
     <string name="l10n_lit_92185dc52f">Fehlt</string>
     <string name="l10n_lit_9220e9fb8f">Ø Puls (bpm, optional)</string>
+    <string name="l10n_lit_9274c47001">Erscheinungsbild: Hintergrund, transparente Karten, Bewegung</string>
     <string name="l10n_lit_92e91e9aeb">(noch nichts zum Teilen)</string>
     <string name="l10n_lit_9301b2b67b">%1$s · bestes Signal je Messwert aus %2$s Quellen. Alles bleibt auf %3$s.</string>
     <string name="l10n_lit_93039e609d">Nicht gesetzt</string>
@@ -4043,6 +4052,7 @@
     <string name="l10n_lit_a0cf424734">Morgens</string>
     <string name="l10n_lit_a0f2f9ff86">Tage mit wenig Stress · %1$s T</string>
     <string name="l10n_lit_a0fec85ec2">Schätzung (unbestätigt)</string>
+    <string name="l10n_lit_a1068b0c17">Kalibrierung speichern</string>
     <string name="l10n_lit_a111633379">Gewicht, %1$s Pfund</string>
     <string name="l10n_lit_a124947cbd">Schwach</string>
     <string name="l10n_lit_a129a492dd">Freiwasserschwimmen</string>
@@ -4100,6 +4110,7 @@
     <string name="l10n_lit_aa98f1102c">LEER</string>
     <string name="l10n_lit_aae67c24ff">Nutzt die Pulsübertragung (Broadcast Heart Rate) der Uhr. Wir zeigen dir, wie.</string>
     <string name="l10n_lit_aaf9748343">Letzte Energie-Aufschlüsselung</string>
+    <string name="l10n_lit_ab06e51d7d">Mit der Manschette kalibrieren</string>
     <string name="l10n_lit_ab136e9d63">Der Bericht konnte nicht geteilt werden: %1$s</string>
     <string name="l10n_lit_ab2e582529">zum Basiswert</string>
     <string name="l10n_lit_ac0795bbd4">Puls · HRV* · Schlaf · Ruhepuls · Hauttemp.* · Akku</string>
@@ -4165,6 +4176,7 @@
     <string name="l10n_lit_b79e5f4822">Schlafqualität</string>
     <string name="l10n_lit_b7baa1d40c">Zahl</string>
     <string name="l10n_lit_b7c17e97d3">Weiblich</string>
+    <string name="l10n_lit_b7fb80bb6d">Band-Protokoll teilen</string>
     <string name="l10n_lit_b8114546a3">im Aufbau</string>
     <string name="l10n_lit_b82ff694ba">Basketball</string>
     <string name="l10n_lit_b8506fa0a8">Pulszone</string>
@@ -4321,7 +4333,7 @@
     <string name="l10n_lit_d4bbaf3a34">Leichtschlaf</string>
     <string name="l10n_lit_d4d11add4a">Dein Ring spricht nur mit NOOP – komplett offline, ohne Oura-Konto.</string>
     <string name="l10n_lit_d4e1aee46c">Energie</string>
-    <string name="l10n_lit_d4e79d0ccd">Hast du dein Bett geteilt?</string>
+    <string name="l10n_lit_d4e79d0ccd">Hast du das Bett mit jemandem geteilt?</string>
     <string name="l10n_lit_d5b588bbd9">Beginn Nickerchen</string>
     <string name="l10n_lit_d5dc5a8711">typischen Mustern.</string>
     <string name="l10n_lit_d61658c943">Löschen (%1$s)</string>
@@ -4345,6 +4357,7 @@
     <string name="l10n_lit_dab564d809">Einpassen</string>
     <string name="l10n_lit_db07807ac7">Körperliche Arbeit</string>
     <string name="l10n_lit_db2c4d324c">Neuester Eintrag: %1$s.</string>
+    <string name="l10n_lit_db5cfe81f6">NOOP durchsuchen – z. B. Blutdruck, Schlafziel</string>
     <string name="l10n_lit_db6dc83096">Verlauf aus gespeicherten Tageswerten.</string>
     <string name="l10n_lit_dba442e042">Dein Resonanztempo</string>
     <string name="l10n_lit_dc555edb2d">noch keine Schätzung</string>
@@ -4384,6 +4397,7 @@
     <string name="l10n_lit_e3cb8bd6bf">Zubettgehen</string>
     <string name="l10n_lit_e3ddc02bc5">%1$s Tageswerte</string>
     <string name="l10n_lit_e4115be258">Kommt bald</string>
+    <string name="l10n_lit_e41d71493f">Profil: Alter, Gewicht, Größe, Maximalpuls</string>
     <string name="l10n_lit_e479075e90">Beruhig mich</string>
     <string name="l10n_lit_e47e804262">Schnellaktionen</string>
     <string name="l10n_lit_e494e61564">Indoor-Cycling</string>
@@ -4453,6 +4467,7 @@
     <string name="l10n_lit_efeac6f9f9">Bisher ein Messwert: %1$s %2$s. Erfasse noch ein paar, um einen Trend zu sehen.</string>
     <string name="l10n_lit_eff9813aa4">Ziel pro Tag</string>
     <string name="l10n_lit_f030c3d667">1 Stunde</string>
+    <string name="l10n_lit_f03c6d4fd6">EKG-Messung</string>
     <string name="l10n_lit_f0c4578b00">Taille, nicht gesetzt. Optional: Damit wird deine VO₂max genauer</string>
     <string name="l10n_lit_f0d20bf5cc">Dein Ruhepuls liegt über deinem Normalwert. Dein Körper steht heute unter Last. Halte die Belastung locker.</string>
     <string name="l10n_lit_f0f343bf42">Badminton</string>

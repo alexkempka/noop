@@ -91,9 +91,9 @@ fun BloodPressureScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
             return@ScreenScaffold
         }
         EstimateCard(a, nightsRead)
-        CalibrationCard(a) { sys, dia ->
+        CalibrationCard(a) { readings ->
             scope.launch {
-                saveCuffReading(vm, sys, dia)
+                saveCuffSession(vm, readings)
                 reload++
             }
         }
@@ -137,12 +137,8 @@ private fun EstimateCard(a: BloodPressureEstimator.Assessment, nights: List<Nigh
 }
 
 @Composable
-private fun CalibrationCard(a: BloodPressureEstimator.Assessment, onSave: (Double, Double) -> Unit) {
-    var sysText by remember { mutableStateOf("") }
-    var diaText by remember { mutableStateOf("") }
-    val sys = sysText.trim().replace(',', '.').toDoubleOrNull()
-    val dia = diaText.trim().replace(',', '.').toDoubleOrNull()
-    val valid = sys != null && dia != null && BloodPressureEstimator.plausible(sys, dia)
+private fun CalibrationCard(a: BloodPressureEstimator.Assessment, onSaveSession: (List<Pair<Double, Double>>) -> Unit) {
+    var dialogOpen by remember { mutableStateOf(false) }
     NoopCard {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Overline(uiString(R.string.bp_calibration_overline))
@@ -164,22 +160,62 @@ private fun CalibrationCard(a: BloodPressureEstimator.Assessment, onSave: (Doubl
                 style = NoopType.footnote,
                 color = if (a.calibrationDue) Palette.statusWarning else Palette.textTertiary,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-                CuffField(sysText, { sysText = it }, uiString(R.string.bp_systolic), Modifier.weight(1f))
-                CuffField(diaText, { diaText = it }, uiString(R.string.bp_diastolic), Modifier.weight(1f))
-            }
-            if (sysText.isNotBlank() && diaText.isNotBlank() && !valid) {
-                Text(uiString(R.string.bp_implausible), style = NoopType.footnote, color = Palette.statusWarning)
-            }
-            NoopButton(text = uiString(R.string.bp_save_reading), fullWidth = true, enabled = valid) {
-                if (sys != null && dia != null) {
-                    onSave(sys, dia)
-                    sysText = ""
-                    diaText = ""
-                }
-            }
+            // Fork (product owner 04.10.2026): one window with all three readings, saved together.
+            NoopButton(text = uiText("Calibrate"), fullWidth = true) { dialogOpen = true }
         }
     }
+    if (dialogOpen) {
+        CalibrationDialog(
+            onDismiss = { dialogOpen = false },
+            onSave = { readings -> onSaveSession(readings); dialogOpen = false },
+        )
+    }
+}
+
+/** Three cuff readings (systolic / diastolic) under each other, saved in one go. */
+@Composable
+private fun CalibrationDialog(onDismiss: () -> Unit, onSave: (List<Pair<Double, Double>>) -> Unit) {
+    val n = BloodPressureEstimator.READINGS_PER_SESSION
+    val sysTexts = remember { androidx.compose.runtime.mutableStateListOf(*Array(n) { "" }) }
+    val diaTexts = remember { androidx.compose.runtime.mutableStateListOf(*Array(n) { "" }) }
+    val parsed = (0 until n).map { k ->
+        val sv = sysTexts[k].trim().toDoubleOrNull()
+        val dv = diaTexts[k].trim().toDoubleOrNull()
+        if (sv != null && dv != null && BloodPressureEstimator.plausible(sv, dv)) sv to dv else null
+    }
+    val allValid = parsed.all { it != null }
+    val anyImplausible = (0 until n).any { k -> sysTexts[k].isNotBlank() && diaTexts[k].isNotBlank() && parsed[k] == null }
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = Palette.surfaceRaised,
+        title = { Text(uiText("Calibrate with your cuff"), style = NoopType.headline, color = Palette.textPrimary) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(
+                    uiText("Sit quietly, measure %1\$s times within ten minutes and enter all readings here.", n),
+                    style = NoopType.footnote, color = Palette.textSecondary,
+                )
+                for (k in 0 until n) {
+                    Text(uiText("Reading %1\$s", k + 1), style = NoopType.subhead, color = Palette.textPrimary)
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                        CuffField(sysTexts[k], { sysTexts[k] = it }, uiString(R.string.bp_systolic), Modifier.weight(1f))
+                        CuffField(diaTexts[k], { diaTexts[k] = it }, uiString(R.string.bp_diastolic), Modifier.weight(1f))
+                    }
+                }
+                if (anyImplausible) {
+                    Text(uiString(R.string.bp_implausible), style = NoopType.footnote, color = Palette.statusWarning)
+                }
+            }
+        },
+        confirmButton = {
+            NoopButton(text = uiText("Save calibration"), enabled = allValid) {
+                onSave(parsed.filterNotNull())
+            }
+        },
+        dismissButton = {
+            NoopButton(text = uiText("Cancel"), kind = NoopButtonKind.Secondary) { onDismiss() }
+        },
+    )
 }
 
 @Composable
@@ -319,8 +355,22 @@ private suspend fun pulseFor(vm: AppViewModel, active: String, from: Long, to: L
 }
 
 /** Writes one cuff reading as the Lab Book's systolic/diastolic pair, exactly as its own editor does. */
-private suspend fun saveCuffReading(vm: AppViewModel, systolic: Double, diastolic: Double) = withContext(Dispatchers.IO) {
-    val epoch = System.currentTimeMillis() / 1000L
+/**
+ * Fork: the three readings of one sitting, entered together. Systolic and diastolic are paired by their
+ * `takenAt`, so the readings are stamped one second apart (entry order) — the only way to keep them apart
+ * without inventing measurement times; each row's note says which reading of the sitting it is.
+ */
+private suspend fun saveCuffSession(vm: AppViewModel, readings: List<Pair<Double, Double>>) {
+    val base = System.currentTimeMillis() / 1000L - readings.size + 1
+    readings.forEachIndexed { k, (sys, dia) ->
+        saveCuffReading(vm, sys, dia, epoch = base + k, note = "session reading ${k + 1}/${readings.size}")
+    }
+}
+
+private suspend fun saveCuffReading(
+    vm: AppViewModel, systolic: Double, diastolic: Double,
+    epoch: Long = System.currentTimeMillis() / 1000L, note: String? = null,
+) = withContext(Dispatchers.IO) {
     val day = Instant.ofEpochSecond(epoch).atZone(ZoneId.systemDefault()).toLocalDate().toString()
     fun row(key: String, value: Double) = LabMarkerRow(
         id = "$key-$epoch-${UUID.randomUUID().toString().take(8)}",
@@ -333,7 +383,7 @@ private suspend fun saveCuffReading(vm: AppViewModel, systolic: Double, diastoli
         valueText = null,
         unit = "mmHg",
         source = "manual",
-        note = null,
+        note = note,
         referenceText = null,
     )
     vm.repo.upsertLabMarkers(listOf(row(LabBookProjection.BP_SYSTOLIC_KEY, systolic), row(LabBookProjection.BP_DIASTOLIC_KEY, diastolic)))

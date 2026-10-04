@@ -1012,6 +1012,14 @@ private fun MoreScreen(onNavigate: (String) -> Unit) {
         // Sky-behind-cards fills the viewport so the transparent cards reveal the sky the whole way down.
         fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
     ) {
+        // Fork: search over every destination and the common tasks inside them (product owner 04.10.2026).
+        var searchQuery by remember { mutableStateOf("") }
+        MoreSearchField(searchQuery) { searchQuery = it }
+        if (searchQuery.isNotBlank()) {
+            val entries = destinationSearchEntries() + taskSearchEntries()
+            MoreSearchResults(AppSearch.search(entries, searchQuery)) { route -> onNavigate(route) }
+            return@ScreenScaffold
+        }
         // Mirror the iOS More page: each group is a tappable UPPERCASE overline header (with a disclosure
         // chevron) over a single grouped white NoopCard whose rows are tight (accent icon + title +
         // chevron) and separated by inset hairlines (NOT loose NavigationDrawerItems on the bare surface).
@@ -1070,11 +1078,12 @@ private fun MoreGroupHeader(title: String, expanded: Boolean, onToggle: () -> Un
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Overline(title, modifier = Modifier.weight(1f), color = Palette.textTertiary)
+        // Fork: textTertiary vanished on the bright day sky ("Sektion Körper gibt es nicht", 04.10.2026).
+        Overline(title, modifier = Modifier.weight(1f), color = Palette.textPrimary)
         Icon(
             Icons.Filled.ChevronRight,
             contentDescription = null,
-            tint = Palette.textTertiary,
+            tint = Palette.textPrimary,
             modifier = Modifier
                 .size(Metrics.iconSmall)
                 .rotate(rotation),

@@ -818,7 +818,7 @@ private fun EffectCard(e: BehaviorEffect, outcome: Outcome) {
                             .drawBehind { drawCircle(tintColor) },
                     )
                     Text(
-                        e.behavior,
+                        uiText(e.behavior),   // fork: imported English journal questions read in German
                         style = NoopType.headline,
                         color = Palette.textPrimary,
                         maxLines = 2,
@@ -863,17 +863,27 @@ private fun EffectCard(e: BehaviorEffect, outcome: Outcome) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Overline(uiText("Effect size"), modifier = Modifier.weight(1f))
-                Text(
-                    String.format(Locale.US, "d = %.2f", e.cohensD),
-                    style = NoopType.captionNumber,
-                    color = tintColor,
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    effectMagnitudeWord(e.cohensD),
-                    style = NoopType.caption,
-                    color = Palette.textTertiary,
-                )
+                // Fork (04.10.2026): with fewer than three days on a side the pooled SD is all but zero and d
+                // runs away (2 vs 1 day showed "d = 21.77, large"). Say so instead of showing a number.
+                if (e.nWith < MIN_DAYS_FOR_EFFECT_SIZE || e.nWithout < MIN_DAYS_FOR_EFFECT_SIZE) {
+                    Text(
+                        uiText("too few days (needs %1\$s on each side)", MIN_DAYS_FOR_EFFECT_SIZE),
+                        style = NoopType.caption,
+                        color = Palette.textTertiary,
+                    )
+                } else {
+                    Text(
+                        localDecimal(String.format(Locale.US, "d = %.2f", e.cohensD)),
+                        style = NoopType.captionNumber,
+                        color = tintColor,
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        effectMagnitudeWord(e.cohensD),
+                        style = NoopType.caption,
+                        color = Palette.textTertiary,
+                    )
+                }
             }
         }
     }
@@ -1063,7 +1073,7 @@ private fun ActiveExperimentCard(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    snapshot.behavior,
+                    uiText(snapshot.behavior),
                     style = NoopType.headline,
                     color = Palette.textPrimary,
                     maxLines = 2,
@@ -1601,6 +1611,9 @@ private fun buildModel(
     return InsightModel(behaviours, controls, outcomeByDay, seriesByOutcome, numericJournalSeries)
 }
 
+/** Fewest days on either side of a behaviour before its Cohen's d is shown (fork display gate). */
+private const val MIN_DAYS_FOR_EFFECT_SIZE = 3
+
 /** Rank behaviour effects for one outcome by |Cohen's d|, significant first. */
 private fun rankEffects(model: InsightModel, outcome: Outcome): List<BehaviorEffect> {
     val outcomeDays = model.outcomeByDay[outcome] ?: emptyMap()
@@ -1716,11 +1729,11 @@ private fun effectSentence(e: BehaviorEffect, outcome: Outcome): String {
     }
     val name = outcome.label
     if (e.delta == 0.0) {
-        return uiText("On days you logged %1\$s, your %2\$s was no different.", e.behavior, name)
+        return uiText("On days you logged %1\$s, your %2\$s was no different.", uiText(e.behavior), name)
     }
     val withStr = outcome.format(e.meanWith)
     val withoutStr = outcome.format(e.meanWithout)
-    return uiText("On days you logged %1\$s, your %2\$s averaged %3\$s, %4\$s than the %5\$s on days you didn't.", e.behavior, name, withStr, dir, withoutStr)
+    return uiText("On days you logged %1\$s, your %2\$s averaged %3\$s, %4\$s than the %5\$s on days you didn't.", uiText(e.behavior), name, withStr, dir, withoutStr)
 }
 
 /** [ActivityCost.sentence] for the screen: the engine's sentence stays English (its tests read it),
