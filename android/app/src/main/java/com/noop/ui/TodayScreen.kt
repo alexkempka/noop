@@ -6276,7 +6276,8 @@ private fun MetricGrid(
         KeyMetric.RESPIRATORY -> ({ onOpenMetric("resp") })
         KeyMetric.STEPS -> if (stepsOpenCalibration) onOpenStepsCalibration else ({ onOpenMetric("steps_est") })
         KeyMetric.CALORIES -> ({ onOpenMetric("active_kcal") })
-        KeyMetric.WEIGHT -> null
+        // Fork: the Weight tile opens the scale screen (weight trend + body composition).
+        KeyMetric.WEIGHT -> ({ onOpenMetric("weight") })
         // Same "skin" vital_detail key `dashboardCardMetricKey(DashboardCard.SKIN_TEMP)` already routes
         // to — confirmed a working destination there, so this tile opens the SAME screen "Your Cards"
         // already does, not a new/unverified route.

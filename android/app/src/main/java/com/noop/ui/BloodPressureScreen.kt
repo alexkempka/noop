@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,6 +75,11 @@ fun BloodPressureScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
     }
     val scope = rememberCoroutineScope()
 
+    // Fork: the same sky backdrop as the other tile detail screens (VitalDetailScreen), so this page does not
+    // read as the one dark-blue screen (product owner, 04.10.2026).
+    val backdropContext = LocalContext.current
+    val showDayCycleBackground = remember { NoopPrefs.showDayCycleBackground(backdropContext) }
+    val skyBehindCards = remember { NoopPrefs.skyBehindCards(backdropContext) }
     ScreenScaffold(
         title = uiString(R.string.bp_title),
         subtitle = uiString(R.string.bp_subtitle),
@@ -84,6 +90,8 @@ fun BloodPressureScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
                 }
             }
         },
+        topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
+        fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
     ) {
         val a = assessment
         if (a == null) {

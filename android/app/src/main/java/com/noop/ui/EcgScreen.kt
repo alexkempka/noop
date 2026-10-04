@@ -94,6 +94,11 @@ fun EcgScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
     }
     LaunchedEffect(reload) { recordings = loadRecordings(context) }
 
+    // Fork: the same sky backdrop as the other tile detail screens (VitalDetailScreen), so this page does not
+    // read as the one dark-blue screen (product owner, 04.10.2026).
+    val backdropContext = LocalContext.current
+    val showDayCycleBackground = remember { NoopPrefs.showDayCycleBackground(backdropContext) }
+    val skyBehindCards = remember { NoopPrefs.skyBehindCards(backdropContext) }
     ScreenScaffold(
         title = uiString(R.string.ecg_title),
         subtitle = uiString(R.string.ecg_subtitle),
@@ -104,6 +109,8 @@ fun EcgScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
                 }
             }
         },
+        topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
+        fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
     ) {
         val running = current != null && !current.ended
         NoopCard {

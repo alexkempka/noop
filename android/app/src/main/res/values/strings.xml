@@ -513,7 +513,7 @@
     <string name="health_connect_category_activity">Activity</string>
     <string name="health_connect_category_activity_detail">Steps, calories, workouts, distance, and VO₂ max</string>
     <string name="health_connect_category_body_composition">Body composition</string>
-    <string name="health_connect_category_body_composition_detail">Weight, body fat, and lean mass</string>
+    <string name="health_connect_category_body_composition_detail">Weight, body fat, lean mass, bone mass and body water</string>
     <string name="l10n_data_sources_screen_import_apple_health_export_533fca27">Import Apple Health export…</string>
     <string name="l10n_data_sources_screen_import_from_health_connect_35d55e21">Import from Health Connect</string>
     <string name="l10n_data_sources_screen_import_lifting_log_8fac7b68">Import lifting log…</string>
@@ -3307,6 +3307,7 @@
     <string name="l10n_lit_014795e468">Stress (on-device)</string>
     <string name="l10n_lit_01930b53bc">VO₂ Max (estimated)</string>
     <string name="l10n_lit_02057bf52e">positive</string>
+    <string name="l10n_lit_020fc836ec">No app has delivered body values yet. Read them once, then choose your scale here.</string>
     <string name="l10n_lit_02390b0ca7">No buzzes sent.</string>
     <string name="l10n_lit_0247ce357c">STREAMING</string>
     <string name="l10n_lit_0299370d30">Beat-to-beat timing varies for many ordinary reasons: breathing, movement, an imperfect optical reading, or the occasional extra or skipped beat that most healthy people have.</string>
@@ -3401,6 +3402,7 @@
     <string name="l10n_lit_1450844d24">SUMMARY</string>
     <string name="l10n_lit_14ca8b09aa">Steps, heart, sleep, body composition and VO₂ max - synced from the desktop app.</string>
     <string name="l10n_lit_14d5436cdf">Last 6 months</string>
+    <string name="l10n_lit_1502d4e605">Body water</string>
     <string name="l10n_lit_158f3da592">Weekly</string>
     <string name="l10n_lit_15b4af7737">A middling day — Charge is %1$s%%, so the band sits mid-range.</string>
     <string name="l10n_lit_15f86c051e">Average</string>
@@ -3419,6 +3421,7 @@
     <string name="l10n_lit_18755a7cc8">Couldn\'t use that photo. Try another.</string>
     <string name="l10n_lit_188129ca90">Plan · %1$s-day shift</string>
     <string name="l10n_lit_1930284fc2">Bonded · idle</string>
+    <string name="l10n_lit_194062a4ec">All apps (not recommended with two scales)</string>
     <string name="l10n_lit_1948bf2dfa">Tomorrow</string>
     <string name="l10n_lit_19aabe2600">Deep calm</string>
     <string name="l10n_lit_1a14ce5195">Could not take over</string>
@@ -3481,6 +3484,7 @@
     <string name="l10n_lit_282432f97c">Last 14 nights</string>
     <string name="l10n_lit_28463f2473">Stages vs typical</string>
     <string name="l10n_lit_28820fbb7b">Ice Bath</string>
+    <string name="l10n_lit_289e4e6bce">Reading from Health Connect failed.</string>
     <string name="l10n_lit_28be72ff60">Live Physiology</string>
     <string name="l10n_lit_295d4a59aa">Picked as your main sleep because it was your longest block (%1$s), near your usual bedtime.</string>
     <string name="l10n_lit_2994433411">tends to rise</string>
@@ -3641,6 +3645,7 @@
     <string name="l10n_lit_4a4d88dbb4">No resting HR value</string>
     <string name="l10n_lit_4a9be042af">Battery</string>
     <string name="l10n_lit_4ace11aa3f">%1$s reading lines up so far, not enough to read a trend yet (NOOP waits for %2$s).</string>
+    <string name="l10n_lit_4ae232809f">Health Connect is not available on this phone.</string>
     <string name="l10n_lit_4af00fab64">the last night</string>
     <string name="l10n_lit_4b0afa8b20">Done. Save this reading to keep it in your trends.</string>
     <string name="l10n_lit_4b6a3875b8">Steps today</string>
@@ -3722,6 +3727,7 @@
     <string name="l10n_lit_5b8027fa0e">Got it</string>
     <string name="l10n_lit_5b83b5451b">HR eased %1$s → %2$s over %3$s.</string>
     <string name="l10n_lit_5b940a7265">On Android 12+, \"Nearby devices\" is the Bluetooth permission. NOOP needs it to find your strap.</string>
+    <string name="l10n_lit_5bda1d68ef">Bone mass</string>
     <string name="l10n_lit_5c3d543b5b">Wake-up</string>
     <string name="l10n_lit_5c71cf1712">Proof that the console is current</string>
     <string name="l10n_lit_5cd3f14096">Live heart rate is flowing; full strap controls need an encrypted bond.</string>
@@ -3823,6 +3829,7 @@
     <string name="l10n_lit_6f96b1088f">Did you take magnesium?</string>
     <string name="l10n_lit_6fa0643c38">HR settled over %1$s.</string>
     <string name="l10n_lit_6fac453737">Automatic: NOOP’s own need, never below 8 h for an adult.</string>
+    <string name="l10n_lit_6fb9d7411f">Scale values read.</string>
     <string name="l10n_lit_6fd6ddb1ec">Live HR (not fully paired)</string>
     <string name="l10n_lit_6ff610e614">From your nightly readings</string>
     <string name="l10n_lit_70348a1df2">+ drinks</string>
@@ -3920,6 +3927,7 @@
     <string name="l10n_lit_802eb19213">Reset it in the Oura app first.</string>
     <string name="l10n_lit_80ba791261">Easy day. You sat under the band most of the way.</string>
     <string name="l10n_lit_80c3052d33">Never</string>
+    <string name="l10n_lit_80e8b1bffd">Visceral fat and muscle mass cannot be shown: Health Connect, the store on your phone the scale app writes to, has no place for them.</string>
     <string name="l10n_lit_8158159704">Double</string>
     <string name="l10n_lit_8158f38848">%1$s readings</string>
     <string name="l10n_lit_816c52fd2b">No</string>
@@ -4087,6 +4095,7 @@
     <string name="l10n_lit_a242f346bc">%1$s pts</string>
     <string name="l10n_lit_a2696b7d37">Bedtime for the caffeine cutoff</string>
     <string name="l10n_lit_a29750d8e6">Likely your Oura warranty and support, because the ring is no longer paired to Oura. Treat this as permanent.</string>
+    <string name="l10n_lit_a29f025627">Scale</string>
     <string name="l10n_lit_a36ef8aba2">Light</string>
     <string name="l10n_lit_a3ab4847c8">%1$s years older</string>
     <string name="l10n_lit_a3da19f489">Backup exported. The backup archive is too large to restore safely — restoring it will ask you to confirm.</string>
@@ -4139,9 +4148,11 @@
     <string name="l10n_lit_acb50f1b07">365 DAYS</string>
     <string name="l10n_lit_acbe16a474">%1$s %2$s across %3$s · %4$s</string>
     <string name="l10n_lit_ad6ff665e5">You can change it any time under More → Settings → Profile.</string>
+    <string name="l10n_lit_ad71af0197">Body composition</string>
     <string name="l10n_lit_ad8919ace0">Event</string>
     <string name="l10n_lit_adab5090ac">Calendar</string>
     <string name="l10n_lit_adb13db684">Restorative</string>
+    <string name="l10n_lit_ae18b70a52">Reading…</string>
     <string name="l10n_lit_ae1a12e0ad">Triple</string>
     <string name="l10n_lit_ae1ef01432">Dark</string>
     <string name="l10n_lit_ae26852874">Finishing the pairing handshake. Sync now becomes available once the strap is paired.</string>
@@ -4367,6 +4378,7 @@
     <string name="l10n_lit_d8b9679fad">LOW</string>
     <string name="l10n_lit_d8e9b8360a">%1$s · your record, on %2$s.</string>
     <string name="l10n_lit_d955f47a84">Session live</string>
+    <string name="l10n_lit_d97a2ca6e6">Read scale values now</string>
     <string name="l10n_lit_d9a57f8e60">Max heart rate override, %1$s bpm</string>
     <string name="l10n_lit_da2098e813">%1$s %2$s tracked · %3$s %4$s</string>
     <string name="l10n_lit_da24830f1f">Yesterday</string>
@@ -4465,6 +4477,7 @@
     <string name="l10n_lit_ec5de0daeb">Day Strain</string>
     <string name="l10n_lit_ec74bb9395">How can I improve my sleep?</string>
     <string name="l10n_lit_ec7b598335">Round</string>
+    <string name="l10n_lit_ecb9167bec">No reading</string>
     <string name="l10n_lit_ecbbdf3407">Stop voice input</string>
     <string name="l10n_lit_ed03c68d9c">Partly</string>
     <string name="l10n_lit_ed7708ee4a">Add a reading</string>
@@ -4493,6 +4506,7 @@
     <string name="l10n_lit_f0d20bf5cc">Resting heart rate is running high versus your norm. Your body is under load today. Keep effort light.</string>
     <string name="l10n_lit_f0f343bf42">Badminton</string>
     <string name="l10n_lit_f1269d5ace">Handball</string>
+    <string name="l10n_lit_f12fdcf162">Two scales estimate body fat differently, so NOOP takes body composition from one app only. Weight comes from every app.</string>
     <string name="l10n_lit_f18d84e2ff">Wear the strap for scoring</string>
     <string name="l10n_lit_f1d7009891">1 night ago</string>
     <string name="l10n_lit_f1dfefab8b">Beat-to-beat scatter</string>

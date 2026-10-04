@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -108,6 +109,11 @@ fun StepGoalScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
     val average = remember(window) { StepGoalLogic.average(window) }
     var draft by remember(goal) { mutableIntStateOf(goal) }
 
+    // Fork: the same sky backdrop as the other tile detail screens (VitalDetailScreen), so this page does not
+    // read as the one dark-blue screen (product owner, 04.10.2026).
+    val backdropContext = LocalContext.current
+    val showDayCycleBackground = remember { NoopPrefs.showDayCycleBackground(backdropContext) }
+    val skyBehindCards = remember { NoopPrefs.skyBehindCards(backdropContext) }
     ScreenScaffold(
         title = uiText("Step goal"),
         subtitle = uiText("Your own daily target"),
@@ -118,6 +124,8 @@ fun StepGoalScreen(vm: AppViewModel, onClose: (() -> Unit)? = null) {
                 }
             }
         },
+        topBackground = screenBackdropSlot(showDayCycleBackground, skyBehindCards),
+        fullBleedBackground = screenBackdropFullBleed(showDayCycleBackground, skyBehindCards),
     ) {
         NoopCard(tint = Palette.accent) {
             Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {

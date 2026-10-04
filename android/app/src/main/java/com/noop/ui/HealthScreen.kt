@@ -1815,7 +1815,8 @@ internal data class VitalDetailModel(
 // so its detail must route to buildSeriesVitalDetail (which reads metricSeriesComputedUnion), NOT the
 // DailyMetric-backed buildVitalDetail. #1404 added the vo2max_est CASE to the series builder but omitted it
 // here, so isSeriesBacked was false and the tap-through fell to the DailyMetric builder → empty trend.
-private val SERIES_BACKED_VITAL_KEYS = setOf("fitness_age", "vitality", "steps_est", "active_kcal", "rest", "vo2max_est")
+private val SERIES_BACKED_VITAL_KEYS = setOf("fitness_age", "vitality", "steps_est", "active_kcal", "rest", "vo2max_est") +
+    BODY_DETAIL_KEYS
 
 /**
  * #1617: which empty-state copy a vital with fewer than two readings should show.
@@ -1901,6 +1902,8 @@ fun VitalDetailScreen(
     onClose: (() -> Unit)? = null,
     // Fork: the Steps history links to the step-goal screen, so the goal is one tap from the Steps tile.
     onOpenStepGoal: (() -> Unit)? = null,
+    // Fork: the Weight screen's body-composition rows open their own detail through this.
+    onOpenVital: ((String) -> Unit)? = null,
 ) {
     val days by vm.recentDays.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -2012,6 +2015,9 @@ fun VitalDetailScreen(
         if (isStepsDetail && onOpenStepGoal != null) {
             val stepGoal by vm.stepGoal.collectAsStateWithLifecycle()
             StepGoalEntryCard(goal = stepGoal, onClick = onOpenStepGoal)
+        }
+        if (key == "weight" && onOpenVital != null) {
+            BodyCompositionCard(vm = vm, onOpenVital = onOpenVital)
         }
         if (isSeriesBacked && !seriesLoaded) {
             DataPendingNote(
@@ -2703,6 +2709,36 @@ internal suspend fun buildSeriesVitalDetail(vm: AppViewModel, key: String): Vita
             format = { it.roundToInt().toString() },
         )
     }
+    // Fork: the scale. Weight reads the same imported daily rows the Today tile shows (Apple Health first,
+    // then Health Connect, one reading per day), so the detail cannot disagree with the tile.
+    "weight" -> {
+        val byDay = LinkedHashMap<String, VitalReading>()
+        for (r in vm.repo.appleDaily("apple-health", "0000-01-01", "9999-12-31") +
+            vm.repo.appleDaily("health-connect", "0000-01-01", "9999-12-31")) {
+            val w = r.weightKg
+            if (w != null && w > 0) byDay.putIfAbsent(r.day, VitalReading(r.day, w, r.deviceId))
+        }
+        VitalDetailModel(
+            key = key,
+            title = uiString(R.string.l10n_today_screen_weight_69c0b815),
+            unit = "kg",
+            color = Palette.accent,
+            readings = byDay.values.sortedBy { it.day },
+            format = { String.format(Locale.getDefault(), "%.1f", it) },
+        )
+    }
+    // Body composition: imported series only (Apple Health first, then Health Connect), from the one
+    // scale app chosen on the Weight screen. One decimal — the scales' estimates are not finer than that.
+    "body_fat", "lean_mass", "bone_mass", "body_water" -> VitalDetailModel(
+        key = key,
+        title = bodyMetricTitle(key),
+        unit = if (key == "body_fat") "%" else "kg",
+        color = if (key == "body_fat") Palette.metricAmber else Palette.accent,
+        readings = vm.repo.resolvedSeries(key, "apple-health", "0000-00-00", "9999-99-99", strapDeviceId = vm.activeStrapId)
+            .points.filter { it.value.isFinite() && it.value > 0.0 }
+            .map { VitalReading(it.day, it.value, it.source) },
+        format = { String.format(Locale.getDefault(), "%.1f", it) },
+    )
     else -> null
 }
 

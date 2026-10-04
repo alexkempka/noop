@@ -5,6 +5,8 @@ import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BodyFatRecord
+import androidx.health.connect.client.records.BodyWaterMassRecord
+import androidx.health.connect.client.records.BoneMassRecord
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSessionRecord
@@ -133,6 +135,9 @@ object HealthConnectImporter {
                 WeightRecord::class,
                 BodyFatRecord::class,
                 LeanBodyMassRecord::class,
+                // Fork: the Withings scale also writes these two (product owner, 04.10.2026).
+                BoneMassRecord::class,
+                BodyWaterMassRecord::class,
             ),
         ),
     }
@@ -371,6 +376,11 @@ object HealthConnectImporter {
             return readAll(client, type, range, selfPackage, onRecord)
         }
 
+        // Fork: true when [type] was read to the end OR is simply not selected/granted — false only when a
+        // read failed. The body-composition cleanup must not wait for a permission the user never gave.
+        suspend fun <T : Record> readCompleted(type: KClass<T>, onRecord: (T) -> Unit): Boolean =
+            readSelected(type, onRecord = onRecord) || type !in selectedRecordTypes
+
         // Per-day accumulators. Keyed by "YYYY-MM-DD" (local).
         val acc = HashMap<String, DayAcc>()
         // #1002: key each record by the offset it was RECORDED in. See [localDayKey] for why the
@@ -404,6 +414,13 @@ object HealthConnectImporter {
         // screen (which reads repo.sleepSessions) fell to its empty state. Keep each night's bounds +
         // per-stage minutes here, paired with its wake day for the coveredDays gate at write-out.
         val hcSleepSessions = ArrayList<Pair<String, SleepSession>>()
+
+        // Fork: body-composition source bookkeeping (see BodyCompositionSource).
+        val compositionChosen = BodyCompositionSource.chosen(context)
+        val compositionPackages = HashSet<String>()
+        val compositionObserved = HashSet<Pair<String, String>>()
+        val compositionAccepted = HashSet<Pair<String, String>>()
+        var compositionReadOk = false
 
         try {
             // --- Steps ---
@@ -509,24 +526,57 @@ object HealthConnectImporter {
                     b.weightTs = r.time.epochSecond
                 }
             }
+            // --- Body composition. Fork: only the app the user chose counts (BodyCompositionSource) — two
+            // scales disagree by points, so their estimates are never mixed. Every (day, key) any app
+            // wrote is remembered so an earlier import's other-app value on that day can be removed. ---
+            fun compositionRecord(pkg: String, day: String, key: String): Boolean {
+                compositionPackages += pkg
+                compositionObserved += day to key
+                val ok = BodyCompositionSource.accepts(compositionChosen, pkg)
+                if (ok) compositionAccepted += day to key
+                return ok
+            }
             // --- Body fat (%) -> latest value of the day wins. Health Connect's Percentage.value is
             // already 0-100 (unlike Apple's 0..1 fraction), so it stores as-is and matches the iOS
             // "body_fat" key. ---
-            readSelected(BodyFatRecord::class) { r ->
-                val b = bucket(dayOf(r.time, r.zoneOffset))
+            compositionReadOk = readCompleted(BodyFatRecord::class) { r ->
+                val day = dayOf(r.time, r.zoneOffset)
+                if (!compositionRecord(r.metadata.dataOrigin.packageName, day, "body_fat")) return@readCompleted
+                val b = bucket(day)
                 if (r.time.epochSecond >= b.bodyFatTs) {
                     b.bodyFatPct = r.percentage.value
                     b.bodyFatTs = r.time.epochSecond
                 }
             }
             // --- Lean body mass (kg) -> latest value of the day wins (iOS "lean_mass" twin). ---
-            readSelected(LeanBodyMassRecord::class) { r ->
-                val b = bucket(dayOf(r.time, r.zoneOffset))
+            compositionReadOk = readCompleted(LeanBodyMassRecord::class) { r ->
+                val day = dayOf(r.time, r.zoneOffset)
+                if (!compositionRecord(r.metadata.dataOrigin.packageName, day, "lean_mass")) return@readCompleted
+                val b = bucket(day)
                 if (r.time.epochSecond >= b.leanMassTs) {
                     b.leanMassKg = r.mass.inKilograms
                     b.leanMassTs = r.time.epochSecond
                 }
-            }
+            } && compositionReadOk
+            // --- Fork: bone mass and body water (kg) -> latest value of the day wins. ---
+            compositionReadOk = readCompleted(BoneMassRecord::class) { r ->
+                val day = dayOf(r.time, r.zoneOffset)
+                if (!compositionRecord(r.metadata.dataOrigin.packageName, day, "bone_mass")) return@readCompleted
+                val b = bucket(day)
+                if (r.time.epochSecond >= b.boneMassTs) {
+                    b.boneMassKg = r.mass.inKilograms
+                    b.boneMassTs = r.time.epochSecond
+                }
+            } && compositionReadOk
+            compositionReadOk = readCompleted(BodyWaterMassRecord::class) { r ->
+                val day = dayOf(r.time, r.zoneOffset)
+                if (!compositionRecord(r.metadata.dataOrigin.packageName, day, "body_water")) return@readCompleted
+                val b = bucket(day)
+                if (r.time.epochSecond >= b.bodyWaterTs) {
+                    b.bodyWaterKg = r.mass.inKilograms
+                    b.bodyWaterTs = r.time.epochSecond
+                }
+            } && compositionReadOk
             // --- Exercise sessions -> WorkoutRow(source="health-connect") ---
             readSelected(ExerciseSessionRecord::class) { r ->
                 val startS = r.startTime.epochSecond
@@ -806,6 +856,8 @@ object HealthConnectImporter {
             // import: body_fat as a 0-100 percent, lean_mass in kg.
             a.bodyFatPct?.let { metricSeriesRows += MetricSeriesRow(HC_DEVICE, day, "body_fat", round2(it)) }
             a.leanMassKg?.let { metricSeriesRows += MetricSeriesRow(HC_DEVICE, day, "lean_mass", round2(it)) }
+            a.boneMassKg?.let { metricSeriesRows += MetricSeriesRow(HC_DEVICE, day, "bone_mass", round2(it)) }
+            a.bodyWaterKg?.let { metricSeriesRows += MetricSeriesRow(HC_DEVICE, day, "body_water", round2(it)) }
 
             // DailyMetric (my-whoop): resting-HR / HRV / sleep-minutes / SpO2 / respiration,
             // ONLY for days the strap does not already cover (raw OR computed).
@@ -844,6 +896,14 @@ object HealthConnectImporter {
                 repo.upsertAppleDaily(appleRows)
             }
             if (metricSeriesRows.isNotEmpty()) repo.upsertMetricSeries(metricSeriesRows)
+            // Fork: under a chosen scale app, drop what an earlier import stored from another app on a day
+            // this import saw — only when every composition read completed, so an error never deletes.
+            BodyCompositionSource.recordSeen(context, compositionPackages)
+            if (compositionChosen != null && compositionReadOk) {
+                for ((day, key) in BodyCompositionSource.staleRows(compositionObserved, compositionAccepted)) {
+                    repo.deleteMetricSeriesPoint(HC_DEVICE, day, key)
+                }
+            }
             if (dailyRows.isNotEmpty()) {
                 repo.upsertDevice(WHOOP, name = "WHOOP")
                 repo.upsertDailyMetrics(dailyRows)
@@ -1513,6 +1573,10 @@ object HealthConnectImporter {
         var bodyFatTs: Long = Long.MIN_VALUE
         var leanMassKg: Double? = null
         var leanMassTs: Long = Long.MIN_VALUE
+        var boneMassKg: Double? = null
+        var boneMassTs: Long = Long.MIN_VALUE
+        var bodyWaterKg: Double? = null
+        var bodyWaterTs: Long = Long.MIN_VALUE
 
         var exerciseCount: Int = 0
     }

@@ -125,6 +125,9 @@
     <uses-permission android:name="android.permission.health.READ_WEIGHT" />
     <uses-permission android:name="android.permission.health.READ_BODY_FAT" />
     <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS" />
+    <!-- Fork: bone mass and body water from the scale (Withings writes both). -->
+    <uses-permission android:name="android.permission.health.READ_BONE_MASS" />
+    <uses-permission android:name="android.permission.health.READ_BODY_WATER_MASS" />
     <uses-permission android:name="android.permission.health.READ_EXERCISE" />
     <!-- #1205: GPS route data attached to an exercise session. This permission CANNOT be granted via
          the standard Health Connect permission dialog — it is granted in Settings or via the
@@ -140,6 +143,9 @@
     <!-- Resolve the Health Connect provider on Android 14+ (platform) and earlier (app). -->
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
+        <!-- Fork: to name the scale apps that write body values to Health Connect (Withings, Google Fit). -->
+        <package android:name="com.withings.wiscale2" />
+        <package android:name="com.google.android.apps.fitness" />
         <!-- So the connection helper can detect the official WHOOP app and deep-link to its
              info screen (a strap only pairs with one app at a time). Android 11+ visibility. -->
         <package android:name="com.whoop.android" />

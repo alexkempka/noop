@@ -415,7 +415,7 @@
     <string name="health_connect_category_activity">Aktivität</string>
     <string name="health_connect_category_activity_detail">Schritte, Kalorien, Trainingseinheiten, Distanz und VO₂max</string>
     <string name="health_connect_category_body_composition">Körperzusammensetzung</string>
-    <string name="health_connect_category_body_composition_detail">Gewicht, Körperfett und fettfreie Masse</string>
+    <string name="health_connect_category_body_composition_detail">Gewicht, Körperfett, fettfreie Masse, Knochenmasse und Körperwasser</string>
     <string name="l10n_data_sources_screen_import_apple_health_export_533fca27">Apple-Health-Export importieren…</string>
     <string name="l10n_data_sources_screen_import_from_health_connect_35d55e21">Aus Health Connect importieren</string>
     <string name="l10n_data_sources_screen_import_lifting_log_8fac7b68">Krafttraining-Log importieren…</string>
@@ -3291,6 +3291,7 @@
     <string name="l10n_lit_014795e468">Stress (auf dem Gerät)</string>
     <string name="l10n_lit_01930b53bc">VO₂ Max (geschätzt)</string>
     <string name="l10n_lit_02057bf52e">positiver</string>
+    <string name="l10n_lit_020fc836ec">Noch keine App hat Körperwerte geliefert. Lies sie einmal ein und wähle dann hier deine Waage.</string>
     <string name="l10n_lit_02390b0ca7">Keine Vibration gesendet.</string>
     <string name="l10n_lit_0247ce357c">LIVE</string>
     <string name="l10n_lit_0299370d30">Schlagabstände schwanken aus vielen alltäglichen Gründen: Atmung, Bewegung, eine unsaubere optische Messung oder gelegentliche Extra- oder ausgelassene Schläge, wie sie die meisten Gesunden haben.</string>
@@ -3385,6 +3386,7 @@
     <string name="l10n_lit_1450844d24">ZUSAMMENFASSUNG</string>
     <string name="l10n_lit_14ca8b09aa">Schritte, Herzfrequenz, Schlaf, Körperzusammensetzung und VO₂ max – synchronisiert aus der Desktop-App.</string>
     <string name="l10n_lit_14d5436cdf">Letzte 6 Monate</string>
+    <string name="l10n_lit_1502d4e605">Körperwasser</string>
     <string name="l10n_lit_158f3da592">Wöchentlich</string>
     <string name="l10n_lit_15b4af7737">Ein mittlerer Tag – Energie bei %1$s%%, der Zielbereich liegt in der Mitte.</string>
     <string name="l10n_lit_15f86c051e">Schnitt</string>
@@ -3403,6 +3405,7 @@
     <string name="l10n_lit_18755a7cc8">Das Foto lässt sich nicht verwenden. Probier ein anderes.</string>
     <string name="l10n_lit_188129ca90">Plan · %1$s-Tage-Umstellung</string>
     <string name="l10n_lit_1930284fc2">Gekoppelt · bereit</string>
+    <string name="l10n_lit_194062a4ec">Alle Apps (nicht empfohlen bei zwei Waagen)</string>
     <string name="l10n_lit_1948bf2dfa">Morgen</string>
     <string name="l10n_lit_19aabe2600">Tiefe Ruhe</string>
     <string name="l10n_lit_1a14ce5195">Übernahme fehlgeschlagen</string>
@@ -3465,6 +3468,7 @@
     <string name="l10n_lit_282432f97c">Letzte 14 Nächte</string>
     <string name="l10n_lit_28463f2473">Phasen vs. typisch</string>
     <string name="l10n_lit_28820fbb7b">Eisbad</string>
+    <string name="l10n_lit_289e4e6bce">Einlesen aus Health Connect fehlgeschlagen.</string>
     <string name="l10n_lit_28be72ff60">Live-Körperwerte</string>
     <string name="l10n_lit_295d4a59aa">Als Hauptschlaf gewählt, weil es dein längster Block war (%1$s) – nah an deiner üblichen Schlafenszeit.</string>
     <string name="l10n_lit_2994433411">steigt tendenziell</string>
@@ -3625,6 +3629,7 @@
     <string name="l10n_lit_4a4d88dbb4">Kein Ruhepulswert</string>
     <string name="l10n_lit_4a9be042af">Akku</string>
     <string name="l10n_lit_4ace11aa3f">Bisher passt %1$s Messwert zusammen – zu wenig für einen Trend (NOOP wartet auf %2$s).</string>
+    <string name="l10n_lit_4ae232809f">Health Connect ist auf diesem Telefon nicht verfügbar.</string>
     <string name="l10n_lit_4af00fab64">der letzten Nacht</string>
     <string name="l10n_lit_4b0afa8b20">Fertig. Speichere den Messwert, damit er in deinen Trends erscheint.</string>
     <string name="l10n_lit_4b6a3875b8">Schritte heute</string>
@@ -3706,6 +3711,7 @@
     <string name="l10n_lit_5b8027fa0e">Verstanden</string>
     <string name="l10n_lit_5b83b5451b">Puls gesunken: %1$s → %2$s in %3$s.</string>
     <string name="l10n_lit_5b940a7265">Ab Android 12 ist „Geräte in der Nähe“ die Bluetooth-Berechtigung. NOOP braucht sie, um dein Band zu finden.</string>
+    <string name="l10n_lit_5bda1d68ef">Knochenmasse</string>
     <string name="l10n_lit_5c3d543b5b">Aufwachen</string>
     <string name="l10n_lit_5c71cf1712">Beleg, dass die Anzeige aktuell ist</string>
     <string name="l10n_lit_5cd3f14096">Live-Puls kommt an; für die volle Band-Steuerung braucht es eine verschlüsselte Kopplung.</string>
@@ -3807,6 +3813,7 @@
     <string name="l10n_lit_6f96b1088f">Hast du Magnesium genommen?</string>
     <string name="l10n_lit_6fa0643c38">Puls beruhigt in %1$s.</string>
     <string name="l10n_lit_6fac453737">Automatisch: NOOPs eigener Bedarf, für Erwachsene nie unter 8 h.</string>
+    <string name="l10n_lit_6fb9d7411f">Waagenwerte eingelesen.</string>
     <string name="l10n_lit_6fd6ddb1ec">Live-Puls (nicht voll gekoppelt)</string>
     <string name="l10n_lit_6ff610e614">Aus deinen nächtlichen Messungen</string>
     <string name="l10n_lit_70348a1df2">+ Drinks</string>
@@ -3904,6 +3911,7 @@
     <string name="l10n_lit_802eb19213">Setz ihn zuerst in der Oura-App zurück.</string>
     <string name="l10n_lit_80ba791261">Lockerer Tag. Du warst die meiste Zeit unter dem Zielbereich.</string>
     <string name="l10n_lit_80c3052d33">Nie</string>
+    <string name="l10n_lit_80e8b1bffd">Viszerales Fett und Muskelmasse können hier nicht erscheinen: Health Connect, der Speicher auf deinem Telefon, in den die Waagen-App schreibt, hat dafür kein Fach.</string>
     <string name="l10n_lit_8158159704">Doppelt</string>
     <string name="l10n_lit_8158f38848">%1$s Messwerte</string>
     <string name="l10n_lit_816c52fd2b">Nein</string>
@@ -4071,6 +4079,7 @@
     <string name="l10n_lit_a242f346bc">%1$s Pkt.</string>
     <string name="l10n_lit_a2696b7d37">Schlafenszeit für den Koffein-Stopp</string>
     <string name="l10n_lit_a29750d8e6">Wahrscheinlich auch Garantie und Support von Oura, weil der Ring nicht mehr mit Oura gekoppelt ist. Betrachte das als endgültig.</string>
+    <string name="l10n_lit_a29f025627">Waage</string>
     <string name="l10n_lit_a36ef8aba2">Hell</string>
     <string name="l10n_lit_a3ab4847c8">%1$s Jahre älter</string>
     <string name="l10n_lit_a3da19f489">Backup exportiert. Das Archiv ist zu groß für eine sichere Wiederherstellung – beim Wiederherstellen musst du das bestätigen.</string>
@@ -4123,9 +4132,11 @@
     <string name="l10n_lit_acb50f1b07">365 TAGE</string>
     <string name="l10n_lit_acbe16a474">%1$s %2$s über %3$s · %4$s</string>
     <string name="l10n_lit_ad6ff665e5">Ändern kannst du es jederzeit unter Mehr → Einstellungen → Profil.</string>
+    <string name="l10n_lit_ad71af0197">Körperzusammensetzung</string>
     <string name="l10n_lit_ad8919ace0">Ereignis</string>
     <string name="l10n_lit_adab5090ac">Kalender</string>
     <string name="l10n_lit_adb13db684">Erholsam</string>
+    <string name="l10n_lit_ae18b70a52">Liest ein…</string>
     <string name="l10n_lit_ae1a12e0ad">Dreifach</string>
     <string name="l10n_lit_ae1ef01432">Dunkel</string>
     <string name="l10n_lit_ae26852874">Kopplung wird abgeschlossen. „Jetzt syncen“ geht, sobald das Band gekoppelt ist.</string>
@@ -4351,6 +4362,7 @@
     <string name="l10n_lit_d8b9679fad">NIEDRIG</string>
     <string name="l10n_lit_d8e9b8360a">%1$s · dein Datensatz, auf %2$s.</string>
     <string name="l10n_lit_d955f47a84">Läuft</string>
+    <string name="l10n_lit_d97a2ca6e6">Waagenwerte jetzt einlesen</string>
     <string name="l10n_lit_d9a57f8e60">Max. Herzfrequenz, %1$s bpm (manuell)</string>
     <string name="l10n_lit_da2098e813">%1$s %2$s erfasst · %3$s %4$s</string>
     <string name="l10n_lit_da24830f1f">Gestern</string>
@@ -4449,6 +4461,7 @@
     <string name="l10n_lit_ec5de0daeb">Tagesbelastung</string>
     <string name="l10n_lit_ec74bb9395">Wie kann ich meinen Schlaf verbessern?</string>
     <string name="l10n_lit_ec7b598335">Runde</string>
+    <string name="l10n_lit_ecb9167bec">Kein Messwert</string>
     <string name="l10n_lit_ecbbdf3407">Spracheingabe beenden</string>
     <string name="l10n_lit_ed03c68d9c">Teilweise</string>
     <string name="l10n_lit_ed7708ee4a">Messwert hinzufügen</string>
@@ -4477,6 +4490,7 @@
     <string name="l10n_lit_f0d20bf5cc">Dein Ruhepuls liegt über deinem Normalwert. Dein Körper steht heute unter Last. Halte die Belastung locker.</string>
     <string name="l10n_lit_f0f343bf42">Badminton</string>
     <string name="l10n_lit_f1269d5ace">Handball</string>
+    <string name="l10n_lit_f12fdcf162">Zwei Waagen schätzen das Körperfett unterschiedlich, deshalb nimmt NOOP die Körperzusammensetzung nur aus einer App. Das Gewicht kommt aus allen Apps.</string>
     <string name="l10n_lit_f18d84e2ff">Trag das Band für die Bewertung</string>
     <string name="l10n_lit_f1d7009891">vor 1 Nacht</string>
     <string name="l10n_lit_f1dfefab8b">Streudiagramm Schlag zu Schlag</string>

@@ -758,6 +758,7 @@ fun AppRoot(viewModel: AppViewModel = viewModel()) {
                             key = key,
                             onClose = { nav.popBackStack() },
                             onOpenStepGoal = { nav.navigate("vital_detail/$STEP_GOAL_KEY") },
+                            onOpenVital = { nav.navigate("vital_detail/$it") },
                         )
                     }
                 }
