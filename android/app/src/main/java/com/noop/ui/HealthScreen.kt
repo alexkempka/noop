@@ -710,7 +710,7 @@ private fun FitnessAgeSection(vm: AppViewModel, days: List<DailyMetric>, profile
     var showChecklist by remember { mutableStateOf(false) }
 
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader(uiText("Fitness Age"), overline = uiText("Weekly"), trailing = "± 5 yr")
+        SectionHeader(uiText("Fitness Age"), overline = uiText("Weekly"), trailing = uiText("± 5 years"))
         val value = fitnessAge
         if (value != null) {
             FitnessAgeHero(
@@ -1671,7 +1671,7 @@ private fun VitalsSection(
             Text(
                 text = uiString(R.string.l10n_health_screen_spo_respiratory_rate_and_skin_temperature_0ae0ad8f),
                 style = NoopType.footnote,
-                color = Palette.textTertiary,
+                color = Palette.textSecondary   // fork: tertiary vanished on the day sky,
             )
         }
     }

@@ -55,6 +55,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.MonitorHeart
+import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.MonitorWeight
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.Timeline
@@ -507,6 +508,14 @@ fun TodayScreen(
     // SharedPreferences isn't reactive, so it's mirrored into local state and re-read when the editor saves.
     var showMetricsEditor by remember { mutableStateOf(false) }
     var enabledKeyMetrics by remember { mutableStateOf(KeyMetricPrefs.enabled(context)) }
+    // Fork: the blood-pressure tile's value — the same assessment the Blood Pressure screen shows, loaded
+    // only while the tile is on Today. Null value = no estimate yet (the tile then asks for a calibration).
+    var bpTileValue by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(days, enabledKeyMetrics) {
+        if (KeyMetric.BLOOD_PRESSURE !in enabledKeyMetrics) return@LaunchedEffect
+        bpTileValue = runCatching { latestBloodPressureAssessment(viewModel, days) }.getOrNull()
+            ?.estimates?.firstOrNull()?.let(::bloodPressureTileValue)
+    }
     // Detailed Key-Metrics tiles (squarer + trend graph), set from the same editor, plus the chosen
     // trend window (1 week / 2 weeks / 1 month) the detailed graphs cover.
     var keyMetricsDetailed by remember { mutableStateOf(KeyMetricPrefs.detailed(context)) }
@@ -777,7 +786,8 @@ fun TodayScreen(
     // S5: the Key Metrics grid caps at the first METRICS_COLLAPSED_CAP tiles behind a "Show all metrics"
     // expander, and the Data Sources footer collapses to a single "Synced from: ..." line. Both default
     // collapsed and are NOT persisted, so the home screen reopens compact. Mirrors iOS.
-    var metricsExpanded by remember { mutableStateOf(false) }
+    // Fork (product owner 04.10.2026): the grid is always open unless the user folds it; the choice is kept.
+    var metricsExpanded by remember { mutableStateOf(NoopPrefs.of(context).getBoolean("today.keyMetricsExpanded", true)) }
     var sourcesExpanded by remember { mutableStateOf(false) }
 
     // Per-card "dismissed into the inbox" flags for the two Today info-cards. A small × on each card
@@ -1836,11 +1846,15 @@ fun TodayScreen(
                                     ),
                                     onScoreInfo = openGuide,
                                     metricsExpanded = metricsExpanded,
-                                    onToggleMetrics = { metricsExpanded = !metricsExpanded },
+                                    onToggleMetrics = {
+                                        metricsExpanded = !metricsExpanded
+                                        NoopPrefs.of(context).edit().putBoolean("today.keyMetricsExpanded", metricsExpanded).apply()
+                                    },
                                     detailed = keyMetricsDetailed,
                                     windowDays = keyMetricsWindowDays,
                                     onOpenMetric = onOpenMetric,
                                     onOpenStepsCalibration = onOpenStepsCalibration,
+                                    bloodPressureValue = bpTileValue,
                                 )
                             }
                         }
@@ -6043,6 +6057,8 @@ private fun MetricGrid(
     onOpenMetric: (String) -> Unit = {},
     // Exception for the actionable blank WHOOP 4.0 state: it opens the canonical calibration screen.
     onOpenStepsCalibration: () -> Unit = {},
+    // Fork: "118/76" from the blood-pressure estimate, or null before the first calibration.
+    bloodPressureValue: String? = null,
 ) {
     val realStepsForDay = d?.steps ?: importedStepsForDay
     // Fork: the user's own step goal fills the tile's ring and names itself in the caption.
@@ -6209,6 +6225,15 @@ private fun MetricGrid(
                 spark = caloriesSpark,   // #616: imported-first trend (was missing → no trend line)
             )
         },
+        KeyMetric.BLOOD_PRESSURE to KeyTileData(
+            label = uiString(R.string.bp_title),
+            value = bloodPressureValue ?: NO_DATA,
+            unit = "",
+            tint = Palette.metricRose,
+            frac = null,
+            // Always marked as what it is; without a calibration the tile says what unlocks it.
+            caption = if (bloodPressureValue != null) uiText("Estimate · mmHg") else uiText("Calibrate to start"),
+        ),
         KeyMetric.SKIN_TEMP to run {
             // Added 2026-08-24 (queue 11c follow-up): first Key Metrics appearance for Skin Temp — was
             // already a "Your Cards" tile (DashboardCard.SKIN_TEMP), never a Key Metrics one. Same
@@ -6256,6 +6281,7 @@ private fun MetricGrid(
         // to — confirmed a working destination there, so this tile opens the SAME screen "Your Cards"
         // already does, not a new/unverified route.
         KeyMetric.SKIN_TEMP -> ({ onOpenMetric("skin") })
+        KeyMetric.BLOOD_PRESSURE -> ({ onOpenMetric(BLOOD_PRESSURE_KEY) })
     }
     // S5: slice from the FRONT of the saved order so a pinned/selected tile is never dropped or reordered
     // (#251); only the tail folds behind the expander. Mirrors the iOS visibleKeyMetrics prefix(cap).
@@ -6265,29 +6291,7 @@ private fun MetricGrid(
     // iOS `keyMetricsSection` LazyVGrid: 3 columns, spacing 8. Build from rows so tile heights tile uniformly
     // and a partial last row pads with empty weight so the columns stay aligned.
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        tiles.chunked(3).forEach { rowTiles ->
-            // Detailed rows equalise heights (IntrinsicSize.Max + fillMaxHeight, the #399 idiom): a
-            // graph-less tile (Steps/Weight/Calories) sharing a row with graphed neighbours must not
-            // shrink its card. Compact rows keep the plain layout, byte-identical to before.
-            Row(
-                // Fork: compact rows equalise too — a caption (the step goal) made one tile taller than
-                // its neighbours (product owner, 03.10.2026).
-                modifier = Modifier.height(IntrinsicSize.Max),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                rowTiles.forEach { (metric, tile) ->
-                    LiquidKeyTile(
-                        tile,
-                        icon = keyMetricIcon(metric),
-                        detailed = detailed,
-                        windowDays = windowDays,
-                        onClick = tapFor(metric),
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                    )
-                }
-                repeat(3 - rowTiles.size) { Spacer(Modifier.weight(1f)) }
-            }
-        }
+        KeyMetricRows(tiles, detailed = detailed, windowDays = windowDays, tapFor = ::tapFor)
         // S5: the "Show all metrics" / "Show fewer" expander — a centered link like iOS. Toggles visibility
         // only, never WHICH tiles are enabled or their order (that stays the #251 editor's job).
         if (hasOverflow) {
@@ -6326,7 +6330,46 @@ internal fun stepsTileShouldOpenCalibration(
  *  trailing trend series (oldest→newest) the DETAILED tile style graphs, capped at render to the editor's
  *  chosen window; empty hides the graph (a metric with no windowed series — Steps/Weight/Calories —
  *  stays tube-only even in detailed mode). */
-private data class KeyTileData(
+/**
+ * The Key-Metrics tiles in rows of three. Fork: its own composable so the JVM suite can render it
+ * (`KeyMetricRowsRenderTest`) — builds 570/571 crashed Today here, and nothing in the suite drew a tile.
+ */
+@Composable
+internal fun KeyMetricRows(
+    tiles: List<Pair<KeyMetric, KeyTileData>>,
+    detailed: Boolean,
+    windowDays: Int,
+    tapFor: (KeyMetric) -> (() -> Unit)?,
+) {
+    tiles.chunked(3).forEach { rowTiles ->
+        // Detailed rows equalise heights (IntrinsicSize.Max + fillMaxHeight, the #399 idiom): a
+        // graph-less tile (Steps/Weight/Calories) sharing a row with graphed neighbours must not
+        // shrink its card. Compact rows keep the plain layout, byte-identical to before.
+        Row(
+            // Fork: NOT IntrinsicSize on compact rows — the tile label autosizes through a SubcomposeLayout,
+            // and asking it for intrinsics crashed Today (builds 570/571, 04.10.2026). Compact rows instead
+            // reserve the caption line on every tile when one tile in the row has a caption.
+            modifier = if (detailed) Modifier.height(IntrinsicSize.Max) else Modifier,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            val rowHasCaption = rowTiles.any { it.second.caption != null }
+            rowTiles.forEach { (metric, tile) ->
+                LiquidKeyTile(
+                    tile,
+                    icon = keyMetricIcon(metric),
+                    detailed = detailed,
+                    windowDays = windowDays,
+                    onClick = tapFor(metric),
+                    reserveCaption = rowHasCaption,
+                    modifier = Modifier.weight(1f).then(if (detailed) Modifier.fillMaxHeight() else Modifier),
+                )
+            }
+            repeat(3 - rowTiles.size) { Spacer(Modifier.weight(1f)) }
+        }
+    }
+}
+
+internal data class KeyTileData(
     val label: String,
     val value: String,
     val unit: String,
@@ -6355,6 +6398,7 @@ private fun keyMetricIcon(metric: KeyMetric): ImageVector = when (metric) {
     KeyMetric.CALORIES -> Icons.Filled.LocalFireDepartment
     // Same glyph the sibling "Your Cards" tile (DashboardCard.SKIN_TEMP) already uses.
     KeyMetric.SKIN_TEMP -> Icons.Filled.Thermostat
+    KeyMetric.BLOOD_PRESSURE -> Icons.Filled.Speed
 }
 
 /**
@@ -6375,6 +6419,8 @@ private fun LiquidKeyTile(
     detailed: Boolean = false,
     windowDays: Int = 14,
     onClick: (() -> Unit)? = null,
+    // Fork: draw an empty caption line so this tile is as tall as a captioned neighbour.
+    reserveCaption: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val hasValue = data.value != NO_DATA
@@ -6411,13 +6457,26 @@ private fun LiquidKeyTile(
                 tint = data.tint.copy(alpha = 0.72f),
                 modifier = Modifier.size(12.dp),
             )
-            AutoSizeValue(
-                text = data.label.uppercase(),
-                style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 0.5.sp),
-                color = Palette.textTertiary,
-                minScale = 0.7f,
-                modifier = Modifier.weight(1f),
-            )
+            // Detailed rows ask their tiles for intrinsic heights, which a SubcomposeLayout (AutoSizeValue)
+            // cannot answer — there the label is a plain ellipsised line.
+            if (detailed) {
+                Text(
+                    data.label.uppercase(),
+                    style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 0.5.sp),
+                    color = Palette.textTertiary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+            } else {
+                AutoSizeValue(
+                    text = data.label.uppercase(),
+                    style = NoopType.overline.copy(fontSize = 9.sp, letterSpacing = 0.5.sp),
+                    color = Palette.textTertiary,
+                    minScale = 0.7f,
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
         Row(verticalAlignment = Alignment.Bottom) {
             Text(
@@ -6439,7 +6498,7 @@ private fun LiquidKeyTile(
         // then dropped on the floor until now: `stepsEstimateCaption` was passed into this grid and never
         // read), or, on a blank tile, what actually unblocks it. One line, ellipsised, and only rendered
         // when a tile supplies one, so every other tile keeps its current height.
-        data.caption?.let { cap ->
+        (data.caption ?: if (reserveCaption) " " else null)?.let { cap ->
             Text(
                 cap,
                 style = NoopType.caption,

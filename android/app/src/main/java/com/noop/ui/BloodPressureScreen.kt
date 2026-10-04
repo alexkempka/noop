@@ -388,3 +388,11 @@ private suspend fun saveCuffReading(
     )
     vm.repo.upsertLabMarkers(listOf(row(LabBookProjection.BP_SYSTOLIC_KEY, systolic), row(LabBookProjection.BP_DIASTOLIC_KEY, diastolic)))
 }
+
+/** Fork: the latest estimate for the Today tile — the same assessment the Blood Pressure screen shows. */
+internal suspend fun latestBloodPressureAssessment(vm: AppViewModel, days: List<DailyMetric>): BloodPressureEstimator.Assessment =
+    BloodPressureEstimator.assess(loadCuffReadings(vm), loadNights(vm, days), System.currentTimeMillis() / 1000L)
+
+/** "118 / 76" (no range) for a compact tile. */
+internal fun bloodPressureTileValue(e: BloodPressureEstimator.Estimate): String =
+    "${e.systolic.roundToInt()}/${e.diastolic.roundToInt()}"

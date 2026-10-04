@@ -3301,6 +3301,7 @@
     <!-- l10n_lit:begin -->
     <string name="l10n_lit_00040bab8a">Work</string>
     <string name="l10n_lit_0041f91590">br/min</string>
+    <string name="l10n_lit_0084e8faec">Collapsed</string>
     <string name="l10n_lit_009c64bb2e">Some variation</string>
     <string name="l10n_lit_00d8c525a2">Get it ready, then scan.</string>
     <string name="l10n_lit_014795e468">Stress (on-device)</string>
@@ -3506,6 +3507,7 @@
     <string name="l10n_lit_2e6bb196e8">Polar, Wahoo, Coospo, Garmin HRM, Amazfit Helio broadcast</string>
     <string name="l10n_lit_2e95311f62">Average Heart Rate</string>
     <string name="l10n_lit_2e97e908a9">tends to be higher</string>
+    <string name="l10n_lit_2f164197bc">Calibrate to start</string>
     <string name="l10n_lit_2f92a0aa8a">Weekends</string>
     <string name="l10n_lit_2fbb2d485e">Back to the marker list</string>
     <string name="l10n_lit_304306f22d">Oura JSON · Fitbit Takeout · Garmin GDPR (daily metrics + sleep)</string>
@@ -3802,6 +3804,7 @@
     <string name="l10n_lit_6c82e6dd86">Time</string>
     <string name="l10n_lit_6cc8561fb9">Hiking</string>
     <string name="l10n_lit_6cd9de3a5a">Off wrist</string>
+    <string name="l10n_lit_6d1704748e">Expanded</string>
     <string name="l10n_lit_6d1def3d08">Titanium</string>
     <string name="l10n_lit_6d38f41390">e.g. mmol/L</string>
     <string name="l10n_lit_6d50a38c64">Sessions like this usually cost you about %1$s the next morning and take about %2$s to bounce back (n=%3$s).</string>
@@ -4049,6 +4052,7 @@
     <string name="l10n_lit_9cb92e2fe7">How many servings of caffeine did you have?</string>
     <string name="l10n_lit_9cd9abc4fb">Ring key (32 hex characters)</string>
     <string name="l10n_lit_9d914bfcf1">Building</string>
+    <string name="l10n_lit_9d93f544d7">± 5 years</string>
     <string name="l10n_lit_9d99a9059f">Resting HR is elevated and HRV is below your baseline, both classic signs of high activation. Prioritise rest, hydration and an easy day.</string>
     <string name="l10n_lit_9de516d371">Picked as your main sleep because it started near your usual sleep time.</string>
     <string name="l10n_lit_9e04bf2e4f">Max heart rate override, automatic</string>
@@ -4441,6 +4445,7 @@
     <string name="l10n_lit_e9181a6cbb">HIIT</string>
     <string name="l10n_lit_e94b07d5b3">Capturing</string>
     <string name="l10n_lit_e99a154f83">Distance (%1$s, optional)</string>
+    <string name="l10n_lit_e9a9c11e77">Estimate · mmHg</string>
     <string name="l10n_lit_e9b450d14b">Done</string>
     <string name="l10n_lit_ea18cff507">%1$sh ago</string>
     <string name="l10n_lit_ea489a9fe4">Weight in kilograms</string>

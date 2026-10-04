@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
  */
 
 /** One searchable place: what it is called, extra words people search for, and where it opens. */
-internal data class SearchEntry(val title: String, val keywords: List<String>, val route: String)
+internal data class SearchEntry(val title: String, val keywords: List<String>, val route: String, val settingsSection: String? = null)
 
 internal object AppSearch {
     /** Case- and accent-insensitive "contains" over the title and the keywords; every word must match. */
@@ -53,16 +53,21 @@ internal object AppSearch {
 /** The task entries that live inside a screen (kept next to the routes they open). */
 internal fun taskSearchEntries(): List<SearchEntry> {
     val settings = Destination.Settings.route
+    // The Settings section titles, exactly as SettingsCard shows them — a hit opens that section.
+    val profile = uiString(com.noop.R.string.l10n_settings_screen_profile_ff4fc027)
+    val appearance = uiString(com.noop.R.string.l10n_settings_screen_appearance_41def7a0)
+    val strap = uiString(com.noop.R.string.l10n_settings_screen_strap_02b88eeb)
+    val units = uiString(com.noop.R.string.l10n_settings_screen_units_12748281)
     return listOf(
         SearchEntry(uiText("Blood pressure — estimate and cuff calibration"), listOf("Blutdruck", "kalibrieren", "Kalibrierung", "Manschette", "blood pressure", "calibrate"), "vital_detail/$BLOOD_PRESSURE_KEY"),
         SearchEntry(uiText("ECG reading"), listOf("EKG", "ECG", "Herz", "Messung"), "vital_detail/$ECG_KEY"),
         SearchEntry(uiText("Step goal"), listOf("Schritte", "Ziel", "steps", "goal"), "vital_detail/$STEP_GOAL_KEY"),
-        SearchEntry(uiText("Sleep goal"), listOf("Schlaf", "Schlafbedarf", "Ziel", "sleep need"), settings),
-        SearchEntry(uiText("Step calibration"), listOf("Schritte", "Kalibrierung", "Teiler", "steps"), settings),
-        SearchEntry(uiText("Profile: age, weight, height, max heart rate"), listOf("Profil", "Alter", "Gewicht", "Größe", "Maximalpuls", "Pulszonen", "Taille"), settings),
-        SearchEntry(uiText("Appearance: background, transparent cards, motion"), listOf("Erscheinungsbild", "Hintergrund", "Karten", "Transparenz", "Bewegung", "Ringe", "dunkel", "hell", "Farbe"), settings),
-        SearchEntry(uiText("Share strap log"), listOf("Band-Protokoll", "Protokoll", "Log", "teilen", "Fehler"), settings),
-        SearchEntry(uiText("Units"), listOf("Einheiten", "kg", "Temperatur", "metrisch"), settings),
+        SearchEntry(uiText("Sleep goal"), listOf("Schlaf", "Schlafbedarf", "Ziel", "sleep need"), settings, profile),
+        SearchEntry(uiText("Step calibration"), listOf("Schritte", "Kalibrierung", "Teiler", "steps"), settings, profile),
+        SearchEntry(uiText("Profile: age, weight, height, max heart rate"), listOf("Profil", "Alter", "Gewicht", "Größe", "Maximalpuls", "Pulszonen", "Taille"), settings, profile),
+        SearchEntry(uiText("Appearance: background, transparent cards, motion"), listOf("Erscheinungsbild", "Hintergrund", "Karten", "Transparenz", "Bewegung", "Ringe", "dunkel", "hell", "Farbe"), settings, appearance),
+        SearchEntry(uiText("Share strap log"), listOf("Band-Protokoll", "Protokoll", "Log", "teilen", "Fehler"), settings, strap),
+        SearchEntry(uiText("Units"), listOf("Einheiten", "kg", "Temperatur", "metrisch"), settings, units),
     )
 }
 
@@ -95,7 +100,7 @@ internal fun MoreSearchField(query: String, onQuery: (String) -> Unit) {
 }
 
 @Composable
-internal fun MoreSearchResults(results: List<SearchEntry>, onOpen: (String) -> Unit) {
+internal fun MoreSearchResults(results: List<SearchEntry>, onOpen: (SearchEntry) -> Unit) {
     NoopCard(padding = 0.dp) {
         Column(Modifier.fillMaxWidth()) {
             if (results.isEmpty()) {
@@ -107,7 +112,7 @@ internal fun MoreSearchResults(results: List<SearchEntry>, onOpen: (String) -> U
             }
             results.forEachIndexed { i, r ->
                 Row(
-                    modifier = Modifier.fillMaxWidth().clickable { onOpen(r.route) }.padding(horizontal = 16.dp, vertical = 14.dp),
+                    modifier = Modifier.fillMaxWidth().clickable { onOpen(r) }.padding(horizontal = 16.dp, vertical = 14.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(Icons.Filled.Search, contentDescription = null, tint = Palette.accent, modifier = Modifier.size(18.dp))

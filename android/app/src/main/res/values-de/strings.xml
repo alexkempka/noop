@@ -3285,6 +3285,7 @@
     <!-- l10n_lit:begin -->
     <string name="l10n_lit_00040bab8a">Aktiv</string>
     <string name="l10n_lit_0041f91590">/min</string>
+    <string name="l10n_lit_0084e8faec">Zugeklappt</string>
     <string name="l10n_lit_009c64bb2e">Etwas Schwankung</string>
     <string name="l10n_lit_00d8c525a2">Bereit machen, dann suchen.</string>
     <string name="l10n_lit_014795e468">Stress (auf dem Gerät)</string>
@@ -3490,6 +3491,7 @@
     <string name="l10n_lit_2e6bb196e8">Polar, Wahoo, Coospo, Garmin HRM, Amazfit Helio (Broadcast)</string>
     <string name="l10n_lit_2e95311f62">Durchschnittliche Herzfrequenz</string>
     <string name="l10n_lit_2e97e908a9">tendenziell höher</string>
+    <string name="l10n_lit_2f164197bc">Zum Start kalibrieren</string>
     <string name="l10n_lit_2f92a0aa8a">Am Wochenende</string>
     <string name="l10n_lit_2fbb2d485e">Zurück zur Markerliste</string>
     <string name="l10n_lit_304306f22d">Oura JSON · Fitbit Takeout · Garmin DSGVO (Tageswerte + Schlaf)</string>
@@ -3786,6 +3788,7 @@
     <string name="l10n_lit_6c82e6dd86">Zeit</string>
     <string name="l10n_lit_6cc8561fb9">Wandern</string>
     <string name="l10n_lit_6cd9de3a5a">Nicht am Handgelenk</string>
+    <string name="l10n_lit_6d1704748e">Aufgeklappt</string>
     <string name="l10n_lit_6d1def3d08">Titan</string>
     <string name="l10n_lit_6d38f41390">z. B. mmol/L</string>
     <string name="l10n_lit_6d50a38c64">Einheiten wie diese kosten dich am nächsten Morgen meist etwa %1$s; zurück auf deinem Basiswert bist du nach etwa %2$s (n=%3$s).</string>
@@ -4033,6 +4036,7 @@
     <string name="l10n_lit_9cb92e2fe7">Wie viele Portionen Koffein hattest du?</string>
     <string name="l10n_lit_9cd9abc4fb">Ring-Schlüssel (32 Hex-Zeichen)</string>
     <string name="l10n_lit_9d914bfcf1">Baut auf</string>
+    <string name="l10n_lit_9d93f544d7">± 5 Jahre</string>
     <string name="l10n_lit_9d99a9059f">Ruhepuls erhöht und HRV unter deinem Basiswert – beides klassische Zeichen hoher Aktivierung. Setz auf Erholung, genug trinken und einen lockeren Tag.</string>
     <string name="l10n_lit_9de516d371">Als Hauptschlaf gewählt, weil er nah an deiner üblichen Schlafenszeit begann.</string>
     <string name="l10n_lit_9e04bf2e4f">Max. Herzfrequenz, automatisch</string>
@@ -4425,6 +4429,7 @@
     <string name="l10n_lit_e9181a6cbb">HIIT</string>
     <string name="l10n_lit_e94b07d5b3">Misst</string>
     <string name="l10n_lit_e99a154f83">Distanz (%1$s, optional)</string>
+    <string name="l10n_lit_e9a9c11e77">Schätzung · mmHg</string>
     <string name="l10n_lit_e9b450d14b">Fertig</string>
     <string name="l10n_lit_ea18cff507">vor %1$s h</string>
     <string name="l10n_lit_ea489a9fe4">Gewicht in Kilogramm</string>

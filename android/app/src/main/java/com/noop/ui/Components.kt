@@ -307,7 +307,9 @@ fun SyncingHistoryNote(chunks: Int, modifier: Modifier = Modifier) {
 // MARK: - Overline label (ALL-CAPS, semibold, +0.8 tracking, secondary)
 
 @Composable
-fun Overline(text: String, modifier: Modifier = Modifier, color: Color = Palette.textSecondary) {
+// Fork (product owner 04.10.2026): section headings in white — the grey ones were overlooked three times
+// on the day sky. Call sites that pass their own colour keep it.
+fun Overline(text: String, modifier: Modifier = Modifier, color: Color = Palette.textPrimary) {
     Text(
         text = text.uppercase(),
         style = NoopType.overline,

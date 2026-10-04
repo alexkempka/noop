@@ -1,5 +1,7 @@
 package com.noop.ui
 
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -111,22 +113,41 @@ internal fun SettingsCard(
     blurb: String,
     content: @Composable () -> Unit,
 ) {
+    // Fork (product owner 04.10.2026): every section starts folded so the long page reads as a list of
+    // headings; a tap opens one. The open set lives for the app session; a search hit opens its section.
+    val open = SettingsSections.isOpen(title)
     NoopCard(padding = 20.dp, tint = Palette.accent) {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Overline(uiText("Settings"))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    Icon(icon, contentDescription = null, tint = Palette.accent, modifier = Modifier.size(18.dp))
-                    Text(title, style = NoopType.title2, color = Palette.textPrimary)
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { SettingsSections.toggle(title) }
+                    .semantics { stateDescription = if (open) uiText("Expanded") else uiText("Collapsed") },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(icon, contentDescription = null, tint = Palette.accent, modifier = Modifier.size(20.dp))
+                Text(title, style = NoopType.title2, color = Palette.textPrimary, modifier = Modifier.weight(1f))
+                Icon(
+                    if (open) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = null, tint = Palette.textPrimary, modifier = Modifier.size(22.dp),
+                )
             }
-            Text(blurb, style = NoopType.subhead, color = Palette.textSecondary)
-            content()
+            if (open) {
+                Text(blurb, style = NoopType.subhead, color = Palette.textSecondary)
+                content()
+            }
         }
     }
+}
+
+/** Which Settings sections are open (fork). Process-wide so leaving and re-entering Settings keeps them. */
+internal object SettingsSections {
+    private val open = androidx.compose.runtime.mutableStateMapOf<String, Boolean>()
+    fun isOpen(title: String): Boolean = open[title] == true
+    fun toggle(title: String) { open[title] = !isOpen(title) }
+    /** A search hit: open exactly this section. */
+    fun request(title: String) { open.clear(); open[title] = true }
 }
 
 // MARK: - Labelled toggle row (title + detail + trailing Switch)

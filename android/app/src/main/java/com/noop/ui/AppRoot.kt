@@ -1017,7 +1017,10 @@ private fun MoreScreen(onNavigate: (String) -> Unit) {
         MoreSearchField(searchQuery) { searchQuery = it }
         if (searchQuery.isNotBlank()) {
             val entries = destinationSearchEntries() + taskSearchEntries()
-            MoreSearchResults(AppSearch.search(entries, searchQuery)) { route -> onNavigate(route) }
+            MoreSearchResults(AppSearch.search(entries, searchQuery)) { hit ->
+                hit.settingsSection?.let(SettingsSections::request)
+                onNavigate(hit.route)
+            }
             return@ScreenScaffold
         }
         // Mirror the iOS More page: each group is a tappable UPPERCASE overline header (with a disclosure

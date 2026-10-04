@@ -36,14 +36,16 @@ enum class KeyMetric(val raw: String, @StringRes val titleRes: Int) {
     // DashboardCard.SKIN_TEMP's own title resource rather than adding a new one. New case, NOT added
     // to defaultOrder below, so an existing user's saved layout (and a fresh install's default) is
     // byte-identical to before; only opts in via the layout editor.
-    SKIN_TEMP("skinTemp", R.string.today_card_skin_temp);
+    SKIN_TEMP("skinTemp", R.string.today_card_skin_temp),
+    // Fork (product owner 04.10.2026): the blood-pressure ESTIMATE as a tile, "prominent near the top".
+    BLOOD_PRESSURE("bloodPressure", R.string.bp_vitals_entry);
 
     companion object {
         fun fromRaw(raw: String?): KeyMetric? = entries.firstOrNull { it.raw == raw }
 
         /** The original, hard-coded grid order — the default when the layout isn't customised. */
         val defaultOrder: List<KeyMetric> = listOf(
-            CHARGE, EFFORT, REST, HRV, RESTING_HR,
+            CHARGE, EFFORT, REST, BLOOD_PRESSURE, HRV, RESTING_HR,
             BLOOD_OXYGEN, RESPIRATORY, STEPS, WEIGHT, CALORIES,
         )
     }
@@ -81,9 +83,27 @@ object KeyMetricPrefs {
         NoopPrefs.of(context).edit().putInt(KEY_WINDOW, value).apply()
     }
 
-    /** The enabled tiles in display order. An empty/unset string yields the full default order. */
-    fun enabled(context: Context): List<KeyMetric> =
-        decodeEnabled(NoopPrefs.of(context).getString(KEY_LAYOUT, null))
+    private const val KEY_BP_ADDED = "today.keyMetrics.bloodPressureAdded"
+
+    /** The enabled tiles in display order. An empty/unset string yields the full default order. A saved
+     *  layout from before the blood-pressure tile gets it once, right after Rest (fork, 04.10.2026). */
+    fun enabled(context: Context): List<KeyMetric> {
+        val prefs = NoopPrefs.of(context)
+        val decoded = decodeEnabled(prefs.getString(KEY_LAYOUT, null))
+        if (prefs.getBoolean(KEY_BP_ADDED, false)) return decoded
+        prefs.edit().putBoolean(KEY_BP_ADDED, true).apply()
+        if (KeyMetric.BLOOD_PRESSURE in decoded || prefs.getString(KEY_LAYOUT, null).isNullOrBlank()) return decoded
+        val withBp = withBloodPressure(decoded)
+        setEnabled(context, withBp)
+        return withBp
+    }
+
+    /** Insert the blood-pressure tile right after Rest (or at the front of the second row when Rest is hidden). */
+    internal fun withBloodPressure(metrics: List<KeyMetric>): List<KeyMetric> {
+        if (KeyMetric.BLOOD_PRESSURE in metrics) return metrics
+        val at = metrics.indexOf(KeyMetric.REST).let { if (it >= 0) it + 1 else minOf(3, metrics.size) }
+        return metrics.toMutableList().apply { add(at, KeyMetric.BLOOD_PRESSURE) }
+    }
 
     /** Persist the enabled tiles in order. Disabled tiles are simply omitted from the stored string. */
     fun setEnabled(context: Context, metrics: List<KeyMetric>) {
