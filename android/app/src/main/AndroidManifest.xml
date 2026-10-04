@@ -143,9 +143,10 @@
     <!-- Resolve the Health Connect provider on Android 14+ (platform) and earlier (app). -->
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
-        <!-- Fork: to name the scale apps that write body values to Health Connect (Withings, Google Fit). -->
+        <!-- Fork: to name the scale apps that write body values to Health Connect (Withings, Google Fit, Fitdays). -->
         <package android:name="com.withings.wiscale2" />
         <package android:name="com.google.android.apps.fitness" />
+        <package android:name="cn.fitdays.fitdays" />
         <!-- So the connection helper can detect the official WHOOP app and deep-link to its
              info screen (a strap only pairs with one app at a time). Android 11+ visibility. -->
         <package android:name="com.whoop.android" />
