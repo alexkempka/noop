@@ -280,6 +280,8 @@ object DataBackup {
             exportedAtMs = System.currentTimeMillis(),
         )
 
+        val forkExtrasJson = runCatching { ForkBackupExtras.snapshotJson(appContext) }.getOrNull()
+
         val resolver = appContext.contentResolver
         val output = resolver.openOutputStream(uri)
             ?: throw IOException("Could not open the chosen file for writing.")
@@ -311,6 +313,13 @@ object DataBackup {
                     zip.putNextEntry(ZipEntry(MANIFEST_ENTRY_NAME))
                     zip.write(manifestJson.toByteArray(Charsets.UTF_8))
                     zip.closeEntry()
+                    // Fork: ECG files and the fork's own settings (ForkBackupExtras), written LAST so the
+                    // upstream importers never meet it. A failure to collect them never fails the export.
+                    forkExtrasJson?.let { extras ->
+                        zip.putNextEntry(ZipEntry(ForkBackupExtras.ENTRY_NAME))
+                        zip.write(extras.toByteArray(Charsets.UTF_8))
+                        zip.closeEntry()
+                    }
                 }
             }
         }
@@ -558,6 +567,13 @@ object DataBackup {
             tempSettings.delete()
         }
 
+        // 7b. Fork: the ECG recordings and fork settings, when this backup carries them (ForkBackupExtras).
+        //     Same rule as the settings above: only after the swap landed, and never able to fail it.
+        runCatching {
+            readZipEntryText(resolver, uri, ForkBackupExtras.ENTRY_NAME, ForkBackupExtras.MAX_ENTRY_BYTES)
+                ?.let { ForkBackupExtras.apply(appContext, it) }
+        }
+
         rollbackFile.delete()
         tempSqlite.delete()
         // #57 debug: record when a restore swapped the DB, so the export can correlate a restore with a
@@ -568,6 +584,30 @@ object DataBackup {
         }
         return ImportResult.NeedsRestart
     }
+
+    /** Fork: one named entry of a ZIP backup as text, or null when absent, too large, or not a ZIP. */
+    internal fun readZipEntryText(input: java.io.InputStream, name: String, cap: Long): String? =
+        java.util.zip.ZipInputStream(input).use { zip ->
+            while (true) {
+                val entry = zip.nextEntry ?: return null
+                if (entry.name != name) continue
+                val out = java.io.ByteArrayOutputStream()
+                val buf = ByteArray(64 * 1024)
+                var total = 0L
+                while (true) {
+                    val n = zip.read(buf)
+                    if (n < 0) break
+                    total += n
+                    if (total > cap) return null
+                    out.write(buf, 0, n)
+                }
+                return out.toString(Charsets.UTF_8.name())
+            }
+            @Suppress("UNREACHABLE_CODE") null
+        }
+
+    private fun readZipEntryText(resolver: android.content.ContentResolver, uri: Uri, name: String, cap: Long): String? =
+        resolver.openInputStream(uri)?.use { readZipEntryText(it, name, cap) }
 
     // ── Container staging (pure file/stream layer, unit-tested under real file I/O) ──────
 

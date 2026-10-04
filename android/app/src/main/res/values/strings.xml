@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NOOP</string>
+    <string name="app_name">VYRO</string>
     <string name="widget_description">Today\'s Sleep quality, Charge and Effort, with live heart rate and strap battery at a glance.</string>
     <string name="widget_hr_name">NOOP Heart Rate</string>
     <string name="widget_hr_description">Live heart rate with the last three hours as a trace.</string>
@@ -4052,6 +4052,7 @@
     <string name="l10n_lit_9ada09cf84">selected folder</string>
     <string name="l10n_lit_9b2c3e01da">Systolic</string>
     <string name="l10n_lit_9b3477c0a7">Nothing notable</string>
+    <string name="l10n_lit_9b6e960d7a">VYRO is based on NOOP, licensed under the PolyForm Noncommercial License 1.0.0 (polyformproject.org/licenses/noncommercial/1.0.0). Required Notice: Copyright 2026 NoopApp</string>
     <string name="l10n_lit_9bf5ed9b17">Blood O₂</string>
     <string name="l10n_lit_9c17112fad">Share trends report</string>
     <string name="l10n_lit_9c26990fd7">later step</string>
@@ -4258,6 +4259,7 @@
     <string name="l10n_lit_c11363b17c">Bluetooth is currently off.</string>
     <string name="l10n_lit_c115b67393">Mood ↔ HRV</string>
     <string name="l10n_lit_c1268ca7e5">Share recap</string>
+    <string name="l10n_lit_c135df6445">Your Body. Its Signals.</string>
     <string name="l10n_lit_c16981e681">Mood</string>
     <string name="l10n_lit_c1d33ad534">Stages</string>
     <string name="l10n_lit_c2270b7736">A goal shows at a glance whether you keep to the level you set yourself. Which number suits you is your choice — NOOP gives no advice on it. Over weeks, the history shows how your everyday movement changes, and how it sits next to your Effort and your Rest.</string>

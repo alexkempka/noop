@@ -31,8 +31,8 @@ android {
         // in what is inside them are the one thing a tester cannot check. Same applicationId and the
         // same committed signing key, so each still installs straight over the last and keeps the
         // imported history. 549 = the first three repairs, 550 = the wrist selection, 551 = the session teardown, 552 = report fixes, 553 = layout fixes, 554 = the skin-temp scale bug, 555 = the Sleep quality rename, 556 = the live-session auto-end, 557 = the German UI text.
-        versionCode = 574
-        versionName = "11.8.0-mg26"
+        versionCode = 575
+        versionName = "11.8.0-mg27"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

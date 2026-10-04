@@ -2076,27 +2076,9 @@ fun SettingsScreen(
             }
         }
 
-        // --- App icon (v3 "Titanium & Gold") ---
-        // Two staged launcher icons — machined titanium (default) and blued/dark-blue titanium. The
-        // swap is done by enabling exactly one <activity-alias> (.IconDefault / .IconNavy) at runtime;
-        // the launcher may take a beat (or briefly disappear/redraw) while it re-reads the icon.
-        SettingsCard(
-            icon = Icons.Filled.Palette,
-            title = uiString(R.string.l10n_settings_screen_app_icon_abde7a74),
-            blurb = uiString(R.string.l10n_settings_screen_choose_how_noop_looks_on_your_d680c8e0),
-        ) {
-            SettingsFormRow(label = uiString(R.string.l10n_settings_screen_icon_716f63b9)) {
-                SegmentedPillControl(
-                    items = listOf(false, true),
-                    selection = appIconNavy,
-                    label = { if (it) uiText("Blue Titanium") else uiText("Titanium") },
-                    onSelect = { navy ->
-                        appIconNavy = navy
-                        setAppIcon(context, navy)
-                    },
-                )
-            }
-        }
+        // --- App icon --- Fork (04.10.2026): the app is VYRO with ONE icon; both launcher aliases carry it, so
+        // the old Titanium / Blue Titanium choice would change nothing and is not offered.
+        @Suppress("UNUSED_VARIABLE") val keepIconState = appIconNavy
 
         // --- Strap ---
         SettingsCard(
@@ -3768,9 +3750,17 @@ fun SettingsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Text("NOOP", style = NoopType.title2, color = Palette.textPrimary)
+                    Text("VYRO", style = NoopType.title2, color = Palette.textPrimary)
                     StatePill("v${BuildConfig.VERSION_NAME}", tone = StrandTone.Neutral, showsDot = false)
                 }
+
+                // Fork: VYRO is a renamed private build of NOOP. PolyForm Noncommercial 1.0.0 asks that the
+                // licence (or its link) and every "Required Notice" line travel with the software.
+                Text(
+                    uiText("VYRO is based on NOOP, licensed under the PolyForm Noncommercial License 1.0.0 (polyformproject.org/licenses/noncommercial/1.0.0). Required Notice: Copyright 2026 NoopApp"),
+                    style = NoopType.footnote,
+                    color = Palette.textSecondary,
+                )
 
                 // The build number, on its own line rather than inside the pill.
                 //

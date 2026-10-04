@@ -4036,6 +4036,7 @@
     <string name="l10n_lit_9ada09cf84">gewählter Ordner</string>
     <string name="l10n_lit_9b2c3e01da">Systolisch</string>
     <string name="l10n_lit_9b3477c0a7">Nichts Besonderes</string>
+    <string name="l10n_lit_9b6e960d7a">VYRO basiert auf NOOP, lizenziert unter der PolyForm Noncommercial License 1.0.0 (polyformproject.org/licenses/noncommercial/1.0.0). Required Notice: Copyright 2026 NoopApp</string>
     <string name="l10n_lit_9bf5ed9b17">Blut-O₂</string>
     <string name="l10n_lit_9c17112fad">Trendbericht teilen</string>
     <string name="l10n_lit_9c26990fd7">späterer Zeitpunkt</string>
@@ -4242,6 +4243,7 @@
     <string name="l10n_lit_c11363b17c">Bluetooth ist derzeit ausgeschaltet.</string>
     <string name="l10n_lit_c115b67393">Stimmung ↔ HRV</string>
     <string name="l10n_lit_c1268ca7e5">Rückblick teilen</string>
+    <string name="l10n_lit_c135df6445">Dein Körper. Seine Signale.</string>
     <string name="l10n_lit_c16981e681">Stimmung</string>
     <string name="l10n_lit_c1d33ad534">Phasen</string>
     <string name="l10n_lit_c2270b7736">Ein Ziel zeigt auf einen Blick, ob du das Maß hältst, das du dir selbst gesetzt hast. Welche Zahl zu dir passt, entscheidest du – NOOP gibt dazu keine Empfehlung. Über Wochen zeigt der Verlauf, wie sich deine Alltagsbewegung verändert und wie sie neben deiner Belastung und deiner Erholung steht.</string>

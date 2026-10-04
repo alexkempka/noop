@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VYRO-Schriftzug für dunklen Grund (aus VYRO-Paket/logo/VYRO-schriftzug-dunkel.svg, Linien 1:1 übernommen):
+     V in Türkis, YRO in Weiß. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="99.6dp" android:height="30dp"
+    android:viewportWidth="571.2" android:viewportHeight="172">
+  <group android:translateX="12" android:translateY="6">
+    <path android:pathData="M9.35,10 L55.2,121.5 L101.05,10" android:strokeColor="#FF21D4B4"
+        android:strokeWidth="17" android:strokeLineJoin="miter" android:strokeMiterLimit="10" android:strokeLineCap="butt"
+        android:fillColor="#00000000"/>
+    <path android:pathData="M158.15,10 L202.8,67.6 L247.45,10 M202.8,67.6 L202.8,130" android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="17" android:strokeLineJoin="miter" android:strokeMiterLimit="10" android:strokeLineCap="butt"
+        android:fillColor="#00000000"/>
+    <path android:pathData="M303.7,130 L303.7,18.5 L357.6,18.5 A22.7,22.7 0 0,1 357.6,63.9 L303.7,63.9 M349.655,63.9 L388.8,130"
+        android:strokeColor="#FFFFFFFF" android:strokeWidth="17" android:strokeLineJoin="miter" android:strokeMiterLimit="10"
+        android:strokeLineCap="butt" android:fillColor="#00000000"/>
+    <path android:pathData="M435.7,70 a51.5,51.5 0 1,0 103,0 a51.5,51.5 0 1,0 -103,0" android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="17" android:fillColor="#00000000"/>
+  </group>
+</vector>

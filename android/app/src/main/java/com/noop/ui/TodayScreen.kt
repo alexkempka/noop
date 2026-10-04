@@ -2975,15 +2975,21 @@ private fun LiquidWordmark() {
                 translationX = animDx
             }
             .clearAndSetSemantics {}, // decorative wordmark — invisible to TalkBack
-        horizontalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        "NOOP".forEach { ch ->
+        // Fork (product owner, 04.10.2026): the app is VYRO. The drawn wordmark from the VYRO package
+        // (turquoise V, white YRO) with the claim under it, in the phone's language.
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            androidx.compose.foundation.Image(
+                painter = androidx.compose.ui.res.painterResource(R.drawable.vyro_wordmark),
+                contentDescription = null,
+                modifier = Modifier.height(22.dp),
+            )
             Text(
-                ch.toString(),
-                style = NoopType.number(16f, weight = FontWeight.Bold)
-                    .copy(shadow = Shadow(color = Color.Black.copy(alpha = 0.25f), offset = Offset(0f, 1f), blurRadius = 6f)),
-                color = Color.White.copy(alpha = 0.5f),
+                uiText("Your Body. Its Signals."),
+                style = NoopType.caption.copy(letterSpacing = 1.5.sp),
+                color = Color.White.copy(alpha = 0.75f),
             )
         }
     }
