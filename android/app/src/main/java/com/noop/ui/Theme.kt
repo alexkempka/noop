@@ -468,7 +468,14 @@ object Metrics {
 object NoopType {
     // Helvetica Neue family — falls back to the platform grotesque (SansSerif) when
     // no res/font/helvetica_neue asset is bundled, per the v3 type spec.
-    private val sans = FontFamily.SansSerif
+    // Fork (product owner 04.10.2026: "klare moderne Schriften"): Inter, SIL OFL 1.1 — see NOTICE. Its
+    // tabular figures back the existing "tnum" requests, so numbers keep their fixed width.
+    private val sans = FontFamily(
+        androidx.compose.ui.text.font.Font(com.noop.R.font.inter_regular, FontWeight.Normal),
+        androidx.compose.ui.text.font.Font(com.noop.R.font.inter_medium, FontWeight.Medium),
+        androidx.compose.ui.text.font.Font(com.noop.R.font.inter_semibold, FontWeight.SemiBold),
+        androidx.compose.ui.text.font.Font(com.noop.R.font.inter_bold, FontWeight.Bold),
+    )
     private val monoFamily = FontFamily.Monospace
 
     /** Long German compounds ("Herzfrequenzvariabilität") must break at a syllable with a hyphen,

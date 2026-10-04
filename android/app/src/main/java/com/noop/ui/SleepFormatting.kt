@@ -20,7 +20,7 @@ internal fun vsTypical(latest: Double?, typical: Double?, suffix: String, decima
     val diff = latest - typical
     val sign = if (diff >= 0) "+" else "−"
     val mag = abs(diff)
-    val num = if (decimals == 0) "${mag.roundToInt()}" else String.format(java.util.Locale.US, "%.${decimals}f", mag)
+    val num = if (decimals == 0) "${mag.roundToInt()}" else String.format(java.util.Locale.getDefault(), "%.${decimals}f", mag)
     return uiText("%1\$s%2\$s%3\$s vs typical", sign, num, suffix)
 }
 

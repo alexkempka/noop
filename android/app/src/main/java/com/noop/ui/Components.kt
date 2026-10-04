@@ -149,7 +149,55 @@ fun Modifier.frostedCardSurface(
             val fill = Palette.surfaceRaised.copy(alpha = Palette.surfaceRaised.alpha * op)
             val border = Palette.hairline.copy(alpha = Palette.hairline.alpha * op)
 
-            if (tint == null) {
+            if (!Palette.isLight) {
+                // Fork (product owner 04.10.2026: "Glas Effekt … Verläufe"): a glass pane in the ITC-X colours.
+                // 1) A translucent Navy → Nachtblau body, so the sky behind the cards still shows through.
+                drawRoundRect(
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            Palette.surfaceRaised.copy(alpha = 0.78f * op),
+                            Palette.surfaceBase.copy(alpha = 0.66f * op),
+                        ),
+                    ),
+                    cornerRadius = corner,
+                )
+                // 2) The domain tint, as before, as a faint diagonal wash.
+                if (tint != null) {
+                    drawRoundRect(
+                        brush = Brush.linearGradient(
+                            colorStops = arrayOf(
+                                0.0f to tint.copy(alpha = 0.07f * washStrength * op),
+                                0.5f to tint.copy(alpha = 0.02f * washStrength * op),
+                                1.0f to Color.Transparent,
+                            ),
+                            start = Offset(0f, 0f), end = Offset(size.width, size.height),
+                        ),
+                        cornerRadius = corner,
+                    )
+                }
+                // 3) A light sheen across the top edge — the reflection that reads as glass.
+                drawRoundRect(
+                    brush = Brush.verticalGradient(
+                        0.0f to Color.White.copy(alpha = 0.09f * op),
+                        0.35f to Color.White.copy(alpha = 0.0f),
+                        startY = 0f, endY = size.height,
+                    ),
+                    cornerRadius = corner,
+                )
+                // 4) A rim that catches the light top-left (Hellblau) and fades out bottom-right.
+                drawRoundRect(
+                    brush = Brush.linearGradient(
+                        colorStops = arrayOf(
+                            0.0f to Color(0xFF4FD1E8).copy(alpha = 0.42f * op),
+                            0.45f to Color(0xFF2A5A94).copy(alpha = 0.22f * op),
+                            1.0f to Color(0xFF00A6CA).copy(alpha = 0.10f * op),
+                        ),
+                        start = Offset(0f, 0f), end = Offset(size.width, size.height),
+                    ),
+                    cornerRadius = corner,
+                    style = Stroke(width = 1.dp.toPx()),
+                )
+            } else if (tint == null) {
                 // NEUTRAL card (iOS FrostedCardSurface tint == nil): a FLAT raised surface — no vertical
                 // bevel gradient, no accent wash, and a PLAIN hairline border (no accent bias).
                 drawRoundRect(color = fill, cornerRadius = corner)
@@ -1329,7 +1377,7 @@ fun ScreenScaffold(
     // two paths share one body.
     val columnModifier: Modifier =
         if (topBackground == null) {
-            modifier.fillMaxWidth().background(Palette.surfaceBase)
+            modifier.fillMaxWidth().background(canvasBrush())
         } else {
             Modifier.fillMaxWidth()
         }
@@ -1393,7 +1441,7 @@ fun ScreenScaffold(
         // Pull the scene up by the status-bar inset (the Scaffold already pushed this content below the
         // bar), so the scene bleeds behind the status bar rather than starting under it.
         val statusBarTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-        Box(modifier = modifier.fillMaxSize().background(Palette.surfaceBase)) {
+        Box(modifier = modifier.fillMaxSize().background(canvasBrush())) {
             Box(
                 modifier = (
                     if (fullBleedBackground) {
@@ -1500,7 +1548,7 @@ fun LazyScreenScaffold(
     // the gap above the first row, exactly like ScreenScaffold's `padding(top = topPadding)`).
     val listModifier: Modifier =
         if (topBackground == null) {
-            modifier.fillMaxWidth().background(Palette.surfaceBase)
+            modifier.fillMaxWidth().background(canvasBrush())
         } else {
             Modifier.fillMaxWidth()
         }
@@ -1530,7 +1578,7 @@ fun LazyScreenScaffold(
         // compositing layer (an empty graphicsLayer {}) so the scene rasterises once and replays as a
         // texture on every scroll frame instead of being re-issued under the scrolling rows.
         val statusBarTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-        Box(modifier = modifier.fillMaxSize().background(Palette.surfaceBase)) {
+        Box(modifier = modifier.fillMaxSize().background(canvasBrush())) {
             Box(
                 modifier = (
                     if (fullBleedBackground) {
@@ -1650,3 +1698,15 @@ fun BackupFailureDialog(message: String, onDismiss: () -> Unit) {
         },
     )
 }
+
+/**
+ * Fork (product owner 04.10.2026: "Verläufe von Farben"): the screen canvas. Dark: a soft ITC-X Navy →
+ * Nachtblau gradient instead of a flat fill; light keeps its flat paper colour.
+ */
+internal fun canvasBrush(): Brush =
+    if (Palette.isLight) androidx.compose.ui.graphics.SolidColor(Palette.surfaceBase)
+    else Brush.verticalGradient(
+        0.0f to Color(0xFF0A2A50),
+        0.45f to Palette.surfaceBase,
+        1.0f to Palette.surfaceBase,
+    )

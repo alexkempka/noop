@@ -27,7 +27,7 @@ internal fun sleepMetricSpec(key: String): SleepMetricSpec = when (key) {
     "consistency"     -> SleepMetricSpec(uiText("Consistency"), "%", Palette.metricCyan) { "${it.roundToInt()}" }
     "hours_vs_needed" -> SleepMetricSpec(uiText("Hours vs Needed"), "%", Palette.restColor) { "${it.roundToInt()}" }
     "restorative"     -> SleepMetricSpec(uiText("Restorative"), "%", Palette.sleepREM) { "${it.roundToInt()}" }
-    "respiratory"     -> SleepMetricSpec(uiText("Respiratory Rate"), uiText("rpm"), Palette.metricPurple) { String.format(Locale.US, "%.1f", it) }
+    "respiratory"     -> SleepMetricSpec(uiText("Respiratory Rate"), uiText("rpm"), Palette.metricPurple) { String.format(Locale.getDefault(), "%.1f", it) }
     "sleep_debt"      -> SleepMetricSpec(uiText("Sleep Debt"), "min", Palette.metricRose) { "${it.roundToInt()}" }   // #691: minutes, not decimal hours
     else              -> SleepMetricSpec(key, "", Palette.accent) { "${it.roundToInt()}" }
 }
@@ -37,7 +37,13 @@ internal fun buildSleepMetricPoints(
     key: String,
     imported: ImportedSleepSeries = ImportedSleepSeries(),
     napSleepMinByDay: Map<String, Double> = emptyMap(),
+    sessions: List<com.noop.data.SleepSession> = emptyList(),
 ): List<Pair<String, Double>> {
+    // Fork: consistency is the tile's own bedtime-onset series (imported WHOOP figure first, per day).
+    if (key == "consistency") {
+        val onset = consistencyByNight(sessions).toMap()
+        return days.mapNotNull { d -> (imported.consistency[d.day] ?: onset[d.day])?.let { d.day to it } }
+    }
     val needMin = RestScorer.descriptiveNeedMin(days.mapNotNull { it.totalSleepMin?.takeIf { m -> m > 0.0 } }.average().let { if (it.isNaN()) 480.0 else it })
     if (key == "sleep_debt") {
         val debtNeedMin = RestScorer.personalizedNeedHours(
@@ -60,7 +66,9 @@ internal fun buildSleepMetricPoints(
             // source of truth the Today Rest score uses (RestScorer.restFromDaily, the composite the
             // sleep_performance series carries) — not a local hours-vs-need approximation. Keeps the
             // graph and the score in agreement. (#614 follow-up)
-            "performance" -> RestScorer.restFromDaily(d)?.takeIf { it in 0.0..100.0 }
+            // Fork: the tile's source per day — WHOOP's own figure where the export carried it, else the
+            // on-device composite — so the sheet's average and the tile's "vs typical" read one series.
+            "performance" -> (imported.performance[d.day] ?: RestScorer.restFromDaily(d))?.takeIf { it in 0.0..100.0 }
             "efficiency"  -> d.efficiency?.let { if (it <= 1.0) it * 100.0 else it }
             "consistency" -> {
                 val idx = days.indexOf(d)
@@ -72,7 +80,12 @@ internal fun buildSleepMetricPoints(
                     (100.0 * (1.0 - sd / 90.0)).coerceIn(0.0, 100.0)
                 }
             }
-            "hours_vs_needed" -> d.totalSleepMin?.takeIf { it > 0.0 }?.let { minOf(100.0, it / needMin * 100.0) }
+            // Fork: same as the tile — imported need per day, and NOT capped at 100 (the tile showed 125 %,
+            // the sheet 100 % for the same night).
+            "hours_vs_needed" -> {
+                val need = imported.needMin[d.day] ?: needMin
+                d.totalSleepMin?.takeIf { it > 0.0 && need > 0.0 }?.let { it / need * 100.0 }
+            }
             "restorative" -> {
                 val dp = d.deepMin ?: return@mapNotNull null
                 val rm = d.remMin ?: return@mapNotNull null

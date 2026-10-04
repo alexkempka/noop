@@ -101,14 +101,18 @@ data class PaletteTokens(
 // WHOOP-reset dark palette (gold killed 2026-06-22). Values match StrandPalette.swift's DARK
 // Titanium column byte-for-byte: blue-grey canvas, WHOOP red→yellow→green recovery, green Charge,
 // blue Effort, slate Rest, amber Stress. NO gold anywhere — accent/gold tokens point to WHOOP blue.
+// Fork (product owner 04.10.2026): the chrome of the dark theme takes the ITC-X palette — Nachtblau
+// #011E3C canvas, Navy #002F65 / #0A2A50 cards, Cyan #00A6CA accent, Hellblau #4FD1E8 highlights, #B6C6D6
+// secondary text (alexkempka/empty, ITC-X-Logo). Data encodings (recovery ramp, sleep stages, zones) keep
+// their meaning-carrying colours. Documented in 1stAndroidApp docs/NAME_UND_GESTALTUNG.md.
 val DarkTokens = PaletteTokens(
-    surfaceBase = Color(0xFF121518), surfaceRaised = Color(0xFF25292C), surfaceOverlay = Color(0xFF1C1F26),
-    surfaceInset = Color(0xFF1F2229), hairline = Color(0xFF21304A), hairlineStrong = Color(0xFF2E3C57),
-    textPrimary = Color(0xFFF4F6F8), textSecondary = Color(0xFFC8CFD8), textTertiary = Color(0xFF8A94A4),
+    surfaceBase = Color(0xFF011E3C), surfaceRaised = Color(0xFF0A2A50), surfaceOverlay = Color(0xFF06244A),
+    surfaceInset = Color(0xFF041A33), hairline = Color(0xFF1D4373), hairlineStrong = Color(0xFF2A5A94),
+    textPrimary = Color(0xFFF4F8FC), textSecondary = Color(0xFFB6C6D6), textTertiary = Color(0xFF8197AE),
     glowAmbient = Color(0xFF3A2D0A),
     // Brand accent → mint, parity with iOS #1068 (NoopVisualStyle.mint/mintGlow). accentMuted is a dark
     // teal muted surface (green-shifted analog of the old navy 0xFF16233A). Gold stays in the recovery world.
-    accent = Color(0xFF69DDB8), accentHover = Color(0xFF54E6BD), accentMuted = Color(0xFF163329), focusRing = Color(0xFF69DDB8),
+    accent = Color(0xFF00A6CA), accentHover = Color(0xFF4FD1E8), accentMuted = Color(0xFF003A5C), focusRing = Color(0xFF4FD1E8),
     recovery000 = Color(0xFFE0463C), recovery030 = Color(0xFFE8743C), recovery055 = Color(0xFFF9DF4A),
     recovery078 = Color(0xFF8FD86A), recovery100 = Color(0xFF03E095),
     strain000 = Color(0xFF9C5A14), strain033 = Color(0xFFC2762A), strain066 = Color(0xFFD98A3D), strain100 = Color(0xFFF0A85A),
@@ -120,13 +124,13 @@ val DarkTokens = PaletteTokens(
     effortColor = Color(0xFF4090E0), effortDeep = Color(0xFF2A6FB0), effortBright = Color(0xFF74B6F0), effortGlow = Color(0xFF4090E0),
     restColor = Color(0xFF83A0B8), restDeep = Color(0xFF2F6FCB), restBright = Color(0xFF6FA8E8), restGlow = Color(0xFF4A90E2),
     stressColor = Color(0xFFF0A020), stressDeep = Color(0xFF4A90E2), stressBright = Color(0xFFE0662F), stressGlow = Color(0xFFF0A020),
-    scenicCenter = Color(0xFF1C2128), scenicEdge = Color(0xFF121518), scenicStar = Color(0xFFC8CFD8),
-    cardFillTop = Color(0xFF15243C), cardFillBottom = Color(0xFF0B1424),
-    gold = Color(0xFF60A0E0), goldLight = Color(0xFF9FC8F0), goldDeep = Color(0xFF3A78C8),
+    scenicCenter = Color(0xFF0A2A50), scenicEdge = Color(0xFF011E3C), scenicStar = Color(0xFFB3EBF5),
+    cardFillTop = Color(0xFF0A2A50), cardFillBottom = Color(0xFF011E3C),
+    gold = Color(0xFF4FD1E8), goldLight = Color(0xFFB3EBF5), goldDeep = Color(0xFF00A6CA),
     goldDeepText = Color(0xFFFFFFFF), signalYellow = Color(0xFFFFD63D),
     titaniumTop = Color(0xFFF1F3F5), titaniumMid = Color(0xFFC9CFD4), titaniumLow = Color(0xFF969DA4), titaniumDeep = Color(0xFF6B737B),
     tipCore = Color(0xFFFFFFFF),
-    heroFill = Color(0xCC0D0E14), heroBorder = Color(0x1CFFFFFF),
+    heroFill = Color(0xCC011E3C), heroBorder = Color(0x334FD1E8),
 )
 
 val LightTokens = PaletteTokens(

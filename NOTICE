@@ -16,6 +16,11 @@ ZIPFoundation — https://github.com/weichsel/ZIPFoundation
   License: MIT
   Used for: reading WHOOP / Apple Health export archives during import.
 
+Inter (typeface, Android build of this fork) — https://github.com/rsms/inter
+  License: SIL Open Font License 1.1 (android/app/src/main/assets/licenses/Inter-OFL.txt)
+  Used for: the app's text and numbers. Regular, Medium, SemiBold and Bold, converted
+  unmodified from the project's WOFF2 files to TTF for Android.
+
 The MIT license is permissive: these components may be used, modified, and
 redistributed (including commercially) on their own terms. When they are used as
 part of NOOP's combined work, the combined work as a whole is governed by NOOP's

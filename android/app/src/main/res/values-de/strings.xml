@@ -3572,6 +3572,7 @@
     <string name="l10n_lit_40d69e6eaf">Was dein Fitnessalter noch braucht.</string>
     <string name="l10n_lit_40e2de139b">deine Werte im Verlauf</string>
     <string name="l10n_lit_40e4579fa6">%1$s importierte Tage</string>
+    <string name="l10n_lit_40f0732379">Persönlich</string>
     <string name="l10n_lit_4103be8888">%1$s, keine Daten</string>
     <string name="l10n_lit_410aa15cdf">Herzfrequenz</string>
     <string name="l10n_lit_412a834393">Im Ziel</string>
@@ -3746,6 +3747,7 @@
     <string name="l10n_lit_66b11ea257">Lokal übernehmen. Beta.</string>
     <string name="l10n_lit_66baac7fd3">1 Energiepunkt</string>
     <string name="l10n_lit_66d95a0708">Wochenrückblick</string>
+    <string name="l10n_lit_66db8acc0f">Tippe, wenn du dich schlafen legst und wenn du wach bist. NOOP lässt die Nacht dann nicht früher beginnen und nicht später enden als dein Tipp. Ohne Tipp erkennt NOOP die Nacht selbst.</string>
     <string name="l10n_lit_66f34ddda8">Wie viel Energie eines Tages in den nächsten mitgeht.</string>
     <string name="l10n_lit_670c843978">Ruhepuls niedrig, HRV hoch. Dein Nervensystem wirkt gut erholt und ruhig. Ein guter Tag, um Gas zu geben – wenn du willst.</string>
     <string name="l10n_lit_6734e19790">Abends</string>
@@ -3992,6 +3994,7 @@
     <string name="l10n_lit_953b0ed138">Verlass dich bei der Deutung von Ergebnissen und bei Entscheidungen immer auf deine Ärztin, deinen Arzt, deine Apotheke oder eine andere Fachperson. Macht dir ein Wert Sorgen, sprich mit ihnen – nicht mit einer App.</string>
     <string name="l10n_lit_9556d852a9">Fechten</string>
     <string name="l10n_lit_95c20ff108">Standard-Puls ist keine volle Kopplung</string>
+    <string name="l10n_lit_95e161ed18">Dein Ziel</string>
     <string name="l10n_lit_961d285f3c">Alle Aktivitäten</string>
     <string name="l10n_lit_965304ddfc">Tägliche Exportzeit</string>
     <string name="l10n_lit_966319a642">NUR LOKAL</string>

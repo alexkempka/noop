@@ -499,6 +499,7 @@ fun SleepScreen(
                 key = currentDetailKey,
                 imported = imported,
                 napSleepMinByDay = napSleepMinByDay,
+                sessions = sleeps,
             )
         }
     }
@@ -522,6 +523,74 @@ fun SleepScreen(
     val is24h = ClockPrefs.uses24Hour(LocalContext.current)
     val night = remember(nightOffset, navDays, days, habitualMidsleep, motionByStart, is24h) {
         selectNight(navDays, days, nightOffset, habitualMidsleep, motionByStart, is24h = is24h)
+    }
+
+    // The night-edit path, shared by the pen editor and the sleep-mark taps (fork) so both move a night
+    // the same way: optimistic in-memory copy, durable write, re-score.
+    val applyNightTimes: (SleepSession, Long, Long) -> Unit = { s, start, end ->
+                // #940 belt-and-braces: never apply (optimistically OR durably) a future-ending
+                // or inverted window, whatever the pickers produced. The editor's own guards
+                // (cross-midnight auto-correct + the disjoint confirm) should make this
+                // unreachable; sharing ONE safe window here keeps the in-memory copy and the DB
+                // write in lockstep. Same rule as WhoopRepository.updateSleepSessionTimes.
+                val safe = SleepEditGuard.clampedEditWindow(start, end, System.currentTimeMillis() / 1000L)
+                if (safe != null) {
+                    val (safeStart, safeEnd) = safe
+                    // Optimistic: rewrite this session in `sleeps` so every metric recomputes
+                    // immediately, then persist DURABLY off the UI thread. Mirror the persist path —
+                    // keep the IMMUTABLE detected startTs and store the corrected onset in
+                    // startTsAdjusted with userEdited=true, so display (via effectiveStartTs) tracks the
+                    // edit while the (deviceId,startTs) key never moves. (PR #260 + #395)
+                    // Reclip stagesJSON in-memory so the hypnogram strip updates instantly (same
+                    // reclip logic runs again in WhoopRepository for the durable DB copy).
+                    // #1492: apply across the WHOLE bridged night. Editing only `s` (the winning
+                    // fragment) left the fragments defining the displayed bedtime and wake exactly
+                    // where they were, so a corrected night looked unchanged. ONE plan drives both the
+                    // optimistic copy and the durable write, so they cannot disagree.
+                    val group = night?.heroGroup.orEmpty().ifEmpty { listOf(s) }
+                    val plan = SleepGroupEdit.plan(group, safeStart, safeEnd)
+                    if (plan.clipped.isNotEmpty()) {
+                        val edited = plan.clipped.associateBy { it.deviceId to it.startTs }
+                        val gone = plan.dropped.map { it.deviceId to it.startTs }.toSet()
+                        sleeps = sleeps.mapNotNull { row ->
+                            val key = row.deviceId to row.startTs
+                            when {
+                                key in gone -> null
+                                else -> edited[key] ?: row
+                            }
+                        }
+                        if (plan.dropped.isNotEmpty()) {
+                            sleepUndo = SleepUndoState(plan.dropped, fromEdit = true)
+                        }
+                        scope.launch { vm.updateSleepGroupTimes(group, safeStart, safeEnd) }
+                    }
+                } else {
+                    // The clamp refused a future/inverted window. Never drop an edit silently (the nap
+                    // pickers used to do exactly that): tell the user why nothing changed. (#940)
+                    Toast.makeText(
+                        context,
+                        uiText("That time can't be saved (it lands in the future or ends before it starts)."),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+    }
+
+    // Fork (product owner 04.10.2026): a "going to sleep" / "I'm awake" tap bounds the displayed night —
+    // onset never before the bedtime tap, end never after the wake tap. Without taps nothing changes and
+    // detection stands. A night the user corrected by hand is left alone unless a tap moved it before.
+    var sleepMarksVersion by remember { mutableIntStateOf(0) }
+    LaunchedEffect(night?.session?.startTs, night?.session?.endTs, sleepMarksVersion) {
+        val n = night ?: return@LaunchedEffect
+        val group = n.heroGroup.ifEmpty { listOf(n.session) }
+        val nightKey = "${n.session.deviceId}:${n.session.startTs}"
+        if (group.any { it.userEdited } && !SleepMarkStore.wasApplied(context, nightKey)) return@LaunchedEffect
+        val start = group.minOf { it.effectiveStartTs }
+        val end = group.maxOf { it.endTs }
+        val target = com.noop.analytics.SleepMarkBoundary.adjusted(start, end, SleepMarkStore.all(context))
+            ?: return@LaunchedEffect
+        SleepMarkStore.markApplied(context, nightKey)
+        vm.ble.externalLog("Sleep mark applied · night $nightKey $start–$end → ${target.first}–${target.second}")
+        applyNightTimes(n.session, target.first, target.second)
     }
 
     // #1311: label the carousel by CALENDAR nights, not the flat recorded-night index — a night with no
@@ -770,15 +839,19 @@ fun SleepScreen(
               val k = SLEEP_SECTION_KEY_PREFIX + section.raw
               when (section) {
                 SleepSection.SLEEP_MARKS -> item(key = k) {
-                    // SLEEP MARKS — tap to log "going to sleep" / "I'm awake" (#461, Phase 1). LOGGING ONLY:
-                    // a mark is persisted to the `sleep_mark` series + the shareable strap log; it never
-                    // changes the detected sleep. Mirrors macOS SleepView.sleepMarkCard.
+                    // SLEEP MARKS — tap to log "going to sleep" / "I'm awake" (#461). Persisted to the `sleep_mark`
+                    // series + the shareable strap log, and (fork, 04.10.2026) to SleepMarkStore with the exact
+                    // instant: the displayed night then starts no earlier / ends no later than a tap
+                    // (SleepMarkBoundary). Upstream macOS keeps it logging-only.
                     SleepReorderableSection(k, sleepListState, sleepSectionDrag, persistSleepOrder) {
                     Column {
                     Spacer(Modifier.height(Metrics.selectorTopUp))
                     SleepMarkCard(
                 onMark = { type ->
                     val mark = SleepMark.now(type)
+                    // Fork: keep the exact instant so the tap can bound the night (SleepMarkBoundary).
+                    SleepMarkStore.record(context, mark)
+                    sleepMarksVersion++
                     // The shareable strap log is the human-readable surface in a debug export.
                     vm.ble.externalLog(mark.logLine())
                     scope.launch {
@@ -824,53 +897,7 @@ fun SleepScreen(
                 onNavigate = { nightOffset = it },
                 session = night?.session,
                 heroGroup = night?.heroGroup.orEmpty(),
-                onUpdateTimes = { s, start, end ->
-                    // #940 belt-and-braces: never apply (optimistically OR durably) a future-ending
-                    // or inverted window, whatever the pickers produced. The editor's own guards
-                    // (cross-midnight auto-correct + the disjoint confirm) should make this
-                    // unreachable; sharing ONE safe window here keeps the in-memory copy and the DB
-                    // write in lockstep. Same rule as WhoopRepository.updateSleepSessionTimes.
-                    val safe = SleepEditGuard.clampedEditWindow(start, end, System.currentTimeMillis() / 1000L)
-                    if (safe != null) {
-                        val (safeStart, safeEnd) = safe
-                        // Optimistic: rewrite this session in `sleeps` so every metric recomputes
-                        // immediately, then persist DURABLY off the UI thread. Mirror the persist path —
-                        // keep the IMMUTABLE detected startTs and store the corrected onset in
-                        // startTsAdjusted with userEdited=true, so display (via effectiveStartTs) tracks the
-                        // edit while the (deviceId,startTs) key never moves. (PR #260 + #395)
-                        // Reclip stagesJSON in-memory so the hypnogram strip updates instantly (same
-                        // reclip logic runs again in WhoopRepository for the durable DB copy).
-                        // #1492: apply across the WHOLE bridged night. Editing only `s` (the winning
-                        // fragment) left the fragments defining the displayed bedtime and wake exactly
-                        // where they were, so a corrected night looked unchanged. ONE plan drives both the
-                        // optimistic copy and the durable write, so they cannot disagree.
-                        val group = night?.heroGroup.orEmpty().ifEmpty { listOf(s) }
-                        val plan = SleepGroupEdit.plan(group, safeStart, safeEnd)
-                        if (plan.clipped.isNotEmpty()) {
-                            val edited = plan.clipped.associateBy { it.deviceId to it.startTs }
-                            val gone = plan.dropped.map { it.deviceId to it.startTs }.toSet()
-                            sleeps = sleeps.mapNotNull { row ->
-                                val key = row.deviceId to row.startTs
-                                when {
-                                    key in gone -> null
-                                    else -> edited[key] ?: row
-                                }
-                            }
-                            if (plan.dropped.isNotEmpty()) {
-                                sleepUndo = SleepUndoState(plan.dropped, fromEdit = true)
-                            }
-                            scope.launch { vm.updateSleepGroupTimes(group, safeStart, safeEnd) }
-                        }
-                    } else {
-                        // The clamp refused a future/inverted window. Never drop an edit silently (the nap
-                        // pickers used to do exactly that): tell the user why nothing changed. (#940)
-                        Toast.makeText(
-                            context,
-                            uiText("That time can't be saved (it lands in the future or ends before it starts)."),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                },
+                onUpdateTimes = { s, start, end -> applyNightTimes(s, start, end) },
                 onDeleteSession = { s ->
                     // Delete = the edit path minus the re-insert: drop this session from `sleeps`
                     // so every metric recomputes immediately as if the night were never recorded,
@@ -1049,11 +1076,11 @@ private fun SleepAlarmsEntry(onOpenAlarms: () -> Unit) {
 @Composable
 internal fun SleepMarkCard(onMark: (SleepMarkType) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(Metrics.gap)) {
-        SectionHeader(title = uiString(R.string.l10n_sleep_screen_sleep_marks_8e9b86f0), overline = uiText("Tap to log"), trailing = "Phase 1")
+        SectionHeader(title = uiString(R.string.l10n_sleep_screen_sleep_marks_8e9b86f0), overline = uiText("Tap to log"))
         NoopCard(tint = Palette.restColor) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    uiString(R.string.l10n_sleep_screen_tap_when_you_re_heading_to_1f401690),
+                    uiText("Tap when you lie down to sleep and when you are awake. NOOP then starts the night no earlier and ends it no later than your tap. Without a tap, NOOP detects the night by itself."),
                     style = NoopType.footnote,
                     color = Palette.textTertiary,
                 )

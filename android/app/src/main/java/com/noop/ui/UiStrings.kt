@@ -49,3 +49,14 @@ internal fun uiSport(english: String): String = NoopApplication.localizedTextIn(
  *  as an effect size): looked up under its own [domain] so it cannot collide with the same English
  *  word elsewhere. Falls back to the English when no translation exists. */
 internal fun uiTextIn(domain: String, english: String): String = NoopApplication.localizedTextIn(domain, english)
+
+/**
+ * Fork: show a number that a shared formatter wrote with a "." decimal point in the reader's own
+ * convention ("100.5" → "100,5" in German). Display only — the formatters themselves keep the point,
+ * because the coach prompt and several tests read their output. A "." only counts as a decimal point
+ * between two digits, so text and grouping are left alone.
+ */
+internal fun localDecimal(text: String): String {
+    val sep = java.text.DecimalFormatSymbols.getInstance(java.util.Locale.getDefault()).decimalSeparator
+    return if (sep == '.') text else Regex("(?<=\\d)\\.(?=\\d)").replace(text, sep.toString())
+}

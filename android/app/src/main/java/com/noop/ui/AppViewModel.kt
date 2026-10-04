@@ -3123,6 +3123,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
      *  can't pick bedtime vs wake, so it defaults to bedtime ([SleepMark.nowDefault]). */
     private fun markSleep() {
         val mark = SleepMark.nowDefault()
+        SleepMarkStore.record(appContext, mark)   // fork: exact instant for SleepMarkBoundary
         ble.externalLog(mark.logLine())
         ble.buzz(1)
         viewModelScope.launch {

@@ -3588,6 +3588,7 @@
     <string name="l10n_lit_40d69e6eaf">What your Fitness Age still needs.</string>
     <string name="l10n_lit_40e2de139b">your readings over time</string>
     <string name="l10n_lit_40e4579fa6">%1$s days imported</string>
+    <string name="l10n_lit_40f0732379">Personal</string>
     <string name="l10n_lit_4103be8888">%1$s, no data</string>
     <string name="l10n_lit_410aa15cdf">Heart rate</string>
     <string name="l10n_lit_412a834393">On target</string>
@@ -3762,6 +3763,7 @@
     <string name="l10n_lit_66b11ea257">Take it over locally. Beta.</string>
     <string name="l10n_lit_66baac7fd3">1 Charge point</string>
     <string name="l10n_lit_66d95a0708">Week in review</string>
+    <string name="l10n_lit_66db8acc0f">Tap when you lie down to sleep and when you are awake. NOOP then starts the night no earlier and ends it no later than your tap. Without a tap, NOOP detects the night by itself.</string>
     <string name="l10n_lit_66f34ddda8">How much one day\'s charge carries into the next.</string>
     <string name="l10n_lit_670c843978">Resting heart rate is low and HRV is up. Your nervous system looks well-recovered and calm. A great day to push if you want to.</string>
     <string name="l10n_lit_6734e19790">Evening</string>
@@ -4008,6 +4010,7 @@
     <string name="l10n_lit_953b0ed138">Always rely on your doctor, pharmacist, or a qualified professional to interpret results and make decisions. If a number worries you, talk to them, not to an app.</string>
     <string name="l10n_lit_9556d852a9">Fencing</string>
     <string name="l10n_lit_95c20ff108">Standard HR is not a full bond</string>
+    <string name="l10n_lit_95e161ed18">Your goal</string>
     <string name="l10n_lit_961d285f3c">All activities</string>
     <string name="l10n_lit_965304ddfc">Daily export time</string>
     <string name="l10n_lit_966319a642">LOCAL ONLY</string>

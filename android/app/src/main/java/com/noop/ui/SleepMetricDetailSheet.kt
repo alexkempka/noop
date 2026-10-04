@@ -37,12 +37,13 @@ internal fun SleepMetricDetailSheetContent(
     key: String,
     imported: ImportedSleepSeries = ImportedSleepSeries(),
     napSleepMinByDay: Map<String, Double> = emptyMap(),
+    sessions: List<com.noop.data.SleepSession> = emptyList(),
 ) {
     val days by vm.recentDays.collectAsStateWithLifecycle()
     var range by remember { mutableStateOf(SleepMetricRange.MONTH) }
     val spec = remember(key) { sleepMetricSpec(key) }
-    val allPoints = remember(days, key, imported, napSleepMinByDay) {
-        buildSleepMetricPoints(days, key, imported, napSleepMinByDay)
+    val allPoints = remember(days, key, imported, napSleepMinByDay, sessions) {
+        buildSleepMetricPoints(days, key, imported, napSleepMinByDay, sessions)
     }
     val filteredPoints = remember(allPoints, range) { filterSleepMetricPoints(allPoints, range) }
 
@@ -84,7 +85,7 @@ internal fun SleepMetricDetailSheetContent(
                 Column(modifier = Modifier.weight(1f)) {
                     Overline(uiText("Sleep · %1\$s nights", filteredPoints.size))
                     Text(spec.title, style = NoopType.title2, color = Palette.textPrimary)
-                    Text(uiString(R.string.l10n_sleep_screen_as_of_latest_first_726f20bb, latest.first), style = NoopType.footnote, color = Palette.textTertiary)
+                    Text(uiString(R.string.l10n_sleep_screen_as_of_latest_first_726f20bb, localizedDayLabel(latest.first)), style = NoopType.footnote, color = Palette.textTertiary)
                 }
                 Text(
                     uiString(R.string.l10n_sleep_screen_spec_format_latest_second_spec_unit_18433019, spec.format(latest.second), spec.unit).trim(),
@@ -148,3 +149,11 @@ internal fun SleepMetricDetailSheetContent(
         }
     }
 }
+
+/** "2026-10-04" → the reader's medium date ("04.10.2026"); unparseable keys pass through unchanged. */
+internal fun localizedDayLabel(dayKey: String): String = runCatching {
+    java.time.LocalDate.parse(dayKey).format(
+        java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM)
+            .withLocale(java.util.Locale.getDefault()),
+    )
+}.getOrDefault(dayKey)

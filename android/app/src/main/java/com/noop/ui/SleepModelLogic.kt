@@ -413,6 +413,29 @@ private fun metric(
  * series still wins when present; this is the strap-only fallback.
  */
 internal fun consistencySeries(sessions: List<SleepSession>): Metric {
+    val scores = consistencyByNight(sessions).map { it.second }
+    return if (scores.isEmpty()) Metric(null, null, null, emptyList())
+    else Metric(scores.lastOrNull(), null, mean(scores), scores)
+}
+
+/**
+ * Fork: the same bedtime-onset scores as [consistencySeries], each keyed by the local calendar day of
+ * the night's END (the day a night belongs to everywhere else on the Sleep tab). The metric detail sheet
+ * reads THIS, so the tile and its sheet can no longer disagree — they used two different formulas (onset
+ * spread here, a duration-spread proxy in the sheet), which showed 33 % on the tile and 50 % in the sheet
+ * for the same night (04.10.2026).
+ */
+internal fun consistencyByNight(sessions: List<SleepSession>): List<Pair<String, Double>> {
+    val dayFmt = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+    val sorted = sessions.sortedBy { it.startTs }
+    val scores = consistencyScoresInOrder(sorted)
+    return sorted.indices.mapNotNull { i ->
+        scores[i]?.let { dayFmt.format(java.util.Date(sorted[i].endTs * 1000L)) to it }
+    }
+}
+
+/** One score per session in [sorted] order (null while fewer than three onsets are in the window). */
+private fun consistencyScoresInOrder(sorted: List<SleepSession>): List<Double?> {
     // Byte-identical to iOS SleepView.consistencySeries (#sleep-consistency-parity): BEDTIME-ONSET
     // regularity, not the old duration proxy. Each session's local bed-minute (hour*60+min, evening
     // onsets wrapped +24h) over a trailing-14 SD → 100*(1 - sd/120). Sessions are ordered by startTs to
@@ -424,20 +447,18 @@ internal fun consistencySeries(sessions: List<SleepSession>): Metric {
         if (m < 12 * 60) m += 24 * 60   // wrap evening onsets into one continuous scale
         return m
     }
-    val mins = sessions.sortedBy { it.startTs }.map { bedMinutes(it.effectiveStartTs) }
-    if (mins.size < 3) return Metric(null, null, null, emptyList())
-    val scores = ArrayList<Double>()
-    for (i in mins.indices) {
+    val mins = sorted.map { bedMinutes(it.effectiveStartTs) }
+    return mins.indices.map { i ->
         val lo = max(0, i - 13)
         val window = mins.subList(lo, i + 1)
-        if (window.size < 3) continue
-        val m = window.average()
-        val variance = window.sumOf { (it - m) * (it - m) } / window.size
-        val sd = Math.sqrt(variance)
-        // 120 min of onset SD maps to a 0 score; tighter routines climb to 100.
-        scores.add((100.0 * (1.0 - sd / 120.0)).coerceIn(0.0, 100.0))
+        if (window.size < 3) null else {
+            val m = window.average()
+            val variance = window.sumOf { (it - m) * (it - m) } / window.size
+            val sd = Math.sqrt(variance)
+            // 120 min of onset SD maps to a 0 score; tighter routines climb to 100.
+            (100.0 * (1.0 - sd / 120.0)).coerceIn(0.0, 100.0)
+        }
     }
-    return Metric(scores.lastOrNull(), null, mean(scores), scores)
 }
 
 private fun mean(vals: List<Double>): Double? = if (vals.isEmpty()) null else vals.sum() / vals.size

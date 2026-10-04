@@ -3134,7 +3134,9 @@ private fun ScoreHeroRow(
                             tint = Palette.effortTint((strain ?: 0.0) / 100.0),
                             diameter = ring,
                             showsValue = strain != null,
-                            format = { if (effortScale == EffortScale.WHOOP) String.format(Locale.getDefault(), "%.1f", it) else it.toInt().toString() },
+                            // Fork: one decimal on both scales, rounded — `toInt()` cut 1.9 to "1" while the
+                            // Effort tile below said 1.9 (product owner, 03.10.2026).
+                            format = { String.format(Locale.getDefault(), "%.1f", it) },
                             animated = heroVesselsAnimated,
                             onTap = effortRingTap,
                             targetRange = targetFraction,
@@ -4129,6 +4131,7 @@ private fun HostedCardsSection(
                 HostedCard.SLEEP_MARKS -> SleepMarkCard(
                     onMark = { type ->
                         val mark = SleepMark.now(type)
+                        SleepMarkStore.record(context, mark)   // fork: exact instant for SleepMarkBoundary
                         viewModel.ble.externalLog(mark.logLine())
                         scope.launch {
                             runCatching {
@@ -6059,7 +6062,9 @@ private fun MetricGrid(
         KeyMetric.CHARGE to run {
             val v = d?.recovery ?: lastScoredCharge?.value
             KeyTileData(
-                label = uiString(R.string.l10n_today_screen_recovery_ea924f72),
+                // Fork: the hero names this score "Charge" ("Energie"); the tile said "Recovery" ("Erholung")
+                // for the same number (product owner, 03.10.2026).
+                label = uiString(R.string.today_metric_charge),
                 value = d?.recovery?.let { "${it.roundToInt()}" }
                     ?: recoveryCalibration?.let { "$it/${Baselines.minNightsSeed}" }
                     ?: lastScoredCharge?.let { "${it.value.roundToInt()}" } ?: NO_DATA,
@@ -6073,7 +6078,7 @@ private fun MetricGrid(
             label = uiString(R.string.l10n_today_screen_strain_79fe380e),
             // #1001: the resolved Effort, falling back to the stored column only when the caller passes
             // none (previews/tests). Reading `d.strain` here is what left this tile behind the hero ring.
-            value = (effortForDay ?: d?.strain)?.let { UnitFormatter.effortDisplay(it, effortScale) } ?: NO_DATA,
+            value = (effortForDay ?: d?.strain)?.let { localDecimal(UnitFormatter.effortDisplay(it, effortScale)) } ?: NO_DATA,
             // #492: Strain/Effort is a load index (0–21 WHOOP / 0–100 NOOP), NOT a percentage — the "%"
             // was wrong (esp. on the 0–21 scale). Recovery/Rest ARE 0–100 % and keep it. iOS shows the
             // strain axis as an "of 21"/"of 100" caption with no % (TodayView effort tile); match that.
@@ -6185,7 +6190,7 @@ private fun MetricGrid(
             val weight = weightTile(latestWeightKg, profileWeightKg, unitSystem)
             KeyTileData(
                 label = uiString(R.string.l10n_today_screen_weight_69c0b815),
-                value = weight.value,
+                value = localDecimal(weight.value),
                 unit = "",
                 tint = Palette.accent,
                 frac = null,
@@ -6265,7 +6270,9 @@ private fun MetricGrid(
             // graph-less tile (Steps/Weight/Calories) sharing a row with graphed neighbours must not
             // shrink its card. Compact rows keep the plain layout, byte-identical to before.
             Row(
-                modifier = if (detailed) Modifier.height(IntrinsicSize.Max) else Modifier,
+                // Fork: compact rows equalise too — a caption (the step goal) made one tile taller than
+                // its neighbours (product owner, 03.10.2026).
+                modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 rowTiles.forEach { (metric, tile) ->
@@ -6275,7 +6282,7 @@ private fun MetricGrid(
                         detailed = detailed,
                         windowDays = windowDays,
                         onClick = tapFor(metric),
-                        modifier = Modifier.weight(1f).then(if (detailed) Modifier.fillMaxHeight() else Modifier),
+                        modifier = Modifier.weight(1f).fillMaxHeight(),
                     )
                 }
                 repeat(3 - rowTiles.size) { Spacer(Modifier.weight(1f)) }

@@ -87,7 +87,7 @@ private object NoopButtonMetrics {
 
 /** The reset accent blue (iOS `StrandPalette.accent`: #234F9E light / #60A0E0 dark). */
 private val noopAccentBlue: Color
-    @Composable get() = if (Palette.isLight) Color(0xFF234F9E) else Color(0xFF60A0E0)
+    @Composable get() = if (Palette.isLight) Color(0xFF234F9E) else Color(0xFF00A6CA)   // fork: ITC-X cyan
 
 /** Crisp white label/icon on accent + critical fills (iOS `goldDeepText` = #FFFFFF post-reset). */
 private val noopOnFill: Color = Color(0xFFFFFFFF)
@@ -102,13 +102,14 @@ private data class NoopButtonAppearance(
 @Composable
 private fun appearanceFor(kind: NoopButtonKind): NoopButtonAppearance = when (kind) {
     NoopButtonKind.Primary -> NoopButtonAppearance(
-        fill = noopAccentBlue, label = noopOnFill, border = null,
+        // Fork: on the cyan fill a Nachtblau label reads at ≈ 6:1; white on cyan was ≈ 2.6:1.
+        fill = noopAccentBlue, label = if (Palette.isLight) noopOnFill else Color(0xFF011E3C), border = null,
+    )
+    NoopButtonKind.Tertiary -> NoopButtonAppearance(
+        fill = null, label = if (Palette.isLight) noopAccentBlue else Color(0xFF4FD1E8), border = null,
     )
     NoopButtonKind.Secondary -> NoopButtonAppearance(
         fill = Palette.surfaceRaised, label = Palette.textPrimary, border = Palette.hairline,
-    )
-    NoopButtonKind.Tertiary -> NoopButtonAppearance(
-        fill = null, label = noopAccentBlue, border = null,
     )
     NoopButtonKind.Destructive -> NoopButtonAppearance(
         fill = Palette.statusCritical, label = noopOnFill, border = null,

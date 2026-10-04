@@ -121,7 +121,7 @@ private fun MetricGrid(m: SleepModel, onMetricClick: (String) -> Unit = {}) {
         { mod ->
             SparkTile(
                 mod, uiText("Respiratory"),
-                value = m.respiratory.latest?.let { String.format(Locale.US, "%.1f", it) } ?: "—",
+                value = m.respiratory.latest?.let { String.format(Locale.getDefault(), "%.1f", it) } ?: "—",
                 caption = tileCaption(m.respiratory.latestDay, m.respiratory.latest, m.respiratory.typical, " " + uiText("rpm"), decimals = 1),
                 accent = Palette.metricPurple,
                 spark = m.respiratory.series, sparkColor = Palette.metricPurple,
@@ -855,8 +855,12 @@ internal fun HoursVsNeededCard(m: SleepModel) {
             }
 
             // Stacked component bar: Healthy Min / Strain buffer / Debt repayment.
-            val healthyMin = 7.0
-            val strainBuffer = (neededH - healthyMin).coerceAtLeast(0.0)
+            // Fork: with the user's own sleep goal the need IS that goal — one segment, named as such. Without
+            // one, the part above 7 h comes from NOOP's personal-need estimate (upper quartile of your nights,
+            // RestScorer.personalizedNeedHours), not from Effort, so it is labelled "Personal", not "Strain".
+            val ownGoal = com.noop.analytics.RestScorer.userSleepGoalHours
+            val healthyMin = ownGoal ?: 7.0
+            val strainBuffer = if (ownGoal != null) 0.0 else (neededH - healthyMin).coerceAtLeast(0.0)
             val debtRepay = debtH.coerceAtLeast(0.0)
             val totalBar = (healthyMin + strainBuffer + debtRepay).coerceAtLeast(1.0)
             Row(modifier = Modifier.fillMaxWidth().height(Metrics.space8).clip(RoundedCornerShape(Metrics.cornerPill))) {
@@ -865,8 +869,8 @@ internal fun HoursVsNeededCard(m: SleepModel) {
                 if (debtRepay > 0) Box(modifier = Modifier.weight((debtRepay / totalBar).toFloat()).fillMaxHeight().background(Palette.statusCritical))
             }
             Row(horizontalArrangement = Arrangement.spacedBy(Metrics.space14)) {
-                SleepLegendDot(uiText("Healthy Min"), Palette.metricPurple)
-                SleepLegendDot(uiText("Strain"), Palette.strain066)
+                SleepLegendDot(if (ownGoal != null) uiText("Your goal") else uiText("Healthy Min"), Palette.metricPurple)
+                if (ownGoal == null) SleepLegendDot(uiText("Personal"), Palette.strain066)
                 SleepLegendDot(uiText("Debt"), Palette.statusCritical)
             }
 
