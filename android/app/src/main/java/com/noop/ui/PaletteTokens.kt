@@ -103,7 +103,7 @@ data class PaletteTokens(
 // blue Effort, slate Rest, amber Stress. NO gold anywhere — accent/gold tokens point to WHOOP blue.
 // Fork (product owner 04.10.2026): the chrome of the dark theme takes the ITC-X palette — Nachtblau
 // #011E3C canvas, Navy #002F65 / #0A2A50 cards, Cyan #00A6CA accent, Hellblau #4FD1E8 highlights, #B6C6D6
-// secondary text (alexkempka/empty, ITC-X-Logo). Data encodings (recovery ramp, sleep stages, zones) keep
+// secondary text (alexkempka/Grafics, ITC-X/). Data encodings (recovery ramp, sleep stages, zones) keep
 // their meaning-carrying colours. Documented in 1stAndroidApp docs/NAME_UND_GESTALTUNG.md.
 val DarkTokens = PaletteTokens(
     surfaceBase = Color(0xFF011E3C), surfaceRaised = Color(0xFF0A2A50), surfaceOverlay = Color(0xFF06244A),
